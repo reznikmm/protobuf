@@ -163,4 +163,30 @@ package body Compiler.FileDescriptorProto is
       return Result;
    end Package_Name;
 
+   -----------------------
+   -- Populate_Type_Map --
+   -----------------------
+
+   procedure Populate_Type_Map
+     (Self : Google_Protobuf.FileDescriptorProto.Instance)
+   is
+      Item     : Google_Protobuf.DescriptorProto.DescriptorProto_Access;
+      PB_Name  : League.Strings.Universal_String;
+      Ada_Name : constant League.Strings.Universal_String :=
+        Package_Name (Self);
+   begin
+      PB_Name.Append (".");
+
+      if Self.Has_Package_Pb then
+         PB_Name.Append
+           (League.Strings.From_UTF_8_String (Self.Get_Package_Pb));
+      end if;
+
+      for J in 0 .. Self.Message_Type_Size - 1 loop
+         Item := Self.Get_Message_Type (J);
+         Compiler.DescriptorProto.Populate_Type_Map
+           (Item.all, PB_Package => PB_Name, Ada_Package => Ada_Name);
+      end loop;
+   end Populate_Type_Map;
+
 end Compiler.FileDescriptorProto;

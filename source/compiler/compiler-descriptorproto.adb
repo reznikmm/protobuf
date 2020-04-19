@@ -1,10 +1,52 @@
 with Compiler.Contexts;
+with Compiler.EnumDescriptorProto;
 with Compiler.FieldDescriptorProto;
 with Compiler.Tools;
 
 package body Compiler.DescriptorProto is
 
    F : Ada_Pretty.Factory renames Compiler.Contexts.F;
+
+   -----------------------
+   -- Populate_Type_Map --
+   -----------------------
+
+   procedure Populate_Type_Map
+     (Self        : Google_Protobuf.DescriptorProto.Instance;
+      PB_Package  : League.Strings.Universal_String;
+      Ada_Package : League.Strings.Universal_String)
+   is
+      use type League.Strings.Universal_String;
+
+      Key  : League.Strings.Universal_String := PB_Package;
+      Name : constant League.Strings.Universal_String := Type_Name (Self);
+   begin
+      Key.Append (".");
+
+      if Self.Has_Name then
+         Key.Append (League.Strings.From_UTF_8_String (Self.Get_Name));
+      end if;
+
+      Compiler.Contexts.Type_Map.Insert
+        (Key, (Package_Name => Ada_Package, Type_Name => Name));
+
+      for J in 0 .. Self.Nested_Type_Size - 1 loop
+         Populate_Type_Map
+           (Self.Get_Nested_Type (J).all,
+            PB_Package => Key,
+            Ada_Package => Ada_Package);
+      end loop;
+
+      for J in 0 .. Self.Enum_Type_Size - 1 loop
+         Compiler.Contexts.Type_Map.Insert
+           (Key & "." &
+              Compiler.EnumDescriptorProto.Proto_Type_Name
+                (Self.Get_Enum_Type (J).all),
+            (Package_Name => Ada_Package,
+             Type_Name    => Compiler.EnumDescriptorProto.Type_Name
+               (Self.Get_Enum_Type (J).all)));
+      end loop;
+   end Populate_Type_Map;
 
    -----------------
    -- Public_Spec --

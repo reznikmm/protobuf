@@ -6,6 +6,11 @@ with League.Strings;
 
 package Compiler.DescriptorProto is
 
+   procedure Populate_Type_Map
+     (Self        : Google_Protobuf.DescriptorProto.Instance;
+      PB_Package  : League.Strings.Universal_String;
+      Ada_Package : League.Strings.Universal_String);
+
    function Public_Spec
      (Self : Google_Protobuf.DescriptorProto.Instance)
      return Ada_Pretty.Node_Access;

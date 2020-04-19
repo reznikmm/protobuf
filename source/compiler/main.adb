@@ -2,9 +2,10 @@ with Google_Protobuf.FileDescriptorProto;
 with Google_Protobuf.Compiler.CodeGeneratorResponse;
 with Google_Protobuf.Compiler.CodeGeneratorResponse.File;
 
-with Ada.Streams.Stream_IO;
 with Ada.Command_Line;
+with Ada.Streams.Stream_IO;
 with Ada.Text_IO;
+with Ada.Wide_Wide_Text_IO;
 
 with Compiler.Contexts;
 with Compiler.FileDescriptorProto;
@@ -21,6 +22,21 @@ begin
 
    Compiler.Contexts.X.Parse_From_Input_Stream
      (Ada.Streams.Stream_IO.Stream (Input));
+
+   Compiler.Contexts.Populate_Type_Map;
+
+   for J in Compiler.Contexts.Type_Map.Iterate loop
+      Ada.Wide_Wide_Text_IO.Put
+        (Compiler.Contexts.String_Hash_Maps.Key (J).To_Wide_Wide_String);
+      Ada.Wide_Wide_Text_IO.Put (" => ");
+      Ada.Wide_Wide_Text_IO.Put
+        (Compiler.Contexts.String_Hash_Maps.Element (J)
+         .Package_Name.To_Wide_Wide_String);
+      Ada.Wide_Wide_Text_IO.Put (".");
+      Ada.Wide_Wide_Text_IO.Put_Line
+        (Compiler.Contexts.String_Hash_Maps.Element (J)
+         .Type_Name.To_Wide_Wide_String);
+   end loop;
 
    for J in 1 .. Compiler.Contexts.X.File_To_Generate_Size loop
       declare

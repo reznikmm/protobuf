@@ -2,6 +2,8 @@ with Compiler.Contexts;
 with Compiler.DescriptorProto;
 with Compiler.Tools;
 
+with Ada.Wide_Wide_Text_IO;
+
 package body Compiler.FieldDescriptorProto is
 
    F : Ada_Pretty.Factory renames Compiler.Contexts.F;
@@ -202,23 +204,6 @@ package body Compiler.FieldDescriptorProto is
      (Self : Google_Protobuf.FieldDescriptorProto.Instance)
       return League.Strings.Universal_String
    is
-      function Drop_Leading_Dot (Text : League.Strings.Universal_String)
-         return League.Strings.Universal_String;
-
-      ----------------------
-      -- Drop_Leading_Dot --
-      ----------------------
-
-      function Drop_Leading_Dot (Text : League.Strings.Universal_String)
-         return League.Strings.Universal_String is
-      begin
-         if Text.Starts_With (".") then
-            return Text.Tail_From (2);
-         else
-            return Text;
-         end if;
-      end Drop_Leading_Dot;
-
       Result : League.Strings.Universal_String;
    begin
       if Self.Has_Type_Name then
@@ -226,8 +211,20 @@ package body Compiler.FieldDescriptorProto is
             Value : constant League.Strings.Universal_String :=
               League.Strings.From_UTF_8_String (Self.Get_TypeX_Name);
          begin
-            Result := Compiler.Tools.To_Selected_Ada_Name
-              (Drop_Leading_Dot (Value));
+            if Compiler.Contexts.Type_Map.Contains (Value) then
+               declare
+                  Element : constant Compiler.Contexts.Ada_Type_Info :=
+                    Compiler.Contexts.Type_Map (Value);
+               begin
+                  Result := Element.Package_Name;
+                  Result.Append (".");
+                  Result.Append (Element.Type_Name);
+               end;
+            else
+               Ada.Wide_Wide_Text_IO.Put_Line
+                 (Ada.Wide_Wide_Text_IO.Standard_Error,
+                  "Type not found: " & Value.To_Wide_Wide_String);
+            end if;
          end;
       elsif Self.Has_Type_Pb then
          declare
