@@ -11,6 +11,10 @@ package Compiler.DescriptorProto is
       PB_Package  : League.Strings.Universal_String;
       Ada_Package : League.Strings.Universal_String);
 
+   function Enum_Types
+     (Self : Google_Protobuf.DescriptorProto.Instance)
+     return Ada_Pretty.Node_Access;
+
    function Public_Spec
      (Self : Google_Protobuf.DescriptorProto.Instance)
      return Ada_Pretty.Node_Access;

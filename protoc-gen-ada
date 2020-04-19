@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 cat > /tmp/aaa.bin
-.obj/main /tmp/aaa.bin > /dev/null
+.obj/main /tmp/aaa.bin > /tmp/main.log 2> /tmp/main_err.log
 cat /tmp/aaa.bin.out

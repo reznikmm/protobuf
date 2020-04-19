@@ -2,11 +2,17 @@ with Google_Protobuf.EnumDescriptorProto;
 
 with League.Strings;
 
+with Ada_Pretty;
+
 package Compiler.EnumDescriptorProto is
 
    function Type_Name
      (Self : Google_Protobuf.EnumDescriptorProto.Instance)
       return League.Strings.Universal_String;
+
+   function Public_Spec
+     (Self : Google_Protobuf.EnumDescriptorProto.Instance)
+     return Ada_Pretty.Node_Access;
 
    function Proto_Type_Name
      (Self : Google_Protobuf.EnumDescriptorProto.Instance)

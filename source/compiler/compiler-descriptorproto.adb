@@ -3,9 +3,46 @@ with Compiler.EnumDescriptorProto;
 with Compiler.FieldDescriptorProto;
 with Compiler.Tools;
 
+with Google_Protobuf.EnumDescriptorProto;
+
 package body Compiler.DescriptorProto is
 
+   use type Ada_Pretty.Node_Access;
+
    F : Ada_Pretty.Factory renames Compiler.Contexts.F;
+
+   ----------------
+   -- Enum_Types --
+   ----------------
+
+   function Enum_Types
+     (Self : Google_Protobuf.DescriptorProto.Instance)
+     return Ada_Pretty.Node_Access
+   is
+      Result : Ada_Pretty.Node_Access;
+      Item   : Ada_Pretty.Node_Access;
+      Enum   : Google_Protobuf.EnumDescriptorProto
+        .EnumDescriptorProto_Access;
+   begin
+      for J in 0 .. Self.Enum_Type_Size - 1 loop
+         Enum := Self.Get_Enum_Type (J);
+         Item := Compiler.EnumDescriptorProto.Public_Spec (Enum.all);
+
+         if Item /= null then
+            Result := F.New_List (Result, Item);
+         end if;
+      end loop;
+
+      for J in 0 .. Self.Nested_Type_Size - 1 loop
+         Item := Enum_Types (Self.Get_Nested_Type (J).all);
+
+         if Item /= null then
+            Result := F.New_List (Result, Item);
+         end if;
+      end loop;
+
+      return Result;
+   end Enum_Types;
 
    -----------------------
    -- Populate_Type_Map --

@@ -1,6 +1,41 @@
 with Compiler.Tools;
+with Compiler.Contexts;
+
+with Google_Protobuf.EnumValueDescriptorProto;
 
 package body Compiler.EnumDescriptorProto is
+
+   F : Ada_Pretty.Factory renames Compiler.Contexts.F;
+
+   -----------------
+   -- Public_Spec --
+   -----------------
+
+   function Public_Spec
+     (Self : Google_Protobuf.EnumDescriptorProto.Instance)
+      return Ada_Pretty.Node_Access
+   is
+      Result : Ada_Pretty.Node_Access;
+      Item   : Ada_Pretty.Node_Access;
+   begin
+      for J in 0 .. Self.Value_Size - 1 loop
+         declare
+            Name : League.Strings.Universal_String;
+            Next : Google_Protobuf.EnumValueDescriptorProto.Instance renames
+              Self.Get_Value (J).all;
+         begin
+            Name := League.Strings.From_UTF_8_String (Next.Get_Name);
+            Item := F.New_Argument_Association (F.New_Name (Name));
+            Result := F.New_List (Result, Item);
+         end;
+      end loop;
+
+      Result := F.New_Type
+        (Name       => F.New_Name (Type_Name (Self)),
+         Definition => F.New_Parentheses (Result));
+
+      return Result;
+   end Public_Spec;
 
    ---------------------
    -- Proto_Type_Name --

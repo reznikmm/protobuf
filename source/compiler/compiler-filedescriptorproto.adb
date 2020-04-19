@@ -5,12 +5,16 @@ with League.String_Vectors;
 with Ada_Pretty;
 
 with Google_Protobuf.DescriptorProto;
+with Google_Protobuf.EnumDescriptorProto;
+with Compiler.EnumDescriptorProto;
 
 with Compiler.Contexts;
 with Compiler.DescriptorProto;
 with Compiler.Tools;
 
 package body Compiler.FileDescriptorProto is
+
+   use type Ada_Pretty.Node_Access;
 
    F : Ada_Pretty.Factory renames Compiler.Contexts.F;
 
@@ -111,7 +115,27 @@ package body Compiler.FileDescriptorProto is
          Result : Ada_Pretty.Node_Access;
          Next   : Ada_Pretty.Node_Access;
          Item   : Google_Protobuf.DescriptorProto.DescriptorProto_Access;
+         Enum   : Google_Protobuf.EnumDescriptorProto
+           .EnumDescriptorProto_Access;
       begin
+         for J in 0 .. Self.Enum_Type_Size - 1 loop
+            Enum := Self.Get_Enum_Type (J);
+            Next := Compiler.EnumDescriptorProto.Public_Spec (Enum.all);
+
+            if Next /= null then
+               Result := F.New_List (Result, Next);
+            end if;
+         end loop;
+
+         for J in 0 .. Self.Message_Type_Size - 1 loop
+            Item := Self.Get_Message_Type (J);
+            Next := Compiler.DescriptorProto.Enum_Types (Item.all);
+
+            if Next /= null then
+               Result := F.New_List (Result, Next);
+            end if;
+         end loop;
+
          for J in 0 .. Self.Message_Type_Size - 1 loop
             Item := Self.Get_Message_Type (J);
             Next := Compiler.DescriptorProto.Public_Spec (Item.all);
