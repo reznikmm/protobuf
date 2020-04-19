@@ -1,0 +1,29 @@
+library project Google_Protobuf is
+
+   for Source_Dirs use ("../source/google-protobuf");
+   for Library_Name use "google-protobuf";
+   for Library_Dir use "../.libs";
+   for Object_Dir use "../.objs/" & project'Name;
+   for Languages use ("Ada", "C");
+
+   package Compiler is
+      for Driver ("Makefile") use "";
+      for Driver ("Text") use "";
+      for Driver ("project file") use "";
+      for Driver ("MarkDown") use "";
+      for Switches ("ada") use ("-g", "-O2", "-ffunction-sections", "-gnatQ", "-fdata-sections", "-fPIC", "-gnatf", "-gnatwa");
+   end Compiler;
+
+   package Builder is
+      for Switches ("ada") use ("-j0", "-k", "-g", "-s");
+   end Builder;
+
+   package Naming is
+--        for Body_Suffix ("project file") use ".gpr";
+      for Body_Suffix ("Makefile") use ".mk";
+      for Body_Suffix ("MarkDown") use ".md";
+      for Body_Suffix ("Text") use ".txt";
+      for Implementation_Exceptions ("Makefile") use ("Makefile");
+   end Naming;
+
+end Google_Protobuf;

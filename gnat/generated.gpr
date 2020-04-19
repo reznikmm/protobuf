@@ -1,0 +1,12 @@
+with "google_protobuf.gpr";
+
+project Generated is
+   for Source_Dirs use ("../source/generated");
+   for Object_Dir use "../.obj";
+
+   package Compiler is
+      for Default_Switches ("ada") use
+        ("-g", "-gnatVa", "-gnata");
+   end Compiler;
+
+end Generated;

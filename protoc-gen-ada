@@ -1,0 +1,4 @@
+#!/bin/bash
+cat > /tmp/aaa.bin
+.obj/main /tmp/aaa.bin > /dev/null
+cat /tmp/aaa.bin.out

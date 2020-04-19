@@ -1,0 +1,15 @@
+with "google_protobuf.gpr";
+with "generated.gpr";
+with "ada_pretty.gpr";
+
+project Compiler is
+   for Source_Dirs use ("../source/compiler");
+   for Object_Dir use "../.obj";
+   for Main use ("main.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use
+        ("-gnat12", "-gnatW8", "-g", "-gnatVa", "-gnatwa", "-gnaty", "-gnata");
+   end Compiler;
+
+end Compiler;
