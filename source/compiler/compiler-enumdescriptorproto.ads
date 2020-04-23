@@ -10,9 +10,13 @@ package Compiler.EnumDescriptorProto is
      (Self : Google_Protobuf.EnumDescriptorProto.Instance)
       return League.Strings.Universal_String;
 
+   function Default
+     (Self : Google_Protobuf.EnumDescriptorProto.Instance)
+      return League.Strings.Universal_String;
+
    function Public_Spec
      (Self : Google_Protobuf.EnumDescriptorProto.Instance)
-     return Ada_Pretty.Node_Access;
+     return not null Ada_Pretty.Node_Access;
 
    function Proto_Type_Name
      (Self : Google_Protobuf.EnumDescriptorProto.Instance)

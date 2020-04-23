@@ -77,5 +77,8 @@ package body Compiler.Tools is
    end To_Selected_Ada_Name;
 
 begin
+   Reserved.Insert (+"begin");
+   Reserved.Insert (+"end");
+   Reserved.Insert (+"package");
    Reserved.Insert (+"type");
 end Compiler.Tools;

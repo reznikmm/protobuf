@@ -2,6 +2,20 @@ with Compiler.FileDescriptorProto;
 
 package body Compiler.Contexts is
 
+   ---------
+   -- "+" --
+   ---------
+
+   function "+" (Self : Ada_Type) return League.Strings.Universal_String is
+      use type League.Strings.Universal_String;
+   begin
+      if Self.Package_Name.Is_Empty then
+         return Self.Type_Name;
+      else
+         return Self.Package_Name & "." & Self.Type_Name;
+      end if;
+   end "+";
+
    ------------------------------
    -- Find_FileDescriptorProto --
    ------------------------------

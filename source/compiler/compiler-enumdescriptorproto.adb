@@ -7,14 +7,31 @@ package body Compiler.EnumDescriptorProto is
 
    F : Ada_Pretty.Factory renames Compiler.Contexts.F;
 
+   function "+" (Text : Wide_Wide_String)
+     return League.Strings.Universal_String
+       renames League.Strings.To_Universal_String;
+
+   function Default
+     (Self : Google_Protobuf.EnumDescriptorProto.Instance)
+      return League.Strings.Universal_String
+   is
+      First : Google_Protobuf.EnumValueDescriptorProto.Instance renames
+        Self.Get_Value (0).all;
+   begin
+      return League.Strings.From_UTF_8_String (First.Get_Name);
+   end Default;
+
    -----------------
    -- Public_Spec --
    -----------------
 
    function Public_Spec
      (Self : Google_Protobuf.EnumDescriptorProto.Instance)
-      return Ada_Pretty.Node_Access
+      return not null Ada_Pretty.Node_Access
    is
+      use type League.Strings.Universal_String;
+
+      Name   : constant League.Strings.Universal_String := Type_Name (Self);
       Result : Ada_Pretty.Node_Access;
       Item   : Ada_Pretty.Node_Access;
    begin
@@ -31,8 +48,15 @@ package body Compiler.EnumDescriptorProto is
       end loop;
 
       Result := F.New_Type
-        (Name       => F.New_Name (Type_Name (Self)),
+        (Name       => F.New_Name (Name),
          Definition => F.New_Parentheses (Result));
+
+      Item := F.New_Package_Instantiation
+        (Name        => F.New_Name (Name & "_Vectors"),
+         Template    => F.New_Selected_Name (+"PB_Support.Vectors"),
+           Actual_Part => F.New_Name (Name));
+
+      Result := F.New_List (Result, Item);
 
       return Result;
    end Public_Spec;
