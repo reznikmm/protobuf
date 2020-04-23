@@ -1,4 +1,3 @@
-with Compiler.DescriptorProto;
 with Compiler.Tools;
 
 with Ada.Wide_Wide_Text_IO;
@@ -19,16 +18,6 @@ package body Compiler.FieldDescriptorProto is
 
    function Default
      (Self : Google_Protobuf.FieldDescriptorProto.Instance)
-      return Ada_Pretty.Node_Access;
-
-   function Parameters
-     (Field   : Google_Protobuf.FieldDescriptorProto.Instance;
-      Message : Google_Protobuf.DescriptorProto.Instance)
-      return Ada_Pretty.Node_Access;
-
-   function Get_Self_Parameter
-     (Message : Google_Protobuf.DescriptorProto.Instance;
-      Change  : Boolean := False)
       return Ada_Pretty.Node_Access;
 
    ---------------
@@ -102,51 +91,6 @@ package body Compiler.FieldDescriptorProto is
 
    end Default;
 
-   ------------------------
-   -- Get_Self_Parameter --
-   ------------------------
-
-   function Get_Self_Parameter
-     (Message : Google_Protobuf.DescriptorProto.Instance;
-      Change  : Boolean := False) return Ada_Pretty.Node_Access
-   is
-      Msg  : constant League.Strings.Universal_String :=
-        Compiler.DescriptorProto.Type_Name (Message);
-
-      Self : constant Ada_Pretty.Node_Access := F.New_Parameter
-        (Name            => F.New_Name (+"Self"),
-         Type_Definition => F.New_Name (Msg),
-         Is_In           => Change,
-         Is_Out          => Change);
-
-   begin
-      return Self;
-   end Get_Self_Parameter;
-
-   ----------------
-   -- Parameters --
-   ----------------
-
-   function Parameters
-     (Field   : Google_Protobuf.FieldDescriptorProto.Instance;
-      Message : Google_Protobuf.DescriptorProto.Instance)
-      return Ada_Pretty.Node_Access
-   is
-      Self : constant Ada_Pretty.Node_Access := Get_Self_Parameter (Message);
-
-      Index : Ada_Pretty.Node_Access;
-   begin
-      if Is_Repeated (Field) then
-         Index := F.New_Parameter
-           (Name            => F.New_Name (+"Index"),
-            Type_Definition => F.New_Name (+"Positive"));
-
-         return F.New_List (Self, Index);
-      else
-         return Self;
-      end if;
-   end Parameters;
-
    ------------------
    -- PB_Type_Name --
    ------------------
@@ -162,59 +106,6 @@ package body Compiler.FieldDescriptorProto is
          return League.Strings.Empty_Universal_String;
       end if;
    end PB_Type_Name;
-
-   -----------------
-   -- Public_Spec --
-   -----------------
-
-   function Public_Spec
-     (Self    : Google_Protobuf.FieldDescriptorProto.Instance;
-      Message : Google_Protobuf.DescriptorProto.Instance)
-      return Ada_Pretty.Node_Access
-   is
-      use type League.Strings.Universal_String;
-      use type Compiler.Contexts.Ada_Type;
-      Result : Ada_Pretty.Node_Access;
-      Item   : Ada_Pretty.Node_Access;
-      Field_Type : constant Ada_Pretty.Node_Access :=
-        F.New_Selected_Name (+Type_Name (Self));
-      Name : constant League.Strings.Universal_String := Field_Name (Self);
-   begin
-      Result := F.New_Subprogram_Declaration
-        (F.New_Subprogram_Specification
-           (Name       => F.New_Name ("Get_" & Name),
-            Parameters => Parameters (Self, Message),
-            Result     => Field_Type));
-
-      if Is_Repeated (Self) then
-         Item := F.New_Subprogram_Declaration
-           (F.New_Subprogram_Specification
-              (Name       => F.New_Name (Name & "_Count"),
-               Parameters => Get_Self_Parameter (Message),
-               Result     => F.New_Name (+"Natural")));
-
-         Result := F.New_List (Result, Item);
-
-         Item := F.New_Subprogram_Declaration
-           (F.New_Subprogram_Specification
-              (Name       => F.New_Name ("Clear_" & Name),
-               Parameters => Get_Self_Parameter (Message, Change => True)));
-
-         Result := F.New_List (Result, Item);
-
-         Item := F.New_Subprogram_Declaration
-           (F.New_Subprogram_Specification
-              (Name       => F.New_Name ("Append_" & Name),
-               Parameters => F.New_List
-                 (Get_Self_Parameter (Message, Change => True),
-                  F.New_Parameter
-                    (F.New_Name (+"Value"), Field_Type))));
-
-         Result := F.New_List (Result, Item);
-      end if;
-
-      return Result;
-   end Public_Spec;
 
    ----------------
    -- Dependency --

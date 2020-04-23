@@ -24,6 +24,10 @@ package Compiler.DescriptorProto is
      (Self : Google_Protobuf.DescriptorProto.Instance)
      return Ada_Pretty.Node_Access;
 
+   function Subprograms
+     (Self : Google_Protobuf.DescriptorProto.Instance)
+     return Ada_Pretty.Node_Access;
+
    function Private_Spec
      (Self : Google_Protobuf.DescriptorProto.Instance)
      return Ada_Pretty.Node_Access;

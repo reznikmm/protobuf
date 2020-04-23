@@ -1,7 +1,6 @@
 with Compiler.Contexts;
 
 with Google_Protobuf.FieldDescriptorProto;
-with Google_Protobuf.DescriptorProto;
 
 with Ada_Pretty;
 
@@ -12,11 +11,6 @@ package Compiler.FieldDescriptorProto is
    function Dependency
      (Self : Google_Protobuf.FieldDescriptorProto.Instance)
       return Compiler.Contexts.String_Sets.Set;
-
-   function Public_Spec
-     (Self    : Google_Protobuf.FieldDescriptorProto.Instance;
-      Message : Google_Protobuf.DescriptorProto.Instance)
-     return Ada_Pretty.Node_Access;
 
    function Component
      (Self : Google_Protobuf.FieldDescriptorProto.Instance)

@@ -14,7 +14,11 @@ package Compiler.FileDescriptorProto is
      (Self : Google_Protobuf.FileDescriptorProto.Instance)
       return League.Strings.Universal_String;
 
-   function File_Text
+   function Specification_Text
+     (Self : Google_Protobuf.FileDescriptorProto.Instance)
+      return League.Strings.Universal_String;
+
+   function Body_Text
      (Self : Google_Protobuf.FileDescriptorProto.Instance)
       return League.Strings.Universal_String;
 

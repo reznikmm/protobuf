@@ -47,19 +47,30 @@ begin
            .FileDescriptorProto_Access :=
              Compiler.Contexts.Find_FileDescriptorProto (Name);
 
-         File : Google_Protobuf.Compiler.CodeGeneratorResponse.File.Instance
-           renames Result.Add_File.all;
+         File : Google_Protobuf.Compiler.CodeGeneratorResponse.File
+           .File_Access;
       begin
          Ada.Text_IO.Put_Line (Name);
 --           Compiler.Contexts.Done.Clear;
 --           Compiler.Contexts.In_Progress.Clear;
 
+         File := Result.Add_File;
          File.Set_Name
            (Compiler.FileDescriptorProto.File_Name
-              (Proto.all).To_UTF_8_String);
+              (Proto.all).To_UTF_8_String & ".ads");
 
          File.Set_Content
-           (Compiler.FileDescriptorProto.File_Text
+           (Compiler.FileDescriptorProto.Specification_Text
+              (Proto.all).To_UTF_8_String);
+
+         File := Result.Add_File;
+
+         File.Set_Name
+           (Compiler.FileDescriptorProto.File_Name
+              (Proto.all).To_UTF_8_String & ".adb");
+
+         File.Set_Content
+           (Compiler.FileDescriptorProto.Body_Text
               (Proto.all).To_UTF_8_String);
       end;
    end loop;

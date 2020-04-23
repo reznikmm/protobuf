@@ -118,6 +118,50 @@ package body Compiler.FileDescriptorProto is
       end loop;
    end Add_Message_To_Order;
 
+   ---------------
+   -- Body_Text --
+   ---------------
+
+   function Body_Text
+     (Self : Google_Protobuf.FileDescriptorProto.Instance)
+      return League.Strings.Universal_String
+   is
+
+      function Get_Subprograms return Ada_Pretty.Node_Access;
+
+      --------------------
+      -- Get_Subprograms --
+      --------------------
+
+      function Get_Subprograms return Ada_Pretty.Node_Access is
+         Next   : Ada_Pretty.Node_Access;
+         Result : Ada_Pretty.Node_Access;
+      begin
+         for Item of Messages.List loop
+            Next := Compiler.DescriptorProto.Subprograms (Item.all);
+            Result := F.New_List (Result, Next);
+         end loop;
+
+         return Result;
+      end Get_Subprograms;
+
+      Result : League.Strings.Universal_String;
+
+      Name   : constant Ada_Pretty.Node_Access :=
+        F.New_Selected_Name (Package_Name (Self));
+
+      Root   : constant Ada_Pretty.Node_Access :=
+        F.New_Package_Body (Name, Get_Subprograms);
+      Unit   : constant Ada_Pretty.Node_Access :=
+        F.New_Compilation_Unit
+          (Root,
+           Clauses => F.New_With
+             (F.New_Selected_Name (+"Ada.Unchecked_Deallocation")));
+   begin
+      Result := F.To_Text (Unit).Join (Ada.Characters.Wide_Wide_Latin_1.LF);
+      return Result;
+   end Body_Text;
+
    ---------------------------
    -- Compute_Message_Order --
    ---------------------------
@@ -196,10 +240,9 @@ package body Compiler.FileDescriptorProto is
               Value.Split ('.');
          begin
             Result := List.Join ('-');
-            Result.Append (".ads");
          end;
       else
-         Result.Append ("output.ads");
+         Result.Append ("output");
       end if;
 
       return Result;
@@ -209,7 +252,7 @@ package body Compiler.FileDescriptorProto is
    -- File_Text --
    ---------------
 
-   function File_Text
+   function Specification_Text
      (Self : Google_Protobuf.FileDescriptorProto.Instance)
       return League.Strings.Universal_String
    is
@@ -290,7 +333,7 @@ package body Compiler.FileDescriptorProto is
    begin
       Result := F.To_Text (Unit).Join (Ada.Characters.Wide_Wide_Latin_1.LF);
       return Result;
-   end File_Text;
+   end Specification_Text;
 
    ----------
    -- Less --
