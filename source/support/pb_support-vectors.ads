@@ -23,7 +23,7 @@ private
 
    type Vector is new Ada.Finalization.Controlled with record
       Data   : Element_Array_Access;
-      Length : Natural;
+      Length : Natural := 0;
    end record;
 
    overriding procedure Adjust (Self : in out Vector);

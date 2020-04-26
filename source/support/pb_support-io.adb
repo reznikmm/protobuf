@@ -65,7 +65,7 @@ package body PB_Support.IO is
                     Parent => Stream);
             begin
                while Stop.Left > 0 loop
-                  Read (Stop'Access, Encoding, Item);
+                  Read (Stop'Unchecked_Access, Encoding, Item);
                   Vectors.Append (Value, Item);
                end loop;
             end;
@@ -98,7 +98,7 @@ package body PB_Support.IO is
             Parent => Stream);
       begin
          pragma Assert (Encoding = Length_Delimited);
-         Element'Read (Stop'Access, Value);
+         Element'Read (Stop'Unchecked_Access, Value);
       end Read;
 
       -----------------
@@ -110,21 +110,10 @@ package body PB_Support.IO is
          Encoding : Wire_Type;
          Value    : in out Vector)
       is
-         Stop : aliased Stop_Stream :=
-           (Ada.Streams.Root_Stream_Type with
-            Left   => Read_Length (Stream),
-            Parent => Stream);
+         Item : Element;
       begin
-         pragma Assert (Encoding = Length_Delimited);
-
-         while Stop.Left > 0 loop
-            declare
-               Item : Element;
-            begin
-               Read (Stop'Access, Encoding, Item);
-               Append (Value, Item);
-            end;
-         end loop;
+         Read (Stream, Encoding, Item);
+         Append (Value, Item);
       end Read_Vector;
 
    end Message_IO;
@@ -294,7 +283,7 @@ package body PB_Support.IO is
       Last  : Ada.Streams.Stream_Element_Count;
       Data  : Ada.Streams.Stream_Element_Array (1 .. 1);
       Item  : Ada.Streams.Stream_Element;
-      Shift : Natural := 5;
+      Shift : Natural := 4;  --  7 bits/item - 3 bit for wire type
       Field : Interfaces.Unsigned_32;
    begin
       Stream.Read (Data, Last);
@@ -389,19 +378,9 @@ package body PB_Support.IO is
    is
       Item : League.Strings.Universal_String;
    begin
-      pragma Assert (Encoding = Length_Delimited);
-
-      declare
-         Stop : aliased Stop_Stream :=
-           (Ada.Streams.Root_Stream_Type with
-            Left   => Read_Length (Stream),
-            Parent => Stream);
-      begin
-         while Stop.Left > 0 loop
-            Read_Universal_String (Stop'Access, Length_Delimited, Item);
-            Value.Append (Item);
-         end loop;
-      end;
+      --  FIXME: For now, unpacked vector only
+      Read_Universal_String (Stream, Encoding, Item);
+      Value.Append (Item);
    end Read_Universal_String_Vector;
 
    ----------------------
