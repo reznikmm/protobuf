@@ -27,6 +27,10 @@ package body Compiler.DescriptorProto is
       Result.Insert (+"Ada.Finalization");
       Result.Insert (+"Ada.Streams");
 
+      if Self.Enum_Type_Size > 0 then
+         Result.Include (+"PB_Support.Vectors");
+      end if;
+
       for J in 0 .. Self.Field_Size - 1 loop
          Result.Union
            (Compiler.FieldDescriptorProto.Dependency (Self.Get_Field (J).all));
@@ -541,19 +545,17 @@ package body Compiler.DescriptorProto is
                        F.New_Selected_Name (+"Self.Data'Last"))),
                  List      => F.New_Assignment
                    (F.New_Selected_Name (+"Self.Data"),
-                    F.New_Infix
-                      (Operator => +"new",
-                       Left     => F.New_Apply
-                         (F.New_Selected_Name (My_Name & "_Array'"),
-                          F.New_List
-                            (F.New_Selected_Name (+"Self.Data.all"),
-                             F.New_Infix
-                               (+"&",
-                                F.New_Apply
-                                  (F.New_Selected_Name (My_Name & "_Array'"),
-                                   F.New_Selected_Name
-                                     (+"1 .. Self.Length => <>"))
-                               ))))))),
+                    F.New_Qualified_Expession
+                      (F.New_Selected_Name ("new " & My_Name & "_Array"),
+                       F.New_List
+                         (F.New_Selected_Name (+"Self.Data.all"),
+                          F.New_Infix
+                            (+"&",
+                             F.New_Qualified_Expession
+                               (F.New_Selected_Name (My_Name & "_Array"),
+                                F.New_Selected_Name
+                                  (+"1 .. Self.Length => <>"))
+                            )))))),
             F.New_Assignment
               (F.New_Selected_Name (+"Self.Length"),
                F.New_List
@@ -578,17 +580,15 @@ package body Compiler.DescriptorProto is
            (Condition  => F.New_Name (+"Self.Length > 0"),
             Then_Path  => F.New_Assignment
               (F.New_Selected_Name (+"Self.Data"),
-               F.New_Infix
-                 (+"new",
+               F.New_Qualified_Expession
+                 (F.New_Name ("new " & My_Name & "_Array"),
                   F.New_Apply
-                    (F.New_Name (My_Name & "_Array'"),
-                     F.New_Apply
-                       (F.New_Selected_Name (+"Self.Data"),
-                        F.New_List
-                          (F.New_Literal (1),
-                           F.New_Infix
-                             (+"..",
-                              F.New_Selected_Name (+"Self.Length")))))))));
+                    (F.New_Selected_Name (+"Self.Data"),
+                     F.New_List
+                       (F.New_Literal (1),
+                        F.New_Infix
+                          (+"..",
+                           F.New_Selected_Name (+"Self.Length"))))))));
 
       Final := F.New_Subprogram_Body
         (F.New_Subprogram_Specification

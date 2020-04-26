@@ -292,8 +292,6 @@ package body Compiler.FileDescriptorProto is
       My_Name     : constant League.Strings.Universal_String :=
         Package_Name (Self);
    begin
-      Set.Include (+"PB_Support.Vectors");
-
       for J in 0 .. Self.Dependency_Size - 1 loop
          File := Compiler.Contexts.Find_FileDescriptorProto
            (Self.Get_Dependency (J));
