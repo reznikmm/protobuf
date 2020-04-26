@@ -70,6 +70,7 @@ package body Compiler.EnumDescriptorProto is
 
       Name   : constant League.Strings.Universal_String := Type_Name (Self);
       Result : Ada_Pretty.Node_Access;
+      Clause : Ada_Pretty.Node_Access;
       Item   : Ada_Pretty.Node_Access;
    begin
       for J in 0 .. Self.Value_Size - 1 loop
@@ -81,8 +82,21 @@ package body Compiler.EnumDescriptorProto is
             Name := League.Strings.From_UTF_8_String (Next.Get_Name);
             Item := F.New_Argument_Association (F.New_Name (Name));
             Result := F.New_List (Result, Item);
+
+            Clause := F.New_List
+              (Clause,
+               F.New_Argument_Association
+                 (Choice => F.New_Name (Name),
+                  Value  => F.New_Literal
+                    (Natural (Self.Get_Value (J).Get_Number))));
+
          end;
       end loop;
+
+      Clause := F.New_Statement
+        (F.New_Apply
+          (F.New_Name ("for " & Name & " use"),
+           Clause));
 
       Result := F.New_Type
         (Name       => F.New_Name (Name),
@@ -93,7 +107,7 @@ package body Compiler.EnumDescriptorProto is
          Template    => F.New_Selected_Name (+"PB_Support.Vectors"),
            Actual_Part => F.New_Name (Name));
 
-      Result := F.New_List (Result, Item);
+      Result := F.New_List ((Result, Clause, Item));
 
       return Result;
    end Public_Spec;
