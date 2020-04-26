@@ -21,6 +21,43 @@ package body Compiler.EnumDescriptorProto is
       return League.Strings.From_UTF_8_String (First.Get_Name);
    end Default;
 
+   ---------------
+   -- Max_Value --
+   ---------------
+
+   function Max_Value
+     (Self : Google_Protobuf.EnumDescriptorProto.Instance) return Integer
+   is
+      Result : Integer := Integer (Self.Get_Value (0).Get_Number);
+      Next   : Integer;
+   begin
+      for J in 1 .. Self.Value_Size - 1 loop
+         Next := Integer (Self.Get_Value (J).Get_Number);
+         Result := Integer'Max (Result, Next);
+      end loop;
+
+      return Result;
+   end Max_Value;
+
+   ---------------
+   -- Min_Value --
+   ---------------
+
+   function Min_Value
+     (Self : Google_Protobuf.EnumDescriptorProto.Instance)
+      return Integer
+   is
+      Result : Integer := Integer (Self.Get_Value (0).Get_Number);
+      Next   : Integer;
+   begin
+      for J in 1 .. Self.Value_Size - 1 loop
+         Next := Integer (Self.Get_Value (J).Get_Number);
+         Result := Integer'Min (Result, Next);
+      end loop;
+
+      return Result;
+   end Min_Value;
+
    -----------------
    -- Public_Spec --
    -----------------

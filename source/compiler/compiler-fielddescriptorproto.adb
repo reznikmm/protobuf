@@ -1,5 +1,7 @@
 with Compiler.Tools;
 
+with Google_Protobuf.DescriptorProto;
+
 with Ada.Wide_Wide_Text_IO;
 
 package body Compiler.FieldDescriptorProto is
@@ -16,9 +18,17 @@ package body Compiler.FieldDescriptorProto is
    function Default (X : Google_Protobuf.FieldDescriptorProto.TypeX)
      return League.Strings.Universal_String;
 
+   function Read_Name
+     (Self : Google_Protobuf.FieldDescriptorProto.Instance)
+      return League.Strings.Universal_String;
+
    function Default
      (Self : Google_Protobuf.FieldDescriptorProto.Instance)
       return Ada_Pretty.Node_Access;
+
+   function Is_Message
+     (Self : Google_Protobuf.FieldDescriptorProto.Instance)
+      return Boolean;
 
    ---------------
    -- Component --
@@ -31,10 +41,11 @@ package body Compiler.FieldDescriptorProto is
       use type Compiler.Contexts.Ada_Type;
       Result : Ada_Pretty.Node_Access;
       Name : constant League.Strings.Universal_String := Field_Name (Self);
+      Is_Vector : constant Boolean := Is_Repeated (Self);
    begin
       Result := F.New_Variable
         (Name            => F.New_Name (Name),
-         Type_Definition => F.New_Selected_Name (+Type_Name (Self)),
+         Type_Definition => F.New_Selected_Name (+Type_Name (Self, Is_Vector)),
          Initialization  => Default (Self));
 
       return Result;
@@ -64,7 +75,7 @@ package body Compiler.FieldDescriptorProto is
                     Compiler.Contexts.Type_Map (Value);
                begin
                   if not Element.Default.Is_Empty then
-                     Full := Element.Package_Name;
+                     Full := Element.T.Package_Name;
                      Full.Append (".");
                      Full.Append (Element.Default);
                      Result := F.New_Selected_Name (Full);
@@ -116,8 +127,9 @@ package body Compiler.FieldDescriptorProto is
       return Compiler.Contexts.String_Sets.Set
    is
       Result : Compiler.Contexts.String_Sets.Set;
+      Is_Vector : constant Boolean := Is_Repeated (Self);
       My_Pkg : constant League.Strings.Universal_String :=
-        Type_Name (Self).Package_Name;
+        Type_Name (Self, Is_Vector).Package_Name;
    begin
       if not My_Pkg.Is_Empty then
          Result.Insert (My_Pkg);
@@ -177,6 +189,19 @@ package body Compiler.FieldDescriptorProto is
       end case;
    end Default;
 
+   --------------------
+   -- Get_Used_Types --
+   --------------------
+
+   procedure Get_Used_Types
+     (Self   : Google_Protobuf.FieldDescriptorProto.Instance;
+      Result : in out Compiler.Contexts.String_Sets.Set)
+   is
+      Value : constant League.Strings.Universal_String := PB_Type_Name (Self);
+   begin
+      Result.Include (Value);
+   end Get_Used_Types;
+
    ---------
    -- Map --
    ---------
@@ -208,6 +233,22 @@ package body Compiler.FieldDescriptorProto is
          when TYPE_SINT64   => return +"Interfaces.Integer_64";
       end case;
    end Map;
+
+   ----------------
+   -- Is_Message --
+   ----------------
+
+   function Is_Message
+     (Self : Google_Protobuf.FieldDescriptorProto.Instance)
+      return Boolean
+   is
+      use type Google_Protobuf.DescriptorProto.DescriptorProto_Access;
+      PB_Type : constant League.Strings.Universal_String :=
+        PB_Type_Name (Self);
+   begin
+      return Compiler.Contexts.Type_Map.Contains (PB_Type)
+        and then Compiler.Contexts.Type_Map (PB_Type).Message /= null;
+   end Is_Message;
 
    -----------------
    -- Is_Optional --
@@ -246,11 +287,93 @@ package body Compiler.FieldDescriptorProto is
    end Is_Repeated;
 
    ---------------
+   -- Read_Case --
+   ---------------
+
+   function Read_Case
+     (Self : Google_Protobuf.FieldDescriptorProto.Instance)
+      return Ada_Pretty.Node_Access
+   is
+      use type League.Strings.Universal_String;
+      My_Name : League.Strings.Universal_String := Field_Name (Self);
+      Result  : Ada_Pretty.Node_Access;
+      Field   : Integer;
+   begin
+      Field := Integer (Self.Get_Number);
+      My_Name.Prepend ("Value.");
+
+      if Is_Optional (Self) and Is_Message (Self) then
+         Result := F.New_If
+           (Condition  => F.New_Infix
+              (Operator => +"not",
+               Left     => F.New_Selected_Name
+                (My_Name & ".Is_Set")),
+            Then_Path  => F.New_Assignment
+              (Left  => F.New_Selected_Name (My_Name),
+               Right => F.New_Parentheses
+                 (F.New_List
+                      (F.New_Argument_Association
+                           (F.New_Name (+"True")),
+                       F.New_Argument_Association
+                         (F.New_Name (+"others => <>"))))));
+
+         My_Name.Append (".Value");
+      end if;
+
+      Result := F.New_List
+        (Result,
+         F.New_Statement
+           (F.New_Apply
+             (Prefix    => F.New_Selected_Name
+                  (Read_Name (Self)),
+              Arguments => F.New_List
+                ((F.New_Argument_Association (F.New_Name (+"Stream")),
+                  F.New_Argument_Association
+                    (F.New_Selected_Name (+"Key.Encoding")),
+                  F.New_Argument_Association
+                    (F.New_Selected_Name (My_Name)))))));
+
+      Result := F.New_Case_Path
+        (Choice => F.New_Literal (Field),
+         List   => Result);
+      return Result;
+   end Read_Case;
+
+   ---------------
+   -- Read_Name --
+   ---------------
+
+   function Read_Name
+     (Self : Google_Protobuf.FieldDescriptorProto.Instance)
+      return League.Strings.Universal_String
+   is
+      use type League.Strings.Universal_String;
+      Result : League.Strings.Universal_String := +"PB_Support.IO.Read_";
+      Tp  : constant Compiler.Contexts.Ada_Type := Type_Name (Self, False);
+      PB_Type : constant League.Strings.Universal_String :=
+        PB_Type_Name (Self);
+   begin
+      if Compiler.Contexts.Type_Map.Contains (PB_Type) then
+         Result := Compiler.Contexts.Type_Map (PB_Type).T.Type_Name;
+         Result.Append ("_IO.Read");
+      else
+         Result.Append (Tp.Type_Name);
+      end if;
+
+      if Is_Repeated (Self) then
+         Result.Append ("_Vector");
+      end if;
+
+      return Result;
+   end Read_Name;
+
+   ---------------
    -- Type_Name --
    ---------------
 
    function Type_Name
-     (Self : Google_Protobuf.FieldDescriptorProto.Instance)
+     (Self        : Google_Protobuf.FieldDescriptorProto.Instance;
+      Is_Repeated : Boolean)
       return Compiler.Contexts.Ada_Type
    is
       use type League.Strings.Universal_String;
@@ -269,9 +392,9 @@ package body Compiler.FieldDescriptorProto is
                   Element : constant Compiler.Contexts.Ada_Type_Info :=
                     Compiler.Contexts.Type_Map (Value);
                begin
-                  Result.Package_Name := Element.Package_Name;
-                  Result.Type_Name := Element.Type_Name;
-                  if Is_Repeated (Self) then
+                  Result := Element.T;
+
+                  if Is_Repeated then
                      Result.Type_Name.Append ("_Vector");
                   elsif Is_Optional (Self)
                     and (not Self.Has_Type_Pb or TypeX /= TYPE_ENUM)
@@ -296,7 +419,7 @@ package body Compiler.FieldDescriptorProto is
                Result.Type_Name := Text;
             end if;
 
-            if Is_Repeated (Self) then
+            if Is_Repeated then
                if TypeX = TYPE_STRING then
                   Result.Package_Name := +"League.String_Vectors";
                   Result.Type_Name := +"Universal_String_Vector";

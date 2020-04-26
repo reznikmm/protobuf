@@ -7,10 +7,12 @@ with Ada.Streams.Stream_IO;
 with Ada.Text_IO;
 with Ada.Wide_Wide_Text_IO;
 
+with League.Strings;
 with Compiler.Contexts;
 with Compiler.FileDescriptorProto;
 
 procedure Main is
+   use type Compiler.Contexts.Ada_Type;
    Input  : Ada.Streams.Stream_IO.File_Type;
    Output : Ada.Streams.Stream_IO.File_Type;
    Result : Google_Protobuf.Compiler.CodeGeneratorResponse.Instance;
@@ -30,12 +32,8 @@ begin
         (Compiler.Contexts.String_Hash_Maps.Key (J).To_Wide_Wide_String);
       Ada.Wide_Wide_Text_IO.Put (" => ");
       Ada.Wide_Wide_Text_IO.Put
-        (Compiler.Contexts.String_Hash_Maps.Element (J)
-         .Package_Name.To_Wide_Wide_String);
-      Ada.Wide_Wide_Text_IO.Put (".");
-      Ada.Wide_Wide_Text_IO.Put_Line
-        (Compiler.Contexts.String_Hash_Maps.Element (J)
-         .Type_Name.To_Wide_Wide_String);
+        (League.Strings.To_Wide_Wide_String
+           (+Compiler.Contexts.String_Hash_Maps.Element (J).T));
    end loop;
 
    for J in 1 .. Compiler.Contexts.X.File_To_Generate_Size loop

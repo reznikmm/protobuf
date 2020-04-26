@@ -62,6 +62,10 @@ package body Compiler.FileDescriptorProto is
      (Self         : Google_Protobuf.DescriptorProto.DescriptorProto_Access;
       Package_Name : League.Strings.Universal_String);
 
+   procedure Get_Used_Types
+     (Self   : Google_Protobuf.FileDescriptorProto.Instance;
+      Result : out Compiler.Contexts.String_Sets.Set);
+
    --------------------------
    -- Add_Message_To_Order --
    --------------------------
@@ -94,7 +98,7 @@ package body Compiler.FileDescriptorProto is
             if Compiler.Contexts.Type_Map.Contains (Msg) then
                Next := Compiler.Contexts.Type_Map (Msg);
 
-               if Next.Package_Name = Package_Name
+               if Next.T.Package_Name = Package_Name
                  and then Next.Message /= Self
                  and then Next.Message /= null
                then
@@ -128,6 +132,87 @@ package body Compiler.FileDescriptorProto is
    is
 
       function Get_Subprograms return Ada_Pretty.Node_Access;
+      function Get_Instances return Ada_Pretty.Node_Access;
+
+      -------------------
+      -- Get_Instances --
+      -------------------
+
+      function Get_Instances return Ada_Pretty.Node_Access is
+         use type
+           Google_Protobuf.EnumDescriptorProto.EnumDescriptorProto_Access;
+         use type League.Strings.Universal_String;
+         use type Compiler.Contexts.Ada_Type;
+         Info   : Compiler.Contexts.Ada_Type_Info;
+         Types  : Compiler.Contexts.String_Sets.Set;
+         Result : Ada_Pretty.Node_Access;
+         Min    : Integer;
+         Max    : Integer;
+      begin
+         Get_Used_Types (Self, Types);
+         for J of Types loop
+            if Compiler.Contexts.Type_Map.Contains (J) then
+               Info := Compiler.Contexts.Type_Map (J);
+
+               if Info.Enum /= null then
+                  Min := Compiler.EnumDescriptorProto.Min_Value
+                    (Info.Enum.all);
+                  Max := Compiler.EnumDescriptorProto.Max_Value
+                    (Info.Enum.all);
+
+                  Result := F.New_List
+                    (Result,
+                     F.New_Type
+                       (Name          => F.New_Name
+                          ("Integer_" & Info.T.Type_Name),
+                        Definition    => F.New_Infix
+                          (+"range",
+                           F.New_List
+                             (F.New_Literal (Min),
+                              F.New_Infix
+                                (+"..",
+                                 F.New_Literal (Max)))),
+                        Aspects       => F.New_Argument_Association
+                          (Choice => F.New_Name (+"Size"),
+                           Value  => F.New_Selected_Name
+                             (+Info.T & "'Size"))));
+
+                  Result := F.New_List
+                    (Result,
+                     F.New_Package_Instantiation
+                       (Name        => F.New_Name (Info.T.Type_Name & "_IO"),
+                        Template    => F.New_Selected_Name
+                          (+"PB_Support.IO.Enum_IO"),
+                        Actual_Part => F.New_List
+                          ((F.New_Argument_Association
+                              (F.New_Selected_Name (+Info.T)),
+                            F.New_Name
+                              ("Integer_" & Info.T.Type_Name),
+                            F.New_Argument_Association
+                              (F.New_Selected_Name
+                                (+Info.T & "_Vectors"))))));
+               else
+                  Result := F.New_List
+                    (Result,
+                     F.New_Package_Instantiation
+                       (Name        => F.New_Name (Info.T.Type_Name & "_IO"),
+                        Template    => F.New_Selected_Name
+                          (+"PB_Support.IO.Message_IO"),
+                        Actual_Part => F.New_List
+                          ((F.New_Argument_Association
+                               (F.New_Selected_Name (+Info.T)),
+                            F.New_Argument_Association
+                             (F.New_Selected_Name
+                               (+Info.T & "_Vector")),
+                            F.New_Argument_Association
+                             (F.New_Selected_Name
+                               (Info.T.Package_Name & ".Append"))))));
+               end if;
+            end if;
+         end loop;
+
+         return Result;
+      end Get_Instances;
 
       --------------------
       -- Get_Subprograms --
@@ -151,12 +236,22 @@ package body Compiler.FileDescriptorProto is
         F.New_Selected_Name (Package_Name (Self));
 
       Root   : constant Ada_Pretty.Node_Access :=
-        F.New_Package_Body (Name, Get_Subprograms);
+        F.New_Package_Body
+          (Name,
+           F.New_List
+             (Get_Instances, Get_Subprograms));
+
+      With_Clauses : constant Ada_Pretty.Node_Access :=
+        F.New_List
+          (F.New_With
+             (F.New_Selected_Name (+"Ada.Unchecked_Deallocation")),
+           F.New_With
+             (F.New_Selected_Name (+"PB_Support.IO")));
+
       Unit   : constant Ada_Pretty.Node_Access :=
         F.New_Compilation_Unit
           (Root,
-           Clauses => F.New_With
-             (F.New_Selected_Name (+"Ada.Unchecked_Deallocation")));
+           Clauses => With_Clauses);
    begin
       Result := F.To_Text (Unit).Join (Ada.Characters.Wide_Wide_Latin_1.LF);
       return Result;
@@ -334,6 +429,22 @@ package body Compiler.FileDescriptorProto is
       Result := F.To_Text (Unit).Join (Ada.Characters.Wide_Wide_Latin_1.LF);
       return Result;
    end Specification_Text;
+
+   --------------------
+   -- Get_Used_Types --
+   --------------------
+
+   procedure Get_Used_Types
+     (Self   : Google_Protobuf.FileDescriptorProto.Instance;
+      Result : out Compiler.Contexts.String_Sets.Set)
+   is
+      Item : Google_Protobuf.DescriptorProto.DescriptorProto_Access;
+   begin
+      for J in 0 .. Self.Message_Type_Size - 1 loop
+         Item := Self.Get_Message_Type (J);
+         Compiler.DescriptorProto.Get_Used_Types (Item.all, Result);
+      end loop;
+   end Get_Used_Types;
 
    ----------
    -- Less --

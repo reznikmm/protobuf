@@ -14,6 +14,10 @@ package body Compiler.DescriptorProto is
 
    F : Ada_Pretty.Factory renames Compiler.Contexts.F;
 
+   function Read_Subprogram
+     (Self : Google_Protobuf.DescriptorProto.Instance)
+     return Ada_Pretty.Node_Access;
+
    function Dependency
      (Self : Google_Protobuf.DescriptorProto.Instance)
       return Compiler.Contexts.String_Sets.Set
@@ -66,6 +70,25 @@ package body Compiler.DescriptorProto is
       return Result;
    end Enum_Types;
 
+   --------------------
+   -- Get_Used_Types --
+   --------------------
+
+   procedure Get_Used_Types
+     (Self   : Google_Protobuf.DescriptorProto.Instance;
+      Result : in out Compiler.Contexts.String_Sets.Set) is
+   begin
+      for J in 0 .. Self.Field_Size - 1 loop
+         Compiler.FieldDescriptorProto.Get_Used_Types
+           (Self.Get_Field (J).all, Result);
+      end loop;
+
+      for J in 0 .. Self.Nested_Type_Size - 1 loop
+         Get_Used_Types (Self.Get_Nested_Type (J).all, Result);
+      end loop;
+
+   end Get_Used_Types;
+
    -----------------------
    -- Populate_Type_Map --
    -----------------------
@@ -87,10 +110,10 @@ package body Compiler.DescriptorProto is
       end if;
 
       Compiler.Contexts.Type_Map.Insert
-        (Key, (Package_Name => Ada_Package,
-               Type_Name    => Name,
-               Default      => League.Strings.Empty_Universal_String,
-               Message      => Self));
+        (Key, (T       => (Package_Name => Ada_Package, Type_Name => Name),
+               Default => League.Strings.Empty_Universal_String,
+               Message => Self,
+               Enum    => null));
 
       for J in 0 .. Self.Nested_Type_Size - 1 loop
          Populate_Type_Map
@@ -104,12 +127,13 @@ package body Compiler.DescriptorProto is
            (Key & "." &
               Compiler.EnumDescriptorProto.Proto_Type_Name
                 (Self.Get_Enum_Type (J).all),
-            (Package_Name => Ada_Package,
-             Type_Name    => Compiler.EnumDescriptorProto.Type_Name
+            ((Package_Name => Ada_Package,
+              Type_Name    => Compiler.EnumDescriptorProto.Type_Name
+               (Self.Get_Enum_Type (J).all)),
+             Default => Compiler.EnumDescriptorProto.Default
                (Self.Get_Enum_Type (J).all),
-             Default      => Compiler.EnumDescriptorProto.Default
-               (Self.Get_Enum_Type (J).all),
-             Message      => null));
+             Message => null,
+             Enum    => Self.Get_Enum_Type (J)));
       end loop;
    end Populate_Type_Map;
 
@@ -335,6 +359,73 @@ package body Compiler.DescriptorProto is
       return Result;
    end Private_Spec;
 
+   ---------------------
+   -- Read_Subprogram --
+   ---------------------
+
+   function Read_Subprogram
+     (Self : Google_Protobuf.DescriptorProto.Instance)
+      return Ada_Pretty.Node_Access
+   is
+      use type League.Strings.Universal_String;
+      My_Name : constant League.Strings.Universal_String := Type_Name (Self);
+      Key : Ada_Pretty.Node_Access;
+      Result : Ada_Pretty.Node_Access;
+      Field : Ada_Pretty.Node_Access;
+   begin
+      Key := F.New_Variable
+        (Name            => F.New_Name (+"Key"),
+         Type_Definition => F.New_Selected_Name (+"PB_Support.IO.Key"),
+         Is_Aliased      => True);
+
+      for J in 0 .. Self.Field_Size - 1 loop
+         Field := Compiler.FieldDescriptorProto.Read_Case
+           (Self.Get_Field (J).all);
+         Result := F.New_List (Result, Field);
+      end loop;
+
+      Result := F.New_List
+        (Result,
+         F.New_Case_Path
+           (Choice => F.New_Name (+"others"),
+            List   => F.New_Statement
+              (F.New_Apply
+                 (Prefix    => F.New_Selected_Name
+                    (+"PB_Support.IO.Unknown_Field"),
+                  Arguments => F.New_List
+                    (F.New_Argument_Association (F.New_Name (+"Stream")),
+                     F.New_Argument_Association
+                       (F.New_Selected_Name (+"Key.Encoding")))))));
+
+      Result := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Name          => F.New_Name ("Read_" & My_Name),
+            Parameters    => F.New_List
+              (F.New_Parameter
+                   (Name            => F.New_Name (+"Stream"),
+                    Type_Definition => F.New_Selected_Name
+                      (+"access Ada.Streams.Root_Stream_Type'Class")),
+               F.New_Parameter
+                 (Name            => F.New_Name (+"Value"),
+                  Type_Definition => F.New_Name (My_Name),
+                  Is_Out          => True))),
+         Declarations => Key,
+         Statements   => F.New_Loop
+           (Condition  => F.New_Apply
+                (Prefix    => F.New_Selected_Name
+                     (+"PB_Support.IO.Read_Key"),
+                 Arguments => F.New_List
+                   (F.New_Argument_Association
+                      (F.New_Name (+"Stream")),
+                    F.New_Argument_Association
+                      (F.New_Name (+"Key'Access")))),
+            Statements => F.New_Case
+              (Expression => F.New_Selected_Name (+"Key.Field"),
+               List       => Result)));
+
+      return Result;
+   end Read_Subprogram;
+
    -----------------
    -- Subprograms --
    -----------------
@@ -355,6 +446,8 @@ package body Compiler.DescriptorProto is
       Append : Ada_Pretty.Node_Access;
       Adjust : Ada_Pretty.Node_Access;
       Final  : Ada_Pretty.Node_Access;
+      Read   : Ada_Pretty.Node_Access;
+      Write  : Ada_Pretty.Node_Access;
       Result : Ada_Pretty.Node_Access;
    begin
       V_Name := F.New_Name (My_Name & "_Vector");
@@ -513,8 +606,23 @@ package body Compiler.DescriptorProto is
                  (F.New_Name (+"Free"),
                   F.New_Selected_Name (+"Self.Data")))));
 
+      Read := Read_Subprogram (Self);
+
+      Write := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Name          => F.New_Name ("Write_" & My_Name),
+            Parameters    => F.New_List
+              (F.New_Parameter
+                   (Name            => F.New_Name (+"Stream"),
+                    Type_Definition => F.New_Selected_Name
+                      (+"access Ada.Streams.Root_Stream_Type'Class")),
+               F.New_Parameter
+                   (Name            => F.New_Name (+"Value"),
+                    Type_Definition => F.New_Name (My_Name)))),
+         Statements => F.New_Statement);
+
       Result := F.New_List
-        ((Count, Getter, Clear, Free, Append, Adjust, Final));
+        ((Count, Getter, Clear, Free, Append, Adjust, Final, Read, Write));
 
       return Result;
    end Subprograms;

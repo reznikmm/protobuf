@@ -3,6 +3,7 @@ with Ada.Containers.Ordered_Sets;
 
 with Google_Protobuf.Compiler.CodeGeneratorRequest;
 with Google_Protobuf.DescriptorProto;
+with Google_Protobuf.EnumDescriptorProto;
 with Google_Protobuf.FileDescriptorProto;
 
 with League.Strings.Hash;
@@ -27,10 +28,10 @@ package Compiler.Contexts is
    function "+" (Self : Ada_Type) return League.Strings.Universal_String;
 
    type Ada_Type_Info is record
-      Package_Name : League.Strings.Universal_String;
-      Type_Name    : League.Strings.Universal_String;
-      Default      : League.Strings.Universal_String;
-      Message      : Google_Protobuf.DescriptorProto.DescriptorProto_Access;
+      T       : Ada_Type;
+      Default : League.Strings.Universal_String;
+      Message : Google_Protobuf.DescriptorProto.DescriptorProto_Access;
+      Enum    : Google_Protobuf.EnumDescriptorProto.EnumDescriptorProto_Access;
    end record;
 
    package String_Hash_Maps is new Ada.Containers.Hashed_Maps

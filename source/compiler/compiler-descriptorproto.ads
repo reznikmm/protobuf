@@ -36,4 +36,8 @@ package Compiler.DescriptorProto is
      (Self : Google_Protobuf.DescriptorProto.Instance)
       return League.Strings.Universal_String;
 
+   procedure Get_Used_Types
+     (Self   : Google_Protobuf.DescriptorProto.Instance;
+      Result : in out Compiler.Contexts.String_Sets.Set);
+
 end Compiler.DescriptorProto;

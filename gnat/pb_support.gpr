@@ -1,0 +1,12 @@
+with "matreshka_league.gpr";
+
+project PB_Support is
+   for Source_Dirs use ("../source/support");
+   for Object_Dir use "../.obj";
+
+   package Compiler is
+      for Default_Switches ("ada") use
+        ("-gnat12", "-gnatW8", "-g", "-gnatVa", "-gnatwa", "-gnaty", "-gnata");
+   end Compiler;
+
+end PB_Support;
