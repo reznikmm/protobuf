@@ -1,5 +1,7 @@
 # Object file
 *.o
+.objs
 
 # Ada Library Information
 *.ali
+.libs
