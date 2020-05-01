@@ -45,4 +45,12 @@ package Compiler.Descriptors is
      (Self : Google.Protobuf.Descriptor_Proto)
       return Ada_Pretty.Node_Access;
    --  Return list of enumetation type declared inside a message
+
+   procedure Public_Spec
+     (Self   : Google.Protobuf.Descriptor_Proto;
+      Pkg    : League.Strings.Universal_String;
+      Result : out Ada_Pretty.Node_Access;
+      Again  : in out Boolean;
+      Done   : in out Compiler.Context.String_Sets.Set);
+
 end Compiler.Descriptors;

@@ -26,6 +26,8 @@ package body Compiler.Field_Descriptors is
 
    use all type Google.Protobuf.Label;
 
+   F : Ada_Pretty.Factory renames Compiler.Context.Factory;
+
    function "+" (Text : Wide_Wide_String)
      return League.Strings.Universal_String
        renames League.Strings.To_Universal_String;
@@ -34,8 +36,117 @@ package body Compiler.Field_Descriptors is
      (Self        : Google.Protobuf.Field_Descriptor_Proto;
       Is_Repeated : Boolean) return Compiler.Context.Ada_Type_Name;
 
+   function Default (X : Google.Protobuf.PB_Type)
+     return League.Strings.Universal_String;
+   --  Default value for a predefined type
+
+   function Default (Self : Google.Protobuf.Field_Descriptor_Proto)
+     return Ada_Pretty.Node_Access;
+   --  Default value for a field
+
    function Map (X : Google.Protobuf.PB_Type)
      return League.Strings.Universal_String;
+
+   ---------------
+   -- Component --
+   ---------------
+
+   function Component
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      use type Compiler.Context.Ada_Type_Name;
+      Result : Ada_Pretty.Node_Access;
+      Name : constant League.Strings.Universal_String :=
+        Compiler.Context.To_Ada_Name (Self.Name);
+      Is_Vector : constant Boolean := Self.Label = LABEL_REPEATED;
+   begin
+      Result := F.New_Variable
+        (Name            => F.New_Name (Name),
+         Type_Definition => F.New_Selected_Name (+Type_Name (Self, Is_Vector)),
+         Initialization  => Default (Self));
+
+      return Result;
+   end Component;
+
+   -------------
+   -- Default --
+   -------------
+
+   function Default (X : Google.Protobuf.PB_Type)
+     return League.Strings.Universal_String
+   is
+      use all type Google.Protobuf.PB_Type;
+   begin
+      case X is
+         when TYPE_DOUBLE   => return +"0.0";
+         when TYPE_FLOAT    => return +"0.0";
+         when TYPE_INT64    => return +"0";
+         when TYPE_UINT64   => return +"0";
+         when TYPE_INT32    => return +"0";
+         when TYPE_FIXED64  => return +"0";
+         when TYPE_FIXED32  => return +"0";
+         when TYPE_BOOL     => return +"False";
+         when TYPE_STRING   => return League.Strings.Empty_Universal_String;
+         when TYPE_GROUP    => return League.Strings.Empty_Universal_String;
+         when TYPE_MESSAGE  => return League.Strings.Empty_Universal_String;
+         when TYPE_BYTES    => return League.Strings.Empty_Universal_String;
+         when TYPE_UINT32   => return +"0";
+         when TYPE_ENUM     => return League.Strings.Empty_Universal_String;
+         when TYPE_SFIXED32 => return +"0";
+         when TYPE_SFIXED64 => return +"0";
+         when TYPE_SINT32   => return +"0";
+         when TYPE_SINT64   => return +"0";
+      end case;
+   end Default;
+
+   -------------
+   -- Default --
+   -------------
+
+   function Default
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      Result : Ada_Pretty.Node_Access;
+   begin
+      if Self.Label = LABEL_REPEATED then
+         null;
+      elsif not Self.Type_Name.Is_Empty then
+         declare
+            Value : constant League.Strings.Universal_String := Self.Type_Name;
+         begin
+            if Compiler.Context.Named_Types.Contains (Value) then
+               declare
+                  Full    : League.Strings.Universal_String;
+                  Element : constant Compiler.Context.Named_Type :=
+                    Compiler.Context.Named_Types (Value);
+               begin
+                  if Element.Is_Enumeration then
+                     Full := Element.Ada_Type.Package_Name;
+                     Full.Append (".");
+                     Full.Append (Element.Enum.Default);
+                     Result := F.New_Selected_Name (Full);
+                  end if;
+               end;
+            else
+               raise Constraint_Error with
+                  "Type not found: " & Value.To_UTF_8_String;
+            end if;
+         end;
+      else
+         declare
+            Value : constant League.Strings.Universal_String :=
+              Default (Self.PB_Type);
+         begin
+            if not Value.Is_Empty then
+               Result := F.New_Name (Value);
+            end if;
+         end;
+      end if;
+
+      return Result;
+   end Default;
 
    ----------------
    -- Dependency --

@@ -20,6 +20,8 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
+with Ada_Pretty;
+
 with Google.Protobuf;
 
 with Compiler.Context;
@@ -30,5 +32,9 @@ package Compiler.Field_Descriptors is
      (Self   : Google.Protobuf.Field_Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set);
    --  Append dependency names to Result
+
+   function Component
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return Ada_Pretty.Node_Access;
 
 end Compiler.Field_Descriptors;

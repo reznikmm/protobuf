@@ -184,8 +184,12 @@ package body Compiler.File_Descriptors is
       ----------------
 
       function Get_Public return Ada_Pretty.Node_Access is
+         Pkg : constant League.Strings.Universal_String := Package_Name (Self);
+
          Result : Ada_Pretty.Node_Access;
          Next   : Ada_Pretty.Node_Access;
+         Done   : Compiler.Context.String_Sets.Set;
+         Again  : Boolean := True;
       begin
 
          for J in 1 .. Self.Enum_Type.Length loop
@@ -208,6 +212,24 @@ package body Compiler.File_Descriptors is
                   Result := F.New_List (Result, Next);
                end if;
             end;
+         end loop;
+
+         while Again loop
+            for J in 1 .. Self.Message_Type.Length loop
+               declare
+                  Item : constant Google.Protobuf.Descriptor_Proto :=
+                    Self.Message_Type.Get (J);
+               begin
+                  Again := False;
+
+                  Compiler.Descriptors.Public_Spec
+                    (Item, Pkg, Next, Again, Done);
+
+                  if Next /= null then
+                     Result := F.New_List (Result, Next);
+                  end if;
+               end;
+            end loop;
          end loop;
 
          return Result;
