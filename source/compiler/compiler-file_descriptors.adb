@@ -178,6 +178,22 @@ package body Compiler.File_Descriptors is
       return League.Strings.Universal_String
    is
       function Get_Public return Ada_Pretty.Node_Access;
+      --  Generate public part declaration list
+      function Get_Private return Ada_Pretty.Node_Access;
+      --  Generate private part declaration list
+
+      function Get_Private return Ada_Pretty.Node_Access is
+         Result : Ada_Pretty.Node_Access;
+         Next   : Ada_Pretty.Node_Access;
+      begin
+         for J in 1 .. Self.Message_Type.Length loop
+            Next := Compiler.Descriptors.Private_Spec
+              (Self.Message_Type.Get (J));
+            Result := F.New_List (Result, Next);
+         end loop;
+
+         return Result;
+      end Get_Private;
 
       ----------------
       -- Get_Public --
@@ -215,13 +231,13 @@ package body Compiler.File_Descriptors is
          end loop;
 
          while Again loop
+            Again := False;
+
             for J in 1 .. Self.Message_Type.Length loop
                declare
                   Item : constant Google.Protobuf.Descriptor_Proto :=
                     Self.Message_Type.Get (J);
                begin
-                  Again := False;
-
                   Compiler.Descriptors.Public_Spec
                     (Item, Pkg, Next, Again, Done);
 
@@ -245,7 +261,7 @@ package body Compiler.File_Descriptors is
 
       Public : constant Ada_Pretty.Node_Access := Get_Public;
       Root   : constant Ada_Pretty.Node_Access :=
-        F.New_Package (Name, Public, null);  --  Get_Private);
+        F.New_Package (Name, Public, Get_Private);
       Unit   : constant Ada_Pretty.Node_Access :=
         F.New_Compilation_Unit (Root, Clauses);
    begin

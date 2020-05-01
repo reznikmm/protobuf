@@ -53,4 +53,9 @@ package Compiler.Descriptors is
       Again  : in out Boolean;
       Done   : in out Compiler.Context.String_Sets.Set);
 
+   function Private_Spec
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access;
+   --  Return list of private part declarations
+
 end Compiler.Descriptors;

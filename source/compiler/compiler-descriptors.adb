@@ -19,6 +19,7 @@
 --  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
+with Ada.Wide_Wide_Text_IO;
 
 with Compiler.Enum_Descriptors;
 with Compiler.Field_Descriptors;
@@ -95,17 +96,21 @@ package body Compiler.Descriptors is
               Self.Field.Get (J);
             Type_Name : constant League.Strings.Universal_String :=
               Field.Type_Name;
+            Named_Type : Compiler.Context.Named_Type;
          begin
-            if not (Type_Name.Is_Empty
-              or else Done.Contains (Type_Name)
-              or else Compiler.Context.Named_Types (Type_Name).Is_Enumeration
-              or else Compiler.Context.Named_Types (Type_Name).
-                           Ada_Type.Package_Name /= Pkg
-              or else (Compiler.Context.Named_Types (Type_Name).
-                           Ada_Type.Type_Name = Name
-                      and Field.Label = LABEL_REPEATED))
-            then
-               return False;
+            if not Compiler.Context.Named_Types.Contains (Type_Name) then
+               null;
+            else
+               Named_Type := Compiler.Context.Named_Types (Type_Name);
+
+               if not (Done.Contains (Named_Type.Ada_Type.Type_Name)
+                       or else Named_Type.Is_Enumeration
+                       or else Named_Type.Ada_Type.Package_Name /= Pkg
+                       or else (Named_Type.Ada_Type.Type_Name = Name
+                                and Field.Label = LABEL_REPEATED))
+               then
+                  return False;
+               end if;
             end if;
          end;
       end loop;
@@ -176,6 +181,116 @@ package body Compiler.Descriptors is
             Map         => Map);
       end loop;
    end Populate_Named_Types;
+
+   ------------------
+   -- Private_Spec --
+   ------------------
+
+   function Private_Spec
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      My_Name : constant League.Strings.Universal_String := Type_Name (Self);
+      T_Array : Ada_Pretty.Node_Access;
+      Array_Access : Ada_Pretty.Node_Access;
+      Result : Ada_Pretty.Node_Access;
+      Item   : Ada_Pretty.Node_Access;
+      Read   : Ada_Pretty.Node_Access;
+      Write  : Ada_Pretty.Node_Access;
+      Use_R  : Ada_Pretty.Node_Access;
+      Use_W  : Ada_Pretty.Node_Access;
+      Adjust : Ada_Pretty.Node_Access;
+      Final  : Ada_Pretty.Node_Access;
+   begin
+      for J in 1 .. Self.Nested_Type.Length loop
+         Item := Private_Spec (Self.Nested_Type.Get (J));
+         Result := F.New_List (Result, Item);
+      end loop;
+
+      Read := F.New_Subprogram_Declaration
+        (F.New_Subprogram_Specification
+           (Name          => F.New_Name ("Read_" & My_Name),
+            Parameters    => F.New_List
+              (F.New_Parameter
+                   (Name            => F.New_Name (+"Stream"),
+                    Type_Definition => F.New_Selected_Name
+                      (+"access Ada.Streams.Root_Stream_Type'Class")),
+               F.New_Parameter
+                   (Name            => F.New_Name (+"Value"),
+                    Type_Definition => F.New_Name (My_Name),
+                    Is_Out          => True))));
+
+      Write := F.New_Subprogram_Declaration
+        (F.New_Subprogram_Specification
+           (Name          => F.New_Name ("Write_" & My_Name),
+            Parameters    => F.New_List
+              (F.New_Parameter
+                   (Name            => F.New_Name (+"Stream"),
+                    Type_Definition => F.New_Selected_Name
+                      (+"access Ada.Streams.Root_Stream_Type'Class")),
+               F.New_Parameter
+                   (Name            => F.New_Name (+"Value"),
+                    Type_Definition => F.New_Name (My_Name)))));
+
+      Use_R := F.New_Statement
+        (F.New_Name ("for " & My_Name & "'Read use Read_" & My_Name));
+
+      Use_W := F.New_Statement
+        (F.New_Name ("for " & My_Name & "'Write use Write_" & My_Name));
+
+      T_Array := F.New_Type
+        (Name          => F.New_Name (My_Name & "_Array"),
+         Definition    => F.New_Array
+           (Indexes   => F.New_Name (+"Positive range <>"),
+            Component => F.New_Name (My_Name)));
+
+      Array_Access := F.New_Type
+        (Name          => F.New_Name (My_Name & "_Array_Access"),
+         Definition    => F.New_Access
+           (Target   => F.New_Name (My_Name & "_Array")));
+
+      Item := F.New_Type
+        (F.New_Name (Type_Name (Self) & "_Vector"),
+         Definition => F.New_Record
+           (Parent      => F.New_Selected_Name
+                (+"Ada.Finalization.Controlled"),
+            Components  => F.New_List
+              (F.New_Variable
+                  (Name            => F.New_Name (+"Data"),
+                   Type_Definition => F.New_Name (My_Name & "_Array_Access")),
+               F.New_Variable
+                  (Name            => F.New_Name (+"Length"),
+                   Type_Definition => F.New_Name (+"Natural"),
+                   Initialization  => F.New_Literal (0)))));
+
+      Adjust := F.New_Subprogram_Declaration
+        (F.New_Subprogram_Specification
+           (Is_Overriding => Ada_Pretty.True,
+            Name          => F.New_Name (+"Adjust"),
+            Parameters    => F.New_Parameter
+              (Name            => F.New_Name (+"Self"),
+               Type_Definition => F.New_Name (Type_Name (Self) & "_Vector"),
+               Is_In           => True,
+               Is_Out          => True)));
+
+      Final := F.New_Subprogram_Declaration
+        (F.New_Subprogram_Specification
+           (Is_Overriding => Ada_Pretty.True,
+            Name          => F.New_Name (+"Finalize"),
+            Parameters    => F.New_Parameter
+              (Name            => F.New_Name (+"Self"),
+               Type_Definition => F.New_Name (Type_Name (Self) & "_Vector"),
+               Is_In           => True,
+               Is_Out          => True)));
+
+      Result := F.New_List
+        (Result,
+         F.New_List
+           ((Read, Write, Use_R, Use_W,
+            T_Array, Array_Access, Item, Adjust, Final)));
+
+      return Result;
+   end Private_Spec;
 
    -----------------
    -- Public_Spec --
@@ -300,6 +415,8 @@ package body Compiler.Descriptors is
       Name : constant League.Strings.Universal_String := Type_Name (Self);
       Item : Ada_Pretty.Node_Access;
    begin
+      Result := null;
+
       for J in 1 .. Self.Nested_Type.Length loop
          Public_Spec (Self.Nested_Type.Get (J), Pkg, Item, Again, Done);
 
@@ -312,6 +429,9 @@ package body Compiler.Descriptors is
          if Check_Dependency (Self, Pkg, Done) then
             Result := F.New_List (Result, Public_Spec (Self));
             Done.Insert (Name);
+            Ada.Wide_Wide_Text_IO.Put_Line (Name.To_Wide_Wide_String);
+         else
+            Again := True;
          end if;
       end if;
    end Public_Spec;
