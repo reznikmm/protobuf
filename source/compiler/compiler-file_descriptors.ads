@@ -20,21 +20,15 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with "matreshka_league.gpr";
-with "protobuf_support.gpr";
-with "ada_pretty.gpr";
+with Google.Protobuf;
 
-project Compiler is
-   for Source_Dirs use
-     ("../source/compiler",
-      "../source/compiler/generated");
+with Compiler.Context;
 
-   for Object_Dir use "../.objs/compiler";
-   for Main use ("compiler-run.adb");
+package Compiler.File_Descriptors is
 
-   package Compiler is
-      for Default_Switches ("ada") use
-        ("-gnat12", "-gnatW8", "-g", "-gnatVa", "-gnatwa", "-gnaty", "-gnata");
-   end Compiler;
+   procedure Populate_Named_Types
+     (Self : Google.Protobuf.File_Descriptor_Proto;
+      Map  : in out Compiler.Context.Named_Type_Maps.Map);
+   --  Fill Map with type information found in a file descriptor
 
-end Compiler;
+end Compiler.File_Descriptors;

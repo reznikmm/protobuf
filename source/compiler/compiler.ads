@@ -20,21 +20,7 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with "matreshka_league.gpr";
-with "protobuf_support.gpr";
-with "ada_pretty.gpr";
-
-project Compiler is
-   for Source_Dirs use
-     ("../source/compiler",
-      "../source/compiler/generated");
-
-   for Object_Dir use "../.objs/compiler";
-   for Main use ("compiler-run.adb");
-
-   package Compiler is
-      for Default_Switches ("ada") use
-        ("-gnat12", "-gnatW8", "-g", "-gnatVa", "-gnatwa", "-gnaty", "-gnata");
-   end Compiler;
+package Compiler is
+   pragma Pure;
 
 end Compiler;
