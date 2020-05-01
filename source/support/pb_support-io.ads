@@ -32,6 +32,7 @@ with PB_Support.Boolean_Vectors;
 with PB_Support.Unsigned_32_Vectors;
 
 package PB_Support.IO is
+   pragma Preelaborate;
 
    type Field_Number is range 1 .. 2 ** 29 - 1;
 

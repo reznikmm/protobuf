@@ -25,3 +25,4 @@ with Interfaces;
 
 package PB_Support.Unsigned_32_Vectors is
   new PB_Support.Vectors (Interfaces.Unsigned_32);
+pragma Preelaborate (PB_Support.Unsigned_32_Vectors);

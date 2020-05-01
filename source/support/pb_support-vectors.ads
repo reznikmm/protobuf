@@ -26,7 +26,10 @@ generic
    type Element_Type is private;
 
 package PB_Support.Vectors is
+   pragma Preelaborate;
+
    type Vector is tagged private;
+   pragma Preelaborable_Initialization (Vector);
 
    function Length (Self : Vector) return Natural
      with Inline;
