@@ -22,6 +22,8 @@
 
 package body Compiler.Enum_Descriptors is
 
+   F : Ada_Pretty.Factory renames Compiler.Context.Factory;
+
    function "+" (Text : Wide_Wide_String)
      return League.Strings.Universal_String
        renames League.Strings.To_Universal_String;
@@ -118,6 +120,58 @@ package body Compiler.Enum_Descriptors is
       Key.Append (Self.Name);
       Map.Insert (Key, Value);
    end Populate_Named_Types;
+
+   -----------------
+   -- Public_Spec --
+   -----------------
+
+   function Public_Spec
+     (Self : Google.Protobuf.Enum_Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      use type League.Strings.Universal_String;
+
+      Name   : constant League.Strings.Universal_String := Type_Name (Self);
+      Result : Ada_Pretty.Node_Access;
+      Clause : Ada_Pretty.Node_Access;
+      Item   : Ada_Pretty.Node_Access;
+   begin
+      for J in 1 .. Self.Value.Length loop
+         declare
+            Next : constant Google.Protobuf.Enum_Value_Descriptor_Proto :=
+              Self.Value.Get (J);
+            Name : constant League.Strings.Universal_String := Next.Name;
+         begin
+            Item := F.New_Argument_Association (F.New_Name (Name));
+            Result := F.New_List (Result, Item);
+
+            Clause := F.New_List
+              (Clause,
+               F.New_Argument_Association
+                 (Choice => F.New_Name (Name),
+                  Value  => F.New_Literal (Natural (Next.Number))));
+
+         end;
+      end loop;
+
+      Clause := F.New_Statement
+        (F.New_Apply
+          (F.New_Name ("for " & Name & " use"),
+           Clause));
+
+      Result := F.New_Type
+        (Name       => F.New_Name (Name),
+         Definition => F.New_Parentheses (Result));
+
+      Item := F.New_Package_Instantiation
+        (Name        => F.New_Name (Name & "_Vectors"),
+         Template    => F.New_Selected_Name (+"PB_Support.Vectors"),
+           Actual_Part => F.New_Name (Name));
+
+      Result := F.New_List ((Result, Clause, Item));
+
+      return Result;
+   end Public_Spec;
 
    ---------------
    -- Type_Name --

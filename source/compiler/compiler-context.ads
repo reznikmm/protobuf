@@ -21,6 +21,9 @@
 --  DEALINGS IN THE SOFTWARE.
 
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Ordered_Sets;
+
+with Ada_Pretty;
 
 with League.Strings;
 with League.Strings.Hash;
@@ -29,6 +32,15 @@ with Google.Protobuf;
 with Google.Protobuf.Compiler;
 
 package Compiler.Context is
+
+   Factory : aliased Ada_Pretty.Factory;
+   --  Node factory for pretty printing generated sources
+
+   package String_Sets is new Ada.Containers.Ordered_Sets
+     (League.Strings.Universal_String,
+      "<" => League.Strings."<",
+      "=" => League.Strings."=");
+   --  Set of strings
 
    type Ada_Type_Name is record
       Package_Name : League.Strings.Universal_String;
@@ -67,6 +79,12 @@ package Compiler.Context is
      (Request : Google.Protobuf.Compiler.Code_Generator_Request;
       Map     : in out Compiler.Context.Named_Type_Maps.Map);
    --  Fill Map with type information found in Request
+
+   function Get_File
+     (Request : Google.Protobuf.Compiler.Code_Generator_Request;
+      Name    : League.Strings.Universal_String)
+      return Google.Protobuf.File_Descriptor_Proto;
+   --  Find file by Name in the Request
 
    function To_Ada_Name
      (Text : League.Strings.Universal_String)

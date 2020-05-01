@@ -21,8 +21,13 @@
 --  DEALINGS IN THE SOFTWARE.
 
 with Compiler.Enum_Descriptors;
+with Compiler.Field_Descriptors;
 
 package body Compiler.Descriptors is
+
+   F : Ada_Pretty.Factory renames Compiler.Context.Factory;
+
+   use type Ada_Pretty.Node_Access;
 
    function "+" (Text : Wide_Wide_String)
      return League.Strings.Universal_String
@@ -32,6 +37,60 @@ package body Compiler.Descriptors is
      (Self : Google.Protobuf.Descriptor_Proto)
       return League.Strings.Universal_String;
    --  Return Ada type (simple) name
+
+   ----------------
+   -- Enum_Types --
+   ----------------
+
+   function Enum_Types
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      Result : Ada_Pretty.Node_Access;
+      Item   : Ada_Pretty.Node_Access;
+   begin
+      for J in 1 .. Self.Enum_Type.Length loop
+         Item := Compiler.Enum_Descriptors.Public_Spec
+           (Self.Enum_Type.Get (J));
+
+         Result := F.New_List (Result, Item);
+      end loop;
+
+      for J in 1 .. Self.Nested_Type.Length loop
+         Item := Enum_Types (Self.Nested_Type.Get (J));
+
+         if Item /= null then
+            Result := F.New_List (Result, Item);
+         end if;
+      end loop;
+
+      return Result;
+   end Enum_Types;
+
+   ----------------
+   -- Dependency --
+   ----------------
+
+   procedure Dependency
+     (Self   : Google.Protobuf.Descriptor_Proto;
+      Result : in out Compiler.Context.String_Sets.Set)
+   is
+   begin
+      Result.Include (+"Ada.Finalization");
+      Result.Include (+"Ada.Streams");
+
+      if Self.Enum_Type.Length > 0 then
+         Result.Include (+"PB_Support.Vectors");
+      end if;
+
+      for J in 1 .. Self.Field.Length loop
+         Compiler.Field_Descriptors.Dependency (Self.Field.Get (J), Result);
+      end loop;
+
+      for J in 1 .. Self.Nested_Type.Length loop
+         Dependency (Self.Nested_Type.Get (J), Result);
+      end loop;
+   end Dependency;
 
    --------------------------
    -- Populate_Named_Types --

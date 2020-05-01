@@ -20,29 +20,15 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with Ada_Pretty;
-with League.Strings;
-
 with Google.Protobuf;
 
 with Compiler.Context;
 
-package Compiler.Descriptors is
-
-   procedure Populate_Named_Types
-     (Self        : Google.Protobuf.Descriptor_Proto;
-      PB_Prefix   : League.Strings.Universal_String;
-      Ada_Package : League.Strings.Universal_String;
-      Map         : in out Compiler.Context.Named_Type_Maps.Map);
-   --  Fill Map with type information found in a message descriptor
+package Compiler.Field_Descriptors is
 
    procedure Dependency
-     (Self   : Google.Protobuf.Descriptor_Proto;
+     (Self   : Google.Protobuf.Field_Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set);
    --  Append dependency names to Result
 
-   function Enum_Types
-     (Self : Google.Protobuf.Descriptor_Proto)
-      return Ada_Pretty.Node_Access;
-   --  Return list of enumetation type declared inside a message
-end Compiler.Descriptors;
+end Compiler.Field_Descriptors;

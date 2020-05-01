@@ -20,8 +20,6 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with Ada.Containers.Hashed_Sets;
-
 with League.String_Vectors;
 
 with Compiler.File_Descriptors;
@@ -31,12 +29,6 @@ package body Compiler.Context is
    function "+" (Text : Wide_Wide_String)
      return League.Strings.Universal_String
        renames League.Strings.To_Universal_String;
-
-   package String_Sets is new Ada.Containers.Hashed_Sets
-     (League.Strings.Universal_String,
-      League.Strings.Hash,
-      League.Strings."=",
-      League.Strings."=");
 
    Reserved : String_Sets.Set;
 
@@ -55,6 +47,26 @@ package body Compiler.Context is
          return Self.Package_Name & "." & Self.Type_Name;
       end if;
    end "+";
+
+   --------------
+   -- Get_File --
+   --------------
+
+   function Get_File
+     (Request : Google.Protobuf.Compiler.Code_Generator_Request;
+      Name    : League.Strings.Universal_String)
+      return Google.Protobuf.File_Descriptor_Proto
+   is
+      use type League.Strings.Universal_String;
+   begin
+      for J in 1 .. Request.Proto_File.Length loop
+         if Request.Proto_File.Get (J).Name = Name then
+            return Request.Proto_File.Get (J);
+         end if;
+      end loop;
+
+      raise Constraint_Error;
+   end Get_File;
 
    --------------------------
    -- Populate_Named_Types --

@@ -35,6 +35,7 @@ with League.Strings;
 with Google.Protobuf.Compiler;
 
 with Compiler.Context;
+with Compiler.File_Descriptors;
 
 procedure Compiler.Run is
    use type Compiler.Context.Ada_Type_Name;
@@ -62,6 +63,25 @@ begin
       Ada.Wide_Wide_Text_IO.Put_Line
         (League.Strings.To_Wide_Wide_String
            (+Compiler.Context.Named_Type_Maps.Element (J).Ada_Type));
+   end loop;
+
+   for J in 1 .. Request.File_To_Generate.Length loop
+      declare
+         Name : constant League.Strings.Universal_String :=
+           Request.File_To_Generate.Element (J);
+         File : constant Google.Protobuf.File_Descriptor_Proto :=
+           Compiler.Context.Get_File (Request, Name);
+         Base : constant League.Strings.Universal_String :=
+           Compiler.File_Descriptors.File_Name (File);
+         Spec : Ada.Wide_Wide_Text_IO.File_Type;
+      begin
+         Ada.Wide_Wide_Text_IO.Create
+           (Spec, Name => Base.To_UTF_8_String & ".ads");
+         Ada.Wide_Wide_Text_IO.Put_Line
+           (Spec,
+            Compiler.File_Descriptors.Specification_Text
+              (File, Request).To_Wide_Wide_String);
+      end;
    end loop;
 
    Ada.Streams.Stream_IO.Create

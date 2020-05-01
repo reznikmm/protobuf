@@ -20,6 +20,7 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
+with Ada_Pretty;
 with League.Strings;
 
 with Google.Protobuf;
@@ -33,5 +34,9 @@ package Compiler.Enum_Descriptors is
       PB_Prefix   : League.Strings.Universal_String;
       Ada_Package : League.Strings.Universal_String;
       Map         : in out Compiler.Context.Named_Type_Maps.Map);
+
+   function Public_Spec
+     (Self : Google.Protobuf.Enum_Descriptor_Proto)
+      return Ada_Pretty.Node_Access;
 
 end Compiler.Enum_Descriptors;
