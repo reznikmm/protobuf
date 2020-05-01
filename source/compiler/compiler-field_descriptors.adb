@@ -47,6 +47,13 @@ package body Compiler.Field_Descriptors is
    function Map (X : Google.Protobuf.PB_Type)
      return League.Strings.Universal_String;
 
+   function Is_Message (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return Boolean;
+
+   function Read_Name
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return League.Strings.Universal_String;
+
    ---------------
    -- Component --
    ---------------
@@ -166,6 +173,35 @@ package body Compiler.Field_Descriptors is
       end if;
    end Dependency;
 
+   --------------------
+   -- Get_Used_Types --
+   --------------------
+
+   procedure Get_Used_Types
+     (Self   : Google.Protobuf.Field_Descriptor_Proto;
+      Result : in out Compiler.Context.String_Sets.Set)
+   is
+      Value : constant League.Strings.Universal_String := Self.Type_Name;
+   begin
+      Result.Include (Value);
+   end Get_Used_Types;
+
+   ----------------
+   -- Is_Message --
+   ----------------
+
+   function Is_Message (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return Boolean
+   is
+      Name : constant League.Strings.Universal_String := Self.Type_Name;
+   begin
+      if Compiler.Context.Named_Types.Contains (Name) then
+         return not Compiler.Context.Named_Types (Name).Is_Enumeration;
+      else
+         return False;
+      end if;
+   end Is_Message;
+
    ---------
    -- Map --
    ---------
@@ -197,6 +233,87 @@ package body Compiler.Field_Descriptors is
          when TYPE_SINT64   => return +"Interfaces.Integer_64";
       end case;
    end Map;
+
+   ---------------
+   -- Read_Case --
+   ---------------
+
+   function Read_Case
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      use type League.Strings.Universal_String;
+      My_Name : League.Strings.Universal_String :=
+        Compiler.Context.To_Ada_Name (Self.Name);
+      Result  : Ada_Pretty.Node_Access;
+      Field   : Integer;
+   begin
+      Field := Integer (Self.Number);
+      My_Name.Prepend ("Value.");
+
+      if Self.Label = LABEL_OPTIONAL and Is_Message (Self) then
+         Result := F.New_If
+           (Condition  => F.New_Infix
+              (Operator => +"not",
+               Left     => F.New_Selected_Name
+                (My_Name & ".Is_Set")),
+            Then_Path  => F.New_Assignment
+              (Left  => F.New_Selected_Name (My_Name),
+               Right => F.New_Parentheses
+                 (F.New_List
+                      (F.New_Argument_Association
+                           (F.New_Name (+"True")),
+                       F.New_Argument_Association
+                         (F.New_Name (+"others => <>"))))));
+
+         My_Name.Append (".Value");
+      end if;
+
+      Result := F.New_List
+        (Result,
+         F.New_Statement
+           (F.New_Apply
+             (Prefix    => F.New_Selected_Name
+                  (Read_Name (Self)),
+              Arguments => F.New_List
+                ((F.New_Argument_Association (F.New_Name (+"Stream")),
+                  F.New_Argument_Association
+                    (F.New_Selected_Name (+"Key.Encoding")),
+                  F.New_Argument_Association
+                    (F.New_Selected_Name (My_Name)))))));
+
+      Result := F.New_Case_Path
+        (Choice => F.New_Literal (Field),
+         List   => Result);
+      return Result;
+   end Read_Case;
+
+   ---------------
+   -- Read_Name --
+   ---------------
+
+   function Read_Name
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return League.Strings.Universal_String
+   is
+      use type League.Strings.Universal_String;
+      Result : League.Strings.Universal_String := +"PB_Support.IO.Read_";
+      Tp  : constant Compiler.Context.Ada_Type_Name := Type_Name (Self, False);
+      PB_Type : constant League.Strings.Universal_String := Self.Type_Name;
+   begin
+      if Compiler.Context.Named_Types.Contains (PB_Type) then
+         Result := Compiler.Context.Named_Types (PB_Type).Ada_Type.Type_Name;
+         Result.Append ("_IO.Read");
+      else
+         Result.Append (Tp.Type_Name);
+      end if;
+
+      if Self.Label = LABEL_REPEATED then
+         Result.Append ("_Vector");
+      end if;
+
+      return Result;
+   end Read_Name;
 
    ---------------
    -- Type_Name --

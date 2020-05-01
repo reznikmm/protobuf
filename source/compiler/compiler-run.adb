@@ -74,13 +74,22 @@ begin
          Base : constant League.Strings.Universal_String :=
            Compiler.File_Descriptors.File_Name (File);
          Spec : Ada.Wide_Wide_Text_IO.File_Type;
+         Impl : Ada.Wide_Wide_Text_IO.File_Type;
       begin
          Ada.Wide_Wide_Text_IO.Create
            (Spec, Name => Base.To_UTF_8_String & ".ads");
+
          Ada.Wide_Wide_Text_IO.Put_Line
            (Spec,
             Compiler.File_Descriptors.Specification_Text
               (File, Request).To_Wide_Wide_String);
+
+         Ada.Wide_Wide_Text_IO.Create
+           (Impl, Name => Base.To_UTF_8_String & ".adb");
+
+         Ada.Wide_Wide_Text_IO.Put_Line
+           (Impl,
+            Compiler.File_Descriptors.Body_Text (File).To_Wide_Wide_String);
       end;
    end loop;
 

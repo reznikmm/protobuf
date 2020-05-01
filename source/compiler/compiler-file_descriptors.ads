@@ -45,4 +45,8 @@ package Compiler.File_Descriptors is
       return League.Strings.Universal_String;
    --  Return base name for Ada package
 
+   function Body_Text
+     (Self : Google.Protobuf.File_Descriptor_Proto)
+      return League.Strings.Universal_String;
+
 end Compiler.File_Descriptors;

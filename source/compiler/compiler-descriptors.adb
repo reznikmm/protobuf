@@ -49,6 +49,10 @@ package body Compiler.Descriptors is
      (Self : Google.Protobuf.Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
+   function Read_Subprogram
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access;
+
    ----------------
    -- Enum_Types --
    ----------------
@@ -142,6 +146,24 @@ package body Compiler.Descriptors is
          Dependency (Self.Nested_Type.Get (J), Result);
       end loop;
    end Dependency;
+
+   --------------------
+   -- Get_Used_Types --
+   --------------------
+
+   procedure Get_Used_Types
+     (Self   : Google.Protobuf.Descriptor_Proto;
+      Result : in out Compiler.Context.String_Sets.Set) is
+   begin
+      for J in 1 .. Self.Field.Length loop
+         Compiler.Field_Descriptors.Get_Used_Types
+           (Self.Field.Get (J), Result);
+      end loop;
+
+      for J in 1 .. Self.Nested_Type.Length loop
+         Get_Used_Types (Self.Nested_Type.Get (J), Result);
+      end loop;
+   end Get_Used_Types;
 
    --------------------------
    -- Populate_Named_Types --
@@ -435,6 +457,273 @@ package body Compiler.Descriptors is
          end if;
       end if;
    end Public_Spec;
+
+   ---------------------
+   -- Read_Subprogram --
+   ---------------------
+
+   function Read_Subprogram
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      My_Name : constant League.Strings.Universal_String := Type_Name (Self);
+      Key : Ada_Pretty.Node_Access;
+      Result : Ada_Pretty.Node_Access;
+      Field : Ada_Pretty.Node_Access;
+   begin
+      Key := F.New_Variable
+        (Name            => F.New_Name (+"Key"),
+         Type_Definition => F.New_Selected_Name (+"PB_Support.IO.Key"),
+         Is_Aliased      => True);
+
+      for J in 1 .. Self.Field.Length loop
+         Field := Compiler.Field_Descriptors.Read_Case
+           (Self.Field.Get (J));
+         Result := F.New_List (Result, Field);
+      end loop;
+
+      Result := F.New_List
+        (Result,
+         F.New_Case_Path
+           (Choice => F.New_Name (+"others"),
+            List   => F.New_Statement
+              (F.New_Apply
+                 (Prefix    => F.New_Selected_Name
+                    (+"PB_Support.IO.Unknown_Field"),
+                  Arguments => F.New_List
+                    (F.New_Argument_Association (F.New_Name (+"Stream")),
+                     F.New_Argument_Association
+                       (F.New_Selected_Name (+"Key.Encoding")))))));
+
+      Result := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Name          => F.New_Name ("Read_" & My_Name),
+            Parameters    => F.New_List
+              (F.New_Parameter
+                   (Name            => F.New_Name (+"Stream"),
+                    Type_Definition => F.New_Selected_Name
+                      (+"access Ada.Streams.Root_Stream_Type'Class")),
+               F.New_Parameter
+                 (Name            => F.New_Name (+"Value"),
+                  Type_Definition => F.New_Name (My_Name),
+                  Is_Out          => True))),
+         Declarations => Key,
+         Statements   => F.New_Loop
+           (Condition  => F.New_Apply
+                (Prefix    => F.New_Selected_Name
+                     (+"PB_Support.IO.Read_Key"),
+                 Arguments => F.New_List
+                   (F.New_Argument_Association
+                      (F.New_Name (+"Stream")),
+                    F.New_Argument_Association
+                      (F.New_Name (+"Key'Access")))),
+            Statements => F.New_Case
+              (Expression => F.New_Selected_Name (+"Key.Field"),
+               List       => Result)));
+
+      return Result;
+   end Read_Subprogram;
+
+   -----------------
+   -- Subprograms --
+   -----------------
+
+   function Subprograms
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      My_Name : constant League.Strings.Universal_String := Type_Name (Self);
+      Me     : constant Ada_Pretty.Node_Access := F.New_Name (My_Name);
+      V_Name : Ada_Pretty.Node_Access;
+      P_Self : Ada_Pretty.Node_Access;
+      Free   : Ada_Pretty.Node_Access;
+      Getter : Ada_Pretty.Node_Access;
+      Count  : Ada_Pretty.Node_Access;
+      Clear  : Ada_Pretty.Node_Access;
+      Append : Ada_Pretty.Node_Access;
+      Adjust : Ada_Pretty.Node_Access;
+      Final  : Ada_Pretty.Node_Access;
+      Read   : Ada_Pretty.Node_Access;
+      Write  : Ada_Pretty.Node_Access;
+      Result : Ada_Pretty.Node_Access;
+   begin
+      V_Name := F.New_Name (My_Name & "_Vector");
+      P_Self := F.New_Name (+"Self");
+
+      Count := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Name       => F.New_Name (+"Length"),
+            Parameters => F.New_Parameter
+              (Name            => P_Self,
+               Type_Definition => V_Name),
+            Result     => F.New_Name (+"Natural")),
+         Statements => F.New_Return
+           (F.New_Selected_Name (+"Self.Length")));
+
+      Getter := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Name       => F.New_Name (+"Get"),
+            Parameters => F.New_List
+              (F.New_Parameter
+                 (Name            => P_Self,
+                  Type_Definition => V_Name),
+               F.New_Parameter
+                 (Name            => F.New_Name (+"Index"),
+                  Type_Definition => F.New_Name (+"Positive"))),
+            Result     => Me),
+         Statements => F.New_Return
+           (F.New_Selected_Name (+"Self.Data (Index)")));
+
+      Clear := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Name       => F.New_Name (+"Clear"),
+            Parameters => F.New_Parameter
+              (Name            => P_Self,
+               Type_Definition => V_Name,
+               Is_In           => True,
+               Is_Out          => True)),
+         Statements => F.New_Assignment
+           (Left  => F.New_Selected_Name (+"Self.Length"),
+            Right => F.New_Literal (0)));
+
+      Free := F.New_Statement
+        (F.New_Apply
+           (F.New_Name (+"procedure Free is new Ada.Unchecked_Deallocation"),
+            F.New_List
+              (F.New_Argument_Association
+                 (F.New_Name (My_Name & "_Array")),
+               F.New_Argument_Association
+                 (F.New_Name (My_Name & "_Array_Access")))));
+
+      Append := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Name       => F.New_Name (+"Append"),
+            Parameters => F.New_List
+              (F.New_Parameter
+                 (Name            => P_Self,
+                  Type_Definition => V_Name,
+                  Is_In           => True,
+                  Is_Out          => True),
+               F.New_Parameter
+                 (F.New_Name (+"Value"), Me))),
+         Declarations => F.New_Variable
+           (Name            => F.New_Name (+"Init_Length"),
+            Type_Definition => F.New_Name (+"Positive"),
+            Is_Constant     => True,
+            Initialization  => F.New_Apply
+              (Prefix    => F.New_Selected_Name (+"Positive'Max"),
+               Arguments => F.New_List
+                 (F.New_Argument_Association (F.New_Literal (1)),
+                  F.New_Argument_Association
+                    (F.New_List
+                       (F.New_Literal (256),
+                        F.New_Infix
+                          (+"/",
+                           F.New_Selected_Name (My_Name & "'Size"))))))),
+         Statements => F.New_List
+           ((F.New_If
+             (Condition  => F.New_Selected_Name (+"Self.Length = 0"),
+              Then_Path  => F.New_Assignment
+                (F.New_Selected_Name (+"Self.Data"),
+                 F.New_Infix
+                   (Operator => +"new",
+                    Left     => F.New_Apply
+                      (F.New_Selected_Name (My_Name & "_Array"),
+                       F.New_Selected_Name (+"1 .. Init_Length")))),
+              Elsif_List => F.New_Elsif
+                (Condition => F.New_List
+                   (F.New_Selected_Name (+"Self.Length"),
+                    F.New_Infix
+                      (+"=",
+                       F.New_Selected_Name (+"Self.Data'Last"))),
+                 List      => F.New_Assignment
+                   (F.New_Selected_Name (+"Self.Data"),
+                    F.New_Qualified_Expession
+                      (F.New_Selected_Name ("new " & My_Name & "_Array"),
+                       F.New_List
+                         (F.New_Selected_Name (+"Self.Data.all"),
+                          F.New_Infix
+                            (+"&",
+                             F.New_Qualified_Expession
+                               (F.New_Selected_Name (My_Name & "_Array"),
+                                F.New_Selected_Name
+                                  (+"1 .. Self.Length => <>"))
+                            )))))),
+            F.New_Assignment
+              (F.New_Selected_Name (+"Self.Length"),
+               F.New_List
+                 (F.New_Selected_Name (+"Self.Length"),
+                  F.New_Infix (+"+", F.New_Literal (1)))),
+            F.New_Assignment
+              (F.New_Apply
+                 (F.New_Selected_Name (+"Self.Data"),
+                    F.New_Selected_Name (+"Self.Length")),
+               F.New_Name (+"Value")))));
+
+      Adjust := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Is_Overriding => Ada_Pretty.True,
+            Name          => F.New_Name (+"Adjust"),
+            Parameters    => F.New_Parameter
+              (Name            => F.New_Name (+"Self"),
+               Type_Definition => F.New_Name (Type_Name (Self) & "_Vector"),
+               Is_In           => True,
+               Is_Out          => True)),
+         Statements => F.New_If
+           (Condition  => F.New_Name (+"Self.Length > 0"),
+            Then_Path  => F.New_Assignment
+              (F.New_Selected_Name (+"Self.Data"),
+               F.New_Qualified_Expession
+                 (F.New_Name ("new " & My_Name & "_Array"),
+                  F.New_Apply
+                    (F.New_Selected_Name (+"Self.Data"),
+                     F.New_List
+                       (F.New_Literal (1),
+                        F.New_Infix
+                          (+"..",
+                           F.New_Selected_Name (+"Self.Length"))))))));
+
+      Final := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Is_Overriding => Ada_Pretty.True,
+            Name          => F.New_Name (+"Finalize"),
+            Parameters    => F.New_Parameter
+              (Name            => F.New_Name (+"Self"),
+               Type_Definition => F.New_Name (Type_Name (Self) & "_Vector"),
+               Is_In           => True,
+               Is_Out          => True)),
+         Statements => F.New_If
+           (Condition  => F.New_Name (+"Self.Data /= null"),
+            Then_Path  => F.New_Statement
+              (F.New_Apply
+                 (F.New_Name (+"Free"),
+                  F.New_Selected_Name (+"Self.Data")))));
+
+      Read := Read_Subprogram (Self);
+
+      Write := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Name          => F.New_Name ("Write_" & My_Name),
+            Parameters    => F.New_List
+              (F.New_Parameter
+                   (Name            => F.New_Name (+"Stream"),
+                    Type_Definition => F.New_Selected_Name
+                      (+"access Ada.Streams.Root_Stream_Type'Class")),
+               F.New_Parameter
+                   (Name            => F.New_Name (+"Value"),
+                    Type_Definition => F.New_Name (My_Name)))),
+         Statements => F.New_Statement);
+
+      Result := F.New_List
+        ((Count, Getter, Clear, Free, Append, Adjust, Final, Read, Write));
+
+      for J in 1 .. Self.Nested_Type.Length loop
+         Result := F.New_List
+           (Result, Subprograms (Self.Nested_Type.Get (J)));
+      end loop;
+
+      return Result;
+   end Subprograms;
 
    ---------------
    -- Type_Name --

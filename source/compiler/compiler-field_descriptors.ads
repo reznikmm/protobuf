@@ -37,4 +37,12 @@ package Compiler.Field_Descriptors is
      (Self : Google.Protobuf.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
+   function Read_Case
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return Ada_Pretty.Node_Access;
+
+   procedure Get_Used_Types
+     (Self   : Google.Protobuf.Field_Descriptor_Proto;
+      Result : in out Compiler.Context.String_Sets.Set);
+
 end Compiler.Field_Descriptors;

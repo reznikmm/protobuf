@@ -41,6 +41,10 @@ package Compiler.Descriptors is
       Result : in out Compiler.Context.String_Sets.Set);
    --  Append dependency names to Result
 
+   procedure Get_Used_Types
+     (Self   : Google.Protobuf.Descriptor_Proto;
+      Result : in out Compiler.Context.String_Sets.Set);
+
    function Enum_Types
      (Self : Google.Protobuf.Descriptor_Proto)
       return Ada_Pretty.Node_Access;
@@ -57,5 +61,10 @@ package Compiler.Descriptors is
      (Self : Google.Protobuf.Descriptor_Proto)
       return Ada_Pretty.Node_Access;
    --  Return list of private part declarations
+
+   function Subprograms
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access;
+   --  Return implementation of type subprograms
 
 end Compiler.Descriptors;
