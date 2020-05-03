@@ -20,17 +20,11 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
---  with Google_Protobuf.FileDescriptorProto;
---  with Google_Protobuf.Compiler.CodeGeneratorResponse;
---  with Google_Protobuf.Compiler.CodeGeneratorResponse.File;
-
 with Ada.Command_Line;
 with Ada.Streams.Stream_IO;
---  with Ada.Text_IO;
 with Ada.Wide_Wide_Text_IO;
 
 with League.Strings;
---  with Compiler.FileDescriptorProto;
 
 with Google.Protobuf.Compiler;
 
@@ -43,7 +37,7 @@ procedure Compiler.Run is
    Stream : Ada.Streams.Stream_IO.Stream_Access;
    Output : Ada.Streams.Stream_IO.File_Type;
    Request : Google.Protobuf.Compiler.Code_Generator_Request;
---   Result : Google_Protobuf.Compiler.CodeGeneratorResponse.Instance;
+   Result  : Google.Protobuf.Compiler.Code_Generator_Response;
 begin
    Ada.Streams.Stream_IO.Open
      (File => Input,
@@ -67,29 +61,30 @@ begin
 
    for J in 1 .. Request.File_To_Generate.Length loop
       declare
+         use type League.Strings.Universal_String;
          Name : constant League.Strings.Universal_String :=
            Request.File_To_Generate.Element (J);
          File : constant Google.Protobuf.File_Descriptor_Proto :=
            Compiler.Context.Get_File (Request, Name);
          Base : constant League.Strings.Universal_String :=
            Compiler.File_Descriptors.File_Name (File);
-         Spec : Ada.Wide_Wide_Text_IO.File_Type;
-         Impl : Ada.Wide_Wide_Text_IO.File_Type;
       begin
-         Ada.Wide_Wide_Text_IO.Create
-           (Spec, Name => Base.To_UTF_8_String & ".ads");
+         declare
+            Item : Google.Protobuf.Compiler.File;
+         begin
+            Item.Name := Base & ".ads";
+            Item.Content := Compiler.File_Descriptors.Specification_Text
+              (File, Request);
+            Result.File.Append (Item);
+         end;
 
-         Ada.Wide_Wide_Text_IO.Put_Line
-           (Spec,
-            Compiler.File_Descriptors.Specification_Text
-              (File, Request).To_Wide_Wide_String);
-
-         Ada.Wide_Wide_Text_IO.Create
-           (Impl, Name => Base.To_UTF_8_String & ".adb");
-
-         Ada.Wide_Wide_Text_IO.Put_Line
-           (Impl,
-            Compiler.File_Descriptors.Body_Text (File).To_Wide_Wide_String);
+         declare
+            Item : Google.Protobuf.Compiler.File;
+         begin
+            Item.Name := Base & ".adb";
+            Item.Content := Compiler.File_Descriptors.Body_Text (File);
+            Result.File.Append (Item);
+         end;
       end;
    end loop;
 
@@ -97,6 +92,6 @@ begin
      (File => Output,
       Name => Ada.Command_Line.Argument (1) & ".out");
 
---     Result.Serialize_To_Output_Stream
---       (Ada.Streams.Stream_IO.Stream (Output));
+   Stream := Ada.Streams.Stream_IO.Stream (Output);
+   Google.Protobuf.Compiler.Code_Generator_Response'Write (Stream, Result);
 end Compiler.Run;

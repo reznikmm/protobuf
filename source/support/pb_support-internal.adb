@@ -97,8 +97,11 @@ package body PB_Support.Internal is
 
       if Self.Level = 2 then
          Self.Riffling := not Self.Riffling;
-      elsif not Self.Riffling then
+      end if;
+
+      if not Self.Riffling and Self.Level > 1 then
          Self.Write (Self.Size ((Message, Self.Level)));
+         Self.Size.Delete ((Message, Self.Level));
       end if;
    end Start_Message;
 
