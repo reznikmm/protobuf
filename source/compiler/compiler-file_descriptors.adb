@@ -173,10 +173,9 @@ package body Compiler.File_Descriptors is
 
       With_Clauses : constant Ada_Pretty.Node_Access :=
         F.New_List
-          (F.New_With
-             (F.New_Selected_Name (+"Ada.Unchecked_Deallocation")),
-           F.New_With
-             (F.New_Selected_Name (+"PB_Support.IO")));
+          ((F.New_With (F.New_Selected_Name (+"Ada.Unchecked_Deallocation")),
+            F.New_With (F.New_Selected_Name (+"PB_Support.IO")),
+            F.New_With (F.New_Selected_Name (+"PB_Support.Internal"))));
 
       Unit   : constant Ada_Pretty.Node_Access :=
         F.New_Compilation_Unit

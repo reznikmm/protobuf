@@ -53,6 +53,10 @@ package body Compiler.Descriptors is
      (Self : Google.Protobuf.Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
+   function Write_Subprogram
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access;
+
    ----------------
    -- Enum_Types --
    ----------------
@@ -701,18 +705,7 @@ package body Compiler.Descriptors is
 
       Read := Read_Subprogram (Self);
 
-      Write := F.New_Subprogram_Body
-        (F.New_Subprogram_Specification
-           (Name          => F.New_Name ("Write_" & My_Name),
-            Parameters    => F.New_List
-              (F.New_Parameter
-                   (Name            => F.New_Name (+"Stream"),
-                    Type_Definition => F.New_Selected_Name
-                      (+"access Ada.Streams.Root_Stream_Type'Class")),
-               F.New_Parameter
-                   (Name            => F.New_Name (+"Value"),
-                    Type_Definition => F.New_Name (My_Name)))),
-         Statements => F.New_Statement);
+      Write := Write_Subprogram (Self);
 
       Result := F.New_List
         ((Count, Getter, Clear, Free, Append, Adjust, Final, Read, Write));
@@ -743,4 +736,108 @@ package body Compiler.Descriptors is
       end if;
    end Type_Name;
 
+   ----------------------
+   -- Write_Subprogram --
+   ----------------------
+
+   function Write_Subprogram
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      My_Name : constant League.Strings.Universal_String := Type_Name (Self);
+      Result  : Ada_Pretty.Node_Access;
+      If_Stmt : Ada_Pretty.Node_Access;
+      Decl    : Ada_Pretty.Node_Access;
+      Stream  : constant Ada_Pretty.Node_Access :=
+        F.New_Selected_Name (+"PB_Support.Internal.Stream");
+      Stmts   : Ada_Pretty.Node_Access;
+      Field   : Ada_Pretty.Node_Access;
+   begin
+      If_Stmt := F.New_If
+        (F.New_List
+           (F.New_Selected_Name (+"Stream.all"),
+            F.New_Infix
+              (+"not in",
+               F.New_Selected_Name (+"PB_Support.Internal.Stream"))),
+         F.New_Block
+           (Declarations => F.New_Variable
+                (Name            => F.New_Name (+"WS"),
+                 Type_Definition => F.New_Apply
+                   (Stream,
+                    F.New_Name (+"Stream")),
+                 Is_Aliased      => True),
+            Statements   => F.New_List
+              (F.New_Statement
+                   (F.New_Apply
+                        (F.New_Name ("Write_" & My_Name),
+                         F.New_List
+                           (F.New_Argument_Association
+                              (F.New_Name (+"WS'Access")),
+                            F.New_Argument_Association
+                              (F.New_Name (+"Value"))))),
+               F.New_Return)));
+
+      Stmts := F.New_Statement
+        (F.New_Apply
+           (F.New_Selected_Name (+"WS.Start_Message"),
+            F.New_Argument_Association
+              (F.New_Name (+"Value'Address"))));
+
+      for J in 1 .. Self.Field.Length loop
+         Field := Compiler.Field_Descriptors.Write_Call (Self.Field.Get (J));
+         Stmts := F.New_List (Stmts, Field);
+      end loop;
+
+      Stmts := F.New_List
+        (Stmts,
+         F.New_If
+           (F.New_Apply
+             (F.New_Selected_Name (+"WS.End_Message"),
+              F.New_List
+                (F.New_Argument_Association
+                   (F.New_Name (+"Value'Address")),
+                 F.New_Argument_Association
+                      (F.New_Name (+"Offset")))),
+            F.New_Statement
+              (F.New_Apply
+                (F.New_Name ("Write_" & My_Name),
+                    F.New_List
+                           (F.New_Argument_Association
+                              (F.New_Name (+"WS'Access")),
+                            F.New_Argument_Association
+                         (F.New_Name (+"Value")))))));
+
+      Decl := F.New_Block
+        (Declarations => F.New_List
+           (F.New_Variable
+              (Name            => F.New_Name (+"WS"),
+               Type_Definition => Stream,
+               Rename          => F.New_Apply
+                 (Stream,
+                  F.New_Argument_Association
+                    (F.New_Selected_Name (+"Stream.all")))),
+            F.New_Variable
+              (Name            => F.New_Name (+"Offset"),
+               Type_Definition => F.New_Selected_Name
+                 (+"Ada.Streams.Stream_Element_Count"),
+               Initialization   =>
+                 F.New_Selected_Name (+"WS.Written"),
+               Is_Constant      => True)),
+         Statements   => Stmts);
+
+      Result := F.New_Subprogram_Body
+        (F.New_Subprogram_Specification
+           (Name          => F.New_Name ("Write_" & My_Name),
+            Parameters    => F.New_List
+              (F.New_Parameter
+                   (Name            => F.New_Name (+"Stream"),
+                    Type_Definition => F.New_Selected_Name
+                      (+"access Ada.Streams.Root_Stream_Type'Class")),
+               F.New_Parameter
+                   (Name            => F.New_Name (+"Value"),
+                    Type_Definition => F.New_Name (My_Name)))),
+         Statements => F.New_List (If_Stmt, Decl));
+
+      return Result;
+   end Write_Subprogram;
 end Compiler.Descriptors;

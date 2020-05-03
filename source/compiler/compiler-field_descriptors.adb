@@ -34,6 +34,7 @@ package body Compiler.Field_Descriptors is
 
    function Type_Name
      (Self        : Google.Protobuf.Field_Descriptor_Proto;
+      Is_Option   : Boolean;
       Is_Repeated : Boolean) return Compiler.Context.Ada_Type_Name;
 
    function Default (X : Google.Protobuf.PB_Type)
@@ -54,6 +55,10 @@ package body Compiler.Field_Descriptors is
      (Self : Google.Protobuf.Field_Descriptor_Proto)
       return League.Strings.Universal_String;
 
+   function Write_Name
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return League.Strings.Universal_String;
+
    ---------------
    -- Component --
    ---------------
@@ -67,10 +72,12 @@ package body Compiler.Field_Descriptors is
       Name : constant League.Strings.Universal_String :=
         Compiler.Context.To_Ada_Name (Self.Name);
       Is_Vector : constant Boolean := Self.Label = LABEL_REPEATED;
+      Is_Option : constant Boolean := Self.Label = LABEL_OPTIONAL;
    begin
       Result := F.New_Variable
         (Name            => F.New_Name (Name),
-         Type_Definition => F.New_Selected_Name (+Type_Name (Self, Is_Vector)),
+         Type_Definition => F.New_Selected_Name
+           (+Type_Name (Self, Is_Option,  Is_Vector)),
          Initialization  => Default (Self));
 
       return Result;
@@ -163,10 +170,10 @@ package body Compiler.Field_Descriptors is
      (Self   : Google.Protobuf.Field_Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set)
    is
-      Is_Vector : constant Boolean :=
-        Self.Label = LABEL_REPEATED;
+      Is_Vector : constant Boolean := Self.Label = LABEL_REPEATED;
+      Is_Option : constant Boolean := Self.Label = LABEL_OPTIONAL;
       My_Pkg    : constant League.Strings.Universal_String :=
-        Type_Name (Self, Is_Vector).Package_Name;
+        Type_Name (Self, Is_Option, Is_Vector).Package_Name;
    begin
       if not My_Pkg.Is_Empty then
          Result.Include (My_Pkg);
@@ -298,8 +305,10 @@ package body Compiler.Field_Descriptors is
    is
       use type League.Strings.Universal_String;
       Result : League.Strings.Universal_String := +"PB_Support.IO.Read_";
-      Tp  : constant Compiler.Context.Ada_Type_Name := Type_Name (Self, False);
-      PB_Type : constant League.Strings.Universal_String := Self.Type_Name;
+      Is_Option : constant Boolean := Self.Label = LABEL_OPTIONAL;
+      PB_Type   : constant League.Strings.Universal_String := Self.Type_Name;
+      Tp        : constant Compiler.Context.Ada_Type_Name :=
+        Type_Name (Self, Is_Option, False);
    begin
       if Compiler.Context.Named_Types.Contains (PB_Type) then
          Result := Compiler.Context.Named_Types (PB_Type).Ada_Type.Type_Name;
@@ -321,6 +330,7 @@ package body Compiler.Field_Descriptors is
 
    function Type_Name
      (Self        : Google.Protobuf.Field_Descriptor_Proto;
+      Is_Option   : Boolean;
       Is_Repeated : Boolean)
       return Compiler.Context.Ada_Type_Name
    is
@@ -341,9 +351,7 @@ package body Compiler.Field_Descriptors is
 
                   if Is_Repeated then
                      Result.Type_Name.Append ("_Vector");
-                  elsif Self.Label = LABEL_OPTIONAL
-                    and Self.PB_Type /= TYPE_ENUM
-                  then
+                  elsif Is_Option and Self.PB_Type /= TYPE_ENUM then
                      Result.Type_Name.Prepend ("Optional_");
                   end if;
                end;
@@ -379,5 +387,110 @@ package body Compiler.Field_Descriptors is
 
       return Result;
    end Type_Name;
+
+   ----------------
+   -- Write_Call --
+   ----------------
+
+   function Write_Call
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      use type Compiler.Context.Ada_Type_Name;
+      use type League.Strings.Universal_String;
+
+      PB_Type : constant League.Strings.Universal_String := Self.Type_Name;
+      Is_Enum : constant Boolean :=
+        Compiler.Context.Named_Types.Contains (PB_Type);
+
+      My_Name : constant League.Strings.Universal_String :=
+        Compiler.Context.To_Ada_Name (Self.Name);
+      Result  : Ada_Pretty.Node_Access;
+      Get     : League.Strings.Universal_String;
+   begin
+      if Is_Message (Self) then
+         if Self.Label = LABEL_REPEATED then
+            Get := +".Get (J)";
+         elsif Self.Label = LABEL_OPTIONAL then
+            Get := +".Value";
+         end if;
+
+         Result := F.New_List
+           (F.New_Statement
+             (F.New_Apply
+               (F.New_Selected_Name (+"WS.Write_Key"),
+                F.New_Argument_Association
+                 (F.New_Parentheses
+                   (F.New_List
+                     (F.New_Argument_Association
+                       (F.New_Literal (Integer (Self.Number))),
+                      F.New_Argument_Association
+                       (F.New_Selected_Name
+                         (+"PB_Support.Length_Delimited"))))))),
+            F.New_Statement
+             (F.New_Apply
+               (F.New_Selected_Name
+                 (+Type_Name (Self, False, False) & "'Write"),
+                F.New_List
+                 (F.New_Name (+"Stream"),
+                  F.New_Selected_Name ("Value." & My_Name & Get)))));
+
+         if Self.Label = LABEL_REPEATED then
+            Result := F.New_For
+              (F.New_Name (+"J"),
+               F.New_Name (+"1 .. Value." & My_Name & ".Length"),
+               Result);
+         elsif Self.Label = LABEL_OPTIONAL then
+            Result := F.New_If
+              (F.New_Selected_Name ("Value." & My_Name & ".Is_Set"),
+               Result);
+         end if;
+      elsif Is_Enum then
+
+         Get := Compiler.Context.Named_Types (PB_Type).Ada_Type.Type_Name;
+         Result := F.New_Statement
+           (F.New_Apply
+             (F.New_Selected_Name (Get & "_IO.Write"),
+              F.New_List
+               ((F.New_Argument_Association (F.New_Name (+"WS")),
+                 F.New_Argument_Association
+                  (F.New_Literal (Integer (Self.Number))),
+                 F.New_Argument_Association
+                  (F.New_Selected_Name ("Value." & My_Name))))));
+
+      else
+
+         Result := F.New_Statement
+           (F.New_Apply
+             (F.New_Selected_Name ("WS." & Write_Name (Self)),
+              F.New_List
+               (F.New_Argument_Association
+                 (F.New_Literal (Integer (Self.Number))),
+                F.New_Argument_Association
+                 (F.New_Selected_Name ("Value." & My_Name)))));
+      end if;
+
+      return Result;
+   end Write_Call;
+
+   ----------------
+   -- Write_Name --
+   ----------------
+
+   function Write_Name
+     (Self : Google.Protobuf.Field_Descriptor_Proto)
+      return League.Strings.Universal_String
+   is
+      use all type Google.Protobuf.PB_Type;
+      Result : League.Strings.Universal_String := +"Write";
+   begin
+      if Self.PB_Type in
+        TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 | TYPE_UINT32
+      then
+         Result.Append ("_Varint");
+      end if;
+
+      return Result;
+   end Write_Name;
 
 end Compiler.Field_Descriptors;

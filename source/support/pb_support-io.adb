@@ -97,6 +97,37 @@ package body PB_Support.IO is
          end if;
       end Read_Vector;
 
+      -----------
+      -- Write --
+      -----------
+
+      procedure Write
+        (Stream : in out Internal.Stream;
+         Field  : Field_Number;
+         Value  : Element)
+      is
+         function Cast is new Ada.Unchecked_Conversion
+           (Element, Integer_Element);
+         Int : constant Integer_Element := Cast (Value);
+      begin
+         Internal.Write_Varint
+           (Stream, Field, Interfaces.Integer_32 (Int));
+      end Write;
+
+      -----------
+      -- Write --
+      -----------
+
+      procedure Write
+        (Stream : in out Internal.Stream;
+         Field  : Field_Number;
+         Value  : Vectors.Vector) is
+      begin
+         for J in 1 .. Value.Length loop
+            Write (Stream, Field, Value.Get (J));
+         end loop;
+      end Write;
+
    end Enum_IO;
 
    ----------------

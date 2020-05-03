@@ -27,27 +27,15 @@ with League.Strings;
 with League.Stream_Element_Vectors;
 with League.String_Vectors;
 
-with PB_Support.Vectors;
 with PB_Support.Boolean_Vectors;
+with PB_Support.Internal;
 with PB_Support.Unsigned_32_Vectors;
+with PB_Support.Vectors;
 
 package PB_Support.IO is
    pragma Preelaborate;
 
-   type Field_Number is range 1 .. 2 ** 29 - 1;
-
-   type Wire_Type is
-     (Var_Int,
-      Fixed_64,
-      Length_Delimited,
-      Start_Group,
-      End_Group,
-      Fixed_32);
-
-   type Key is record
-      Field    : Field_Number;
-      Encoding : Wire_Type;
-   end record;
+   subtype Key is PB_Support.Key;
 
    function Read_Key
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -135,6 +123,16 @@ package PB_Support.IO is
         (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
          Encoding : Wire_Type;
          Value    : in out Vectors.Vector);
+
+      procedure Write
+        (Stream : in out Internal.Stream;
+         Field  : Field_Number;
+         Value  : Element);
+
+      procedure Write
+        (Stream : in out Internal.Stream;
+         Field  : Field_Number;
+         Value  : Vectors.Vector);
    end Enum_IO;
 
    generic
