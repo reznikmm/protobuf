@@ -51,6 +51,68 @@ package Google.Protobuf is
 
    package JSType_Vectors is new PB_Support.Vectors (JSType);
 
+   type Extension_Range_Vector is tagged private;
+
+   type Extension_Range is
+     record
+        Start  : Interfaces.Unsigned_32 := 0;
+        PB_End : Interfaces.Unsigned_32 := 0;
+     end record;
+
+   type Optional_Extension_Range (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Extension_Range;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Extension_Range_Vector) return Natural;
+
+   function Get
+    (Self  : Extension_Range_Vector;
+     Index : Positive)
+      return Extension_Range;
+
+   procedure Clear (Self : in out Extension_Range_Vector);
+
+   procedure Append
+    (Self  : in out Extension_Range_Vector;
+     Value : Extension_Range);
+
+   type Reserved_Range_Vector is tagged private;
+
+   type Reserved_Range is
+     record
+        Start  : Interfaces.Unsigned_32 := 0;
+        PB_End : Interfaces.Unsigned_32 := 0;
+     end record;
+
+   type Optional_Reserved_Range (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Reserved_Range;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Reserved_Range_Vector) return Natural;
+
+   function Get
+    (Self  : Reserved_Range_Vector;
+     Index : Positive)
+      return Reserved_Range;
+
+   procedure Clear (Self : in out Reserved_Range_Vector);
+
+   procedure Append
+    (Self  : in out Reserved_Range_Vector;
+     Value : Reserved_Range);
+
    type Name_Part_Vector is tagged private;
 
    type Name_Part is
@@ -114,578 +176,6 @@ package Google.Protobuf is
     (Self  : in out Uninterpreted_Option_Vector;
      Value : Uninterpreted_Option);
 
-   type Field_Options_Vector is tagged private;
-
-   type Field_Options is
-     record
-        Ctype                : Google.Protobuf.CType := Google.Protobuf.STRING;
-        Packed               : Boolean := False;
-        Jstype               : Google.Protobuf.JSType :=
-          Google.Protobuf.JS_NORMAL;
-        Lazy                 : Boolean := False;
-        Deprecated           : Boolean := False;
-        Weak                 : Boolean := False;
-        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Field_Options (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Field_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Field_Options_Vector) return Natural;
-
-   function Get
-    (Self  : Field_Options_Vector;
-     Index : Positive)
-      return Field_Options;
-
-   procedure Clear (Self : in out Field_Options_Vector);
-
-   procedure Append
-    (Self  : in out Field_Options_Vector;
-     Value : Field_Options);
-
-   type Field_Descriptor_Proto_Vector is tagged private;
-
-   type Field_Descriptor_Proto is
-     record
-        Name          : League.Strings.Universal_String;
-        Number        : Interfaces.Unsigned_32 := 0;
-        Label         : Google.Protobuf.Label :=
-          Google.Protobuf.LABEL_OPTIONAL;
-        PB_Type       : Google.Protobuf.PB_Type := Google.Protobuf.TYPE_DOUBLE;
-        Type_Name     : League.Strings.Universal_String;
-        Extendee      : League.Strings.Universal_String;
-        Default_Value : League.Strings.Universal_String;
-        Oneof_Index   : Interfaces.Unsigned_32 := 0;
-        Json_Name     : League.Strings.Universal_String;
-        Options       : Google.Protobuf.Optional_Field_Options;
-     end record;
-
-   type Optional_Field_Descriptor_Proto (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Field_Descriptor_Proto;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Field_Descriptor_Proto_Vector) return Natural;
-
-   function Get
-    (Self  : Field_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Field_Descriptor_Proto;
-
-   procedure Clear (Self : in out Field_Descriptor_Proto_Vector);
-
-   procedure Append
-    (Self  : in out Field_Descriptor_Proto_Vector;
-     Value : Field_Descriptor_Proto);
-
-   type Enum_Value_Options_Vector is tagged private;
-
-   type Enum_Value_Options is
-     record
-        Deprecated           : Boolean := False;
-        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Enum_Value_Options (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Enum_Value_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Enum_Value_Options_Vector) return Natural;
-
-   function Get
-    (Self  : Enum_Value_Options_Vector;
-     Index : Positive)
-      return Enum_Value_Options;
-
-   procedure Clear (Self : in out Enum_Value_Options_Vector);
-
-   procedure Append
-    (Self  : in out Enum_Value_Options_Vector;
-     Value : Enum_Value_Options);
-
-   type Enum_Value_Descriptor_Proto_Vector is tagged private;
-
-   type Enum_Value_Descriptor_Proto is
-     record
-        Name    : League.Strings.Universal_String;
-        Number  : Interfaces.Unsigned_32 := 0;
-        Options : Google.Protobuf.Optional_Enum_Value_Options;
-     end record;
-
-   type Optional_Enum_Value_Descriptor_Proto (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Enum_Value_Descriptor_Proto;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Enum_Value_Descriptor_Proto_Vector) return Natural;
-
-   function Get
-    (Self  : Enum_Value_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Enum_Value_Descriptor_Proto;
-
-   procedure Clear (Self : in out Enum_Value_Descriptor_Proto_Vector);
-
-   procedure Append
-    (Self  : in out Enum_Value_Descriptor_Proto_Vector;
-     Value : Enum_Value_Descriptor_Proto);
-
-   type Enum_Options_Vector is tagged private;
-
-   type Enum_Options is
-     record
-        Allow_Alias          : Boolean := False;
-        Deprecated           : Boolean := False;
-        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Enum_Options (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Enum_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Enum_Options_Vector) return Natural;
-
-   function Get
-    (Self  : Enum_Options_Vector;
-     Index : Positive)
-      return Enum_Options;
-
-   procedure Clear (Self : in out Enum_Options_Vector);
-
-   procedure Append (Self  : in out Enum_Options_Vector; Value : Enum_Options);
-
-   type Enum_Descriptor_Proto_Vector is tagged private;
-
-   type Enum_Descriptor_Proto is
-     record
-        Name    : League.Strings.Universal_String;
-        Value   : Google.Protobuf.Enum_Value_Descriptor_Proto_Vector;
-        Options : Google.Protobuf.Optional_Enum_Options;
-     end record;
-
-   type Optional_Enum_Descriptor_Proto (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Enum_Descriptor_Proto;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Enum_Descriptor_Proto_Vector) return Natural;
-
-   function Get
-    (Self  : Enum_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Enum_Descriptor_Proto;
-
-   procedure Clear (Self : in out Enum_Descriptor_Proto_Vector);
-
-   procedure Append
-    (Self  : in out Enum_Descriptor_Proto_Vector;
-     Value : Enum_Descriptor_Proto);
-
-   type Extension_Range_Vector is tagged private;
-
-   type Extension_Range is
-     record
-        Start  : Interfaces.Unsigned_32 := 0;
-        PB_End : Interfaces.Unsigned_32 := 0;
-     end record;
-
-   type Optional_Extension_Range (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Extension_Range;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Extension_Range_Vector) return Natural;
-
-   function Get
-    (Self  : Extension_Range_Vector;
-     Index : Positive)
-      return Extension_Range;
-
-   procedure Clear (Self : in out Extension_Range_Vector);
-
-   procedure Append
-    (Self  : in out Extension_Range_Vector;
-     Value : Extension_Range);
-
-   type Oneof_Options_Vector is tagged private;
-
-   type Oneof_Options is
-     record
-        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Oneof_Options (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Oneof_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Oneof_Options_Vector) return Natural;
-
-   function Get
-    (Self  : Oneof_Options_Vector;
-     Index : Positive)
-      return Oneof_Options;
-
-   procedure Clear (Self : in out Oneof_Options_Vector);
-
-   procedure Append
-    (Self  : in out Oneof_Options_Vector;
-     Value : Oneof_Options);
-
-   type Oneof_Descriptor_Proto_Vector is tagged private;
-
-   type Oneof_Descriptor_Proto is
-     record
-        Name    : League.Strings.Universal_String;
-        Options : Google.Protobuf.Optional_Oneof_Options;
-     end record;
-
-   type Optional_Oneof_Descriptor_Proto (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Oneof_Descriptor_Proto;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Oneof_Descriptor_Proto_Vector) return Natural;
-
-   function Get
-    (Self  : Oneof_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Oneof_Descriptor_Proto;
-
-   procedure Clear (Self : in out Oneof_Descriptor_Proto_Vector);
-
-   procedure Append
-    (Self  : in out Oneof_Descriptor_Proto_Vector;
-     Value : Oneof_Descriptor_Proto);
-
-   type Message_Options_Vector is tagged private;
-
-   type Message_Options is
-     record
-        Message_Set_Wire_Format         : Boolean := False;
-        No_Standard_Descriptor_Accessor : Boolean := False;
-        Deprecated                      : Boolean := False;
-        Map_Entry                       : Boolean := False;
-        Uninterpreted_Option            : Google.Protobuf
-          .Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Message_Options (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Message_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Message_Options_Vector) return Natural;
-
-   function Get
-    (Self  : Message_Options_Vector;
-     Index : Positive)
-      return Message_Options;
-
-   procedure Clear (Self : in out Message_Options_Vector);
-
-   procedure Append
-    (Self  : in out Message_Options_Vector;
-     Value : Message_Options);
-
-   type Reserved_Range_Vector is tagged private;
-
-   type Reserved_Range is
-     record
-        Start  : Interfaces.Unsigned_32 := 0;
-        PB_End : Interfaces.Unsigned_32 := 0;
-     end record;
-
-   type Optional_Reserved_Range (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Reserved_Range;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Reserved_Range_Vector) return Natural;
-
-   function Get
-    (Self  : Reserved_Range_Vector;
-     Index : Positive)
-      return Reserved_Range;
-
-   procedure Clear (Self : in out Reserved_Range_Vector);
-
-   procedure Append
-    (Self  : in out Reserved_Range_Vector;
-     Value : Reserved_Range);
-
-   type Descriptor_Proto_Vector is tagged private;
-
-   type Descriptor_Proto is
-     record
-        Name            : League.Strings.Universal_String;
-        Field           : Google.Protobuf.Field_Descriptor_Proto_Vector;
-        Extension       : Google.Protobuf.Field_Descriptor_Proto_Vector;
-        Nested_Type     : Google.Protobuf.Descriptor_Proto_Vector;
-        Enum_Type       : Google.Protobuf.Enum_Descriptor_Proto_Vector;
-        Extension_Range : Google.Protobuf.Extension_Range_Vector;
-        Oneof_Decl      : Google.Protobuf.Oneof_Descriptor_Proto_Vector;
-        Options         : Google.Protobuf.Optional_Message_Options;
-        Reserved_Range  : Google.Protobuf.Reserved_Range_Vector;
-        Reserved_Name   : League.String_Vectors.Universal_String_Vector;
-     end record;
-
-   type Optional_Descriptor_Proto (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Descriptor_Proto;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Descriptor_Proto_Vector) return Natural;
-
-   function Get
-    (Self  : Descriptor_Proto_Vector;
-     Index : Positive)
-      return Descriptor_Proto;
-
-   procedure Clear (Self : in out Descriptor_Proto_Vector);
-
-   procedure Append
-    (Self  : in out Descriptor_Proto_Vector;
-     Value : Descriptor_Proto);
-
-   type Method_Options_Vector is tagged private;
-
-   type Method_Options is
-     record
-        Deprecated           : Boolean := False;
-        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Method_Options (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Method_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Method_Options_Vector) return Natural;
-
-   function Get
-    (Self  : Method_Options_Vector;
-     Index : Positive)
-      return Method_Options;
-
-   procedure Clear (Self : in out Method_Options_Vector);
-
-   procedure Append
-    (Self  : in out Method_Options_Vector;
-     Value : Method_Options);
-
-   type Method_Descriptor_Proto_Vector is tagged private;
-
-   type Method_Descriptor_Proto is
-     record
-        Name             : League.Strings.Universal_String;
-        Input_Type       : League.Strings.Universal_String;
-        Output_Type      : League.Strings.Universal_String;
-        Options          : Google.Protobuf.Optional_Method_Options;
-        Client_Streaming : Boolean := False;
-        Server_Streaming : Boolean := False;
-     end record;
-
-   type Optional_Method_Descriptor_Proto (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Method_Descriptor_Proto;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Method_Descriptor_Proto_Vector) return Natural;
-
-   function Get
-    (Self  : Method_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Method_Descriptor_Proto;
-
-   procedure Clear (Self : in out Method_Descriptor_Proto_Vector);
-
-   procedure Append
-    (Self  : in out Method_Descriptor_Proto_Vector;
-     Value : Method_Descriptor_Proto);
-
-   type Service_Options_Vector is tagged private;
-
-   type Service_Options is
-     record
-        Deprecated           : Boolean := False;
-        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Service_Options (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Service_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Service_Options_Vector) return Natural;
-
-   function Get
-    (Self  : Service_Options_Vector;
-     Index : Positive)
-      return Service_Options;
-
-   procedure Clear (Self : in out Service_Options_Vector);
-
-   procedure Append
-    (Self  : in out Service_Options_Vector;
-     Value : Service_Options);
-
-   type Service_Descriptor_Proto_Vector is tagged private;
-
-   type Service_Descriptor_Proto is
-     record
-        Name    : League.Strings.Universal_String;
-        Method  : Google.Protobuf.Method_Descriptor_Proto_Vector;
-        Options : Google.Protobuf.Optional_Service_Options;
-     end record;
-
-   type Optional_Service_Descriptor_Proto (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Service_Descriptor_Proto;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Service_Descriptor_Proto_Vector) return Natural;
-
-   function Get
-    (Self  : Service_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Service_Descriptor_Proto;
-
-   procedure Clear (Self : in out Service_Descriptor_Proto_Vector);
-
-   procedure Append
-    (Self  : in out Service_Descriptor_Proto_Vector;
-     Value : Service_Descriptor_Proto);
-
-   type File_Options_Vector is tagged private;
-
-   type File_Options is
-     record
-        Java_Package                  : League.Strings.Universal_String;
-        Java_Outer_Classname          : League.Strings.Universal_String;
-        Java_Multiple_Files           : Boolean := False;
-        Java_Generate_Equals_And_Hash : Boolean := False;
-        Java_String_Check_Utf_8       : Boolean := False;
-        Optimize_For                  : Google.Protobuf.Optimize_Mode :=
-          Google.Protobuf.SPEED;
-        Go_Package                    : League.Strings.Universal_String;
-        Cc_Generic_Services           : Boolean := False;
-        Java_Generic_Services         : Boolean := False;
-        Py_Generic_Services           : Boolean := False;
-        Deprecated                    : Boolean := False;
-        Cc_Enable_Arenas              : Boolean := False;
-        Objc_Class_Prefix             : League.Strings.Universal_String;
-        Csharp_Namespace              : League.Strings.Universal_String;
-        Uninterpreted_Option          : Google.Protobuf
-          .Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_File_Options (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : File_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : File_Options_Vector) return Natural;
-
-   function Get
-    (Self  : File_Options_Vector;
-     Index : Positive)
-      return File_Options;
-
-   procedure Clear (Self : in out File_Options_Vector);
-
-   procedure Append (Self  : in out File_Options_Vector; Value : File_Options);
-
    type Location_Vector is tagged private;
 
    type Location is
@@ -745,6 +235,577 @@ package Google.Protobuf is
    procedure Append
     (Self  : in out Source_Code_Info_Vector;
      Value : Source_Code_Info);
+
+   type Annotation_Vector is tagged private;
+
+   type Annotation is
+     record
+        Path        : PB_Support.Unsigned_32_Vectors.Vector;
+        Source_File : League.Strings.Universal_String;
+        PB_Begin    : Interfaces.Unsigned_32 := 0;
+        PB_End      : Interfaces.Unsigned_32 := 0;
+     end record;
+
+   type Optional_Annotation (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Annotation;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Annotation_Vector) return Natural;
+
+   function Get
+    (Self  : Annotation_Vector;
+     Index : Positive)
+      return Annotation;
+
+   procedure Clear (Self : in out Annotation_Vector);
+
+   procedure Append (Self  : in out Annotation_Vector; Value : Annotation);
+
+   type Generated_Code_Info_Vector is tagged private;
+
+   type Generated_Code_Info is
+     record
+        Annotation : Google.Protobuf.Annotation_Vector;
+     end record;
+
+   type Optional_Generated_Code_Info (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Generated_Code_Info;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Generated_Code_Info_Vector) return Natural;
+
+   function Get
+    (Self  : Generated_Code_Info_Vector;
+     Index : Positive)
+      return Generated_Code_Info;
+
+   procedure Clear (Self : in out Generated_Code_Info_Vector);
+
+   procedure Append
+    (Self  : in out Generated_Code_Info_Vector;
+     Value : Generated_Code_Info);
+
+   type File_Options_Vector is tagged private;
+
+   type File_Options is
+     record
+        Java_Package                  : League.Strings.Universal_String;
+        Java_Outer_Classname          : League.Strings.Universal_String;
+        Java_Multiple_Files           : Boolean := False;
+        Java_Generate_Equals_And_Hash : Boolean := False;
+        Java_String_Check_Utf_8       : Boolean := False;
+        Optimize_For                  : Google.Protobuf.Optimize_Mode :=
+          Google.Protobuf.SPEED;
+        Go_Package                    : League.Strings.Universal_String;
+        Cc_Generic_Services           : Boolean := False;
+        Java_Generic_Services         : Boolean := False;
+        Py_Generic_Services           : Boolean := False;
+        Deprecated                    : Boolean := False;
+        Cc_Enable_Arenas              : Boolean := False;
+        Objc_Class_Prefix             : League.Strings.Universal_String;
+        Csharp_Namespace              : League.Strings.Universal_String;
+        Uninterpreted_Option          : Google.Protobuf
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_File_Options (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : File_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : File_Options_Vector) return Natural;
+
+   function Get
+    (Self  : File_Options_Vector;
+     Index : Positive)
+      return File_Options;
+
+   procedure Clear (Self : in out File_Options_Vector);
+
+   procedure Append (Self  : in out File_Options_Vector; Value : File_Options);
+
+   type Message_Options_Vector is tagged private;
+
+   type Message_Options is
+     record
+        Message_Set_Wire_Format         : Boolean := False;
+        No_Standard_Descriptor_Accessor : Boolean := False;
+        Deprecated                      : Boolean := False;
+        Map_Entry                       : Boolean := False;
+        Uninterpreted_Option            : Google.Protobuf
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Message_Options (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Message_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Message_Options_Vector) return Natural;
+
+   function Get
+    (Self  : Message_Options_Vector;
+     Index : Positive)
+      return Message_Options;
+
+   procedure Clear (Self : in out Message_Options_Vector);
+
+   procedure Append
+    (Self  : in out Message_Options_Vector;
+     Value : Message_Options);
+
+   type Field_Options_Vector is tagged private;
+
+   type Field_Options is
+     record
+        Ctype                : Google.Protobuf.CType := Google.Protobuf.STRING;
+        Packed               : Boolean := False;
+        Jstype               : Google.Protobuf.JSType :=
+          Google.Protobuf.JS_NORMAL;
+        Lazy                 : Boolean := False;
+        Deprecated           : Boolean := False;
+        Weak                 : Boolean := False;
+        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Field_Options (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Field_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Field_Options_Vector) return Natural;
+
+   function Get
+    (Self  : Field_Options_Vector;
+     Index : Positive)
+      return Field_Options;
+
+   procedure Clear (Self : in out Field_Options_Vector);
+
+   procedure Append
+    (Self  : in out Field_Options_Vector;
+     Value : Field_Options);
+
+   type Oneof_Options_Vector is tagged private;
+
+   type Oneof_Options is
+     record
+        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Oneof_Options (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Oneof_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Oneof_Options_Vector) return Natural;
+
+   function Get
+    (Self  : Oneof_Options_Vector;
+     Index : Positive)
+      return Oneof_Options;
+
+   procedure Clear (Self : in out Oneof_Options_Vector);
+
+   procedure Append
+    (Self  : in out Oneof_Options_Vector;
+     Value : Oneof_Options);
+
+   type Enum_Options_Vector is tagged private;
+
+   type Enum_Options is
+     record
+        Allow_Alias          : Boolean := False;
+        Deprecated           : Boolean := False;
+        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Enum_Options (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Enum_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Enum_Options_Vector) return Natural;
+
+   function Get
+    (Self  : Enum_Options_Vector;
+     Index : Positive)
+      return Enum_Options;
+
+   procedure Clear (Self : in out Enum_Options_Vector);
+
+   procedure Append (Self  : in out Enum_Options_Vector; Value : Enum_Options);
+
+   type Enum_Value_Options_Vector is tagged private;
+
+   type Enum_Value_Options is
+     record
+        Deprecated           : Boolean := False;
+        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Enum_Value_Options (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Enum_Value_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Enum_Value_Options_Vector) return Natural;
+
+   function Get
+    (Self  : Enum_Value_Options_Vector;
+     Index : Positive)
+      return Enum_Value_Options;
+
+   procedure Clear (Self : in out Enum_Value_Options_Vector);
+
+   procedure Append
+    (Self  : in out Enum_Value_Options_Vector;
+     Value : Enum_Value_Options);
+
+   type Service_Options_Vector is tagged private;
+
+   type Service_Options is
+     record
+        Deprecated           : Boolean := False;
+        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Service_Options (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Service_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Service_Options_Vector) return Natural;
+
+   function Get
+    (Self  : Service_Options_Vector;
+     Index : Positive)
+      return Service_Options;
+
+   procedure Clear (Self : in out Service_Options_Vector);
+
+   procedure Append
+    (Self  : in out Service_Options_Vector;
+     Value : Service_Options);
+
+   type Method_Options_Vector is tagged private;
+
+   type Method_Options is
+     record
+        Deprecated           : Boolean := False;
+        Uninterpreted_Option : Google.Protobuf.Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Method_Options (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Method_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Method_Options_Vector) return Natural;
+
+   function Get
+    (Self  : Method_Options_Vector;
+     Index : Positive)
+      return Method_Options;
+
+   procedure Clear (Self : in out Method_Options_Vector);
+
+   procedure Append
+    (Self  : in out Method_Options_Vector;
+     Value : Method_Options);
+
+   type Field_Descriptor_Proto_Vector is tagged private;
+
+   type Field_Descriptor_Proto is
+     record
+        Name          : League.Strings.Universal_String;
+        Number        : Interfaces.Unsigned_32 := 0;
+        Label         : Google.Protobuf.Label :=
+          Google.Protobuf.LABEL_OPTIONAL;
+        PB_Type       : Google.Protobuf.PB_Type := Google.Protobuf.TYPE_DOUBLE;
+        Type_Name     : League.Strings.Universal_String;
+        Extendee      : League.Strings.Universal_String;
+        Default_Value : League.Strings.Universal_String;
+        Oneof_Index   : Interfaces.Unsigned_32 := 0;
+        Json_Name     : League.Strings.Universal_String;
+        Options       : Google.Protobuf.Optional_Field_Options;
+     end record;
+
+   type Optional_Field_Descriptor_Proto (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Field_Descriptor_Proto;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Field_Descriptor_Proto_Vector) return Natural;
+
+   function Get
+    (Self  : Field_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Field_Descriptor_Proto;
+
+   procedure Clear (Self : in out Field_Descriptor_Proto_Vector);
+
+   procedure Append
+    (Self  : in out Field_Descriptor_Proto_Vector;
+     Value : Field_Descriptor_Proto);
+
+   type Oneof_Descriptor_Proto_Vector is tagged private;
+
+   type Oneof_Descriptor_Proto is
+     record
+        Name    : League.Strings.Universal_String;
+        Options : Google.Protobuf.Optional_Oneof_Options;
+     end record;
+
+   type Optional_Oneof_Descriptor_Proto (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Oneof_Descriptor_Proto;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Oneof_Descriptor_Proto_Vector) return Natural;
+
+   function Get
+    (Self  : Oneof_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Oneof_Descriptor_Proto;
+
+   procedure Clear (Self : in out Oneof_Descriptor_Proto_Vector);
+
+   procedure Append
+    (Self  : in out Oneof_Descriptor_Proto_Vector;
+     Value : Oneof_Descriptor_Proto);
+
+   type Enum_Value_Descriptor_Proto_Vector is tagged private;
+
+   type Enum_Value_Descriptor_Proto is
+     record
+        Name    : League.Strings.Universal_String;
+        Number  : Interfaces.Unsigned_32 := 0;
+        Options : Google.Protobuf.Optional_Enum_Value_Options;
+     end record;
+
+   type Optional_Enum_Value_Descriptor_Proto (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Enum_Value_Descriptor_Proto;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Enum_Value_Descriptor_Proto_Vector) return Natural;
+
+   function Get
+    (Self  : Enum_Value_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Value_Descriptor_Proto;
+
+   procedure Clear (Self : in out Enum_Value_Descriptor_Proto_Vector);
+
+   procedure Append
+    (Self  : in out Enum_Value_Descriptor_Proto_Vector;
+     Value : Enum_Value_Descriptor_Proto);
+
+   type Method_Descriptor_Proto_Vector is tagged private;
+
+   type Method_Descriptor_Proto is
+     record
+        Name             : League.Strings.Universal_String;
+        Input_Type       : League.Strings.Universal_String;
+        Output_Type      : League.Strings.Universal_String;
+        Options          : Google.Protobuf.Optional_Method_Options;
+        Client_Streaming : Boolean := False;
+        Server_Streaming : Boolean := False;
+     end record;
+
+   type Optional_Method_Descriptor_Proto (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Method_Descriptor_Proto;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Method_Descriptor_Proto_Vector) return Natural;
+
+   function Get
+    (Self  : Method_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Method_Descriptor_Proto;
+
+   procedure Clear (Self : in out Method_Descriptor_Proto_Vector);
+
+   procedure Append
+    (Self  : in out Method_Descriptor_Proto_Vector;
+     Value : Method_Descriptor_Proto);
+
+   type Enum_Descriptor_Proto_Vector is tagged private;
+
+   type Enum_Descriptor_Proto is
+     record
+        Name    : League.Strings.Universal_String;
+        Value   : Google.Protobuf.Enum_Value_Descriptor_Proto_Vector;
+        Options : Google.Protobuf.Optional_Enum_Options;
+     end record;
+
+   type Optional_Enum_Descriptor_Proto (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Enum_Descriptor_Proto;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Enum_Descriptor_Proto_Vector) return Natural;
+
+   function Get
+    (Self  : Enum_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Descriptor_Proto;
+
+   procedure Clear (Self : in out Enum_Descriptor_Proto_Vector);
+
+   procedure Append
+    (Self  : in out Enum_Descriptor_Proto_Vector;
+     Value : Enum_Descriptor_Proto);
+
+   type Service_Descriptor_Proto_Vector is tagged private;
+
+   type Service_Descriptor_Proto is
+     record
+        Name    : League.Strings.Universal_String;
+        Method  : Google.Protobuf.Method_Descriptor_Proto_Vector;
+        Options : Google.Protobuf.Optional_Service_Options;
+     end record;
+
+   type Optional_Service_Descriptor_Proto (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Service_Descriptor_Proto;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Service_Descriptor_Proto_Vector) return Natural;
+
+   function Get
+    (Self  : Service_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Service_Descriptor_Proto;
+
+   procedure Clear (Self : in out Service_Descriptor_Proto_Vector);
+
+   procedure Append
+    (Self  : in out Service_Descriptor_Proto_Vector;
+     Value : Service_Descriptor_Proto);
+
+   type Descriptor_Proto_Vector is tagged private;
+
+   type Descriptor_Proto is
+     record
+        Name            : League.Strings.Universal_String;
+        Field           : Google.Protobuf.Field_Descriptor_Proto_Vector;
+        Extension       : Google.Protobuf.Field_Descriptor_Proto_Vector;
+        Nested_Type     : Google.Protobuf.Descriptor_Proto_Vector;
+        Enum_Type       : Google.Protobuf.Enum_Descriptor_Proto_Vector;
+        Extension_Range : Google.Protobuf.Extension_Range_Vector;
+        Oneof_Decl      : Google.Protobuf.Oneof_Descriptor_Proto_Vector;
+        Options         : Google.Protobuf.Optional_Message_Options;
+        Reserved_Range  : Google.Protobuf.Reserved_Range_Vector;
+        Reserved_Name   : League.String_Vectors.Universal_String_Vector;
+     end record;
+
+   type Optional_Descriptor_Proto (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Descriptor_Proto;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Descriptor_Proto_Vector) return Natural;
+
+   function Get
+    (Self  : Descriptor_Proto_Vector;
+     Index : Positive)
+      return Descriptor_Proto;
+
+   procedure Clear (Self : in out Descriptor_Proto_Vector);
+
+   procedure Append
+    (Self  : in out Descriptor_Proto_Vector;
+     Value : Descriptor_Proto);
 
    type File_Descriptor_Proto_Vector is tagged private;
 
@@ -816,67 +877,6 @@ package Google.Protobuf is
    procedure Append
     (Self  : in out File_Descriptor_Set_Vector;
      Value : File_Descriptor_Set);
-
-   type Annotation_Vector is tagged private;
-
-   type Annotation is
-     record
-        Path        : PB_Support.Unsigned_32_Vectors.Vector;
-        Source_File : League.Strings.Universal_String;
-        PB_Begin    : Interfaces.Unsigned_32 := 0;
-        PB_End      : Interfaces.Unsigned_32 := 0;
-     end record;
-
-   type Optional_Annotation (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Annotation;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Annotation_Vector) return Natural;
-
-   function Get
-    (Self  : Annotation_Vector;
-     Index : Positive)
-      return Annotation;
-
-   procedure Clear (Self : in out Annotation_Vector);
-
-   procedure Append (Self  : in out Annotation_Vector; Value : Annotation);
-
-   type Generated_Code_Info_Vector is tagged private;
-
-   type Generated_Code_Info is
-     record
-        Annotation : Google.Protobuf.Annotation_Vector;
-     end record;
-
-   type Optional_Generated_Code_Info (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Generated_Code_Info;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Generated_Code_Info_Vector) return Natural;
-
-   function Get
-    (Self  : Generated_Code_Info_Vector;
-     Index : Positive)
-      return Generated_Code_Info;
-
-   procedure Clear (Self : in out Generated_Code_Info_Vector);
-
-   procedure Append
-    (Self  : in out Generated_Code_Info_Vector;
-     Value : Generated_Code_Info);
 private
 
    procedure Read_File_Descriptor_Set
