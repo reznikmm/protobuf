@@ -359,6 +359,7 @@ package body Compiler.File_Descriptors is
 
          Result : Ada_Pretty.Node_Access;
          Next   : Ada_Pretty.Node_Access;
+         Vector : Ada_Pretty.Node_Access;
          Done   : Compiler.Context.String_Sets.Set;
          Again  : Boolean := True;
       begin
@@ -382,8 +383,15 @@ package body Compiler.File_Descriptors is
                if Next /= null then
                   Result := F.New_List (Result, Next);
                end if;
+
+               Next := Compiler.Descriptors.Vector_Declarations (Item);
+               Vector := F.New_List (Vector, Next);
             end;
          end loop;
+
+         if Vector /= null then
+            Result := F.New_List (Result, Vector);
+         end if;
 
          while Again loop
             Again := False;

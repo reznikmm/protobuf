@@ -57,6 +57,11 @@ package Compiler.Descriptors is
       Again  : in out Boolean;
       Done   : in out Compiler.Context.String_Sets.Set);
 
+   function Vector_Declarations
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access;
+   --  Return list of vector type declarations
+
    function Private_Spec
      (Self : Google.Protobuf.Descriptor_Proto)
       return Ada_Pretty.Node_Access;

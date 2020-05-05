@@ -93,9 +93,7 @@ package body Compiler.Descriptors is
    function Check_Dependency
      (Self   : Google.Protobuf.Descriptor_Proto;
       Pkg    : League.Strings.Universal_String;
-      Done   : Compiler.Context.String_Sets.Set) return Boolean
-   is
-      Name : constant League.Strings.Universal_String := Type_Name (Self);
+      Done   : Compiler.Context.String_Sets.Set) return Boolean is
    begin
       for J in 1 .. Self.Field.Length loop
          declare
@@ -114,8 +112,7 @@ package body Compiler.Descriptors is
                if not (Done.Contains (Named_Type.Ada_Type.Type_Name)
                        or else Named_Type.Is_Enumeration
                        or else Named_Type.Ada_Type.Package_Name /= Pkg
-                       or else (Named_Type.Ada_Type.Type_Name = Name
-                                and Field.Label = LABEL_REPEATED))
+                       or else Field.Label = LABEL_REPEATED)
                then
                   return False;
                end if;
@@ -331,7 +328,6 @@ package body Compiler.Descriptors is
       V_Name : Ada_Pretty.Node_Access;
       P_Self : Ada_Pretty.Node_Access;
       Is_Set : Ada_Pretty.Node_Access;
-      Vector : Ada_Pretty.Node_Access;
       Getter : Ada_Pretty.Node_Access;
       Count  : Ada_Pretty.Node_Access;
       Clear  : Ada_Pretty.Node_Access;
@@ -372,11 +368,6 @@ package body Compiler.Descriptors is
                      List   => F.New_Statement)))));
 
       V_Name := F.New_Name (My_Name & "_Vector");
-
-      Vector := F.New_Type
-        (Name        => V_Name,
-         Definition  => F.New_Private_Record
-           (Is_Tagged   => True));
 
       P_Self := F.New_Name (+"Self");
 
@@ -422,7 +413,7 @@ package body Compiler.Descriptors is
                  (F.New_Name (+"Value"), Me))));
 
       Result := F.New_List
-        ((Vector, Result, Option, Count, Getter, Clear, Append));
+        ((Result, Option, Count, Getter, Clear, Append));
 
       return Result;
    end Public_Spec;
@@ -735,6 +726,32 @@ package body Compiler.Descriptors is
          return Result;
       end if;
    end Type_Name;
+
+   -------------------------
+   -- Vector_Declarations --
+   -------------------------
+
+   function Vector_Declarations
+     (Self : Google.Protobuf.Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      My_Name : constant League.Strings.Universal_String := Type_Name (Self);
+      Result  : Ada_Pretty.Node_Access;
+      Item    : Ada_Pretty.Node_Access;
+   begin
+      Result := F.New_Type
+        (Name        => F.New_Name (My_Name & "_Vector"),
+         Definition  => F.New_Private_Record
+           (Is_Tagged   => True));
+
+      for J in 1 .. Self.Nested_Type.Length loop
+         Item := Vector_Declarations (Self.Nested_Type.Get (J));
+
+         Result := F.New_List (Result, Item);
+      end loop;
+
+      return Result;
+   end Vector_Declarations;
 
    ----------------------
    -- Write_Subprogram --
