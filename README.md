@@ -34,6 +34,7 @@ Example:
 PATH=.:$PATH protoc --ada_out=/tmp/ /usr/include/google/protobuf/descriptor.proto
 ```
 
+See more details in [Ada Generated Code](docs/generated_code.md) document.
 
 ## Maintainer
 
