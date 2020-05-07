@@ -74,17 +74,21 @@ begin
          declare
             Item : Google.Protobuf.Compiler.Plugin.File;
          begin
-            Item.Name := Base & ".ads";
-            Item.Content := Compiler.File_Descriptors.Specification_Text
-              (File, Request);
+            Item.Name := (True, Base & ".ads");
+            Item.Content :=
+              (Is_Set => True,
+               Value  => Compiler.File_Descriptors.Specification_Text
+                 (File, Request));
             Result.File.Append (Item);
          end;
 
          declare
             Item : Google.Protobuf.Compiler.Plugin.File;
          begin
-            Item.Name := Base & ".adb";
-            Item.Content := Compiler.File_Descriptors.Body_Text (File);
+            Item.Name := (True, Base & ".adb");
+            Item.Content :=
+              (Is_Set => True,
+               Value  => Compiler.File_Descriptors.Body_Text (File));
             Result.File.Append (Item);
          end;
       end;

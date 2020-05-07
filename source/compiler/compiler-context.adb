@@ -60,9 +60,14 @@ package body Compiler.Context is
       use type League.Strings.Universal_String;
    begin
       for J in 1 .. Request.Proto_File.Length loop
-         if Request.Proto_File.Get (J).Name = Name then
-            return Request.Proto_File.Get (J);
-         end if;
+         declare
+            Result : constant Google.Protobuf.Descriptor.File_Descriptor_Proto
+              := Request.Proto_File.Get (J);
+         begin
+            if Result.Name.Is_Set and then Result.Name.Value = Name then
+               return Result;
+            end if;
+         end;
       end loop;
 
       raise Constraint_Error;

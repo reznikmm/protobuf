@@ -75,7 +75,8 @@ package body Compiler.Enum_Descriptors is
       use type League.Strings.Universal_String;
 
       Name  : constant League.Strings.Universal_String := Type_Name (Self);
-      Literal : League.Strings.Universal_String := Self.Value.Get (Index).Name;
+      Literal : League.Strings.Universal_String :=
+        Self.Value.Get (Index).Name.Value;
    begin
       if Literal.To_Lowercase = Name.To_Lowercase then
          Literal.Prepend ("PB_");
@@ -91,11 +92,11 @@ package body Compiler.Enum_Descriptors is
    function Max_Value
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer
    is
-      Result : Integer := Integer (Self.Value.Get (1).Number);
+      Result : Integer := Integer (Self.Value.Get (1).Number.Value);
       Next   : Integer;
    begin
       for J in 2 .. Self.Value.Length loop
-         Next := Integer (Self.Value.Get (J).Number);
+         Next := Integer (Self.Value.Get (J).Number.Value);
          Result := Integer'Max (Result, Next);
       end loop;
 
@@ -109,11 +110,11 @@ package body Compiler.Enum_Descriptors is
    function Min_Value
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer
    is
-      Result : Integer := Integer (Self.Value.Get (1).Number);
+      Result : Integer := Integer (Self.Value.Get (1).Number.Value);
       Next   : Integer;
    begin
       for J in 2 .. Self.Value.Length loop
-         Next := Integer (Self.Value.Get (J).Number);
+         Next := Integer (Self.Value.Get (J).Number.Value);
          Result := Integer'Min (Result, Next);
       end loop;
 
@@ -144,7 +145,11 @@ package body Compiler.Enum_Descriptors is
             Default => Default (Self)));
    begin
       Key.Append (".");
-      Key.Append (Self.Name);
+
+      if Self.Name.Is_Set then
+         Key.Append (Self.Name.Value);
+      end if;
+
       Map.Insert (Key, Value);
    end Populate_Named_Types;
 
@@ -179,7 +184,7 @@ package body Compiler.Enum_Descriptors is
               (Clause,
                F.New_Argument_Association
                  (Choice => F.New_Name (Literal),
-                  Value  => F.New_Literal (Natural (Next.Number))));
+                  Value  => F.New_Literal (Natural (Next.Number.Value))));
 
          end;
       end loop;
@@ -209,15 +214,12 @@ package body Compiler.Enum_Descriptors is
 
    function Type_Name
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
-      return League.Strings.Universal_String
-   is
-      Result : constant League.Strings.Universal_String :=
-        Compiler.Context.To_Ada_Name (Self.Name);
+      return League.Strings.Universal_String is
    begin
-      if Result.Is_Empty then
-         return +"Enum";
+      if Self.Name.Is_Set then
+         return Compiler.Context.To_Ada_Name (Self.Name.Value);
       else
-         return Result;
+         return +"Enum";
       end if;
    end Type_Name;
 

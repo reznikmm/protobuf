@@ -205,6 +205,9 @@ package body Compiler.File_Descriptors is
       My_Name     : constant League.Strings.Universal_String :=
         Package_Name (Self);
    begin
+      Compiler.Context.Is_Proto_2 := not Self.Syntax.Is_Set or else
+        Self.Syntax.Value /= +"proto3";
+
       for J in 1 .. Self.Dependency.Length loop
          declare
             Item : constant Google.Protobuf.Descriptor.File_Descriptor_Proto :=
@@ -280,14 +283,15 @@ package body Compiler.File_Descriptors is
      (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
       return League.Strings.Universal_String
    is
-      File_Name : constant String := Self.Name.To_UTF_8_String;
+      File_Name : constant String := Self.Name.Value.To_UTF_8_String;
       Base_Name : constant String := Ada.Directories.Base_Name (File_Name);
-      PB_Pkg    : League.Strings.Universal_String := Self.PB_Package;
+      PB_Pkg    : League.Strings.Universal_String;
       Result    : League.Strings.Universal_String :=
         Compiler.Context.To_Ada_Name
           (League.Strings.From_UTF_8_String (Base_Name));
    begin
-      if not PB_Pkg.Is_Empty then
+      if Self.PB_Package.Is_Set then
+         PB_Pkg := Self.PB_Package.Value;
          PB_Pkg := Compiler.Context.To_Selected_Ada_Name (PB_Pkg);
          PB_Pkg.Append (".");
          Result.Prepend (PB_Pkg);
@@ -306,12 +310,15 @@ package body Compiler.File_Descriptors is
    is
       use type League.Strings.Universal_String;
 
-      PB_Package : constant League.Strings.Universal_String :=
-        "." & Self.PB_Package;
+      PB_Package : League.Strings.Universal_String := +".";
 
       Ada_Package : constant League.Strings.Universal_String :=
         Package_Name (Self);
    begin
+      if Self.PB_Package.Is_Set then
+         PB_Package.Append (Self.PB_Package.Value);
+      end if;
+
       for J in 1 .. Self.Message_Type.Length loop
          Compiler.Descriptors.Populate_Named_Types
            (Self   => Self.Message_Type.Get (J),
@@ -338,8 +345,6 @@ package body Compiler.File_Descriptors is
       Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
       return League.Strings.Universal_String
    is
-      use type League.Strings.Universal_String;
-
       function Get_Public return Ada_Pretty.Node_Access;
       --  Generate public part declaration list
       function Get_Private return Ada_Pretty.Node_Access;
@@ -371,7 +376,6 @@ package body Compiler.File_Descriptors is
          Done   : Compiler.Context.String_Sets.Set;
          Again  : Boolean := True;
       begin
-
          for J in 1 .. Self.Enum_Type.Length loop
             Next := Compiler.Enum_Descriptors.Public_Spec
               (Self.Enum_Type.Get (J));
@@ -436,8 +440,6 @@ package body Compiler.File_Descriptors is
       Unit   : constant Ada_Pretty.Node_Access :=
         F.New_Compilation_Unit (Root, Clauses);
    begin
-      Compiler.Context.Is_Proto_2 := Self.Syntax /= +"proto3";
-
       Result := F.To_Text (Unit).Join (Ada.Characters.Wide_Wide_Latin_1.LF);
 
       return Result;

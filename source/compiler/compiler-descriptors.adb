@@ -101,10 +101,13 @@ package body Compiler.Descriptors is
             use all type Google.Protobuf.Descriptor.Label;
             Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
               := Self.Field.Get (J);
-            Type_Name : constant League.Strings.Universal_String :=
-              Field.Type_Name;
+            Type_Name  : League.Strings.Universal_String;
             Named_Type : Compiler.Context.Named_Type;
          begin
+            if Field.Type_Name.Is_Set then
+               Type_Name := Field.Type_Name.Value;
+            end if;
+
             if not Compiler.Context.Named_Types.Contains (Type_Name) then
                null;
             else
@@ -113,7 +116,9 @@ package body Compiler.Descriptors is
                if not (Done.Contains (Named_Type.Ada_Type.Type_Name)
                        or else Named_Type.Is_Enumeration
                        or else Named_Type.Ada_Type.Package_Name /= Pkg
-                       or else Field.Label = LABEL_REPEATED)
+                       or else
+                         (Field.Label.Is_Set
+                            and then Field.Label.Value = LABEL_REPEATED))
                then
                   return False;
                end if;
@@ -186,7 +191,11 @@ package body Compiler.Descriptors is
             Type_Name    => Name));
    begin
       Key.Append (".");
-      Key.Append (Self.Name);
+
+      if Self.Name.Is_Set then
+         Key.Append (Self.Name.Value);
+      end if;
+
       Map.Insert (Key, Value);
 
       for J in 1 .. Self.Nested_Type.Length loop
@@ -718,15 +727,12 @@ package body Compiler.Descriptors is
 
    function Type_Name
      (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
-      return League.Strings.Universal_String
-   is
-      Result : constant League.Strings.Universal_String :=
-        Compiler.Context.To_Ada_Name (Self.Name);
+      return League.Strings.Universal_String is
    begin
-      if Result.Is_Empty then
-         return +"Message";
+      if Self.Name.Is_Set then
+         return Compiler.Context.To_Ada_Name (Self.Name.Value);
       else
-         return Result;
+         return +"Message";
       end if;
    end Type_Name;
 
