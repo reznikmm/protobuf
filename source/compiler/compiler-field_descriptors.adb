@@ -48,6 +48,10 @@ package body Compiler.Field_Descriptors is
    function Map (X : Google.Protobuf.Descriptor.PB_Type)
      return League.Strings.Universal_String;
 
+   function Is_Enum
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+       return Boolean;
+
    function Is_Message
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
        return Boolean;
@@ -179,6 +183,10 @@ package body Compiler.Field_Descriptors is
       if not My_Pkg.Is_Empty then
          Result.Include (My_Pkg);
       end if;
+
+      if Is_Enum (Self) then
+         Result.Include (+"PB_Support.Vectors");
+      end if;
    end Dependency;
 
    --------------------
@@ -193,6 +201,23 @@ package body Compiler.Field_Descriptors is
    begin
       Result.Include (Value);
    end Get_Used_Types;
+
+   -------------
+   -- Is_Enum --
+   -------------
+
+   function Is_Enum
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+       return Boolean
+   is
+      Name : constant League.Strings.Universal_String := Self.Type_Name;
+   begin
+      if Compiler.Context.Named_Types.Contains (Name) then
+         return Compiler.Context.Named_Types (Name).Is_Enumeration;
+      else
+         return False;
+      end if;
+   end Is_Enum;
 
    ----------------
    -- Is_Message --
@@ -258,7 +283,7 @@ package body Compiler.Field_Descriptors is
       Field   : Integer;
    begin
       Field := Integer (Self.Number);
-      My_Name.Prepend ("Value.");
+      My_Name.Prepend ("V.");
 
       if Self.Label = LABEL_OPTIONAL and Is_Message (Self) then
          Result := F.New_If
@@ -435,16 +460,16 @@ package body Compiler.Field_Descriptors is
                  (+Type_Name (Self, False, False) & "'Write"),
                 F.New_List
                  (F.New_Name (+"Stream"),
-                  F.New_Selected_Name ("Value." & My_Name & Get)))));
+                  F.New_Selected_Name ("V." & My_Name & Get)))));
 
          if Self.Label = LABEL_REPEATED then
             Result := F.New_For
               (F.New_Name (+"J"),
-               F.New_Name (+"1 .. Value." & My_Name & ".Length"),
+               F.New_Name (+"1 .. V." & My_Name & ".Length"),
                Result);
          elsif Self.Label = LABEL_OPTIONAL then
             Result := F.New_If
-              (F.New_Selected_Name ("Value." & My_Name & ".Is_Set"),
+              (F.New_Selected_Name ("V." & My_Name & ".Is_Set"),
                Result);
          end if;
       elsif Is_Enum then
@@ -458,7 +483,7 @@ package body Compiler.Field_Descriptors is
                  F.New_Argument_Association
                   (F.New_Literal (Integer (Self.Number))),
                  F.New_Argument_Association
-                  (F.New_Selected_Name ("Value." & My_Name))))));
+                  (F.New_Selected_Name ("V." & My_Name))))));
 
       else
 
@@ -469,7 +494,7 @@ package body Compiler.Field_Descriptors is
                (F.New_Argument_Association
                  (F.New_Literal (Integer (Self.Number))),
                 F.New_Argument_Association
-                 (F.New_Selected_Name ("Value." & My_Name)))));
+                 (F.New_Selected_Name ("V." & My_Name)))));
       end if;
 
       return Result;

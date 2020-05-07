@@ -239,7 +239,7 @@ package body Compiler.Descriptors is
                     Type_Definition => F.New_Selected_Name
                       (+"access Ada.Streams.Root_Stream_Type'Class")),
                F.New_Parameter
-                   (Name            => F.New_Name (+"Value"),
+                   (Name            => F.New_Name (+"V"),
                     Type_Definition => F.New_Name (My_Name),
                     Is_Out          => True))));
 
@@ -252,7 +252,7 @@ package body Compiler.Descriptors is
                     Type_Definition => F.New_Selected_Name
                       (+"access Ada.Streams.Root_Stream_Type'Class")),
                F.New_Parameter
-                   (Name            => F.New_Name (+"Value"),
+                   (Name            => F.New_Name (+"V"),
                     Type_Definition => F.New_Name (My_Name)))));
 
       Use_R := F.New_Statement
@@ -410,7 +410,7 @@ package body Compiler.Descriptors is
                   Is_In           => True,
                   Is_Out          => True),
                F.New_Parameter
-                 (F.New_Name (+"Value"), Me))));
+                 (F.New_Name (+"V"), Me))));
 
       Result := F.New_List
         ((Result, Option, Count, Getter, Clear, Append));
@@ -499,7 +499,7 @@ package body Compiler.Descriptors is
                     Type_Definition => F.New_Selected_Name
                       (+"access Ada.Streams.Root_Stream_Type'Class")),
                F.New_Parameter
-                 (Name            => F.New_Name (+"Value"),
+                 (Name            => F.New_Name (+"V"),
                   Type_Definition => F.New_Name (My_Name),
                   Is_Out          => True))),
          Declarations => Key,
@@ -600,7 +600,7 @@ package body Compiler.Descriptors is
                   Is_In           => True,
                   Is_Out          => True),
                F.New_Parameter
-                 (F.New_Name (+"Value"), Me))),
+                 (F.New_Name (+"V"), Me))),
          Declarations => F.New_Variable
            (Name            => F.New_Name (+"Init_Length"),
             Type_Definition => F.New_Name (+"Positive"),
@@ -653,7 +653,7 @@ package body Compiler.Descriptors is
               (F.New_Apply
                  (F.New_Selected_Name (+"Self.Data"),
                     F.New_Selected_Name (+"Self.Length")),
-               F.New_Name (+"Value")))));
+               F.New_Name (+"V")))));
 
       Adjust := F.New_Subprogram_Body
         (F.New_Subprogram_Specification
@@ -791,7 +791,7 @@ package body Compiler.Descriptors is
                            (F.New_Argument_Association
                               (F.New_Name (+"WS'Access")),
                             F.New_Argument_Association
-                              (F.New_Name (+"Value"))))),
+                              (F.New_Name (+"V"))))),
                F.New_Return)));
 
       Stmts := F.New_Statement (F.New_Selected_Name (+"WS.Start_Message"));
@@ -812,7 +812,7 @@ package body Compiler.Descriptors is
                    (F.New_Argument_Association
                       (F.New_Name (+"WS'Access")),
                     F.New_Argument_Association
-                      (F.New_Name (+"Value")))))));
+                      (F.New_Name (+"V")))))));
 
       Decl := F.New_Block
         (Declarations =>
@@ -835,7 +835,7 @@ package body Compiler.Descriptors is
                     Type_Definition => F.New_Selected_Name
                       (+"access Ada.Streams.Root_Stream_Type'Class")),
                F.New_Parameter
-                   (Name            => F.New_Name (+"Value"),
+                   (Name            => F.New_Name (+"V"),
                     Type_Definition => F.New_Name (My_Name)))),
          Statements => F.New_List (If_Stmt, Decl));
 
