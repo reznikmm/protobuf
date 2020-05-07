@@ -345,11 +345,17 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Name.Is_Set then
+                  V.Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name);
+                 (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
+               if  not V.PB_Package.Is_Set then
+                  V.PB_Package := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.PB_Package);
+                 (Stream, Key.Encoding, V.PB_Package.Value);
             when 3 =>
                PB_Support.IO.Read_Universal_String_Vector
                  (Stream, Key.Encoding, V.Dependency);
@@ -383,8 +389,11 @@ package body Google.Protobuf.Descriptor is
                Source_Code_Info_IO.Read
                  (Stream, Key.Encoding, V.Source_Code_Info.Value);
             when 12 =>
+               if  not V.Syntax.Is_Set then
+                  V.Syntax := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Syntax);
+                 (Stream, Key.Encoding, V.Syntax.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -408,8 +417,12 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Name);
-         WS.Write (2, V.PB_Package);
+         if V.Name.Is_Set then
+            WS.Write (1, V.Name.Value);
+         end if;
+         if V.PB_Package.Is_Set then
+            WS.Write (2, V.PB_Package.Value);
+         end if;
          WS.Write (3, V.Dependency);
          WS.Write_Varint (10, V.Public_Dependency);
          WS.Write_Varint (11, V.Weak_Dependency);
@@ -443,7 +456,9 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Source_Code_Info'Write
               (Stream, V.Source_Code_Info.Value);
          end if;
-         WS.Write (12, V.Syntax);
+         if V.Syntax.Is_Set then
+            WS.Write (12, V.Syntax.Value);
+         end if;
          if WS.End_Message then
             Write_File_Descriptor_Proto (WS'Access, V);
          end if;
@@ -512,8 +527,11 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Name.Is_Set then
+                  V.Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name);
+                 (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
                Field_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Field);
@@ -566,7 +584,9 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Name);
+         if V.Name.Is_Set then
+            WS.Write (1, V.Name.Value);
+         end if;
          for J in 1 .. V.Field.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
@@ -675,9 +695,17 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Start);
+               if  not V.Start.Is_Set then
+                  V.Start := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Unsigned_32
+                 (Stream, Key.Encoding, V.Start.Value);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.PB_End);
+               if  not V.PB_End.Is_Set then
+                  V.PB_End := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Unsigned_32
+                 (Stream, Key.Encoding, V.PB_End.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -701,8 +729,12 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Start);
-         WS.Write_Varint (2, V.PB_End);
+         if V.Start.Is_Set then
+            WS.Write_Varint (1, V.Start.Value);
+         end if;
+         if V.PB_End.Is_Set then
+            WS.Write_Varint (2, V.PB_End.Value);
+         end if;
          if WS.End_Message then
             Write_Extension_Range (WS'Access, V);
          end if;
@@ -770,9 +802,17 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Start);
+               if  not V.Start.Is_Set then
+                  V.Start := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Unsigned_32
+                 (Stream, Key.Encoding, V.Start.Value);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.PB_End);
+               if  not V.PB_End.Is_Set then
+                  V.PB_End := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Unsigned_32
+                 (Stream, Key.Encoding, V.PB_End.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -796,8 +836,12 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Start);
-         WS.Write_Varint (2, V.PB_End);
+         if V.Start.Is_Set then
+            WS.Write_Varint (1, V.Start.Value);
+         end if;
+         if V.PB_End.Is_Set then
+            WS.Write_Varint (2, V.PB_End.Value);
+         end if;
          if WS.End_Message then
             Write_Reserved_Range (WS'Access, V);
          end if;
@@ -868,29 +912,57 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Name.Is_Set then
+                  V.Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name);
+                 (Stream, Key.Encoding, V.Name.Value);
             when 3 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Number);
-            when 4 =>
-               Label_IO.Read (Stream, Key.Encoding, V.Label);
-            when 5 =>
-               PB_Type_IO.Read (Stream, Key.Encoding, V.PB_Type);
-            when 6 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Type_Name);
-            when 2 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Extendee);
-            when 7 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Default_Value);
-            when 9 =>
+               if  not V.Number.Is_Set then
+                  V.Number := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, V.Oneof_Index);
-            when 10 =>
+                 (Stream, Key.Encoding, V.Number.Value);
+            when 4 =>
+               if  not V.Label.Is_Set then
+                  V.Label := (True, others => <>);
+               end if;
+               Label_IO.Read (Stream, Key.Encoding, V.Label.Value);
+            when 5 =>
+               if  not V.PB_Type.Is_Set then
+                  V.PB_Type := (True, others => <>);
+               end if;
+               PB_Type_IO.Read (Stream, Key.Encoding, V.PB_Type.Value);
+            when 6 =>
+               if  not V.Type_Name.Is_Set then
+                  V.Type_Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Json_Name);
+                 (Stream, Key.Encoding, V.Type_Name.Value);
+            when 2 =>
+               if  not V.Extendee.Is_Set then
+                  V.Extendee := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Universal_String
+                 (Stream, Key.Encoding, V.Extendee.Value);
+            when 7 =>
+               if  not V.Default_Value.Is_Set then
+                  V.Default_Value := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Universal_String
+                 (Stream, Key.Encoding, V.Default_Value.Value);
+            when 9 =>
+               if  not V.Oneof_Index.Is_Set then
+                  V.Oneof_Index := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Unsigned_32
+                 (Stream, Key.Encoding, V.Oneof_Index.Value);
+            when 10 =>
+               if  not V.Json_Name.Is_Set then
+                  V.Json_Name := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Universal_String
+                 (Stream, Key.Encoding, V.Json_Name.Value);
             when 8 =>
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
@@ -919,15 +991,33 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Name);
-         WS.Write_Varint (3, V.Number);
-         Label_IO.Write (WS, 4, V.Label);
-         PB_Type_IO.Write (WS, 5, V.PB_Type);
-         WS.Write (6, V.Type_Name);
-         WS.Write (2, V.Extendee);
-         WS.Write (7, V.Default_Value);
-         WS.Write_Varint (9, V.Oneof_Index);
-         WS.Write (10, V.Json_Name);
+         if V.Name.Is_Set then
+            WS.Write (1, V.Name.Value);
+         end if;
+         if V.Number.Is_Set then
+            WS.Write_Varint (3, V.Number.Value);
+         end if;
+         if V.Label.Is_Set then
+            Label_IO.Write (WS, 4, V.Label.Value);
+         end if;
+         if V.PB_Type.Is_Set then
+            PB_Type_IO.Write (WS, 5, V.PB_Type.Value);
+         end if;
+         if V.Type_Name.Is_Set then
+            WS.Write (6, V.Type_Name.Value);
+         end if;
+         if V.Extendee.Is_Set then
+            WS.Write (2, V.Extendee.Value);
+         end if;
+         if V.Default_Value.Is_Set then
+            WS.Write (7, V.Default_Value.Value);
+         end if;
+         if V.Oneof_Index.Is_Set then
+            WS.Write_Varint (9, V.Oneof_Index.Value);
+         end if;
+         if V.Json_Name.Is_Set then
+            WS.Write (10, V.Json_Name.Value);
+         end if;
          if V.Options.Is_Set then
             WS.Write_Key ((8, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Options'Write
@@ -1003,8 +1093,11 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Name.Is_Set then
+                  V.Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name);
+                 (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
@@ -1033,7 +1126,9 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Name);
+         if V.Name.Is_Set then
+            WS.Write (1, V.Name.Value);
+         end if;
          if V.Options.Is_Set then
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Oneof_Options'Write
@@ -1109,8 +1204,11 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Name.Is_Set then
+                  V.Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name);
+                 (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
                Enum_Value_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Value);
@@ -1142,7 +1240,9 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Name);
+         if V.Name.Is_Set then
+            WS.Write (1, V.Name.Value);
+         end if;
          for J in 1 .. V.Value.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto'Write
@@ -1229,10 +1329,17 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Name.Is_Set then
+                  V.Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name);
+                 (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Number);
+               if  not V.Number.Is_Set then
+                  V.Number := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Unsigned_32
+                 (Stream, Key.Encoding, V.Number.Value);
             when 3 =>
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
@@ -1262,8 +1369,12 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Name);
-         WS.Write_Varint (2, V.Number);
+         if V.Name.Is_Set then
+            WS.Write (1, V.Name.Value);
+         end if;
+         if V.Number.Is_Set then
+            WS.Write_Varint (2, V.Number.Value);
+         end if;
          if V.Options.Is_Set then
             WS.Write_Key ((3, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Value_Options'Write
@@ -1340,8 +1451,11 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Name.Is_Set then
+                  V.Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name);
+                 (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
                Method_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Method);
@@ -1373,7 +1487,9 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Name);
+         if V.Name.Is_Set then
+            WS.Write (1, V.Name.Value);
+         end if;
          for J in 1 .. V.Method.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Method_Descriptor_Proto'Write
@@ -1455,25 +1571,40 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Name.Is_Set then
+                  V.Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name);
+                 (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
+               if  not V.Input_Type.Is_Set then
+                  V.Input_Type := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Input_Type);
+                 (Stream, Key.Encoding, V.Input_Type.Value);
             when 3 =>
+               if  not V.Output_Type.Is_Set then
+                  V.Output_Type := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Output_Type);
+                 (Stream, Key.Encoding, V.Output_Type.Value);
             when 4 =>
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
                end if;
                Method_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
             when 5 =>
+               if  not V.Client_Streaming.Is_Set then
+                  V.Client_Streaming := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Client_Streaming);
+                 (Stream, Key.Encoding, V.Client_Streaming.Value);
             when 6 =>
+               if  not V.Server_Streaming.Is_Set then
+                  V.Server_Streaming := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Server_Streaming);
+                 (Stream, Key.Encoding, V.Server_Streaming.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1497,16 +1628,26 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Name);
-         WS.Write (2, V.Input_Type);
-         WS.Write (3, V.Output_Type);
+         if V.Name.Is_Set then
+            WS.Write (1, V.Name.Value);
+         end if;
+         if V.Input_Type.Is_Set then
+            WS.Write (2, V.Input_Type.Value);
+         end if;
+         if V.Output_Type.Is_Set then
+            WS.Write (3, V.Output_Type.Value);
+         end if;
          if V.Options.Is_Set then
             WS.Write_Key ((4, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Method_Options'Write
               (Stream, V.Options.Value);
          end if;
-         WS.Write (5, V.Client_Streaming);
-         WS.Write (6, V.Server_Streaming);
+         if V.Client_Streaming.Is_Set then
+            WS.Write (5, V.Client_Streaming.Value);
+         end if;
+         if V.Server_Streaming.Is_Set then
+            WS.Write (6, V.Server_Streaming.Value);
+         end if;
          if WS.End_Message then
             Write_Method_Descriptor_Proto (WS'Access, V);
          end if;
@@ -1572,45 +1713,89 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Java_Package.Is_Set then
+                  V.Java_Package := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Java_Package);
+                 (Stream, Key.Encoding, V.Java_Package.Value);
             when 8 =>
+               if  not V.Java_Outer_Classname.Is_Set then
+                  V.Java_Outer_Classname := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Java_Outer_Classname);
+                 (Stream, Key.Encoding, V.Java_Outer_Classname.Value);
             when 10 =>
+               if  not V.Java_Multiple_Files.Is_Set then
+                  V.Java_Multiple_Files := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Java_Multiple_Files);
+                 (Stream, Key.Encoding, V.Java_Multiple_Files.Value);
             when 20 =>
+               if  not V.Java_Generate_Equals_And_Hash.Is_Set then
+                  V.Java_Generate_Equals_And_Hash := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Java_Generate_Equals_And_Hash);
+                 (Stream, Key.Encoding, V.Java_Generate_Equals_And_Hash.Value);
             when 27 =>
+               if  not V.Java_String_Check_Utf_8.Is_Set then
+                  V.Java_String_Check_Utf_8 := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Java_String_Check_Utf_8);
+                 (Stream, Key.Encoding, V.Java_String_Check_Utf_8.Value);
             when 9 =>
-               Optimize_Mode_IO.Read (Stream, Key.Encoding, V.Optimize_For);
+               if  not V.Optimize_For.Is_Set then
+                  V.Optimize_For := (True, others => <>);
+               end if;
+               Optimize_Mode_IO.Read
+                 (Stream, Key.Encoding, V.Optimize_For.Value);
             when 11 =>
+               if  not V.Go_Package.Is_Set then
+                  V.Go_Package := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Go_Package);
+                 (Stream, Key.Encoding, V.Go_Package.Value);
             when 16 =>
+               if  not V.Cc_Generic_Services.Is_Set then
+                  V.Cc_Generic_Services := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Cc_Generic_Services);
+                 (Stream, Key.Encoding, V.Cc_Generic_Services.Value);
             when 17 =>
+               if  not V.Java_Generic_Services.Is_Set then
+                  V.Java_Generic_Services := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Java_Generic_Services);
+                 (Stream, Key.Encoding, V.Java_Generic_Services.Value);
             when 18 =>
+               if  not V.Py_Generic_Services.Is_Set then
+                  V.Py_Generic_Services := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Py_Generic_Services);
+                 (Stream, Key.Encoding, V.Py_Generic_Services.Value);
             when 23 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
-            when 31 =>
+               if  not V.Deprecated.Is_Set then
+                  V.Deprecated := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Cc_Enable_Arenas);
+                 (Stream, Key.Encoding, V.Deprecated.Value);
+            when 31 =>
+               if  not V.Cc_Enable_Arenas.Is_Set then
+                  V.Cc_Enable_Arenas := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean
+                 (Stream, Key.Encoding, V.Cc_Enable_Arenas.Value);
             when 36 =>
+               if  not V.Objc_Class_Prefix.Is_Set then
+                  V.Objc_Class_Prefix := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Objc_Class_Prefix);
+                 (Stream, Key.Encoding, V.Objc_Class_Prefix.Value);
             when 37 =>
+               if  not V.Csharp_Namespace.Is_Set then
+                  V.Csharp_Namespace := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Csharp_Namespace);
+                 (Stream, Key.Encoding, V.Csharp_Namespace.Value);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
@@ -1637,20 +1822,48 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Java_Package);
-         WS.Write (8, V.Java_Outer_Classname);
-         WS.Write (10, V.Java_Multiple_Files);
-         WS.Write (20, V.Java_Generate_Equals_And_Hash);
-         WS.Write (27, V.Java_String_Check_Utf_8);
-         Optimize_Mode_IO.Write (WS, 9, V.Optimize_For);
-         WS.Write (11, V.Go_Package);
-         WS.Write (16, V.Cc_Generic_Services);
-         WS.Write (17, V.Java_Generic_Services);
-         WS.Write (18, V.Py_Generic_Services);
-         WS.Write (23, V.Deprecated);
-         WS.Write (31, V.Cc_Enable_Arenas);
-         WS.Write (36, V.Objc_Class_Prefix);
-         WS.Write (37, V.Csharp_Namespace);
+         if V.Java_Package.Is_Set then
+            WS.Write (1, V.Java_Package.Value);
+         end if;
+         if V.Java_Outer_Classname.Is_Set then
+            WS.Write (8, V.Java_Outer_Classname.Value);
+         end if;
+         if V.Java_Multiple_Files.Is_Set then
+            WS.Write (10, V.Java_Multiple_Files.Value);
+         end if;
+         if V.Java_Generate_Equals_And_Hash.Is_Set then
+            WS.Write (20, V.Java_Generate_Equals_And_Hash.Value);
+         end if;
+         if V.Java_String_Check_Utf_8.Is_Set then
+            WS.Write (27, V.Java_String_Check_Utf_8.Value);
+         end if;
+         if V.Optimize_For.Is_Set then
+            Optimize_Mode_IO.Write (WS, 9, V.Optimize_For.Value);
+         end if;
+         if V.Go_Package.Is_Set then
+            WS.Write (11, V.Go_Package.Value);
+         end if;
+         if V.Cc_Generic_Services.Is_Set then
+            WS.Write (16, V.Cc_Generic_Services.Value);
+         end if;
+         if V.Java_Generic_Services.Is_Set then
+            WS.Write (17, V.Java_Generic_Services.Value);
+         end if;
+         if V.Py_Generic_Services.Is_Set then
+            WS.Write (18, V.Py_Generic_Services.Value);
+         end if;
+         if V.Deprecated.Is_Set then
+            WS.Write (23, V.Deprecated.Value);
+         end if;
+         if V.Cc_Enable_Arenas.Is_Set then
+            WS.Write (31, V.Cc_Enable_Arenas.Value);
+         end if;
+         if V.Objc_Class_Prefix.Is_Set then
+            WS.Write (36, V.Objc_Class_Prefix.Value);
+         end if;
+         if V.Csharp_Namespace.Is_Set then
+            WS.Write (37, V.Csharp_Namespace.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -1723,15 +1936,30 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Message_Set_Wire_Format.Is_Set then
+                  V.Message_Set_Wire_Format := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Message_Set_Wire_Format);
+                 (Stream, Key.Encoding, V.Message_Set_Wire_Format.Value);
             when 2 =>
+               if  not V.No_Standard_Descriptor_Accessor.Is_Set then
+                  V.No_Standard_Descriptor_Accessor := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.No_Standard_Descriptor_Accessor);
+                 (Stream, Key.Encoding,
+                  V.No_Standard_Descriptor_Accessor.Value);
             when 3 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
+               if  not V.Deprecated.Is_Set then
+                  V.Deprecated := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 7 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Map_Entry);
+               if  not V.Map_Entry.Is_Set then
+                  V.Map_Entry := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean
+                 (Stream, Key.Encoding, V.Map_Entry.Value);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
@@ -1758,10 +1986,18 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Message_Set_Wire_Format);
-         WS.Write (2, V.No_Standard_Descriptor_Accessor);
-         WS.Write (3, V.Deprecated);
-         WS.Write (7, V.Map_Entry);
+         if V.Message_Set_Wire_Format.Is_Set then
+            WS.Write (1, V.Message_Set_Wire_Format.Value);
+         end if;
+         if V.No_Standard_Descriptor_Accessor.Is_Set then
+            WS.Write (2, V.No_Standard_Descriptor_Accessor.Value);
+         end if;
+         if V.Deprecated.Is_Set then
+            WS.Write (3, V.Deprecated.Value);
+         end if;
+         if V.Map_Entry.Is_Set then
+            WS.Write (7, V.Map_Entry.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -1834,17 +2070,37 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               CType_IO.Read (Stream, Key.Encoding, V.Ctype);
+               if  not V.Ctype.Is_Set then
+                  V.Ctype := (True, others => <>);
+               end if;
+               CType_IO.Read (Stream, Key.Encoding, V.Ctype.Value);
             when 2 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Packed);
+               if  not V.Packed.Is_Set then
+                  V.Packed := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean
+                 (Stream, Key.Encoding, V.Packed.Value);
             when 6 =>
-               JSType_IO.Read (Stream, Key.Encoding, V.Jstype);
+               if  not V.Jstype.Is_Set then
+                  V.Jstype := (True, others => <>);
+               end if;
+               JSType_IO.Read (Stream, Key.Encoding, V.Jstype.Value);
             when 5 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Lazy);
+               if  not V.Lazy.Is_Set then
+                  V.Lazy := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Lazy.Value);
             when 3 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
+               if  not V.Deprecated.Is_Set then
+                  V.Deprecated := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 10 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Weak);
+               if  not V.Weak.Is_Set then
+                  V.Weak := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Weak.Value);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
@@ -1871,12 +2127,24 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         CType_IO.Write (WS, 1, V.Ctype);
-         WS.Write (2, V.Packed);
-         JSType_IO.Write (WS, 6, V.Jstype);
-         WS.Write (5, V.Lazy);
-         WS.Write (3, V.Deprecated);
-         WS.Write (10, V.Weak);
+         if V.Ctype.Is_Set then
+            CType_IO.Write (WS, 1, V.Ctype.Value);
+         end if;
+         if V.Packed.Is_Set then
+            WS.Write (2, V.Packed.Value);
+         end if;
+         if V.Jstype.Is_Set then
+            JSType_IO.Write (WS, 6, V.Jstype.Value);
+         end if;
+         if V.Lazy.Is_Set then
+            WS.Write (5, V.Lazy.Value);
+         end if;
+         if V.Deprecated.Is_Set then
+            WS.Write (3, V.Deprecated.Value);
+         end if;
+         if V.Weak.Is_Set then
+            WS.Write (10, V.Weak.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -2044,10 +2312,17 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 2 =>
+               if  not V.Allow_Alias.Is_Set then
+                  V.Allow_Alias := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Allow_Alias);
+                 (Stream, Key.Encoding, V.Allow_Alias.Value);
             when 3 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
+               if  not V.Deprecated.Is_Set then
+                  V.Deprecated := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
@@ -2074,8 +2349,12 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (2, V.Allow_Alias);
-         WS.Write (3, V.Deprecated);
+         if V.Allow_Alias.Is_Set then
+            WS.Write (2, V.Allow_Alias.Value);
+         end if;
+         if V.Deprecated.Is_Set then
+            WS.Write (3, V.Deprecated.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -2150,7 +2429,11 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
+               if  not V.Deprecated.Is_Set then
+                  V.Deprecated := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
@@ -2177,7 +2460,9 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Deprecated);
+         if V.Deprecated.Is_Set then
+            WS.Write (1, V.Deprecated.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -2250,7 +2535,11 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 33 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
+               if  not V.Deprecated.Is_Set then
+                  V.Deprecated := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
@@ -2277,7 +2566,9 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (33, V.Deprecated);
+         if V.Deprecated.Is_Set then
+            WS.Write (33, V.Deprecated.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -2350,7 +2641,11 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 33 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
+               if  not V.Deprecated.Is_Set then
+                  V.Deprecated := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Boolean
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
@@ -2377,7 +2672,9 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (33, V.Deprecated);
+         if V.Deprecated.Is_Set then
+            WS.Write (33, V.Deprecated.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -2454,23 +2751,41 @@ package body Google.Protobuf.Descriptor is
             when 2 =>
                Name_Part_IO.Read_Vector (Stream, Key.Encoding, V.Name);
             when 3 =>
+               if  not V.Identifier_Value.Is_Set then
+                  V.Identifier_Value := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Identifier_Value);
+                 (Stream, Key.Encoding, V.Identifier_Value.Value);
             when 4 =>
+               if  not V.Positive_Int_Value.Is_Set then
+                  V.Positive_Int_Value := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Unsigned_64
-                 (Stream, Key.Encoding, V.Positive_Int_Value);
+                 (Stream, Key.Encoding, V.Positive_Int_Value.Value);
             when 5 =>
+               if  not V.Negative_Int_Value.Is_Set then
+                  V.Negative_Int_Value := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Integer_64
-                 (Stream, Key.Encoding, V.Negative_Int_Value);
+                 (Stream, Key.Encoding, V.Negative_Int_Value.Value);
             when 6 =>
+               if  not V.Double_Value.Is_Set then
+                  V.Double_Value := (True, others => <>);
+               end if;
                PB_Support.IO.Read_IEEE_Float_64
-                 (Stream, Key.Encoding, V.Double_Value);
+                 (Stream, Key.Encoding, V.Double_Value.Value);
             when 7 =>
+               if  not V.String_Value.Is_Set then
+                  V.String_Value := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Stream_Element_Vector
-                 (Stream, Key.Encoding, V.String_Value);
+                 (Stream, Key.Encoding, V.String_Value.Value);
             when 8 =>
+               if  not V.Aggregate_Value.Is_Set then
+                  V.Aggregate_Value := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Aggregate_Value);
+                 (Stream, Key.Encoding, V.Aggregate_Value.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2499,12 +2814,24 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Name_Part'Write
               (Stream, V.Name.Get (J));
          end loop;
-         WS.Write (3, V.Identifier_Value);
-         WS.Write_Varint (4, V.Positive_Int_Value);
-         WS.Write_Varint (5, V.Negative_Int_Value);
-         WS.Write (6, V.Double_Value);
-         WS.Write (7, V.String_Value);
-         WS.Write (8, V.Aggregate_Value);
+         if V.Identifier_Value.Is_Set then
+            WS.Write (3, V.Identifier_Value.Value);
+         end if;
+         if V.Positive_Int_Value.Is_Set then
+            WS.Write_Varint (4, V.Positive_Int_Value.Value);
+         end if;
+         if V.Negative_Int_Value.Is_Set then
+            WS.Write_Varint (5, V.Negative_Int_Value.Value);
+         end if;
+         if V.Double_Value.Is_Set then
+            WS.Write (6, V.Double_Value.Value);
+         end if;
+         if V.String_Value.Is_Set then
+            WS.Write (7, V.String_Value.Value);
+         end if;
+         if V.Aggregate_Value.Is_Set then
+            WS.Write (8, V.Aggregate_Value.Value);
+         end if;
          if WS.End_Message then
             Write_Uninterpreted_Option (WS'Access, V);
          end if;
@@ -2764,11 +3091,17 @@ package body Google.Protobuf.Descriptor is
                PB_Support.IO.Read_Unsigned_32_Vector
                  (Stream, Key.Encoding, V.Span);
             when 3 =>
+               if  not V.Leading_Comments.Is_Set then
+                  V.Leading_Comments := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Leading_Comments);
+                 (Stream, Key.Encoding, V.Leading_Comments.Value);
             when 4 =>
+               if  not V.Trailing_Comments.Is_Set then
+                  V.Trailing_Comments := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Trailing_Comments);
+                 (Stream, Key.Encoding, V.Trailing_Comments.Value);
             when 6 =>
                PB_Support.IO.Read_Universal_String_Vector
                  (Stream, Key.Encoding, V.Leading_Detached_Comments);
@@ -2797,8 +3130,12 @@ package body Google.Protobuf.Descriptor is
          WS.Start_Message;
          WS.Write_Varint (1, V.Path);
          WS.Write_Varint (2, V.Span);
-         WS.Write (3, V.Leading_Comments);
-         WS.Write (4, V.Trailing_Comments);
+         if V.Leading_Comments.Is_Set then
+            WS.Write (3, V.Leading_Comments.Value);
+         end if;
+         if V.Trailing_Comments.Is_Set then
+            WS.Write (4, V.Trailing_Comments.Value);
+         end if;
          WS.Write (6, V.Leading_Detached_Comments);
          if WS.End_Message then
             Write_Location (WS'Access, V);
@@ -2966,13 +3303,23 @@ package body Google.Protobuf.Descriptor is
                PB_Support.IO.Read_Unsigned_32_Vector
                  (Stream, Key.Encoding, V.Path);
             when 2 =>
+               if  not V.Source_File.Is_Set then
+                  V.Source_File := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Source_File);
+                 (Stream, Key.Encoding, V.Source_File.Value);
             when 3 =>
+               if  not V.PB_Begin.Is_Set then
+                  V.PB_Begin := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, V.PB_Begin);
+                 (Stream, Key.Encoding, V.PB_Begin.Value);
             when 4 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.PB_End);
+               if  not V.PB_End.Is_Set then
+                  V.PB_End := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Unsigned_32
+                 (Stream, Key.Encoding, V.PB_End.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2997,9 +3344,15 @@ package body Google.Protobuf.Descriptor is
       begin
          WS.Start_Message;
          WS.Write_Varint (1, V.Path);
-         WS.Write (2, V.Source_File);
-         WS.Write_Varint (3, V.PB_Begin);
-         WS.Write_Varint (4, V.PB_End);
+         if V.Source_File.Is_Set then
+            WS.Write (2, V.Source_File.Value);
+         end if;
+         if V.PB_Begin.Is_Set then
+            WS.Write_Varint (3, V.PB_Begin.Value);
+         end if;
+         if V.PB_End.Is_Set then
+            WS.Write_Varint (4, V.PB_End.Value);
+         end if;
          if WS.End_Message then
             Write_Annotation (WS'Access, V);
          end if;

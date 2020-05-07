@@ -1,10 +1,14 @@
 with Ada.Finalization;
 with Ada.Streams;
-with Interfaces;
-with League.Stream_Element_Vectors;
 with League.String_Vectors;
 with League.Strings;
+with PB_Support.Boolean_Vectors;
+with PB_Support.IEEE_Float_64_Vectors;
+with PB_Support.Integer_64_Vectors;
+with PB_Support.Stream_Element_Vector_Vectors;
+with PB_Support.Universal_String_Vectors;
 with PB_Support.Unsigned_32_Vectors;
+with PB_Support.Unsigned_64_Vectors;
 with PB_Support.Vectors;
 
 package Google.Protobuf.Descriptor is
@@ -131,8 +135,8 @@ package Google.Protobuf.Descriptor is
 
    type Extension_Range is
      record
-        Start  : Interfaces.Unsigned_32 := 0;
-        PB_End : Interfaces.Unsigned_32 := 0;
+        Start  : PB_Support.Unsigned_32_Vectors.Option;
+        PB_End : PB_Support.Unsigned_32_Vectors.Option;
      end record;
 
    type Optional_Extension_Range (Is_Set : Boolean := False) is
@@ -160,8 +164,8 @@ package Google.Protobuf.Descriptor is
 
    type Reserved_Range is
      record
-        Start  : Interfaces.Unsigned_32 := 0;
-        PB_End : Interfaces.Unsigned_32 := 0;
+        Start  : PB_Support.Unsigned_32_Vectors.Option;
+        PB_End : PB_Support.Unsigned_32_Vectors.Option;
      end record;
 
    type Optional_Reserved_Range (Is_Set : Boolean := False) is
@@ -189,21 +193,26 @@ package Google.Protobuf.Descriptor is
 
    type File_Options is
      record
-        Java_Package                  : League.Strings.Universal_String;
-        Java_Outer_Classname          : League.Strings.Universal_String;
-        Java_Multiple_Files           : Boolean := False;
-        Java_Generate_Equals_And_Hash : Boolean := False;
-        Java_String_Check_Utf_8       : Boolean := False;
+        Java_Package                  : PB_Support.Universal_String_Vectors
+          .Option;
+        Java_Outer_Classname          : PB_Support.Universal_String_Vectors
+          .Option;
+        Java_Multiple_Files           : PB_Support.Boolean_Vectors.Option;
+        Java_Generate_Equals_And_Hash : PB_Support.Boolean_Vectors.Option;
+        Java_String_Check_Utf_8       : PB_Support.Boolean_Vectors.Option;
         Optimize_For                  : Google.Protobuf.Descriptor
-          .Optimize_Mode := Google.Protobuf.Descriptor.SPEED;
-        Go_Package                    : League.Strings.Universal_String;
-        Cc_Generic_Services           : Boolean := False;
-        Java_Generic_Services         : Boolean := False;
-        Py_Generic_Services           : Boolean := False;
-        Deprecated                    : Boolean := False;
-        Cc_Enable_Arenas              : Boolean := False;
-        Objc_Class_Prefix             : League.Strings.Universal_String;
-        Csharp_Namespace              : League.Strings.Universal_String;
+          .Optimize_Mode_Vectors.Option;
+        Go_Package                    : PB_Support.Universal_String_Vectors
+          .Option;
+        Cc_Generic_Services           : PB_Support.Boolean_Vectors.Option;
+        Java_Generic_Services         : PB_Support.Boolean_Vectors.Option;
+        Py_Generic_Services           : PB_Support.Boolean_Vectors.Option;
+        Deprecated                    : PB_Support.Boolean_Vectors.Option;
+        Cc_Enable_Arenas              : PB_Support.Boolean_Vectors.Option;
+        Objc_Class_Prefix             : PB_Support.Universal_String_Vectors
+          .Option;
+        Csharp_Namespace              : PB_Support.Universal_String_Vectors
+          .Option;
         Uninterpreted_Option          : Google.Protobuf.Descriptor
           .Uninterpreted_Option_Vector;
      end record;
@@ -231,10 +240,10 @@ package Google.Protobuf.Descriptor is
 
    type Message_Options is
      record
-        Message_Set_Wire_Format         : Boolean := False;
-        No_Standard_Descriptor_Accessor : Boolean := False;
-        Deprecated                      : Boolean := False;
-        Map_Entry                       : Boolean := False;
+        Message_Set_Wire_Format         : PB_Support.Boolean_Vectors.Option;
+        No_Standard_Descriptor_Accessor : PB_Support.Boolean_Vectors.Option;
+        Deprecated                      : PB_Support.Boolean_Vectors.Option;
+        Map_Entry                       : PB_Support.Boolean_Vectors.Option;
         Uninterpreted_Option            : Google.Protobuf.Descriptor
           .Uninterpreted_Option_Vector;
      end record;
@@ -264,14 +273,13 @@ package Google.Protobuf.Descriptor is
 
    type Field_Options is
      record
-        Ctype                : Google.Protobuf.Descriptor.CType :=
-          Google.Protobuf.Descriptor.STRING;
-        Packed               : Boolean := False;
-        Jstype               : Google.Protobuf.Descriptor.JSType :=
-          Google.Protobuf.Descriptor.JS_NORMAL;
-        Lazy                 : Boolean := False;
-        Deprecated           : Boolean := False;
-        Weak                 : Boolean := False;
+        Ctype                : Google.Protobuf.Descriptor.CType_Vectors.Option;
+        Packed               : PB_Support.Boolean_Vectors.Option;
+        Jstype               : Google.Protobuf.Descriptor.JSType_Vectors
+          .Option;
+        Lazy                 : PB_Support.Boolean_Vectors.Option;
+        Deprecated           : PB_Support.Boolean_Vectors.Option;
+        Weak                 : PB_Support.Boolean_Vectors.Option;
         Uninterpreted_Option : Google.Protobuf.Descriptor
           .Uninterpreted_Option_Vector;
      end record;
@@ -326,8 +334,8 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Options is
      record
-        Allow_Alias          : Boolean := False;
-        Deprecated           : Boolean := False;
+        Allow_Alias          : PB_Support.Boolean_Vectors.Option;
+        Deprecated           : PB_Support.Boolean_Vectors.Option;
         Uninterpreted_Option : Google.Protobuf.Descriptor
           .Uninterpreted_Option_Vector;
      end record;
@@ -355,7 +363,7 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Value_Options is
      record
-        Deprecated           : Boolean := False;
+        Deprecated           : PB_Support.Boolean_Vectors.Option;
         Uninterpreted_Option : Google.Protobuf.Descriptor
           .Uninterpreted_Option_Vector;
      end record;
@@ -385,7 +393,7 @@ package Google.Protobuf.Descriptor is
 
    type Service_Options is
      record
-        Deprecated           : Boolean := False;
+        Deprecated           : PB_Support.Boolean_Vectors.Option;
         Uninterpreted_Option : Google.Protobuf.Descriptor
           .Uninterpreted_Option_Vector;
      end record;
@@ -415,7 +423,7 @@ package Google.Protobuf.Descriptor is
 
    type Method_Options is
      record
-        Deprecated           : Boolean := False;
+        Deprecated           : PB_Support.Boolean_Vectors.Option;
         Uninterpreted_Option : Google.Protobuf.Descriptor
           .Uninterpreted_Option_Vector;
      end record;
@@ -470,13 +478,12 @@ package Google.Protobuf.Descriptor is
    type Uninterpreted_Option is
      record
         Name               : Google.Protobuf.Descriptor.Name_Part_Vector;
-        Identifier_Value   : League.Strings.Universal_String;
-        Positive_Int_Value : Interfaces.Unsigned_64 := 0;
-        Negative_Int_Value : Interfaces.Integer_64 := 0;
-        Double_Value       : Interfaces.IEEE_Float_64 := 0.0;
-        String_Value       : League.Stream_Element_Vectors
-          .Stream_Element_Vector;
-        Aggregate_Value    : League.Strings.Universal_String;
+        Identifier_Value   : PB_Support.Universal_String_Vectors.Option;
+        Positive_Int_Value : PB_Support.Unsigned_64_Vectors.Option;
+        Negative_Int_Value : PB_Support.Integer_64_Vectors.Option;
+        Double_Value       : PB_Support.IEEE_Float_64_Vectors.Option;
+        String_Value       : PB_Support.Stream_Element_Vector_Vectors.Option;
+        Aggregate_Value    : PB_Support.Universal_String_Vectors.Option;
      end record;
 
    type Optional_Uninterpreted_Option (Is_Set : Boolean := False) is
@@ -506,8 +513,8 @@ package Google.Protobuf.Descriptor is
      record
         Path                      : PB_Support.Unsigned_32_Vectors.Vector;
         Span                      : PB_Support.Unsigned_32_Vectors.Vector;
-        Leading_Comments          : League.Strings.Universal_String;
-        Trailing_Comments         : League.Strings.Universal_String;
+        Leading_Comments          : PB_Support.Universal_String_Vectors.Option;
+        Trailing_Comments         : PB_Support.Universal_String_Vectors.Option;
         Leading_Detached_Comments : League.String_Vectors
           .Universal_String_Vector;
      end record;
@@ -561,9 +568,9 @@ package Google.Protobuf.Descriptor is
    type Annotation is
      record
         Path        : PB_Support.Unsigned_32_Vectors.Vector;
-        Source_File : League.Strings.Universal_String;
-        PB_Begin    : Interfaces.Unsigned_32 := 0;
-        PB_End      : Interfaces.Unsigned_32 := 0;
+        Source_File : PB_Support.Universal_String_Vectors.Option;
+        PB_Begin    : PB_Support.Unsigned_32_Vectors.Option;
+        PB_End      : PB_Support.Unsigned_32_Vectors.Option;
      end record;
 
    type Optional_Annotation (Is_Set : Boolean := False) is
@@ -617,8 +624,8 @@ package Google.Protobuf.Descriptor is
 
    type File_Descriptor_Proto is
      record
-        Name              : League.Strings.Universal_String;
-        PB_Package        : League.Strings.Universal_String;
+        Name              : PB_Support.Universal_String_Vectors.Option;
+        PB_Package        : PB_Support.Universal_String_Vectors.Option;
         Dependency        : League.String_Vectors.Universal_String_Vector;
         Public_Dependency : PB_Support.Unsigned_32_Vectors.Vector;
         Weak_Dependency   : PB_Support.Unsigned_32_Vectors.Vector;
@@ -632,7 +639,7 @@ package Google.Protobuf.Descriptor is
         Options           : Google.Protobuf.Descriptor.Optional_File_Options;
         Source_Code_Info  : Google.Protobuf.Descriptor
           .Optional_Source_Code_Info;
-        Syntax            : League.Strings.Universal_String;
+        Syntax            : PB_Support.Universal_String_Vectors.Option;
      end record;
 
    type Optional_File_Descriptor_Proto (Is_Set : Boolean := False) is
@@ -660,7 +667,7 @@ package Google.Protobuf.Descriptor is
 
    type Descriptor_Proto is
      record
-        Name            : League.Strings.Universal_String;
+        Name            : PB_Support.Universal_String_Vectors.Option;
         Field           : Google.Protobuf.Descriptor
           .Field_Descriptor_Proto_Vector;
         Extension       : Google.Protobuf.Descriptor
@@ -701,17 +708,15 @@ package Google.Protobuf.Descriptor is
 
    type Field_Descriptor_Proto is
      record
-        Name          : League.Strings.Universal_String;
-        Number        : Interfaces.Unsigned_32 := 0;
-        Label         : Google.Protobuf.Descriptor.Label :=
-          Google.Protobuf.Descriptor.LABEL_OPTIONAL;
-        PB_Type       : Google.Protobuf.Descriptor.PB_Type :=
-          Google.Protobuf.Descriptor.TYPE_DOUBLE;
-        Type_Name     : League.Strings.Universal_String;
-        Extendee      : League.Strings.Universal_String;
-        Default_Value : League.Strings.Universal_String;
-        Oneof_Index   : Interfaces.Unsigned_32 := 0;
-        Json_Name     : League.Strings.Universal_String;
+        Name          : PB_Support.Universal_String_Vectors.Option;
+        Number        : PB_Support.Unsigned_32_Vectors.Option;
+        Label         : Google.Protobuf.Descriptor.Label_Vectors.Option;
+        PB_Type       : Google.Protobuf.Descriptor.PB_Type_Vectors.Option;
+        Type_Name     : PB_Support.Universal_String_Vectors.Option;
+        Extendee      : PB_Support.Universal_String_Vectors.Option;
+        Default_Value : PB_Support.Universal_String_Vectors.Option;
+        Oneof_Index   : PB_Support.Unsigned_32_Vectors.Option;
+        Json_Name     : PB_Support.Universal_String_Vectors.Option;
         Options       : Google.Protobuf.Descriptor.Optional_Field_Options;
      end record;
 
@@ -740,7 +745,7 @@ package Google.Protobuf.Descriptor is
 
    type Oneof_Descriptor_Proto is
      record
-        Name    : League.Strings.Universal_String;
+        Name    : PB_Support.Universal_String_Vectors.Option;
         Options : Google.Protobuf.Descriptor.Optional_Oneof_Options;
      end record;
 
@@ -769,7 +774,7 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Descriptor_Proto is
      record
-        Name    : League.Strings.Universal_String;
+        Name    : PB_Support.Universal_String_Vectors.Option;
         Value   : Google.Protobuf.Descriptor
           .Enum_Value_Descriptor_Proto_Vector;
         Options : Google.Protobuf.Descriptor.Optional_Enum_Options;
@@ -800,8 +805,8 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Value_Descriptor_Proto is
      record
-        Name    : League.Strings.Universal_String;
-        Number  : Interfaces.Unsigned_32 := 0;
+        Name    : PB_Support.Universal_String_Vectors.Option;
+        Number  : PB_Support.Unsigned_32_Vectors.Option;
         Options : Google.Protobuf.Descriptor.Optional_Enum_Value_Options;
      end record;
 
@@ -830,7 +835,7 @@ package Google.Protobuf.Descriptor is
 
    type Service_Descriptor_Proto is
      record
-        Name    : League.Strings.Universal_String;
+        Name    : PB_Support.Universal_String_Vectors.Option;
         Method  : Google.Protobuf.Descriptor.Method_Descriptor_Proto_Vector;
         Options : Google.Protobuf.Descriptor.Optional_Service_Options;
      end record;
@@ -860,12 +865,12 @@ package Google.Protobuf.Descriptor is
 
    type Method_Descriptor_Proto is
      record
-        Name             : League.Strings.Universal_String;
-        Input_Type       : League.Strings.Universal_String;
-        Output_Type      : League.Strings.Universal_String;
+        Name             : PB_Support.Universal_String_Vectors.Option;
+        Input_Type       : PB_Support.Universal_String_Vectors.Option;
+        Output_Type      : PB_Support.Universal_String_Vectors.Option;
         Options          : Google.Protobuf.Descriptor.Optional_Method_Options;
-        Client_Streaming : Boolean := False;
-        Server_Streaming : Boolean := False;
+        Client_Streaming : PB_Support.Boolean_Vectors.Option;
+        Server_Streaming : PB_Support.Boolean_Vectors.Option;
      end record;
 
    type Optional_Method_Descriptor_Proto (Is_Set : Boolean := False) is

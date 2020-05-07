@@ -83,8 +83,11 @@ package body Google.Protobuf.Compiler.Plugin is
                PB_Support.IO.Read_Universal_String_Vector
                  (Stream, Key.Encoding, V.File_To_Generate);
             when 2 =>
+               if  not V.Parameter.Is_Set then
+                  V.Parameter := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Parameter);
+                 (Stream, Key.Encoding, V.Parameter.Value);
             when 15 =>
                File_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Proto_File);
@@ -112,7 +115,9 @@ package body Google.Protobuf.Compiler.Plugin is
       begin
          WS.Start_Message;
          WS.Write (1, V.File_To_Generate);
-         WS.Write (2, V.Parameter);
+         if V.Parameter.Is_Set then
+            WS.Write (2, V.Parameter.Value);
+         end if;
          for J in 1 .. V.Proto_File.Length loop
             WS.Write_Key ((15, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
@@ -189,8 +194,11 @@ package body Google.Protobuf.Compiler.Plugin is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Error.Is_Set then
+                  V.Error := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Error);
+                 (Stream, Key.Encoding, V.Error.Value);
             when 15 =>
                File_IO.Read_Vector (Stream, Key.Encoding, V.File);
             when others =>
@@ -216,7 +224,9 @@ package body Google.Protobuf.Compiler.Plugin is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Error);
+         if V.Error.Is_Set then
+            WS.Write (1, V.Error.Value);
+         end if;
          for J in 1 .. V.File.Length loop
             WS.Write_Key ((15, PB_Support.Length_Delimited));
             Google.Protobuf.Compiler.Plugin.File'Write
@@ -283,14 +293,23 @@ package body Google.Protobuf.Compiler.Plugin is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
+               if  not V.Name.Is_Set then
+                  V.Name := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name);
+                 (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
+               if  not V.Insertion_Point.Is_Set then
+                  V.Insertion_Point := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Insertion_Point);
+                 (Stream, Key.Encoding, V.Insertion_Point.Value);
             when 15 =>
+               if  not V.Content.Is_Set then
+                  V.Content := (True, others => <>);
+               end if;
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Content);
+                 (Stream, Key.Encoding, V.Content.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -314,9 +333,15 @@ package body Google.Protobuf.Compiler.Plugin is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Name);
-         WS.Write (2, V.Insertion_Point);
-         WS.Write (15, V.Content);
+         if V.Name.Is_Set then
+            WS.Write (1, V.Name.Value);
+         end if;
+         if V.Insertion_Point.Is_Set then
+            WS.Write (2, V.Insertion_Point.Value);
+         end if;
+         if V.Content.Is_Set then
+            WS.Write (15, V.Content.Value);
+         end if;
          if WS.End_Message then
             Write_File (WS'Access, V);
          end if;

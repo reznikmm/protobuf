@@ -2,7 +2,7 @@ with Ada.Finalization;
 with Ada.Streams;
 with Google.Protobuf.Descriptor;
 with League.String_Vectors;
-with League.Strings;
+with PB_Support.Universal_String_Vectors;
 
 package Google.Protobuf.Compiler.Plugin is
 
@@ -15,7 +15,7 @@ package Google.Protobuf.Compiler.Plugin is
    type Code_Generator_Request is
      record
         File_To_Generate : League.String_Vectors.Universal_String_Vector;
-        Parameter        : League.Strings.Universal_String;
+        Parameter        : PB_Support.Universal_String_Vectors.Option;
         Proto_File       : Google.Protobuf.Descriptor
           .File_Descriptor_Proto_Vector;
      end record;
@@ -45,9 +45,9 @@ package Google.Protobuf.Compiler.Plugin is
 
    type File is
      record
-        Name            : League.Strings.Universal_String;
-        Insertion_Point : League.Strings.Universal_String;
-        Content         : League.Strings.Universal_String;
+        Name            : PB_Support.Universal_String_Vectors.Option;
+        Insertion_Point : PB_Support.Universal_String_Vectors.Option;
+        Content         : PB_Support.Universal_String_Vectors.Option;
      end record;
 
    type Optional_File (Is_Set : Boolean := False) is
@@ -70,7 +70,7 @@ package Google.Protobuf.Compiler.Plugin is
 
    type Code_Generator_Response is
      record
-        Error : League.Strings.Universal_String;
+        Error : PB_Support.Universal_String_Vectors.Option;
         File  : Google.Protobuf.Compiler.Plugin.File_Vector;
      end record;
 
