@@ -21,7 +21,7 @@
 --  DEALINGS IN THE SOFTWARE.
 
 with "matreshka_league.gpr";
-with "protobuf_support.gpr";
+with "protobuf_runtime.gpr";
 with "ada_pretty.gpr";
 
 project Compiler is
@@ -37,4 +37,7 @@ project Compiler is
         ("-gnat12", "-gnatW8", "-g", "-gnatVa", "-gnatwa", "-gnaty", "-gnata");
    end Compiler;
 
+   package Install is
+      for Artifacts ("bin") use ("../protoc-gen-ada");
+   end Install;
 end Compiler;

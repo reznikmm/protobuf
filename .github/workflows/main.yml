@@ -1,0 +1,22 @@
+on: [push]
+name: Build
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and deploy RPM
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: protobuf
+      - uses: reznikmm/fedora-ada-action@v1
+        with:
+          spec: protobuf/packages/protobuf.spec
+      - uses: reznikmm/upload-bintray-docker-action@v2
+        with:
+          username: reznikmm
+          repository: matreshka
+          package: protobuf
+          version: head-fc31
+          sourcePath: x86_64/*
+          override: 1
+          apiKey: ${{secrets.BINTRAY_API_KEY}}

@@ -22,13 +22,20 @@
 
 with "matreshka_league.gpr";
 
-project Protobuf_Support is
-   for Source_Dirs use ("../source/support");
-   for Object_Dir use "../.objs/support";
+library project Protobuf_Runtime is
+   Version := "0.1.0";
+
+   for Source_Dirs use ("../source/runtime");
+   for Object_Dir use "../.objs/runtime";
+   for Library_Kind use "dynamic";
+   for Library_Name use "adapbrt";
+   for Library_Dir use "../.libs";
+   for Library_ALI_Dir use "../.libs/adapbrt";
+   for Library_Version use "libadapbrt.so." & Version;
 
    package Compiler is
       for Default_Switches ("ada") use
         ("-gnat12", "-gnatW8", "-g", "-gnatVa", "-gnatwa", "-gnaty", "-gnata");
    end Compiler;
 
-end Protobuf_Support;
+end Protobuf_Runtime;
