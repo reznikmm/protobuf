@@ -23,9 +23,8 @@
 --  This is internal unit, don't use it in an application.
 
 with Ada.Streams;
-with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Vectors;
 with Interfaces;
-with System;
 
 with League.Stream_Element_Vectors;
 with League.String_Vectors;
@@ -49,22 +48,12 @@ package PB_Support.Internal is
 
    pragma Preelaborable_Initialization (Stream);
 
-   not overriding function Written
-     (Self : Stream) return Ada.Streams.Stream_Element_Count
-       with Inline;
-   --  How much data has been written to the stream (in riffling pass).
-
-   not overriding procedure Start_Message
-     (Self    : in out Stream;
-      Message : System.Address)
-        with Inline;
+   not overriding procedure Start_Message (Self : in out Stream)
+     with Inline;
    --  Increment nested depth. In writting pass emit message length.
 
-   not overriding function End_Message
-     (Self    : in out Stream;
-      Message : System.Address;
-      Offset  : Ada.Streams.Stream_Element_Count) return Boolean
-        with Inline;
+   not overriding function End_Message (Self : in out Stream) return Boolean
+     with Inline;
    --  Decrement nested depth. In riffling pass calculate and remember
    --  message size. It returns True after completion of riffling pass.
 
@@ -150,26 +139,24 @@ package PB_Support.Internal is
 
 private
 
-   type Message_Id is record
-      Address : System.Address;
-      Level   : Natural;
-   end record;
+   type Message_Id is new Positive;
 
-   function Hash (Value : Message_Id) return Ada.Containers.Hash_Type
-     with Inline;
+   package Size_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Message_Id,
+      Element_Type => Ada.Streams.Stream_Element_Count,
+      "="          => Ada.Streams."=");
 
-   package Size_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Message_Id,
-      Element_Type    => Ada.Streams.Stream_Element_Count,
-      Hash            => Hash,
-      Equivalent_Keys => "=",
-      "="             => Ada.Streams."=");
+   package Message_Id_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Message_Id);
 
    type Stream
      (Parent   : not null access Ada.Streams.Root_Stream_Type'Class)
    is new Ada.Streams.Root_Stream_Type with record
       Level    : Natural := 0;  --  Current depth of writting message
-      Size     : Size_Maps.Map;  --  Memorized message sizes
+      Index    : Message_Id := 1;
+      Stack    : Message_Id_Vectors.Vector;
+      Size     : Size_Vectors.Vector;  --  Memorized message sizes
       Riffling : Boolean := False;
       --  In riffling mode the stream ignores all written data and just
       --  calculate total size of messages

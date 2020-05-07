@@ -794,11 +794,7 @@ package body Compiler.Descriptors is
                               (F.New_Name (+"Value"))))),
                F.New_Return)));
 
-      Stmts := F.New_Statement
-        (F.New_Apply
-           (F.New_Selected_Name (+"WS.Start_Message"),
-            F.New_Argument_Association
-              (F.New_Name (+"Value'Address"))));
+      Stmts := F.New_Statement (F.New_Selected_Name (+"WS.Start_Message"));
 
       for J in 1 .. Self.Field.Length loop
          Field := Compiler.Field_Descriptors.Write_Call (Self.Field.Get (J));
@@ -808,38 +804,26 @@ package body Compiler.Descriptors is
       Stmts := F.New_List
         (Stmts,
          F.New_If
-           (F.New_Apply
-             (F.New_Selected_Name (+"WS.End_Message"),
-              F.New_List
-                (F.New_Argument_Association
-                   (F.New_Name (+"Value'Address")),
-                 F.New_Argument_Association
-                      (F.New_Name (+"Offset")))),
+           (F.New_Selected_Name (+"WS.End_Message"),
             F.New_Statement
               (F.New_Apply
                 (F.New_Name ("Write_" & My_Name),
-                    F.New_List
-                           (F.New_Argument_Association
-                              (F.New_Name (+"WS'Access")),
-                            F.New_Argument_Association
-                         (F.New_Name (+"Value")))))));
+                 F.New_List
+                   (F.New_Argument_Association
+                      (F.New_Name (+"WS'Access")),
+                    F.New_Argument_Association
+                      (F.New_Name (+"Value")))))));
 
       Decl := F.New_Block
-        (Declarations => F.New_List
-           (F.New_Variable
-              (Name            => F.New_Name (+"WS"),
-               Type_Definition => Stream,
-               Rename          => F.New_Apply
-                 (Stream,
-                  F.New_Argument_Association
-                    (F.New_Selected_Name (+"Stream.all")))),
-            F.New_Variable
-              (Name            => F.New_Name (+"Offset"),
-               Type_Definition => F.New_Selected_Name
-                 (+"Ada.Streams.Stream_Element_Count"),
-               Initialization   =>
-                 F.New_Selected_Name (+"WS.Written"),
-               Is_Constant      => True)),
+        (Declarations =>
+           F.New_Variable
+             (Name            => F.New_Name (+"WS"),
+              Type_Definition => Stream,
+              Rename          =>
+                F.New_Apply
+                  (Stream,
+                   F.New_Argument_Association
+                     (F.New_Selected_Name (+"Stream.all")))),
          Statements   => Stmts);
 
       Result := F.New_Subprogram_Body

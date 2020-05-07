@@ -21,7 +21,6 @@
 --  DEALINGS IN THE SOFTWARE.
 
 with Ada.Unchecked_Conversion;
-with System.Storage_Elements;
 
 with League.Text_Codecs;
 
@@ -74,34 +73,32 @@ package body PB_Support.Internal is
       Value : Ada.Streams.Stream_Element_Count)
         with Inline;
 
-   -------------
-   -- Written --
-   -------------
-
-   not overriding function Written
-     (Self : Stream) return Ada.Streams.Stream_Element_Count is
-   begin
-      return Self.Written;
-   end Written;
-
    -------------------
    -- Start_Message --
    -------------------
 
    not overriding procedure Start_Message
-     (Self    : in out Stream;
-      Message : System.Address)
+     (Self : in out Stream)
    is
    begin
       Self.Level := Self.Level + 1;
 
       if Self.Level = 2 then
          Self.Riffling := not Self.Riffling;
+
+         if Self.Riffling then
+            Self.Size.Clear;
+            Self.Size.Set_Length (0);
+            Self.Index := 1;
+         end if;
       end if;
 
-      if not Self.Riffling and Self.Level > 1 then
-         Self.Write (Self.Size ((Message, Self.Level)));
-         Self.Size.Delete ((Message, Self.Level));
+      if Self.Riffling then
+         Self.Size.Append (Self.Written);
+         Self.Stack.Append (Self.Size.Last_Index);
+      elsif Self.Level > 1 then
+         Self.Write (Self.Size (Self.Index));
+         Self.Index := Self.Index + 1;
       end if;
    end Start_Message;
 
@@ -110,12 +107,14 @@ package body PB_Support.Internal is
    -----------------
 
    not overriding function End_Message
-     (Self    : in out Stream;
-      Message : System.Address;
-      Offset  : Ada.Streams.Stream_Element_Count) return Boolean is
+     (Self : in out Stream) return Boolean
+   is
+      Id : Message_Id;
    begin
-      if Self.Riffling and Self.Level > 1 then
-         Self.Size.Insert ((Message, Self.Level), Self.Written - Offset);
+      if Self.Riffling then
+         Id := Self.Stack.Last_Element;
+         Self.Stack.Delete_Last;
+         Self.Size (Id) := Self.Written - Self.Size (Id);
       end if;
 
       Self.Level := Self.Level - 1;
@@ -464,20 +463,6 @@ package body PB_Support.Internal is
    begin
       Self.Write_Varint (Interfaces.Unsigned_32 (Value));
    end Write;
-
-   ----------
-   -- Hash --
-   ----------
-
-   function Hash (Value : Message_Id) return Ada.Containers.Hash_Type is
-      use type Ada.Containers.Hash_Type;
-
-      Int : constant System.Storage_Elements.Integer_Address :=
-        System.Storage_Elements.To_Integer (Value.Address);
-   begin
-      return Ada.Containers.Hash_Type'Mod (Int) +
-        Ada.Containers.Hash_Type (Value.Level);
-   end Hash;
 
    -----------
    -- Write --

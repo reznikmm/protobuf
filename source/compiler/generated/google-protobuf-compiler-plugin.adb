@@ -107,11 +107,10 @@ package body Google.Protobuf.Compiler.Plugin is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.File_To_Generate);
          WS.Write (2, Value.Parameter);
          for J in 1 .. Value.Proto_File.Length loop
@@ -119,7 +118,7 @@ package body Google.Protobuf.Compiler.Plugin is
             Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
               (Stream, Value.Proto_File.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Code_Generator_Request (WS'Access, Value);
          end if;
       end;
@@ -213,18 +212,17 @@ package body Google.Protobuf.Compiler.Plugin is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Error);
          for J in 1 .. Value.File.Length loop
             WS.Write_Key ((15, PB_Support.Length_Delimited));
             Google.Protobuf.Compiler.Plugin.File'Write
               (Stream, Value.File.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Code_Generator_Response (WS'Access, Value);
          end if;
       end;
@@ -312,15 +310,14 @@ package body Google.Protobuf.Compiler.Plugin is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name);
          WS.Write (2, Value.Insertion_Point);
          WS.Write (15, Value.Content);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_File (WS'Access, Value);
          end if;
       end;

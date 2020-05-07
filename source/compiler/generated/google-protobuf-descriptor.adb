@@ -266,17 +266,16 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          for J in 1 .. Value.File.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
               (Stream, Value.File.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_File_Descriptor_Set (WS'Access, Value);
          end if;
       end;
@@ -406,11 +405,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name);
          WS.Write (2, Value.PB_Package);
          WS.Write (3, Value.Dependency);
@@ -447,7 +445,7 @@ package body Google.Protobuf.Descriptor is
               (Stream, Value.Source_Code_Info.Value);
          end if;
          WS.Write (12, Value.Syntax);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_File_Descriptor_Proto (WS'Access, Value);
          end if;
       end;
@@ -566,11 +564,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name);
          for J in 1 .. Value.Field.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
@@ -613,7 +610,7 @@ package body Google.Protobuf.Descriptor is
               (Stream, Value.Reserved_Range.Get (J));
          end loop;
          WS.Write (10, Value.Reserved_Name);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Descriptor_Proto (WS'Access, Value);
          end if;
       end;
@@ -704,14 +701,13 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write_Varint (1, Value.Start);
          WS.Write_Varint (2, Value.PB_End);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Extension_Range (WS'Access, Value);
          end if;
       end;
@@ -802,14 +798,13 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write_Varint (1, Value.Start);
          WS.Write_Varint (2, Value.PB_End);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Reserved_Range (WS'Access, Value);
          end if;
       end;
@@ -928,11 +923,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name);
          WS.Write_Varint (3, Value.Number);
          Label_IO.Write (WS, 4, Value.Label);
@@ -947,7 +941,7 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Field_Options'Write
               (Stream, Value.Options.Value);
          end if;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Field_Descriptor_Proto (WS'Access, Value);
          end if;
       end;
@@ -1044,18 +1038,17 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name);
          if Value.Options.Is_Set then
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Oneof_Options'Write
               (Stream, Value.Options.Value);
          end if;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Oneof_Descriptor_Proto (WS'Access, Value);
          end if;
       end;
@@ -1155,11 +1148,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name);
          for J in 1 .. Value.Value.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
@@ -1171,7 +1163,7 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Enum_Options'Write
               (Stream, Value.Options.Value);
          end if;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Enum_Descriptor_Proto (WS'Access, Value);
          end if;
       end;
@@ -1277,11 +1269,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name);
          WS.Write_Varint (2, Value.Number);
          if Value.Options.Is_Set then
@@ -1289,7 +1280,7 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Enum_Value_Options'Write
               (Stream, Value.Options.Value);
          end if;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Enum_Value_Descriptor_Proto (WS'Access, Value);
          end if;
       end;
@@ -1390,11 +1381,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name);
          for J in 1 .. Value.Method.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
@@ -1406,7 +1396,7 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Service_Options'Write
               (Stream, Value.Options.Value);
          end if;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Service_Descriptor_Proto (WS'Access, Value);
          end if;
       end;
@@ -1516,11 +1506,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name);
          WS.Write (2, Value.Input_Type);
          WS.Write (3, Value.Output_Type);
@@ -1531,7 +1520,7 @@ package body Google.Protobuf.Descriptor is
          end if;
          WS.Write (5, Value.Client_Streaming);
          WS.Write (6, Value.Server_Streaming);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Method_Descriptor_Proto (WS'Access, Value);
          end if;
       end;
@@ -1661,11 +1650,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Java_Package);
          WS.Write (8, Value.Java_Outer_Classname);
          WS.Write (10, Value.Java_Multiple_Files);
@@ -1685,7 +1673,7 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_File_Options (WS'Access, Value);
          end if;
       end;
@@ -1785,11 +1773,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Message_Set_Wire_Format);
          WS.Write (2, Value.No_Standard_Descriptor_Accessor);
          WS.Write (3, Value.Deprecated);
@@ -1799,7 +1786,7 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Message_Options (WS'Access, Value);
          end if;
       end;
@@ -1900,11 +1887,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          CType_IO.Write (WS, 1, Value.Ctype);
          WS.Write (2, Value.Packed);
          JSType_IO.Write (WS, 6, Value.Jstype);
@@ -1916,7 +1902,7 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Field_Options (WS'Access, Value);
          end if;
       end;
@@ -2004,17 +1990,16 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Oneof_Options (WS'Access, Value);
          end if;
       end;
@@ -2108,11 +2093,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (2, Value.Allow_Alias);
          WS.Write (3, Value.Deprecated);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
@@ -2120,7 +2104,7 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Enum_Options (WS'Access, Value);
          end if;
       end;
@@ -2213,18 +2197,17 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Deprecated);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Enum_Value_Options (WS'Access, Value);
          end if;
       end;
@@ -2315,18 +2298,17 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (33, Value.Deprecated);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Service_Options (WS'Access, Value);
          end if;
       end;
@@ -2417,18 +2399,17 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (33, Value.Deprecated);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Method_Options (WS'Access, Value);
          end if;
       end;
@@ -2535,11 +2516,10 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          for J in 1 .. Value.Name.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Name_Part'Write
@@ -2551,7 +2531,7 @@ package body Google.Protobuf.Descriptor is
          WS.Write (6, Value.Double_Value);
          WS.Write (7, Value.String_Value);
          WS.Write (8, Value.Aggregate_Value);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Uninterpreted_Option (WS'Access, Value);
          end if;
       end;
@@ -2640,14 +2620,13 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write (1, Value.Name_Part);
          WS.Write (2, Value.Is_Extension);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Name_Part (WS'Access, Value);
          end if;
       end;
@@ -2735,17 +2714,16 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          for J in 1 .. Value.Location.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Location'Write
               (Stream, Value.Location.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Source_Code_Info (WS'Access, Value);
          end if;
       end;
@@ -2839,17 +2817,16 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write_Varint (1, Value.Path);
          WS.Write_Varint (2, Value.Span);
          WS.Write (3, Value.Leading_Comments);
          WS.Write (4, Value.Trailing_Comments);
          WS.Write (6, Value.Leading_Detached_Comments);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Location (WS'Access, Value);
          end if;
       end;
@@ -2939,17 +2916,16 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          for J in 1 .. Value.Annotation.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Annotation'Write
               (Stream, Value.Annotation.Get (J));
          end loop;
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Generated_Code_Info (WS'Access, Value);
          end if;
       end;
@@ -3044,16 +3020,15 @@ package body Google.Protobuf.Descriptor is
          end;
       end if;
       declare
-         WS     : PB_Support.Internal.Stream renames
+         WS : PB_Support.Internal.Stream renames
            PB_Support.Internal.Stream (Stream.all);
-         Offset : constant Ada.Streams.Stream_Element_Count := WS.Written;
       begin
-         WS.Start_Message (Value'Address);
+         WS.Start_Message;
          WS.Write_Varint (1, Value.Path);
          WS.Write (2, Value.Source_File);
          WS.Write_Varint (3, Value.PB_Begin);
          WS.Write_Varint (4, Value.PB_End);
-         if WS.End_Message (Value'Address, Offset) then
+         if WS.End_Message then
             Write_Annotation (WS'Access, Value);
          end if;
       end;
