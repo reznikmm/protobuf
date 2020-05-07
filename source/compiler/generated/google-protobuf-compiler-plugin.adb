@@ -38,8 +38,8 @@ package body Google.Protobuf.Compiler.Plugin is
      (Code_Generator_Request_Array, Code_Generator_Request_Array_Access);
 
    procedure Append
-    (Self  : in out Code_Generator_Request_Vector;
-     Value : Code_Generator_Request) is
+    (Self : in out Code_Generator_Request_Vector;
+     V    : Code_Generator_Request) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Code_Generator_Request'Size);
    begin
@@ -53,7 +53,7 @@ package body Google.Protobuf.Compiler.Plugin is
                 & Code_Generator_Request_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Code_Generator_Request_Vector) is
@@ -74,20 +74,20 @@ package body Google.Protobuf.Compiler.Plugin is
 
    procedure Read_Code_Generator_Request
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Code_Generator_Request) is
+     V      : out Code_Generator_Request) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String_Vector
-                 (Stream, Key.Encoding, Value.File_To_Generate);
+                 (Stream, Key.Encoding, V.File_To_Generate);
             when 2 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Parameter);
+                 (Stream, Key.Encoding, V.Parameter);
             when 15 =>
                File_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Proto_File);
+                 (Stream, Key.Encoding, V.Proto_File);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -96,13 +96,13 @@ package body Google.Protobuf.Compiler.Plugin is
 
    procedure Write_Code_Generator_Request
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Code_Generator_Request) is
+     V      : Code_Generator_Request) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Code_Generator_Request (WS'Access, Value);
+            Write_Code_Generator_Request (WS'Access, V);
             return;
          end;
       end if;
@@ -111,15 +111,15 @@ package body Google.Protobuf.Compiler.Plugin is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.File_To_Generate);
-         WS.Write (2, Value.Parameter);
-         for J in 1 .. Value.Proto_File.Length loop
+         WS.Write (1, V.File_To_Generate);
+         WS.Write (2, V.Parameter);
+         for J in 1 .. V.Proto_File.Length loop
             WS.Write_Key ((15, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
-              (Stream, Value.Proto_File.Get (J));
+              (Stream, V.Proto_File.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Code_Generator_Request (WS'Access, Value);
+            Write_Code_Generator_Request (WS'Access, V);
          end if;
       end;
    end Write_Code_Generator_Request;
@@ -146,8 +146,8 @@ package body Google.Protobuf.Compiler.Plugin is
      (Code_Generator_Response_Array, Code_Generator_Response_Array_Access);
 
    procedure Append
-    (Self  : in out Code_Generator_Response_Vector;
-     Value : Code_Generator_Response) is
+    (Self : in out Code_Generator_Response_Vector;
+     V    : Code_Generator_Response) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Code_Generator_Response'Size);
    begin
@@ -161,7 +161,7 @@ package body Google.Protobuf.Compiler.Plugin is
                 & Code_Generator_Response_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust
@@ -183,16 +183,16 @@ package body Google.Protobuf.Compiler.Plugin is
 
    procedure Read_Code_Generator_Response
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Code_Generator_Response) is
+     V      : out Code_Generator_Response) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Error);
+                 (Stream, Key.Encoding, V.Error);
             when 15 =>
-               File_IO.Read_Vector (Stream, Key.Encoding, Value.File);
+               File_IO.Read_Vector (Stream, Key.Encoding, V.File);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -201,13 +201,13 @@ package body Google.Protobuf.Compiler.Plugin is
 
    procedure Write_Code_Generator_Response
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Code_Generator_Response) is
+     V      : Code_Generator_Response) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Code_Generator_Response (WS'Access, Value);
+            Write_Code_Generator_Response (WS'Access, V);
             return;
          end;
       end if;
@@ -216,14 +216,14 @@ package body Google.Protobuf.Compiler.Plugin is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Error);
-         for J in 1 .. Value.File.Length loop
+         WS.Write (1, V.Error);
+         for J in 1 .. V.File.Length loop
             WS.Write_Key ((15, PB_Support.Length_Delimited));
             Google.Protobuf.Compiler.Plugin.File'Write
-              (Stream, Value.File.Get (J));
+              (Stream, V.File.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Code_Generator_Response (WS'Access, Value);
+            Write_Code_Generator_Response (WS'Access, V);
          end if;
       end;
    end Write_Code_Generator_Response;
@@ -246,7 +246,7 @@ package body Google.Protobuf.Compiler.Plugin is
    procedure Free is new Ada.Unchecked_Deallocation
      (File_Array, File_Array_Access);
 
-   procedure Append (Self  : in out File_Vector; Value : File) is
+   procedure Append (Self : in out File_Vector; V    : File) is
       Init_Length : constant Positive := Positive'Max (1, 256 / File'Size);
    begin
       if Self.Length = 0 then
@@ -258,7 +258,7 @@ package body Google.Protobuf.Compiler.Plugin is
              (Self.Data.all & File_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out File_Vector) is
@@ -277,20 +277,20 @@ package body Google.Protobuf.Compiler.Plugin is
 
    procedure Read_File
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out File) is
+     V      : out File) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name);
+                 (Stream, Key.Encoding, V.Name);
             when 2 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Insertion_Point);
+                 (Stream, Key.Encoding, V.Insertion_Point);
             when 15 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Content);
+                 (Stream, Key.Encoding, V.Content);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -299,13 +299,13 @@ package body Google.Protobuf.Compiler.Plugin is
 
    procedure Write_File
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : File) is
+     V      : File) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_File (WS'Access, Value);
+            Write_File (WS'Access, V);
             return;
          end;
       end if;
@@ -314,11 +314,11 @@ package body Google.Protobuf.Compiler.Plugin is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name);
-         WS.Write (2, Value.Insertion_Point);
-         WS.Write (15, Value.Content);
+         WS.Write (1, V.Name);
+         WS.Write (2, V.Insertion_Point);
+         WS.Write (15, V.Content);
          if WS.End_Message then
-            Write_File (WS'Access, Value);
+            Write_File (WS'Access, V);
          end if;
       end;
    end Write_File;

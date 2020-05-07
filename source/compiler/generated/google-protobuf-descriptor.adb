@@ -204,8 +204,8 @@ package body Google.Protobuf.Descriptor is
      (File_Descriptor_Set_Array, File_Descriptor_Set_Array_Access);
 
    procedure Append
-    (Self  : in out File_Descriptor_Set_Vector;
-     Value : File_Descriptor_Set) is
+    (Self : in out File_Descriptor_Set_Vector;
+     V    : File_Descriptor_Set) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / File_Descriptor_Set'Size);
    begin
@@ -219,7 +219,7 @@ package body Google.Protobuf.Descriptor is
                 & File_Descriptor_Set_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out File_Descriptor_Set_Vector) is
@@ -239,14 +239,14 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_File_Descriptor_Set
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out File_Descriptor_Set) is
+     V      : out File_Descriptor_Set) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                File_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.File);
+                 (Stream, Key.Encoding, V.File);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -255,13 +255,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_File_Descriptor_Set
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : File_Descriptor_Set) is
+     V      : File_Descriptor_Set) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_File_Descriptor_Set (WS'Access, Value);
+            Write_File_Descriptor_Set (WS'Access, V);
             return;
          end;
       end if;
@@ -270,13 +270,13 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         for J in 1 .. Value.File.Length loop
+         for J in 1 .. V.File.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
-              (Stream, Value.File.Get (J));
+              (Stream, V.File.Get (J));
          end loop;
          if WS.End_Message then
-            Write_File_Descriptor_Set (WS'Access, Value);
+            Write_File_Descriptor_Set (WS'Access, V);
          end if;
       end;
    end Write_File_Descriptor_Set;
@@ -303,8 +303,8 @@ package body Google.Protobuf.Descriptor is
      (File_Descriptor_Proto_Array, File_Descriptor_Proto_Array_Access);
 
    procedure Append
-    (Self  : in out File_Descriptor_Proto_Vector;
-     Value : File_Descriptor_Proto) is
+    (Self : in out File_Descriptor_Proto_Vector;
+     V    : File_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / File_Descriptor_Proto'Size);
    begin
@@ -318,7 +318,7 @@ package body Google.Protobuf.Descriptor is
                 & File_Descriptor_Proto_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out File_Descriptor_Proto_Vector) is
@@ -339,53 +339,52 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_File_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out File_Descriptor_Proto) is
+     V      : out File_Descriptor_Proto) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name);
+                 (Stream, Key.Encoding, V.Name);
             when 2 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.PB_Package);
+                 (Stream, Key.Encoding, V.PB_Package);
             when 3 =>
                PB_Support.IO.Read_Universal_String_Vector
-                 (Stream, Key.Encoding, Value.Dependency);
+                 (Stream, Key.Encoding, V.Dependency);
             when 10 =>
                PB_Support.IO.Read_Unsigned_32_Vector
-                 (Stream, Key.Encoding, Value.Public_Dependency);
+                 (Stream, Key.Encoding, V.Public_Dependency);
             when 11 =>
                PB_Support.IO.Read_Unsigned_32_Vector
-                 (Stream, Key.Encoding, Value.Weak_Dependency);
+                 (Stream, Key.Encoding, V.Weak_Dependency);
             when 4 =>
                Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Message_Type);
+                 (Stream, Key.Encoding, V.Message_Type);
             when 5 =>
                Enum_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Enum_Type);
+                 (Stream, Key.Encoding, V.Enum_Type);
             when 6 =>
                Service_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Service);
+                 (Stream, Key.Encoding, V.Service);
             when 7 =>
                Field_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Extension);
+                 (Stream, Key.Encoding, V.Extension);
             when 8 =>
-               if  not Value.Options.Is_Set then
-                  Value.Options := (True, others => <>);
+               if  not V.Options.Is_Set then
+                  V.Options := (True, others => <>);
                end if;
-               File_Options_IO.Read
-                 (Stream, Key.Encoding, Value.Options.Value);
+               File_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
             when 9 =>
-               if  not Value.Source_Code_Info.Is_Set then
-                  Value.Source_Code_Info := (True, others => <>);
+               if  not V.Source_Code_Info.Is_Set then
+                  V.Source_Code_Info := (True, others => <>);
                end if;
                Source_Code_Info_IO.Read
-                 (Stream, Key.Encoding, Value.Source_Code_Info.Value);
+                 (Stream, Key.Encoding, V.Source_Code_Info.Value);
             when 12 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Syntax);
+                 (Stream, Key.Encoding, V.Syntax);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -394,13 +393,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_File_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : File_Descriptor_Proto) is
+     V      : File_Descriptor_Proto) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_File_Descriptor_Proto (WS'Access, Value);
+            Write_File_Descriptor_Proto (WS'Access, V);
             return;
          end;
       end if;
@@ -409,44 +408,44 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name);
-         WS.Write (2, Value.PB_Package);
-         WS.Write (3, Value.Dependency);
-         WS.Write_Varint (10, Value.Public_Dependency);
-         WS.Write_Varint (11, Value.Weak_Dependency);
-         for J in 1 .. Value.Message_Type.Length loop
+         WS.Write (1, V.Name);
+         WS.Write (2, V.PB_Package);
+         WS.Write (3, V.Dependency);
+         WS.Write_Varint (10, V.Public_Dependency);
+         WS.Write_Varint (11, V.Weak_Dependency);
+         for J in 1 .. V.Message_Type.Length loop
             WS.Write_Key ((4, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Descriptor_Proto'Write
-              (Stream, Value.Message_Type.Get (J));
+              (Stream, V.Message_Type.Get (J));
          end loop;
-         for J in 1 .. Value.Enum_Type.Length loop
+         for J in 1 .. V.Enum_Type.Length loop
             WS.Write_Key ((5, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Descriptor_Proto'Write
-              (Stream, Value.Enum_Type.Get (J));
+              (Stream, V.Enum_Type.Get (J));
          end loop;
-         for J in 1 .. Value.Service.Length loop
+         for J in 1 .. V.Service.Length loop
             WS.Write_Key ((6, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Service_Descriptor_Proto'Write
-              (Stream, Value.Service.Get (J));
+              (Stream, V.Service.Get (J));
          end loop;
-         for J in 1 .. Value.Extension.Length loop
+         for J in 1 .. V.Extension.Length loop
             WS.Write_Key ((7, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
-              (Stream, Value.Extension.Get (J));
+              (Stream, V.Extension.Get (J));
          end loop;
-         if Value.Options.Is_Set then
+         if V.Options.Is_Set then
             WS.Write_Key ((8, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.File_Options'Write
-              (Stream, Value.Options.Value);
+              (Stream, V.Options.Value);
          end if;
-         if Value.Source_Code_Info.Is_Set then
+         if V.Source_Code_Info.Is_Set then
             WS.Write_Key ((9, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Source_Code_Info'Write
-              (Stream, Value.Source_Code_Info.Value);
+              (Stream, V.Source_Code_Info.Value);
          end if;
-         WS.Write (12, Value.Syntax);
+         WS.Write (12, V.Syntax);
          if WS.End_Message then
-            Write_File_Descriptor_Proto (WS'Access, Value);
+            Write_File_Descriptor_Proto (WS'Access, V);
          end if;
       end;
    end Write_File_Descriptor_Proto;
@@ -473,8 +472,8 @@ package body Google.Protobuf.Descriptor is
      (Descriptor_Proto_Array, Descriptor_Proto_Array_Access);
 
    procedure Append
-    (Self  : in out Descriptor_Proto_Vector;
-     Value : Descriptor_Proto) is
+    (Self : in out Descriptor_Proto_Vector;
+     V    : Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Descriptor_Proto'Size);
    begin
@@ -487,7 +486,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Descriptor_Proto_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Descriptor_Proto_Vector) is
@@ -507,44 +506,43 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Descriptor_Proto) is
+     V      : out Descriptor_Proto) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name);
+                 (Stream, Key.Encoding, V.Name);
             when 2 =>
                Field_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Field);
+                 (Stream, Key.Encoding, V.Field);
             when 6 =>
                Field_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Extension);
+                 (Stream, Key.Encoding, V.Extension);
             when 3 =>
                Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Nested_Type);
+                 (Stream, Key.Encoding, V.Nested_Type);
             when 4 =>
                Enum_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Enum_Type);
+                 (Stream, Key.Encoding, V.Enum_Type);
             when 5 =>
                Extension_Range_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Extension_Range);
+                 (Stream, Key.Encoding, V.Extension_Range);
             when 8 =>
                Oneof_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Oneof_Decl);
+                 (Stream, Key.Encoding, V.Oneof_Decl);
             when 7 =>
-               if  not Value.Options.Is_Set then
-                  Value.Options := (True, others => <>);
+               if  not V.Options.Is_Set then
+                  V.Options := (True, others => <>);
                end if;
-               Message_Options_IO.Read
-                 (Stream, Key.Encoding, Value.Options.Value);
+               Message_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
             when 9 =>
                Reserved_Range_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Reserved_Range);
+                 (Stream, Key.Encoding, V.Reserved_Range);
             when 10 =>
                PB_Support.IO.Read_Universal_String_Vector
-                 (Stream, Key.Encoding, Value.Reserved_Name);
+                 (Stream, Key.Encoding, V.Reserved_Name);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -553,13 +551,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Descriptor_Proto) is
+     V      : Descriptor_Proto) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Descriptor_Proto (WS'Access, Value);
+            Write_Descriptor_Proto (WS'Access, V);
             return;
          end;
       end if;
@@ -568,50 +566,50 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name);
-         for J in 1 .. Value.Field.Length loop
+         WS.Write (1, V.Name);
+         for J in 1 .. V.Field.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
-              (Stream, Value.Field.Get (J));
+              (Stream, V.Field.Get (J));
          end loop;
-         for J in 1 .. Value.Extension.Length loop
+         for J in 1 .. V.Extension.Length loop
             WS.Write_Key ((6, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
-              (Stream, Value.Extension.Get (J));
+              (Stream, V.Extension.Get (J));
          end loop;
-         for J in 1 .. Value.Nested_Type.Length loop
+         for J in 1 .. V.Nested_Type.Length loop
             WS.Write_Key ((3, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Descriptor_Proto'Write
-              (Stream, Value.Nested_Type.Get (J));
+              (Stream, V.Nested_Type.Get (J));
          end loop;
-         for J in 1 .. Value.Enum_Type.Length loop
+         for J in 1 .. V.Enum_Type.Length loop
             WS.Write_Key ((4, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Descriptor_Proto'Write
-              (Stream, Value.Enum_Type.Get (J));
+              (Stream, V.Enum_Type.Get (J));
          end loop;
-         for J in 1 .. Value.Extension_Range.Length loop
+         for J in 1 .. V.Extension_Range.Length loop
             WS.Write_Key ((5, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Extension_Range'Write
-              (Stream, Value.Extension_Range.Get (J));
+              (Stream, V.Extension_Range.Get (J));
          end loop;
-         for J in 1 .. Value.Oneof_Decl.Length loop
+         for J in 1 .. V.Oneof_Decl.Length loop
             WS.Write_Key ((8, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Oneof_Descriptor_Proto'Write
-              (Stream, Value.Oneof_Decl.Get (J));
+              (Stream, V.Oneof_Decl.Get (J));
          end loop;
-         if Value.Options.Is_Set then
+         if V.Options.Is_Set then
             WS.Write_Key ((7, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Message_Options'Write
-              (Stream, Value.Options.Value);
+              (Stream, V.Options.Value);
          end if;
-         for J in 1 .. Value.Reserved_Range.Length loop
+         for J in 1 .. V.Reserved_Range.Length loop
             WS.Write_Key ((9, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Reserved_Range'Write
-              (Stream, Value.Reserved_Range.Get (J));
+              (Stream, V.Reserved_Range.Get (J));
          end loop;
-         WS.Write (10, Value.Reserved_Name);
+         WS.Write (10, V.Reserved_Name);
          if WS.End_Message then
-            Write_Descriptor_Proto (WS'Access, Value);
+            Write_Descriptor_Proto (WS'Access, V);
          end if;
       end;
    end Write_Descriptor_Proto;
@@ -638,8 +636,8 @@ package body Google.Protobuf.Descriptor is
      (Extension_Range_Array, Extension_Range_Array_Access);
 
    procedure Append
-    (Self  : in out Extension_Range_Vector;
-     Value : Extension_Range) is
+    (Self : in out Extension_Range_Vector;
+     V    : Extension_Range) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Extension_Range'Size);
    begin
@@ -652,7 +650,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Extension_Range_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Extension_Range_Vector) is
@@ -671,17 +669,15 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Extension_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Extension_Range) is
+     V      : out Extension_Range) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, Value.Start);
+               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Start);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, Value.PB_End);
+               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.PB_End);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -690,13 +686,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Extension_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Extension_Range) is
+     V      : Extension_Range) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Extension_Range (WS'Access, Value);
+            Write_Extension_Range (WS'Access, V);
             return;
          end;
       end if;
@@ -705,10 +701,10 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, Value.Start);
-         WS.Write_Varint (2, Value.PB_End);
+         WS.Write_Varint (1, V.Start);
+         WS.Write_Varint (2, V.PB_End);
          if WS.End_Message then
-            Write_Extension_Range (WS'Access, Value);
+            Write_Extension_Range (WS'Access, V);
          end if;
       end;
    end Write_Extension_Range;
@@ -735,8 +731,8 @@ package body Google.Protobuf.Descriptor is
      (Reserved_Range_Array, Reserved_Range_Array_Access);
 
    procedure Append
-    (Self  : in out Reserved_Range_Vector;
-     Value : Reserved_Range) is
+    (Self : in out Reserved_Range_Vector;
+     V    : Reserved_Range) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Reserved_Range'Size);
    begin
@@ -749,7 +745,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Reserved_Range_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Reserved_Range_Vector) is
@@ -768,17 +764,15 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Reserved_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Reserved_Range) is
+     V      : out Reserved_Range) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, Value.Start);
+               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Start);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, Value.PB_End);
+               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.PB_End);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -787,13 +781,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Reserved_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Reserved_Range) is
+     V      : Reserved_Range) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Reserved_Range (WS'Access, Value);
+            Write_Reserved_Range (WS'Access, V);
             return;
          end;
       end if;
@@ -802,10 +796,10 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, Value.Start);
-         WS.Write_Varint (2, Value.PB_End);
+         WS.Write_Varint (1, V.Start);
+         WS.Write_Varint (2, V.PB_End);
          if WS.End_Message then
-            Write_Reserved_Range (WS'Access, Value);
+            Write_Reserved_Range (WS'Access, V);
          end if;
       end;
    end Write_Reserved_Range;
@@ -832,8 +826,8 @@ package body Google.Protobuf.Descriptor is
      (Field_Descriptor_Proto_Array, Field_Descriptor_Proto_Array_Access);
 
    procedure Append
-    (Self  : in out Field_Descriptor_Proto_Vector;
-     Value : Field_Descriptor_Proto) is
+    (Self : in out Field_Descriptor_Proto_Vector;
+     V    : Field_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Field_Descriptor_Proto'Size);
    begin
@@ -847,7 +841,7 @@ package body Google.Protobuf.Descriptor is
                 & Field_Descriptor_Proto_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Field_Descriptor_Proto_Vector) is
@@ -868,42 +862,40 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Field_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Field_Descriptor_Proto) is
+     V      : out Field_Descriptor_Proto) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name);
+                 (Stream, Key.Encoding, V.Name);
             when 3 =>
-               PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, Value.Number);
+               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Number);
             when 4 =>
-               Label_IO.Read (Stream, Key.Encoding, Value.Label);
+               Label_IO.Read (Stream, Key.Encoding, V.Label);
             when 5 =>
-               PB_Type_IO.Read (Stream, Key.Encoding, Value.PB_Type);
+               PB_Type_IO.Read (Stream, Key.Encoding, V.PB_Type);
             when 6 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Type_Name);
+                 (Stream, Key.Encoding, V.Type_Name);
             when 2 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Extendee);
+                 (Stream, Key.Encoding, V.Extendee);
             when 7 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Default_Value);
+                 (Stream, Key.Encoding, V.Default_Value);
             when 9 =>
                PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, Value.Oneof_Index);
+                 (Stream, Key.Encoding, V.Oneof_Index);
             when 10 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Json_Name);
+                 (Stream, Key.Encoding, V.Json_Name);
             when 8 =>
-               if  not Value.Options.Is_Set then
-                  Value.Options := (True, others => <>);
+               if  not V.Options.Is_Set then
+                  V.Options := (True, others => <>);
                end if;
-               Field_Options_IO.Read
-                 (Stream, Key.Encoding, Value.Options.Value);
+               Field_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -912,13 +904,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Field_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Field_Descriptor_Proto) is
+     V      : Field_Descriptor_Proto) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Field_Descriptor_Proto (WS'Access, Value);
+            Write_Field_Descriptor_Proto (WS'Access, V);
             return;
          end;
       end if;
@@ -927,22 +919,22 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name);
-         WS.Write_Varint (3, Value.Number);
-         Label_IO.Write (WS, 4, Value.Label);
-         PB_Type_IO.Write (WS, 5, Value.PB_Type);
-         WS.Write (6, Value.Type_Name);
-         WS.Write (2, Value.Extendee);
-         WS.Write (7, Value.Default_Value);
-         WS.Write_Varint (9, Value.Oneof_Index);
-         WS.Write (10, Value.Json_Name);
-         if Value.Options.Is_Set then
+         WS.Write (1, V.Name);
+         WS.Write_Varint (3, V.Number);
+         Label_IO.Write (WS, 4, V.Label);
+         PB_Type_IO.Write (WS, 5, V.PB_Type);
+         WS.Write (6, V.Type_Name);
+         WS.Write (2, V.Extendee);
+         WS.Write (7, V.Default_Value);
+         WS.Write_Varint (9, V.Oneof_Index);
+         WS.Write (10, V.Json_Name);
+         if V.Options.Is_Set then
             WS.Write_Key ((8, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Options'Write
-              (Stream, Value.Options.Value);
+              (Stream, V.Options.Value);
          end if;
          if WS.End_Message then
-            Write_Field_Descriptor_Proto (WS'Access, Value);
+            Write_Field_Descriptor_Proto (WS'Access, V);
          end if;
       end;
    end Write_Field_Descriptor_Proto;
@@ -969,8 +961,8 @@ package body Google.Protobuf.Descriptor is
      (Oneof_Descriptor_Proto_Array, Oneof_Descriptor_Proto_Array_Access);
 
    procedure Append
-    (Self  : in out Oneof_Descriptor_Proto_Vector;
-     Value : Oneof_Descriptor_Proto) is
+    (Self : in out Oneof_Descriptor_Proto_Vector;
+     V    : Oneof_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Oneof_Descriptor_Proto'Size);
    begin
@@ -984,7 +976,7 @@ package body Google.Protobuf.Descriptor is
                 & Oneof_Descriptor_Proto_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Oneof_Descriptor_Proto_Vector) is
@@ -1005,20 +997,19 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Oneof_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Oneof_Descriptor_Proto) is
+     V      : out Oneof_Descriptor_Proto) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name);
+                 (Stream, Key.Encoding, V.Name);
             when 2 =>
-               if  not Value.Options.Is_Set then
-                  Value.Options := (True, others => <>);
+               if  not V.Options.Is_Set then
+                  V.Options := (True, others => <>);
                end if;
-               Oneof_Options_IO.Read
-                 (Stream, Key.Encoding, Value.Options.Value);
+               Oneof_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1027,13 +1018,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Oneof_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Oneof_Descriptor_Proto) is
+     V      : Oneof_Descriptor_Proto) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Oneof_Descriptor_Proto (WS'Access, Value);
+            Write_Oneof_Descriptor_Proto (WS'Access, V);
             return;
          end;
       end if;
@@ -1042,14 +1033,14 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name);
-         if Value.Options.Is_Set then
+         WS.Write (1, V.Name);
+         if V.Options.Is_Set then
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Oneof_Options'Write
-              (Stream, Value.Options.Value);
+              (Stream, V.Options.Value);
          end if;
          if WS.End_Message then
-            Write_Oneof_Descriptor_Proto (WS'Access, Value);
+            Write_Oneof_Descriptor_Proto (WS'Access, V);
          end if;
       end;
    end Write_Oneof_Descriptor_Proto;
@@ -1076,8 +1067,8 @@ package body Google.Protobuf.Descriptor is
      (Enum_Descriptor_Proto_Array, Enum_Descriptor_Proto_Array_Access);
 
    procedure Append
-    (Self  : in out Enum_Descriptor_Proto_Vector;
-     Value : Enum_Descriptor_Proto) is
+    (Self : in out Enum_Descriptor_Proto_Vector;
+     V    : Enum_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Descriptor_Proto'Size);
    begin
@@ -1091,7 +1082,7 @@ package body Google.Protobuf.Descriptor is
                 & Enum_Descriptor_Proto_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Enum_Descriptor_Proto_Vector) is
@@ -1112,23 +1103,22 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Enum_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Enum_Descriptor_Proto) is
+     V      : out Enum_Descriptor_Proto) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name);
+                 (Stream, Key.Encoding, V.Name);
             when 2 =>
                Enum_Value_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Value);
+                 (Stream, Key.Encoding, V.Value);
             when 3 =>
-               if  not Value.Options.Is_Set then
-                  Value.Options := (True, others => <>);
+               if  not V.Options.Is_Set then
+                  V.Options := (True, others => <>);
                end if;
-               Enum_Options_IO.Read
-                 (Stream, Key.Encoding, Value.Options.Value);
+               Enum_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1137,13 +1127,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Enum_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Enum_Descriptor_Proto) is
+     V      : Enum_Descriptor_Proto) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Enum_Descriptor_Proto (WS'Access, Value);
+            Write_Enum_Descriptor_Proto (WS'Access, V);
             return;
          end;
       end if;
@@ -1152,19 +1142,19 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name);
-         for J in 1 .. Value.Value.Length loop
+         WS.Write (1, V.Name);
+         for J in 1 .. V.Value.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto'Write
-              (Stream, Value.Value.Get (J));
+              (Stream, V.Value.Get (J));
          end loop;
-         if Value.Options.Is_Set then
+         if V.Options.Is_Set then
             WS.Write_Key ((3, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Options'Write
-              (Stream, Value.Options.Value);
+              (Stream, V.Options.Value);
          end if;
          if WS.End_Message then
-            Write_Enum_Descriptor_Proto (WS'Access, Value);
+            Write_Enum_Descriptor_Proto (WS'Access, V);
          end if;
       end;
    end Write_Enum_Descriptor_Proto;
@@ -1194,8 +1184,8 @@ package body Google.Protobuf.Descriptor is
       Enum_Value_Descriptor_Proto_Array_Access);
 
    procedure Append
-    (Self  : in out Enum_Value_Descriptor_Proto_Vector;
-     Value : Enum_Value_Descriptor_Proto) is
+    (Self : in out Enum_Value_Descriptor_Proto_Vector;
+     V    : Enum_Value_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Value_Descriptor_Proto'Size);
    begin
@@ -1210,7 +1200,7 @@ package body Google.Protobuf.Descriptor is
                 & Enum_Value_Descriptor_Proto_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust
@@ -1233,23 +1223,22 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Enum_Value_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Enum_Value_Descriptor_Proto) is
+     V      : out Enum_Value_Descriptor_Proto) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name);
+                 (Stream, Key.Encoding, V.Name);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, Value.Number);
+               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Number);
             when 3 =>
-               if  not Value.Options.Is_Set then
-                  Value.Options := (True, others => <>);
+               if  not V.Options.Is_Set then
+                  V.Options := (True, others => <>);
                end if;
                Enum_Value_Options_IO.Read
-                 (Stream, Key.Encoding, Value.Options.Value);
+                 (Stream, Key.Encoding, V.Options.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1258,13 +1247,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Enum_Value_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Enum_Value_Descriptor_Proto) is
+     V      : Enum_Value_Descriptor_Proto) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Enum_Value_Descriptor_Proto (WS'Access, Value);
+            Write_Enum_Value_Descriptor_Proto (WS'Access, V);
             return;
          end;
       end if;
@@ -1273,15 +1262,15 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name);
-         WS.Write_Varint (2, Value.Number);
-         if Value.Options.Is_Set then
+         WS.Write (1, V.Name);
+         WS.Write_Varint (2, V.Number);
+         if V.Options.Is_Set then
             WS.Write_Key ((3, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Value_Options'Write
-              (Stream, Value.Options.Value);
+              (Stream, V.Options.Value);
          end if;
          if WS.End_Message then
-            Write_Enum_Value_Descriptor_Proto (WS'Access, Value);
+            Write_Enum_Value_Descriptor_Proto (WS'Access, V);
          end if;
       end;
    end Write_Enum_Value_Descriptor_Proto;
@@ -1308,8 +1297,8 @@ package body Google.Protobuf.Descriptor is
      (Service_Descriptor_Proto_Array, Service_Descriptor_Proto_Array_Access);
 
    procedure Append
-    (Self  : in out Service_Descriptor_Proto_Vector;
-     Value : Service_Descriptor_Proto) is
+    (Self : in out Service_Descriptor_Proto_Vector;
+     V    : Service_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Service_Descriptor_Proto'Size);
    begin
@@ -1323,7 +1312,7 @@ package body Google.Protobuf.Descriptor is
                 & Service_Descriptor_Proto_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust
@@ -1345,23 +1334,22 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Service_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Service_Descriptor_Proto) is
+     V      : out Service_Descriptor_Proto) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name);
+                 (Stream, Key.Encoding, V.Name);
             when 2 =>
                Method_Descriptor_Proto_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Method);
+                 (Stream, Key.Encoding, V.Method);
             when 3 =>
-               if  not Value.Options.Is_Set then
-                  Value.Options := (True, others => <>);
+               if  not V.Options.Is_Set then
+                  V.Options := (True, others => <>);
                end if;
-               Service_Options_IO.Read
-                 (Stream, Key.Encoding, Value.Options.Value);
+               Service_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1370,13 +1358,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Service_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Service_Descriptor_Proto) is
+     V      : Service_Descriptor_Proto) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Service_Descriptor_Proto (WS'Access, Value);
+            Write_Service_Descriptor_Proto (WS'Access, V);
             return;
          end;
       end if;
@@ -1385,19 +1373,19 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name);
-         for J in 1 .. Value.Method.Length loop
+         WS.Write (1, V.Name);
+         for J in 1 .. V.Method.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Method_Descriptor_Proto'Write
-              (Stream, Value.Method.Get (J));
+              (Stream, V.Method.Get (J));
          end loop;
-         if Value.Options.Is_Set then
+         if V.Options.Is_Set then
             WS.Write_Key ((3, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Service_Options'Write
-              (Stream, Value.Options.Value);
+              (Stream, V.Options.Value);
          end if;
          if WS.End_Message then
-            Write_Service_Descriptor_Proto (WS'Access, Value);
+            Write_Service_Descriptor_Proto (WS'Access, V);
          end if;
       end;
    end Write_Service_Descriptor_Proto;
@@ -1424,8 +1412,8 @@ package body Google.Protobuf.Descriptor is
      (Method_Descriptor_Proto_Array, Method_Descriptor_Proto_Array_Access);
 
    procedure Append
-    (Self  : in out Method_Descriptor_Proto_Vector;
-     Value : Method_Descriptor_Proto) is
+    (Self : in out Method_Descriptor_Proto_Vector;
+     V    : Method_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Method_Descriptor_Proto'Size);
    begin
@@ -1439,7 +1427,7 @@ package body Google.Protobuf.Descriptor is
                 & Method_Descriptor_Proto_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust
@@ -1461,32 +1449,31 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Method_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Method_Descriptor_Proto) is
+     V      : out Method_Descriptor_Proto) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name);
+                 (Stream, Key.Encoding, V.Name);
             when 2 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Input_Type);
+                 (Stream, Key.Encoding, V.Input_Type);
             when 3 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Output_Type);
+                 (Stream, Key.Encoding, V.Output_Type);
             when 4 =>
-               if  not Value.Options.Is_Set then
-                  Value.Options := (True, others => <>);
+               if  not V.Options.Is_Set then
+                  V.Options := (True, others => <>);
                end if;
-               Method_Options_IO.Read
-                 (Stream, Key.Encoding, Value.Options.Value);
+               Method_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
             when 5 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Client_Streaming);
+                 (Stream, Key.Encoding, V.Client_Streaming);
             when 6 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Server_Streaming);
+                 (Stream, Key.Encoding, V.Server_Streaming);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1495,13 +1482,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Method_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Method_Descriptor_Proto) is
+     V      : Method_Descriptor_Proto) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Method_Descriptor_Proto (WS'Access, Value);
+            Write_Method_Descriptor_Proto (WS'Access, V);
             return;
          end;
       end if;
@@ -1510,18 +1497,18 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name);
-         WS.Write (2, Value.Input_Type);
-         WS.Write (3, Value.Output_Type);
-         if Value.Options.Is_Set then
+         WS.Write (1, V.Name);
+         WS.Write (2, V.Input_Type);
+         WS.Write (3, V.Output_Type);
+         if V.Options.Is_Set then
             WS.Write_Key ((4, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Method_Options'Write
-              (Stream, Value.Options.Value);
+              (Stream, V.Options.Value);
          end if;
-         WS.Write (5, Value.Client_Streaming);
-         WS.Write (6, Value.Server_Streaming);
+         WS.Write (5, V.Client_Streaming);
+         WS.Write (6, V.Server_Streaming);
          if WS.End_Message then
-            Write_Method_Descriptor_Proto (WS'Access, Value);
+            Write_Method_Descriptor_Proto (WS'Access, V);
          end if;
       end;
    end Write_Method_Descriptor_Proto;
@@ -1547,9 +1534,7 @@ package body Google.Protobuf.Descriptor is
    procedure Free is new Ada.Unchecked_Deallocation
      (File_Options_Array, File_Options_Array_Access);
 
-   procedure Append
-    (Self  : in out File_Options_Vector;
-     Value : File_Options) is
+   procedure Append (Self : in out File_Options_Vector; V    : File_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / File_Options'Size);
    begin
@@ -1562,7 +1547,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & File_Options_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out File_Options_Vector) is
@@ -1581,56 +1566,54 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_File_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out File_Options) is
+     V      : out File_Options) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Java_Package);
+                 (Stream, Key.Encoding, V.Java_Package);
             when 8 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Java_Outer_Classname);
+                 (Stream, Key.Encoding, V.Java_Outer_Classname);
             when 10 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Java_Multiple_Files);
+                 (Stream, Key.Encoding, V.Java_Multiple_Files);
             when 20 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Java_Generate_Equals_And_Hash);
+                 (Stream, Key.Encoding, V.Java_Generate_Equals_And_Hash);
             when 27 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Java_String_Check_Utf_8);
+                 (Stream, Key.Encoding, V.Java_String_Check_Utf_8);
             when 9 =>
-               Optimize_Mode_IO.Read
-                 (Stream, Key.Encoding, Value.Optimize_For);
+               Optimize_Mode_IO.Read (Stream, Key.Encoding, V.Optimize_For);
             when 11 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Go_Package);
+                 (Stream, Key.Encoding, V.Go_Package);
             when 16 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Cc_Generic_Services);
+                 (Stream, Key.Encoding, V.Cc_Generic_Services);
             when 17 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Java_Generic_Services);
+                 (Stream, Key.Encoding, V.Java_Generic_Services);
             when 18 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Py_Generic_Services);
+                 (Stream, Key.Encoding, V.Py_Generic_Services);
             when 23 =>
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Deprecated);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
             when 31 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Cc_Enable_Arenas);
+                 (Stream, Key.Encoding, V.Cc_Enable_Arenas);
             when 36 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Objc_Class_Prefix);
+                 (Stream, Key.Encoding, V.Objc_Class_Prefix);
             when 37 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Csharp_Namespace);
+                 (Stream, Key.Encoding, V.Csharp_Namespace);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Uninterpreted_Option);
+                 (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1639,13 +1622,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_File_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : File_Options) is
+     V      : File_Options) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_File_Options (WS'Access, Value);
+            Write_File_Options (WS'Access, V);
             return;
          end;
       end if;
@@ -1654,27 +1637,27 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Java_Package);
-         WS.Write (8, Value.Java_Outer_Classname);
-         WS.Write (10, Value.Java_Multiple_Files);
-         WS.Write (20, Value.Java_Generate_Equals_And_Hash);
-         WS.Write (27, Value.Java_String_Check_Utf_8);
-         Optimize_Mode_IO.Write (WS, 9, Value.Optimize_For);
-         WS.Write (11, Value.Go_Package);
-         WS.Write (16, Value.Cc_Generic_Services);
-         WS.Write (17, Value.Java_Generic_Services);
-         WS.Write (18, Value.Py_Generic_Services);
-         WS.Write (23, Value.Deprecated);
-         WS.Write (31, Value.Cc_Enable_Arenas);
-         WS.Write (36, Value.Objc_Class_Prefix);
-         WS.Write (37, Value.Csharp_Namespace);
-         for J in 1 .. Value.Uninterpreted_Option.Length loop
+         WS.Write (1, V.Java_Package);
+         WS.Write (8, V.Java_Outer_Classname);
+         WS.Write (10, V.Java_Multiple_Files);
+         WS.Write (20, V.Java_Generate_Equals_And_Hash);
+         WS.Write (27, V.Java_String_Check_Utf_8);
+         Optimize_Mode_IO.Write (WS, 9, V.Optimize_For);
+         WS.Write (11, V.Go_Package);
+         WS.Write (16, V.Cc_Generic_Services);
+         WS.Write (17, V.Java_Generic_Services);
+         WS.Write (18, V.Py_Generic_Services);
+         WS.Write (23, V.Deprecated);
+         WS.Write (31, V.Cc_Enable_Arenas);
+         WS.Write (36, V.Objc_Class_Prefix);
+         WS.Write (37, V.Csharp_Namespace);
+         for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, Value.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message then
-            Write_File_Options (WS'Access, Value);
+            Write_File_Options (WS'Access, V);
          end if;
       end;
    end Write_File_Options;
@@ -1701,8 +1684,8 @@ package body Google.Protobuf.Descriptor is
      (Message_Options_Array, Message_Options_Array_Access);
 
    procedure Append
-    (Self  : in out Message_Options_Vector;
-     Value : Message_Options) is
+    (Self : in out Message_Options_Vector;
+     V    : Message_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Message_Options'Size);
    begin
@@ -1715,7 +1698,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Message_Options_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Message_Options_Vector) is
@@ -1734,26 +1717,24 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Message_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Message_Options) is
+     V      : out Message_Options) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Message_Set_Wire_Format);
+                 (Stream, Key.Encoding, V.Message_Set_Wire_Format);
             when 2 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.No_Standard_Descriptor_Accessor);
+                 (Stream, Key.Encoding, V.No_Standard_Descriptor_Accessor);
             when 3 =>
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Deprecated);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
             when 7 =>
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Map_Entry);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Map_Entry);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Uninterpreted_Option);
+                 (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1762,13 +1743,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Message_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Message_Options) is
+     V      : Message_Options) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Message_Options (WS'Access, Value);
+            Write_Message_Options (WS'Access, V);
             return;
          end;
       end if;
@@ -1777,17 +1758,17 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Message_Set_Wire_Format);
-         WS.Write (2, Value.No_Standard_Descriptor_Accessor);
-         WS.Write (3, Value.Deprecated);
-         WS.Write (7, Value.Map_Entry);
-         for J in 1 .. Value.Uninterpreted_Option.Length loop
+         WS.Write (1, V.Message_Set_Wire_Format);
+         WS.Write (2, V.No_Standard_Descriptor_Accessor);
+         WS.Write (3, V.Deprecated);
+         WS.Write (7, V.Map_Entry);
+         for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, Value.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Message_Options (WS'Access, Value);
+            Write_Message_Options (WS'Access, V);
          end if;
       end;
    end Write_Message_Options;
@@ -1814,8 +1795,8 @@ package body Google.Protobuf.Descriptor is
      (Field_Options_Array, Field_Options_Array_Access);
 
    procedure Append
-    (Self  : in out Field_Options_Vector;
-     Value : Field_Options) is
+    (Self : in out Field_Options_Vector;
+     V    : Field_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Field_Options'Size);
    begin
@@ -1828,7 +1809,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Field_Options_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Field_Options_Vector) is
@@ -1847,27 +1828,26 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Field_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Field_Options) is
+     V      : out Field_Options) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               CType_IO.Read (Stream, Key.Encoding, Value.Ctype);
+               CType_IO.Read (Stream, Key.Encoding, V.Ctype);
             when 2 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, Value.Packed);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Packed);
             when 6 =>
-               JSType_IO.Read (Stream, Key.Encoding, Value.Jstype);
+               JSType_IO.Read (Stream, Key.Encoding, V.Jstype);
             when 5 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, Value.Lazy);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Lazy);
             when 3 =>
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Deprecated);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
             when 10 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, Value.Weak);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Weak);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Uninterpreted_Option);
+                 (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1876,13 +1856,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Field_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Field_Options) is
+     V      : Field_Options) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Field_Options (WS'Access, Value);
+            Write_Field_Options (WS'Access, V);
             return;
          end;
       end if;
@@ -1891,19 +1871,19 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         CType_IO.Write (WS, 1, Value.Ctype);
-         WS.Write (2, Value.Packed);
-         JSType_IO.Write (WS, 6, Value.Jstype);
-         WS.Write (5, Value.Lazy);
-         WS.Write (3, Value.Deprecated);
-         WS.Write (10, Value.Weak);
-         for J in 1 .. Value.Uninterpreted_Option.Length loop
+         CType_IO.Write (WS, 1, V.Ctype);
+         WS.Write (2, V.Packed);
+         JSType_IO.Write (WS, 6, V.Jstype);
+         WS.Write (5, V.Lazy);
+         WS.Write (3, V.Deprecated);
+         WS.Write (10, V.Weak);
+         for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, Value.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Field_Options (WS'Access, Value);
+            Write_Field_Options (WS'Access, V);
          end if;
       end;
    end Write_Field_Options;
@@ -1930,8 +1910,8 @@ package body Google.Protobuf.Descriptor is
      (Oneof_Options_Array, Oneof_Options_Array_Access);
 
    procedure Append
-    (Self  : in out Oneof_Options_Vector;
-     Value : Oneof_Options) is
+    (Self : in out Oneof_Options_Vector;
+     V    : Oneof_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Oneof_Options'Size);
    begin
@@ -1944,7 +1924,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Oneof_Options_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Oneof_Options_Vector) is
@@ -1963,14 +1943,14 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Oneof_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Oneof_Options) is
+     V      : out Oneof_Options) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Uninterpreted_Option);
+                 (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1979,13 +1959,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Oneof_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Oneof_Options) is
+     V      : Oneof_Options) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Oneof_Options (WS'Access, Value);
+            Write_Oneof_Options (WS'Access, V);
             return;
          end;
       end if;
@@ -1994,13 +1974,13 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         for J in 1 .. Value.Uninterpreted_Option.Length loop
+         for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, Value.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Oneof_Options (WS'Access, Value);
+            Write_Oneof_Options (WS'Access, V);
          end if;
       end;
    end Write_Oneof_Options;
@@ -2026,9 +2006,7 @@ package body Google.Protobuf.Descriptor is
    procedure Free is new Ada.Unchecked_Deallocation
      (Enum_Options_Array, Enum_Options_Array_Access);
 
-   procedure Append
-    (Self  : in out Enum_Options_Vector;
-     Value : Enum_Options) is
+   procedure Append (Self : in out Enum_Options_Vector; V    : Enum_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Options'Size);
    begin
@@ -2041,7 +2019,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Enum_Options_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Enum_Options_Vector) is
@@ -2060,20 +2038,19 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Enum_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Enum_Options) is
+     V      : out Enum_Options) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 2 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Allow_Alias);
+                 (Stream, Key.Encoding, V.Allow_Alias);
             when 3 =>
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Deprecated);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Uninterpreted_Option);
+                 (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2082,13 +2059,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Enum_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Enum_Options) is
+     V      : Enum_Options) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Enum_Options (WS'Access, Value);
+            Write_Enum_Options (WS'Access, V);
             return;
          end;
       end if;
@@ -2097,15 +2074,15 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (2, Value.Allow_Alias);
-         WS.Write (3, Value.Deprecated);
-         for J in 1 .. Value.Uninterpreted_Option.Length loop
+         WS.Write (2, V.Allow_Alias);
+         WS.Write (3, V.Deprecated);
+         for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, Value.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Enum_Options (WS'Access, Value);
+            Write_Enum_Options (WS'Access, V);
          end if;
       end;
    end Write_Enum_Options;
@@ -2132,8 +2109,8 @@ package body Google.Protobuf.Descriptor is
      (Enum_Value_Options_Array, Enum_Value_Options_Array_Access);
 
    procedure Append
-    (Self  : in out Enum_Value_Options_Vector;
-     Value : Enum_Value_Options) is
+    (Self : in out Enum_Value_Options_Vector;
+     V    : Enum_Value_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Value_Options'Size);
    begin
@@ -2147,7 +2124,7 @@ package body Google.Protobuf.Descriptor is
                 & Enum_Value_Options_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Enum_Value_Options_Vector) is
@@ -2167,17 +2144,16 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Enum_Value_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Enum_Value_Options) is
+     V      : out Enum_Value_Options) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Deprecated);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Uninterpreted_Option);
+                 (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2186,13 +2162,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Enum_Value_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Enum_Value_Options) is
+     V      : Enum_Value_Options) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Enum_Value_Options (WS'Access, Value);
+            Write_Enum_Value_Options (WS'Access, V);
             return;
          end;
       end if;
@@ -2201,14 +2177,14 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Deprecated);
-         for J in 1 .. Value.Uninterpreted_Option.Length loop
+         WS.Write (1, V.Deprecated);
+         for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, Value.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Enum_Value_Options (WS'Access, Value);
+            Write_Enum_Value_Options (WS'Access, V);
          end if;
       end;
    end Write_Enum_Value_Options;
@@ -2235,8 +2211,8 @@ package body Google.Protobuf.Descriptor is
      (Service_Options_Array, Service_Options_Array_Access);
 
    procedure Append
-    (Self  : in out Service_Options_Vector;
-     Value : Service_Options) is
+    (Self : in out Service_Options_Vector;
+     V    : Service_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Service_Options'Size);
    begin
@@ -2249,7 +2225,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Service_Options_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Service_Options_Vector) is
@@ -2268,17 +2244,16 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Service_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Service_Options) is
+     V      : out Service_Options) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 33 =>
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Deprecated);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Uninterpreted_Option);
+                 (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2287,13 +2262,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Service_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Service_Options) is
+     V      : Service_Options) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Service_Options (WS'Access, Value);
+            Write_Service_Options (WS'Access, V);
             return;
          end;
       end if;
@@ -2302,14 +2277,14 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (33, Value.Deprecated);
-         for J in 1 .. Value.Uninterpreted_Option.Length loop
+         WS.Write (33, V.Deprecated);
+         for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, Value.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Service_Options (WS'Access, Value);
+            Write_Service_Options (WS'Access, V);
          end if;
       end;
    end Write_Service_Options;
@@ -2336,8 +2311,8 @@ package body Google.Protobuf.Descriptor is
      (Method_Options_Array, Method_Options_Array_Access);
 
    procedure Append
-    (Self  : in out Method_Options_Vector;
-     Value : Method_Options) is
+    (Self : in out Method_Options_Vector;
+     V    : Method_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Method_Options'Size);
    begin
@@ -2350,7 +2325,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Method_Options_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Method_Options_Vector) is
@@ -2369,17 +2344,16 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Method_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Method_Options) is
+     V      : out Method_Options) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 33 =>
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Deprecated);
+               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Deprecated);
             when 999 =>
                Uninterpreted_Option_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Uninterpreted_Option);
+                 (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2388,13 +2362,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Method_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Method_Options) is
+     V      : Method_Options) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Method_Options (WS'Access, Value);
+            Write_Method_Options (WS'Access, V);
             return;
          end;
       end if;
@@ -2403,14 +2377,14 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (33, Value.Deprecated);
-         for J in 1 .. Value.Uninterpreted_Option.Length loop
+         WS.Write (33, V.Deprecated);
+         for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, Value.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Method_Options (WS'Access, Value);
+            Write_Method_Options (WS'Access, V);
          end if;
       end;
    end Write_Method_Options;
@@ -2437,8 +2411,8 @@ package body Google.Protobuf.Descriptor is
      (Uninterpreted_Option_Array, Uninterpreted_Option_Array_Access);
 
    procedure Append
-    (Self  : in out Uninterpreted_Option_Vector;
-     Value : Uninterpreted_Option) is
+    (Self : in out Uninterpreted_Option_Vector;
+     V    : Uninterpreted_Option) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Uninterpreted_Option'Size);
    begin
@@ -2452,7 +2426,7 @@ package body Google.Protobuf.Descriptor is
                 & Uninterpreted_Option_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Uninterpreted_Option_Vector) is
@@ -2472,31 +2446,31 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Uninterpreted_Option
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Uninterpreted_Option) is
+     V      : out Uninterpreted_Option) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 2 =>
-               Name_Part_IO.Read_Vector (Stream, Key.Encoding, Value.Name);
+               Name_Part_IO.Read_Vector (Stream, Key.Encoding, V.Name);
             when 3 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Identifier_Value);
+                 (Stream, Key.Encoding, V.Identifier_Value);
             when 4 =>
                PB_Support.IO.Read_Unsigned_64
-                 (Stream, Key.Encoding, Value.Positive_Int_Value);
+                 (Stream, Key.Encoding, V.Positive_Int_Value);
             when 5 =>
                PB_Support.IO.Read_Integer_64
-                 (Stream, Key.Encoding, Value.Negative_Int_Value);
+                 (Stream, Key.Encoding, V.Negative_Int_Value);
             when 6 =>
                PB_Support.IO.Read_IEEE_Float_64
-                 (Stream, Key.Encoding, Value.Double_Value);
+                 (Stream, Key.Encoding, V.Double_Value);
             when 7 =>
                PB_Support.IO.Read_Stream_Element_Vector
-                 (Stream, Key.Encoding, Value.String_Value);
+                 (Stream, Key.Encoding, V.String_Value);
             when 8 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Aggregate_Value);
+                 (Stream, Key.Encoding, V.Aggregate_Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2505,13 +2479,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Uninterpreted_Option
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Uninterpreted_Option) is
+     V      : Uninterpreted_Option) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Uninterpreted_Option (WS'Access, Value);
+            Write_Uninterpreted_Option (WS'Access, V);
             return;
          end;
       end if;
@@ -2520,19 +2494,19 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         for J in 1 .. Value.Name.Length loop
+         for J in 1 .. V.Name.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Name_Part'Write
-              (Stream, Value.Name.Get (J));
+              (Stream, V.Name.Get (J));
          end loop;
-         WS.Write (3, Value.Identifier_Value);
-         WS.Write_Varint (4, Value.Positive_Int_Value);
-         WS.Write_Varint (5, Value.Negative_Int_Value);
-         WS.Write (6, Value.Double_Value);
-         WS.Write (7, Value.String_Value);
-         WS.Write (8, Value.Aggregate_Value);
+         WS.Write (3, V.Identifier_Value);
+         WS.Write_Varint (4, V.Positive_Int_Value);
+         WS.Write_Varint (5, V.Negative_Int_Value);
+         WS.Write (6, V.Double_Value);
+         WS.Write (7, V.String_Value);
+         WS.Write (8, V.Aggregate_Value);
          if WS.End_Message then
-            Write_Uninterpreted_Option (WS'Access, Value);
+            Write_Uninterpreted_Option (WS'Access, V);
          end if;
       end;
    end Write_Uninterpreted_Option;
@@ -2558,7 +2532,7 @@ package body Google.Protobuf.Descriptor is
    procedure Free is new Ada.Unchecked_Deallocation
      (Name_Part_Array, Name_Part_Array_Access);
 
-   procedure Append (Self  : in out Name_Part_Vector; Value : Name_Part) is
+   procedure Append (Self : in out Name_Part_Vector; V    : Name_Part) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Name_Part'Size);
    begin
@@ -2571,7 +2545,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Name_Part_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Name_Part_Vector) is
@@ -2590,17 +2564,17 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Name_Part
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Name_Part) is
+     V      : out Name_Part) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Name_Part);
+                 (Stream, Key.Encoding, V.Name_Part);
             when 2 =>
                PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, Value.Is_Extension);
+                 (Stream, Key.Encoding, V.Is_Extension);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2609,13 +2583,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Name_Part
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Name_Part) is
+     V      : Name_Part) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Name_Part (WS'Access, Value);
+            Write_Name_Part (WS'Access, V);
             return;
          end;
       end if;
@@ -2624,10 +2598,10 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, Value.Name_Part);
-         WS.Write (2, Value.Is_Extension);
+         WS.Write (1, V.Name_Part);
+         WS.Write (2, V.Is_Extension);
          if WS.End_Message then
-            Write_Name_Part (WS'Access, Value);
+            Write_Name_Part (WS'Access, V);
          end if;
       end;
    end Write_Name_Part;
@@ -2654,8 +2628,8 @@ package body Google.Protobuf.Descriptor is
      (Source_Code_Info_Array, Source_Code_Info_Array_Access);
 
    procedure Append
-    (Self  : in out Source_Code_Info_Vector;
-     Value : Source_Code_Info) is
+    (Self : in out Source_Code_Info_Vector;
+     V    : Source_Code_Info) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Source_Code_Info'Size);
    begin
@@ -2668,7 +2642,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Source_Code_Info_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Source_Code_Info_Vector) is
@@ -2688,13 +2662,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Source_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Source_Code_Info) is
+     V      : out Source_Code_Info) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               Location_IO.Read_Vector (Stream, Key.Encoding, Value.Location);
+               Location_IO.Read_Vector (Stream, Key.Encoding, V.Location);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2703,13 +2677,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Source_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Source_Code_Info) is
+     V      : Source_Code_Info) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Source_Code_Info (WS'Access, Value);
+            Write_Source_Code_Info (WS'Access, V);
             return;
          end;
       end if;
@@ -2718,13 +2692,13 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         for J in 1 .. Value.Location.Length loop
+         for J in 1 .. V.Location.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Location'Write
-              (Stream, Value.Location.Get (J));
+              (Stream, V.Location.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Source_Code_Info (WS'Access, Value);
+            Write_Source_Code_Info (WS'Access, V);
          end if;
       end;
    end Write_Source_Code_Info;
@@ -2747,7 +2721,7 @@ package body Google.Protobuf.Descriptor is
    procedure Free is new Ada.Unchecked_Deallocation
      (Location_Array, Location_Array_Access);
 
-   procedure Append (Self  : in out Location_Vector; Value : Location) is
+   procedure Append (Self : in out Location_Vector; V    : Location) is
       Init_Length : constant Positive := Positive'Max (1, 256 / Location'Size);
    begin
       if Self.Length = 0 then
@@ -2759,7 +2733,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Location_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Location_Vector) is
@@ -2778,26 +2752,26 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Location
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Location) is
+     V      : out Location) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Unsigned_32_Vector
-                 (Stream, Key.Encoding, Value.Path);
+                 (Stream, Key.Encoding, V.Path);
             when 2 =>
                PB_Support.IO.Read_Unsigned_32_Vector
-                 (Stream, Key.Encoding, Value.Span);
+                 (Stream, Key.Encoding, V.Span);
             when 3 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Leading_Comments);
+                 (Stream, Key.Encoding, V.Leading_Comments);
             when 4 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Trailing_Comments);
+                 (Stream, Key.Encoding, V.Trailing_Comments);
             when 6 =>
                PB_Support.IO.Read_Universal_String_Vector
-                 (Stream, Key.Encoding, Value.Leading_Detached_Comments);
+                 (Stream, Key.Encoding, V.Leading_Detached_Comments);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2806,13 +2780,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Location
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Location) is
+     V      : Location) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Location (WS'Access, Value);
+            Write_Location (WS'Access, V);
             return;
          end;
       end if;
@@ -2821,13 +2795,13 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, Value.Path);
-         WS.Write_Varint (2, Value.Span);
-         WS.Write (3, Value.Leading_Comments);
-         WS.Write (4, Value.Trailing_Comments);
-         WS.Write (6, Value.Leading_Detached_Comments);
+         WS.Write_Varint (1, V.Path);
+         WS.Write_Varint (2, V.Span);
+         WS.Write (3, V.Leading_Comments);
+         WS.Write (4, V.Trailing_Comments);
+         WS.Write (6, V.Leading_Detached_Comments);
          if WS.End_Message then
-            Write_Location (WS'Access, Value);
+            Write_Location (WS'Access, V);
          end if;
       end;
    end Write_Location;
@@ -2854,8 +2828,8 @@ package body Google.Protobuf.Descriptor is
      (Generated_Code_Info_Array, Generated_Code_Info_Array_Access);
 
    procedure Append
-    (Self  : in out Generated_Code_Info_Vector;
-     Value : Generated_Code_Info) is
+    (Self : in out Generated_Code_Info_Vector;
+     V    : Generated_Code_Info) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Generated_Code_Info'Size);
    begin
@@ -2869,7 +2843,7 @@ package body Google.Protobuf.Descriptor is
                 & Generated_Code_Info_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Generated_Code_Info_Vector) is
@@ -2889,14 +2863,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Generated_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Generated_Code_Info) is
+     V      : out Generated_Code_Info) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               Annotation_IO.Read_Vector
-                 (Stream, Key.Encoding, Value.Annotation);
+               Annotation_IO.Read_Vector (Stream, Key.Encoding, V.Annotation);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2905,13 +2878,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Generated_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Generated_Code_Info) is
+     V      : Generated_Code_Info) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Generated_Code_Info (WS'Access, Value);
+            Write_Generated_Code_Info (WS'Access, V);
             return;
          end;
       end if;
@@ -2920,13 +2893,13 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         for J in 1 .. Value.Annotation.Length loop
+         for J in 1 .. V.Annotation.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Annotation'Write
-              (Stream, Value.Annotation.Get (J));
+              (Stream, V.Annotation.Get (J));
          end loop;
          if WS.End_Message then
-            Write_Generated_Code_Info (WS'Access, Value);
+            Write_Generated_Code_Info (WS'Access, V);
          end if;
       end;
    end Write_Generated_Code_Info;
@@ -2952,7 +2925,7 @@ package body Google.Protobuf.Descriptor is
    procedure Free is new Ada.Unchecked_Deallocation
      (Annotation_Array, Annotation_Array_Access);
 
-   procedure Append (Self  : in out Annotation_Vector; Value : Annotation) is
+   procedure Append (Self : in out Annotation_Vector; V    : Annotation) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Annotation'Size);
    begin
@@ -2965,7 +2938,7 @@ package body Google.Protobuf.Descriptor is
              (Self.Data.all & Annotation_Array'(1 .. Self.Length => <>));
       end if;
       Self.Length := Self.Length + 1;
-      Self.Data (Self.Length) := Value;
+      Self.Data (Self.Length) := V;
    end Append;
 
    overriding procedure Adjust (Self : in out Annotation_Vector) is
@@ -2984,23 +2957,22 @@ package body Google.Protobuf.Descriptor is
 
    procedure Read_Annotation
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Annotation) is
+     V      : out Annotation) is
       Key : aliased PB_Support.IO.Key;
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                PB_Support.IO.Read_Unsigned_32_Vector
-                 (Stream, Key.Encoding, Value.Path);
+                 (Stream, Key.Encoding, V.Path);
             when 2 =>
                PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, Value.Source_File);
+                 (Stream, Key.Encoding, V.Source_File);
             when 3 =>
                PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, Value.PB_Begin);
+                 (Stream, Key.Encoding, V.PB_Begin);
             when 4 =>
-               PB_Support.IO.Read_Unsigned_32
-                 (Stream, Key.Encoding, Value.PB_End);
+               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.PB_End);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3009,13 +2981,13 @@ package body Google.Protobuf.Descriptor is
 
    procedure Write_Annotation
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Annotation) is
+     V      : Annotation) is
    begin
       if Stream.all not in PB_Support.Internal.Stream then
          declare
             WS : aliased PB_Support.Internal.Stream (Stream);
          begin
-            Write_Annotation (WS'Access, Value);
+            Write_Annotation (WS'Access, V);
             return;
          end;
       end if;
@@ -3024,12 +2996,12 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, Value.Path);
-         WS.Write (2, Value.Source_File);
-         WS.Write_Varint (3, Value.PB_Begin);
-         WS.Write_Varint (4, Value.PB_End);
+         WS.Write_Varint (1, V.Path);
+         WS.Write (2, V.Source_File);
+         WS.Write_Varint (3, V.PB_Begin);
+         WS.Write_Varint (4, V.PB_End);
          if WS.End_Message then
-            Write_Annotation (WS'Access, Value);
+            Write_Annotation (WS'Access, V);
          end if;
       end;
    end Write_Annotation;

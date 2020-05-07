@@ -110,7 +110,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : File_Descriptor_Set;
+              Value : Google.Protobuf.Descriptor.File_Descriptor_Set;
            when False =>
               null;
         end case;
@@ -126,8 +126,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out File_Descriptor_Set_Vector);
 
    procedure Append
-    (Self  : in out File_Descriptor_Set_Vector;
-     Value : File_Descriptor_Set);
+    (Self : in out File_Descriptor_Set_Vector;
+     V    : File_Descriptor_Set);
 
    type Extension_Range is
      record
@@ -139,7 +139,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Extension_Range;
+              Value : Google.Protobuf.Descriptor.Extension_Range;
            when False =>
               null;
         end case;
@@ -155,8 +155,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Extension_Range_Vector);
 
    procedure Append
-    (Self  : in out Extension_Range_Vector;
-     Value : Extension_Range);
+    (Self : in out Extension_Range_Vector;
+     V    : Extension_Range);
 
    type Reserved_Range is
      record
@@ -168,7 +168,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Reserved_Range;
+              Value : Google.Protobuf.Descriptor.Reserved_Range;
            when False =>
               null;
         end case;
@@ -184,8 +184,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Reserved_Range_Vector);
 
    procedure Append
-    (Self  : in out Reserved_Range_Vector;
-     Value : Reserved_Range);
+    (Self : in out Reserved_Range_Vector;
+     V    : Reserved_Range);
 
    type File_Options is
      record
@@ -212,7 +212,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : File_Options;
+              Value : Google.Protobuf.Descriptor.File_Options;
            when False =>
               null;
         end case;
@@ -227,7 +227,7 @@ package Google.Protobuf.Descriptor is
 
    procedure Clear (Self : in out File_Options_Vector);
 
-   procedure Append (Self  : in out File_Options_Vector; Value : File_Options);
+   procedure Append (Self : in out File_Options_Vector; V    : File_Options);
 
    type Message_Options is
      record
@@ -243,7 +243,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Message_Options;
+              Value : Google.Protobuf.Descriptor.Message_Options;
            when False =>
               null;
         end case;
@@ -259,8 +259,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Message_Options_Vector);
 
    procedure Append
-    (Self  : in out Message_Options_Vector;
-     Value : Message_Options);
+    (Self : in out Message_Options_Vector;
+     V    : Message_Options);
 
    type Field_Options is
      record
@@ -280,7 +280,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Field_Options;
+              Value : Google.Protobuf.Descriptor.Field_Options;
            when False =>
               null;
         end case;
@@ -295,9 +295,7 @@ package Google.Protobuf.Descriptor is
 
    procedure Clear (Self : in out Field_Options_Vector);
 
-   procedure Append
-    (Self  : in out Field_Options_Vector;
-     Value : Field_Options);
+   procedure Append (Self : in out Field_Options_Vector; V    : Field_Options);
 
    type Oneof_Options is
      record
@@ -309,7 +307,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Oneof_Options;
+              Value : Google.Protobuf.Descriptor.Oneof_Options;
            when False =>
               null;
         end case;
@@ -324,9 +322,7 @@ package Google.Protobuf.Descriptor is
 
    procedure Clear (Self : in out Oneof_Options_Vector);
 
-   procedure Append
-    (Self  : in out Oneof_Options_Vector;
-     Value : Oneof_Options);
+   procedure Append (Self : in out Oneof_Options_Vector; V    : Oneof_Options);
 
    type Enum_Options is
      record
@@ -340,7 +336,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Enum_Options;
+              Value : Google.Protobuf.Descriptor.Enum_Options;
            when False =>
               null;
         end case;
@@ -355,7 +351,7 @@ package Google.Protobuf.Descriptor is
 
    procedure Clear (Self : in out Enum_Options_Vector);
 
-   procedure Append (Self  : in out Enum_Options_Vector; Value : Enum_Options);
+   procedure Append (Self : in out Enum_Options_Vector; V    : Enum_Options);
 
    type Enum_Value_Options is
      record
@@ -368,7 +364,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Enum_Value_Options;
+              Value : Google.Protobuf.Descriptor.Enum_Value_Options;
            when False =>
               null;
         end case;
@@ -384,8 +380,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Enum_Value_Options_Vector);
 
    procedure Append
-    (Self  : in out Enum_Value_Options_Vector;
-     Value : Enum_Value_Options);
+    (Self : in out Enum_Value_Options_Vector;
+     V    : Enum_Value_Options);
 
    type Service_Options is
      record
@@ -398,7 +394,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Service_Options;
+              Value : Google.Protobuf.Descriptor.Service_Options;
            when False =>
               null;
         end case;
@@ -414,8 +410,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Service_Options_Vector);
 
    procedure Append
-    (Self  : in out Service_Options_Vector;
-     Value : Service_Options);
+    (Self : in out Service_Options_Vector;
+     V    : Service_Options);
 
    type Method_Options is
      record
@@ -428,7 +424,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Method_Options;
+              Value : Google.Protobuf.Descriptor.Method_Options;
            when False =>
               null;
         end case;
@@ -444,8 +440,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Method_Options_Vector);
 
    procedure Append
-    (Self  : in out Method_Options_Vector;
-     Value : Method_Options);
+    (Self : in out Method_Options_Vector;
+     V    : Method_Options);
 
    type Name_Part is
      record
@@ -457,7 +453,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Name_Part;
+              Value : Google.Protobuf.Descriptor.Name_Part;
            when False =>
               null;
         end case;
@@ -469,7 +465,7 @@ package Google.Protobuf.Descriptor is
 
    procedure Clear (Self : in out Name_Part_Vector);
 
-   procedure Append (Self  : in out Name_Part_Vector; Value : Name_Part);
+   procedure Append (Self : in out Name_Part_Vector; V    : Name_Part);
 
    type Uninterpreted_Option is
      record
@@ -487,7 +483,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Uninterpreted_Option;
+              Value : Google.Protobuf.Descriptor.Uninterpreted_Option;
            when False =>
               null;
         end case;
@@ -503,8 +499,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Uninterpreted_Option_Vector);
 
    procedure Append
-    (Self  : in out Uninterpreted_Option_Vector;
-     Value : Uninterpreted_Option);
+    (Self : in out Uninterpreted_Option_Vector;
+     V    : Uninterpreted_Option);
 
    type Location is
      record
@@ -520,7 +516,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Location;
+              Value : Google.Protobuf.Descriptor.Location;
            when False =>
               null;
         end case;
@@ -532,7 +528,7 @@ package Google.Protobuf.Descriptor is
 
    procedure Clear (Self : in out Location_Vector);
 
-   procedure Append (Self  : in out Location_Vector; Value : Location);
+   procedure Append (Self : in out Location_Vector; V    : Location);
 
    type Source_Code_Info is
      record
@@ -543,7 +539,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Source_Code_Info;
+              Value : Google.Protobuf.Descriptor.Source_Code_Info;
            when False =>
               null;
         end case;
@@ -559,8 +555,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Source_Code_Info_Vector);
 
    procedure Append
-    (Self  : in out Source_Code_Info_Vector;
-     Value : Source_Code_Info);
+    (Self : in out Source_Code_Info_Vector;
+     V    : Source_Code_Info);
 
    type Annotation is
      record
@@ -574,7 +570,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Annotation;
+              Value : Google.Protobuf.Descriptor.Annotation;
            when False =>
               null;
         end case;
@@ -589,7 +585,7 @@ package Google.Protobuf.Descriptor is
 
    procedure Clear (Self : in out Annotation_Vector);
 
-   procedure Append (Self  : in out Annotation_Vector; Value : Annotation);
+   procedure Append (Self : in out Annotation_Vector; V    : Annotation);
 
    type Generated_Code_Info is
      record
@@ -600,7 +596,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Generated_Code_Info;
+              Value : Google.Protobuf.Descriptor.Generated_Code_Info;
            when False =>
               null;
         end case;
@@ -616,8 +612,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Generated_Code_Info_Vector);
 
    procedure Append
-    (Self  : in out Generated_Code_Info_Vector;
-     Value : Generated_Code_Info);
+    (Self : in out Generated_Code_Info_Vector;
+     V    : Generated_Code_Info);
 
    type File_Descriptor_Proto is
      record
@@ -643,7 +639,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : File_Descriptor_Proto;
+              Value : Google.Protobuf.Descriptor.File_Descriptor_Proto;
            when False =>
               null;
         end case;
@@ -659,8 +655,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out File_Descriptor_Proto_Vector);
 
    procedure Append
-    (Self  : in out File_Descriptor_Proto_Vector;
-     Value : File_Descriptor_Proto);
+    (Self : in out File_Descriptor_Proto_Vector;
+     V    : File_Descriptor_Proto);
 
    type Descriptor_Proto is
      record
@@ -684,7 +680,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Descriptor_Proto;
+              Value : Google.Protobuf.Descriptor.Descriptor_Proto;
            when False =>
               null;
         end case;
@@ -700,8 +696,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Descriptor_Proto_Vector);
 
    procedure Append
-    (Self  : in out Descriptor_Proto_Vector;
-     Value : Descriptor_Proto);
+    (Self : in out Descriptor_Proto_Vector;
+     V    : Descriptor_Proto);
 
    type Field_Descriptor_Proto is
      record
@@ -723,7 +719,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Field_Descriptor_Proto;
+              Value : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
            when False =>
               null;
         end case;
@@ -739,8 +735,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Field_Descriptor_Proto_Vector);
 
    procedure Append
-    (Self  : in out Field_Descriptor_Proto_Vector;
-     Value : Field_Descriptor_Proto);
+    (Self : in out Field_Descriptor_Proto_Vector;
+     V    : Field_Descriptor_Proto);
 
    type Oneof_Descriptor_Proto is
      record
@@ -752,7 +748,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Oneof_Descriptor_Proto;
+              Value : Google.Protobuf.Descriptor.Oneof_Descriptor_Proto;
            when False =>
               null;
         end case;
@@ -768,8 +764,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Oneof_Descriptor_Proto_Vector);
 
    procedure Append
-    (Self  : in out Oneof_Descriptor_Proto_Vector;
-     Value : Oneof_Descriptor_Proto);
+    (Self : in out Oneof_Descriptor_Proto_Vector;
+     V    : Oneof_Descriptor_Proto);
 
    type Enum_Descriptor_Proto is
      record
@@ -783,7 +779,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Enum_Descriptor_Proto;
+              Value : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
            when False =>
               null;
         end case;
@@ -799,8 +795,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Enum_Descriptor_Proto_Vector);
 
    procedure Append
-    (Self  : in out Enum_Descriptor_Proto_Vector;
-     Value : Enum_Descriptor_Proto);
+    (Self : in out Enum_Descriptor_Proto_Vector;
+     V    : Enum_Descriptor_Proto);
 
    type Enum_Value_Descriptor_Proto is
      record
@@ -813,7 +809,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Enum_Value_Descriptor_Proto;
+              Value : Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto;
            when False =>
               null;
         end case;
@@ -829,8 +825,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Enum_Value_Descriptor_Proto_Vector);
 
    procedure Append
-    (Self  : in out Enum_Value_Descriptor_Proto_Vector;
-     Value : Enum_Value_Descriptor_Proto);
+    (Self : in out Enum_Value_Descriptor_Proto_Vector;
+     V    : Enum_Value_Descriptor_Proto);
 
    type Service_Descriptor_Proto is
      record
@@ -843,7 +839,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Service_Descriptor_Proto;
+              Value : Google.Protobuf.Descriptor.Service_Descriptor_Proto;
            when False =>
               null;
         end case;
@@ -859,8 +855,8 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Service_Descriptor_Proto_Vector);
 
    procedure Append
-    (Self  : in out Service_Descriptor_Proto_Vector;
-     Value : Service_Descriptor_Proto);
+    (Self : in out Service_Descriptor_Proto_Vector;
+     V    : Service_Descriptor_Proto);
 
    type Method_Descriptor_Proto is
      record
@@ -876,7 +872,7 @@ package Google.Protobuf.Descriptor is
      record
         case Is_Set is
            when True =>
-              Value : Method_Descriptor_Proto;
+              Value : Google.Protobuf.Descriptor.Method_Descriptor_Proto;
            when False =>
               null;
         end case;
@@ -892,17 +888,17 @@ package Google.Protobuf.Descriptor is
    procedure Clear (Self : in out Method_Descriptor_Proto_Vector);
 
    procedure Append
-    (Self  : in out Method_Descriptor_Proto_Vector;
-     Value : Method_Descriptor_Proto);
+    (Self : in out Method_Descriptor_Proto_Vector;
+     V    : Method_Descriptor_Proto);
 private
 
    procedure Read_File_Descriptor_Set
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out File_Descriptor_Set);
+     V      : out File_Descriptor_Set);
 
    procedure Write_File_Descriptor_Set
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : File_Descriptor_Set);
+     V      : File_Descriptor_Set);
 
    for File_Descriptor_Set'Read use Read_File_Descriptor_Set;
 
@@ -926,11 +922,11 @@ private
 
    procedure Read_File_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out File_Descriptor_Proto);
+     V      : out File_Descriptor_Proto);
 
    procedure Write_File_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : File_Descriptor_Proto);
+     V      : File_Descriptor_Proto);
 
    for File_Descriptor_Proto'Read use Read_File_Descriptor_Proto;
 
@@ -955,11 +951,11 @@ private
 
    procedure Read_Extension_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Extension_Range);
+     V      : out Extension_Range);
 
    procedure Write_Extension_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Extension_Range);
+     V      : Extension_Range);
 
    for Extension_Range'Read use Read_Extension_Range;
 
@@ -982,11 +978,11 @@ private
 
    procedure Read_Reserved_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Reserved_Range);
+     V      : out Reserved_Range);
 
    procedure Write_Reserved_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Reserved_Range);
+     V      : Reserved_Range);
 
    for Reserved_Range'Read use Read_Reserved_Range;
 
@@ -1009,11 +1005,11 @@ private
 
    procedure Read_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Descriptor_Proto);
+     V      : out Descriptor_Proto);
 
    procedure Write_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Descriptor_Proto);
+     V      : Descriptor_Proto);
 
    for Descriptor_Proto'Read use Read_Descriptor_Proto;
 
@@ -1037,11 +1033,11 @@ private
 
    procedure Read_Field_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Field_Descriptor_Proto);
+     V      : out Field_Descriptor_Proto);
 
    procedure Write_Field_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Field_Descriptor_Proto);
+     V      : Field_Descriptor_Proto);
 
    for Field_Descriptor_Proto'Read use Read_Field_Descriptor_Proto;
 
@@ -1066,11 +1062,11 @@ private
 
    procedure Read_Oneof_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Oneof_Descriptor_Proto);
+     V      : out Oneof_Descriptor_Proto);
 
    procedure Write_Oneof_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Oneof_Descriptor_Proto);
+     V      : Oneof_Descriptor_Proto);
 
    for Oneof_Descriptor_Proto'Read use Read_Oneof_Descriptor_Proto;
 
@@ -1095,11 +1091,11 @@ private
 
    procedure Read_Enum_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Enum_Descriptor_Proto);
+     V      : out Enum_Descriptor_Proto);
 
    procedure Write_Enum_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Enum_Descriptor_Proto);
+     V      : Enum_Descriptor_Proto);
 
    for Enum_Descriptor_Proto'Read use Read_Enum_Descriptor_Proto;
 
@@ -1124,11 +1120,11 @@ private
 
    procedure Read_Enum_Value_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Enum_Value_Descriptor_Proto);
+     V      : out Enum_Value_Descriptor_Proto);
 
    procedure Write_Enum_Value_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Enum_Value_Descriptor_Proto);
+     V      : Enum_Value_Descriptor_Proto);
 
    for Enum_Value_Descriptor_Proto'Read use Read_Enum_Value_Descriptor_Proto;
 
@@ -1155,11 +1151,11 @@ private
 
    procedure Read_Service_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Service_Descriptor_Proto);
+     V      : out Service_Descriptor_Proto);
 
    procedure Write_Service_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Service_Descriptor_Proto);
+     V      : Service_Descriptor_Proto);
 
    for Service_Descriptor_Proto'Read use Read_Service_Descriptor_Proto;
 
@@ -1185,11 +1181,11 @@ private
 
    procedure Read_Method_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Method_Descriptor_Proto);
+     V      : out Method_Descriptor_Proto);
 
    procedure Write_Method_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Method_Descriptor_Proto);
+     V      : Method_Descriptor_Proto);
 
    for Method_Descriptor_Proto'Read use Read_Method_Descriptor_Proto;
 
@@ -1215,11 +1211,11 @@ private
 
    procedure Read_File_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out File_Options);
+     V      : out File_Options);
 
    procedure Write_File_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : File_Options);
+     V      : File_Options);
 
    for File_Options'Read use Read_File_Options;
 
@@ -1242,11 +1238,11 @@ private
 
    procedure Read_Message_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Message_Options);
+     V      : out Message_Options);
 
    procedure Write_Message_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Message_Options);
+     V      : Message_Options);
 
    for Message_Options'Read use Read_Message_Options;
 
@@ -1269,11 +1265,11 @@ private
 
    procedure Read_Field_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Field_Options);
+     V      : out Field_Options);
 
    procedure Write_Field_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Field_Options);
+     V      : Field_Options);
 
    for Field_Options'Read use Read_Field_Options;
 
@@ -1296,11 +1292,11 @@ private
 
    procedure Read_Oneof_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Oneof_Options);
+     V      : out Oneof_Options);
 
    procedure Write_Oneof_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Oneof_Options);
+     V      : Oneof_Options);
 
    for Oneof_Options'Read use Read_Oneof_Options;
 
@@ -1323,11 +1319,11 @@ private
 
    procedure Read_Enum_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Enum_Options);
+     V      : out Enum_Options);
 
    procedure Write_Enum_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Enum_Options);
+     V      : Enum_Options);
 
    for Enum_Options'Read use Read_Enum_Options;
 
@@ -1350,11 +1346,11 @@ private
 
    procedure Read_Enum_Value_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Enum_Value_Options);
+     V      : out Enum_Value_Options);
 
    procedure Write_Enum_Value_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Enum_Value_Options);
+     V      : Enum_Value_Options);
 
    for Enum_Value_Options'Read use Read_Enum_Value_Options;
 
@@ -1378,11 +1374,11 @@ private
 
    procedure Read_Service_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Service_Options);
+     V      : out Service_Options);
 
    procedure Write_Service_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Service_Options);
+     V      : Service_Options);
 
    for Service_Options'Read use Read_Service_Options;
 
@@ -1405,11 +1401,11 @@ private
 
    procedure Read_Method_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Method_Options);
+     V      : out Method_Options);
 
    procedure Write_Method_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Method_Options);
+     V      : Method_Options);
 
    for Method_Options'Read use Read_Method_Options;
 
@@ -1432,11 +1428,11 @@ private
 
    procedure Read_Name_Part
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Name_Part);
+     V      : out Name_Part);
 
    procedure Write_Name_Part
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Name_Part);
+     V      : Name_Part);
 
    for Name_Part'Read use Read_Name_Part;
 
@@ -1459,11 +1455,11 @@ private
 
    procedure Read_Uninterpreted_Option
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Uninterpreted_Option);
+     V      : out Uninterpreted_Option);
 
    procedure Write_Uninterpreted_Option
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Uninterpreted_Option);
+     V      : Uninterpreted_Option);
 
    for Uninterpreted_Option'Read use Read_Uninterpreted_Option;
 
@@ -1487,11 +1483,11 @@ private
 
    procedure Read_Location
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Location);
+     V      : out Location);
 
    procedure Write_Location
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Location);
+     V      : Location);
 
    for Location'Read use Read_Location;
 
@@ -1514,11 +1510,11 @@ private
 
    procedure Read_Source_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Source_Code_Info);
+     V      : out Source_Code_Info);
 
    procedure Write_Source_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Source_Code_Info);
+     V      : Source_Code_Info);
 
    for Source_Code_Info'Read use Read_Source_Code_Info;
 
@@ -1542,11 +1538,11 @@ private
 
    procedure Read_Annotation
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Annotation);
+     V      : out Annotation);
 
    procedure Write_Annotation
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Annotation);
+     V      : Annotation);
 
    for Annotation'Read use Read_Annotation;
 
@@ -1569,11 +1565,11 @@ private
 
    procedure Read_Generated_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Generated_Code_Info);
+     V      : out Generated_Code_Info);
 
    procedure Write_Generated_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Generated_Code_Info);
+     V      : Generated_Code_Info);
 
    for Generated_Code_Info'Read use Read_Generated_Code_Info;
 

@@ -24,7 +24,7 @@ package Google.Protobuf.Compiler.Plugin is
      record
         case Is_Set is
            when True =>
-              Value : Code_Generator_Request;
+              Value : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
            when False =>
               null;
         end case;
@@ -40,8 +40,8 @@ package Google.Protobuf.Compiler.Plugin is
    procedure Clear (Self : in out Code_Generator_Request_Vector);
 
    procedure Append
-    (Self  : in out Code_Generator_Request_Vector;
-     Value : Code_Generator_Request);
+    (Self : in out Code_Generator_Request_Vector;
+     V    : Code_Generator_Request);
 
    type File is
      record
@@ -54,7 +54,7 @@ package Google.Protobuf.Compiler.Plugin is
      record
         case Is_Set is
            when True =>
-              Value : File;
+              Value : Google.Protobuf.Compiler.Plugin.File;
            when False =>
               null;
         end case;
@@ -66,7 +66,7 @@ package Google.Protobuf.Compiler.Plugin is
 
    procedure Clear (Self : in out File_Vector);
 
-   procedure Append (Self  : in out File_Vector; Value : File);
+   procedure Append (Self : in out File_Vector; V    : File);
 
    type Code_Generator_Response is
      record
@@ -78,7 +78,7 @@ package Google.Protobuf.Compiler.Plugin is
      record
         case Is_Set is
            when True =>
-              Value : Code_Generator_Response;
+              Value : Google.Protobuf.Compiler.Plugin.Code_Generator_Response;
            when False =>
               null;
         end case;
@@ -94,17 +94,17 @@ package Google.Protobuf.Compiler.Plugin is
    procedure Clear (Self : in out Code_Generator_Response_Vector);
 
    procedure Append
-    (Self  : in out Code_Generator_Response_Vector;
-     Value : Code_Generator_Response);
+    (Self : in out Code_Generator_Response_Vector;
+     V    : Code_Generator_Response);
 private
 
    procedure Read_Code_Generator_Request
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Code_Generator_Request);
+     V      : out Code_Generator_Request);
 
    procedure Write_Code_Generator_Request
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Code_Generator_Request);
+     V      : Code_Generator_Request);
 
    for Code_Generator_Request'Read use Read_Code_Generator_Request;
 
@@ -129,11 +129,11 @@ private
 
    procedure Read_File
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out File);
+     V      : out File);
 
    procedure Write_File
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : File);
+     V      : File);
 
    for File'Read use Read_File;
 
@@ -156,11 +156,11 @@ private
 
    procedure Read_Code_Generator_Response
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : out Code_Generator_Response);
+     V      : out Code_Generator_Response);
 
    procedure Write_Code_Generator_Response
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
-     Value  : Code_Generator_Response);
+     V      : Code_Generator_Response);
 
    for Code_Generator_Response'Read use Read_Code_Generator_Response;
 
