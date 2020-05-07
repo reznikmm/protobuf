@@ -7,20 +7,20 @@ The protocol buffer compiler produces Ada output when invoked with
 the `--ada_out=` command-line flag (be sure the `protoc-gen-ada`
 plugin in the `PATH`).  The compiler creates a specification file
 (`.ads`) and an implementation file (`.adb`) for each `.proto` file
-input. The names of the output files are
-computed by taking the name from a `package` directive.
+input. The names of the output files are computed by taking the name
+of the `.proto` file and a name from a `package` directive, if any.
 
 ## Packages
 
-If a .proto file contains a package declaration, the entire contents
-of the file will be placed in a corresponding Ada package.
-For example, given the `package` declaration: 
+If a `.proto` file contains a package declaration, then it will be used as
+a prefix of the corresponding Ada package.
+For example, given the `package` declaration in `xxx.proto` file: 
 
 ```protobuf
 package foo.bar;
 ```
 
-All declarations in the file will reside in the `Foo.Bar` package. 
+All declarations in the file will reside in the `Foo.Bar.Xxx` package. 
 
 ## Messages
 

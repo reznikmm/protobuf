@@ -21,6 +21,7 @@
 --  DEALINGS IN THE SOFTWARE.
 
 with Ada.Characters.Wide_Wide_Latin_1;
+with Ada.Directories;
 
 with Ada_Pretty;
 
@@ -279,12 +280,17 @@ package body Compiler.File_Descriptors is
      (Self : Google.Protobuf.File_Descriptor_Proto)
       return League.Strings.Universal_String
    is
-      Result : League.Strings.Universal_String := Self.PB_Package;
+      File_Name : constant String := Self.Name.To_UTF_8_String;
+      Base_Name : constant String := Ada.Directories.Base_Name (File_Name);
+      PB_Pkg    : League.Strings.Universal_String := Self.PB_Package;
+      Result    : League.Strings.Universal_String :=
+        Compiler.Context.To_Ada_Name
+          (League.Strings.From_UTF_8_String (Base_Name));
    begin
-      if Result.Is_Empty then
-         Result.Append ("Output");
-      else
-         Result := Compiler.Context.To_Selected_Ada_Name (Result);
+      if not PB_Pkg.Is_Empty then
+         PB_Pkg := Compiler.Context.To_Selected_Ada_Name (PB_Pkg);
+         PB_Pkg.Append (".");
+         Result.Prepend (PB_Pkg);
       end if;
 
       return Result;
