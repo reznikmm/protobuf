@@ -36,25 +36,25 @@ package body Compiler.Descriptors is
        renames League.Strings.To_Universal_String;
 
    function Type_Name
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return League.Strings.Universal_String;
    --  Return Ada type (simple) name
 
    function Check_Dependency
-     (Self   : Google.Protobuf.Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
       Pkg    : League.Strings.Universal_String;
       Done   : Compiler.Context.String_Sets.Set) return Boolean;
 
    function Public_Spec
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
    function Read_Subprogram
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
    function Write_Subprogram
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
    ----------------
@@ -62,7 +62,7 @@ package body Compiler.Descriptors is
    ----------------
 
    function Enum_Types
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       Result : Ada_Pretty.Node_Access;
@@ -91,15 +91,15 @@ package body Compiler.Descriptors is
    ----------------------
 
    function Check_Dependency
-     (Self   : Google.Protobuf.Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
       Pkg    : League.Strings.Universal_String;
       Done   : Compiler.Context.String_Sets.Set) return Boolean is
    begin
       for J in 1 .. Self.Field.Length loop
          declare
-            use all type Google.Protobuf.Label;
-            Field : constant Google.Protobuf.Field_Descriptor_Proto :=
-              Self.Field.Get (J);
+            use all type Google.Protobuf.Descriptor.Label;
+            Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
+              := Self.Field.Get (J);
             Type_Name : constant League.Strings.Universal_String :=
               Field.Type_Name;
             Named_Type : Compiler.Context.Named_Type;
@@ -128,7 +128,7 @@ package body Compiler.Descriptors is
    ----------------
 
    procedure Dependency
-     (Self   : Google.Protobuf.Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set)
    is
    begin
@@ -153,7 +153,7 @@ package body Compiler.Descriptors is
    --------------------
 
    procedure Get_Used_Types
-     (Self   : Google.Protobuf.Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set) is
    begin
       for J in 1 .. Self.Field.Length loop
@@ -171,7 +171,7 @@ package body Compiler.Descriptors is
    --------------------------
 
    procedure Populate_Named_Types
-     (Self        : Google.Protobuf.Descriptor_Proto;
+     (Self        : Google.Protobuf.Descriptor.Descriptor_Proto;
       PB_Prefix   : League.Strings.Universal_String;
       Ada_Package : League.Strings.Universal_String;
       Map         : in out Compiler.Context.Named_Type_Maps.Map)
@@ -210,7 +210,7 @@ package body Compiler.Descriptors is
    ------------------
 
    function Private_Spec
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -320,7 +320,7 @@ package body Compiler.Descriptors is
    -----------------
 
    function Public_Spec
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -423,7 +423,7 @@ package body Compiler.Descriptors is
    -----------------
 
    procedure Public_Spec
-     (Self   : Google.Protobuf.Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
       Pkg    : League.Strings.Universal_String;
       Result : out Ada_Pretty.Node_Access;
       Again  : in out Boolean;
@@ -458,7 +458,7 @@ package body Compiler.Descriptors is
    ---------------------
 
    function Read_Subprogram
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -524,7 +524,7 @@ package body Compiler.Descriptors is
    -----------------
 
    function Subprograms
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -714,7 +714,7 @@ package body Compiler.Descriptors is
    ---------------
 
    function Type_Name
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return League.Strings.Universal_String
    is
       Result : constant League.Strings.Universal_String :=
@@ -732,7 +732,7 @@ package body Compiler.Descriptors is
    -------------------------
 
    function Vector_Declarations
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -758,7 +758,7 @@ package body Compiler.Descriptors is
    ----------------------
 
    function Write_Subprogram
-     (Self : Google.Protobuf.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);

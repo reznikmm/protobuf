@@ -22,31 +22,31 @@
 
 with Ada_Pretty;
 
-with Google.Protobuf;
+with Google.Protobuf.Descriptor;
 
 with Compiler.Context;
 
 package Compiler.Field_Descriptors is
 
    procedure Dependency
-     (Self   : Google.Protobuf.Field_Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set);
    --  Append dependency names to Result
 
    function Component
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
    function Read_Case
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
    function Write_Call
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
    procedure Get_Used_Types
-     (Self   : Google.Protobuf.Field_Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set);
 
 end Compiler.Field_Descriptors;

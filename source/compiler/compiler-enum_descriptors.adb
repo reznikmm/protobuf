@@ -29,21 +29,21 @@ package body Compiler.Enum_Descriptors is
        renames League.Strings.To_Universal_String;
 
    function Type_Name
-     (Self : Google.Protobuf.Enum_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
       return League.Strings.Universal_String;
    --  Return Ada type (simple) name
 
    function Default
-     (Self : Google.Protobuf.Enum_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
       return League.Strings.Universal_String;
    --  Return default value for given enum type as string
 
    function Max_Value
-     (Self : Google.Protobuf.Enum_Descriptor_Proto) return Integer;
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer;
    --  Maximum representation value
 
    function Min_Value
-     (Self : Google.Protobuf.Enum_Descriptor_Proto) return Integer;
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer;
    --  Minimum representation value
 
    -------------
@@ -51,7 +51,7 @@ package body Compiler.Enum_Descriptors is
    -------------
 
    function Default
-     (Self : Google.Protobuf.Enum_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
       return League.Strings.Universal_String is
    begin
       return Self.Value.Get (1).Name;
@@ -62,7 +62,7 @@ package body Compiler.Enum_Descriptors is
    ---------------
 
    function Max_Value
-     (Self : Google.Protobuf.Enum_Descriptor_Proto) return Integer
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer
    is
       Result : Integer := Integer (Self.Value.Get (1).Number);
       Next   : Integer;
@@ -80,7 +80,7 @@ package body Compiler.Enum_Descriptors is
    ---------------
 
    function Min_Value
-     (Self : Google.Protobuf.Enum_Descriptor_Proto) return Integer
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer
    is
       Result : Integer := Integer (Self.Value.Get (1).Number);
       Next   : Integer;
@@ -99,7 +99,7 @@ package body Compiler.Enum_Descriptors is
    --------------------------
 
    procedure Populate_Named_Types
-     (Self        :        Google.Protobuf.Enum_Descriptor_Proto;
+     (Self        :        Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
       PB_Prefix   :        League.Strings.Universal_String;
       Ada_Package :        League.Strings.Universal_String;
       Map         : in out Compiler.Context.Named_Type_Maps.Map)
@@ -126,7 +126,7 @@ package body Compiler.Enum_Descriptors is
    -----------------
 
    function Public_Spec
-     (Self : Google.Protobuf.Enum_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       use type League.Strings.Universal_String;
@@ -138,8 +138,9 @@ package body Compiler.Enum_Descriptors is
    begin
       for J in 1 .. Self.Value.Length loop
          declare
-            Next : constant Google.Protobuf.Enum_Value_Descriptor_Proto :=
-              Self.Value.Get (J);
+            Next : constant
+              Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto :=
+                Self.Value.Get (J);
             Name : constant League.Strings.Universal_String := Next.Name;
          begin
             Item := F.New_Argument_Association (F.New_Name (Name));
@@ -178,7 +179,7 @@ package body Compiler.Enum_Descriptors is
    ---------------
 
    function Type_Name
-     (Self : Google.Protobuf.Enum_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
       return League.Strings.Universal_String
    is
       Result : constant League.Strings.Universal_String :=

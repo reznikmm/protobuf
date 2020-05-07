@@ -24,7 +24,7 @@ with League.Strings;
 
 package body Compiler.Field_Descriptors is
 
-   use all type Google.Protobuf.Label;
+   use all type Google.Protobuf.Descriptor.Label;
 
    F : Ada_Pretty.Factory renames Compiler.Context.Factory;
 
@@ -33,30 +33,31 @@ package body Compiler.Field_Descriptors is
        renames League.Strings.To_Universal_String;
 
    function Type_Name
-     (Self        : Google.Protobuf.Field_Descriptor_Proto;
+     (Self        : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Is_Option   : Boolean;
       Is_Repeated : Boolean) return Compiler.Context.Ada_Type_Name;
 
-   function Default (X : Google.Protobuf.PB_Type)
+   function Default (X : Google.Protobuf.Descriptor.PB_Type)
      return League.Strings.Universal_String;
    --  Default value for a predefined type
 
-   function Default (Self : Google.Protobuf.Field_Descriptor_Proto)
+   function Default (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
      return Ada_Pretty.Node_Access;
    --  Default value for a field
 
-   function Map (X : Google.Protobuf.PB_Type)
+   function Map (X : Google.Protobuf.Descriptor.PB_Type)
      return League.Strings.Universal_String;
 
-   function Is_Message (Self : Google.Protobuf.Field_Descriptor_Proto)
-      return Boolean;
+   function Is_Message
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+       return Boolean;
 
    function Read_Name
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return League.Strings.Universal_String;
 
    function Write_Name
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return League.Strings.Universal_String;
 
    ---------------
@@ -64,7 +65,7 @@ package body Compiler.Field_Descriptors is
    ---------------
 
    function Component
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       use type Compiler.Context.Ada_Type_Name;
@@ -87,10 +88,10 @@ package body Compiler.Field_Descriptors is
    -- Default --
    -------------
 
-   function Default (X : Google.Protobuf.PB_Type)
+   function Default (X : Google.Protobuf.Descriptor.PB_Type)
      return League.Strings.Universal_String
    is
-      use all type Google.Protobuf.PB_Type;
+      use all type Google.Protobuf.Descriptor.PB_Type;
    begin
       case X is
          when TYPE_DOUBLE   => return +"0.0";
@@ -119,7 +120,7 @@ package body Compiler.Field_Descriptors is
    -------------
 
    function Default
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       Result : Ada_Pretty.Node_Access;
@@ -167,7 +168,7 @@ package body Compiler.Field_Descriptors is
    ----------------
 
    procedure Dependency
-     (Self   : Google.Protobuf.Field_Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set)
    is
       Is_Vector : constant Boolean := Self.Label = LABEL_REPEATED;
@@ -185,7 +186,7 @@ package body Compiler.Field_Descriptors is
    --------------------
 
    procedure Get_Used_Types
-     (Self   : Google.Protobuf.Field_Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set)
    is
       Value : constant League.Strings.Universal_String := Self.Type_Name;
@@ -197,8 +198,9 @@ package body Compiler.Field_Descriptors is
    -- Is_Message --
    ----------------
 
-   function Is_Message (Self : Google.Protobuf.Field_Descriptor_Proto)
-      return Boolean
+   function Is_Message
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+       return Boolean
    is
       Name : constant League.Strings.Universal_String := Self.Type_Name;
    begin
@@ -213,10 +215,10 @@ package body Compiler.Field_Descriptors is
    -- Map --
    ---------
 
-   function Map (X : Google.Protobuf.PB_Type)
+   function Map (X : Google.Protobuf.Descriptor.PB_Type)
      return League.Strings.Universal_String
    is
-      use all type Google.Protobuf.PB_Type;
+      use all type Google.Protobuf.Descriptor.PB_Type;
    begin
       case X is
          when TYPE_DOUBLE   => return +"Interfaces.IEEE_Float_64";
@@ -246,7 +248,7 @@ package body Compiler.Field_Descriptors is
    ---------------
 
    function Read_Case
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       use type League.Strings.Universal_String;
@@ -300,7 +302,7 @@ package body Compiler.Field_Descriptors is
    ---------------
 
    function Read_Name
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return League.Strings.Universal_String
    is
       use type League.Strings.Universal_String;
@@ -329,13 +331,13 @@ package body Compiler.Field_Descriptors is
    ---------------
 
    function Type_Name
-     (Self        : Google.Protobuf.Field_Descriptor_Proto;
+     (Self        : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Is_Option   : Boolean;
       Is_Repeated : Boolean)
       return Compiler.Context.Ada_Type_Name
    is
       use type League.Strings.Universal_String;
-      use all type Google.Protobuf.PB_Type;
+      use all type Google.Protobuf.Descriptor.PB_Type;
       Result : Compiler.Context.Ada_Type_Name;
    begin
       if not Self.Type_Name.Is_Empty then
@@ -393,7 +395,7 @@ package body Compiler.Field_Descriptors is
    ----------------
 
    function Write_Call
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
       use type Compiler.Context.Ada_Type_Name;
@@ -478,10 +480,10 @@ package body Compiler.Field_Descriptors is
    ----------------
 
    function Write_Name
-     (Self : Google.Protobuf.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return League.Strings.Universal_String
    is
-      use all type Google.Protobuf.PB_Type;
+      use all type Google.Protobuf.Descriptor.PB_Type;
       Result : League.Strings.Universal_String := +"Write";
    begin
       if Self.PB_Type in

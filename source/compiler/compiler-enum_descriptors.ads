@@ -23,20 +23,20 @@
 with Ada_Pretty;
 with League.Strings;
 
-with Google.Protobuf;
+with Google.Protobuf.Descriptor;
 
 with Compiler.Context;
 
 package Compiler.Enum_Descriptors is
 
    procedure Populate_Named_Types
-     (Self        : Google.Protobuf.Enum_Descriptor_Proto;
+     (Self        : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
       PB_Prefix   : League.Strings.Universal_String;
       Ada_Package : League.Strings.Universal_String;
       Map         : in out Compiler.Context.Named_Type_Maps.Map);
 
    function Public_Spec
-     (Self : Google.Protobuf.Enum_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
 end Compiler.Enum_Descriptors;

@@ -41,17 +41,17 @@ package body Compiler.File_Descriptors is
        renames League.Strings.To_Universal_String;
 
    function Package_Name
-     (Self : Google.Protobuf.File_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
       return League.Strings.Universal_String;
 
    function Dependency
-     (Self    : Google.Protobuf.File_Descriptor_Proto;
-      Request : Google.Protobuf.Compiler.Code_Generator_Request)
+     (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
+      Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
       return Ada_Pretty.Node_Access;
    --  return 'with Unit' for each dependency
 
    procedure Get_Used_Types
-     (Self   : Google.Protobuf.File_Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.File_Descriptor_Proto;
       Result : out Compiler.Context.String_Sets.Set);
 
    ---------------
@@ -59,7 +59,7 @@ package body Compiler.File_Descriptors is
    ---------------
 
    function Body_Text
-     (Self : Google.Protobuf.File_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
       return League.Strings.Universal_String
    is
 
@@ -192,8 +192,8 @@ package body Compiler.File_Descriptors is
    ----------------
 
    function Dependency
-     (Self    : Google.Protobuf.File_Descriptor_Proto;
-      Request : Google.Protobuf.Compiler.Code_Generator_Request)
+     (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
+      Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
       return Ada_Pretty.Node_Access
    is
       use type League.Strings.Universal_String;
@@ -207,7 +207,7 @@ package body Compiler.File_Descriptors is
    begin
       for J in 1 .. Self.Dependency.Length loop
          declare
-            Item : constant Google.Protobuf.File_Descriptor_Proto :=
+            Item : constant Google.Protobuf.Descriptor.File_Descriptor_Proto :=
               Compiler.Context.Get_File
                 (Request, Self.Dependency.Element (J));
          begin
@@ -217,7 +217,7 @@ package body Compiler.File_Descriptors is
 
       for J in 1 .. Self.Message_Type.Length loop
          declare
-            Item : constant Google.Protobuf.Descriptor_Proto :=
+            Item : constant Google.Protobuf.Descriptor.Descriptor_Proto :=
               Self.Message_Type.Get (J);
          begin
             Compiler.Descriptors.Dependency (Item, Set);
@@ -240,7 +240,7 @@ package body Compiler.File_Descriptors is
    ---------------
 
    function File_Name
-     (Self : Google.Protobuf.File_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
       return League.Strings.Universal_String
    is
       Value : constant League.Strings.Universal_String :=
@@ -263,7 +263,7 @@ package body Compiler.File_Descriptors is
    --------------------
 
    procedure Get_Used_Types
-     (Self   : Google.Protobuf.File_Descriptor_Proto;
+     (Self   : Google.Protobuf.Descriptor.File_Descriptor_Proto;
       Result : out Compiler.Context.String_Sets.Set) is
    begin
       for J in 1 .. Self.Message_Type.Length loop
@@ -277,7 +277,7 @@ package body Compiler.File_Descriptors is
    ------------------
 
    function Package_Name
-     (Self : Google.Protobuf.File_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
       return League.Strings.Universal_String
    is
       File_Name : constant String := Self.Name.To_UTF_8_String;
@@ -301,7 +301,7 @@ package body Compiler.File_Descriptors is
    --------------------------
 
    procedure Populate_Named_Types
-     (Self : Google.Protobuf.File_Descriptor_Proto;
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto;
       Map  : in out Compiler.Context.Named_Type_Maps.Map)
    is
       use type League.Strings.Universal_String;
@@ -334,8 +334,8 @@ package body Compiler.File_Descriptors is
    ------------------------
 
    function Specification_Text
-     (Self    : Google.Protobuf.File_Descriptor_Proto;
-      Request : Google.Protobuf.Compiler.Code_Generator_Request)
+     (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
+      Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
       return League.Strings.Universal_String
    is
       function Get_Public return Ada_Pretty.Node_Access;
@@ -381,7 +381,7 @@ package body Compiler.File_Descriptors is
 
          for J in 1 .. Self.Message_Type.Length loop
             declare
-               Item : constant Google.Protobuf.Descriptor_Proto :=
+               Item : constant Google.Protobuf.Descriptor.Descriptor_Proto :=
                  Self.Message_Type.Get (J);
             begin
                Next := Compiler.Descriptors.Enum_Types (Item);
@@ -404,8 +404,8 @@ package body Compiler.File_Descriptors is
 
             for J in 1 .. Self.Message_Type.Length loop
                declare
-                  Item : constant Google.Protobuf.Descriptor_Proto :=
-                    Self.Message_Type.Get (J);
+                  Item : constant Google.Protobuf.Descriptor.Descriptor_Proto
+                    := Self.Message_Type.Get (J);
                begin
                   Compiler.Descriptors.Public_Spec
                     (Item, Pkg, Next, Again, Done);

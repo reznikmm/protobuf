@@ -28,8 +28,8 @@ with Ada_Pretty;
 with League.Strings;
 with League.Strings.Hash;
 
-with Google.Protobuf;
-with Google.Protobuf.Compiler;
+with Google.Protobuf.Descriptor;
+with Google.Protobuf.Compiler.Plugin;
 
 package Compiler.Context is
 
@@ -76,14 +76,14 @@ package Compiler.Context is
    Named_Types : Named_Type_Maps.Map;
 
    procedure Populate_Named_Types
-     (Request : Google.Protobuf.Compiler.Code_Generator_Request;
+     (Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
       Map     : in out Compiler.Context.Named_Type_Maps.Map);
    --  Fill Map with type information found in Request
 
    function Get_File
-     (Request : Google.Protobuf.Compiler.Code_Generator_Request;
+     (Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
       Name    : League.Strings.Universal_String)
-      return Google.Protobuf.File_Descriptor_Proto;
+      return Google.Protobuf.Descriptor.File_Descriptor_Proto;
    --  Find file by Name in the Request
 
    function To_Ada_Name

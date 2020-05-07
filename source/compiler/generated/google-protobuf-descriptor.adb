@@ -2,163 +2,185 @@ with Ada.Unchecked_Deallocation;
 with PB_Support.IO;
 with PB_Support.Internal;
 
-package body Google.Protobuf is
+package body Google.Protobuf.Descriptor is
 
    package Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Descriptor_Proto,
-        Google.Protobuf.Descriptor_Proto_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Descriptor_Proto,
+        Google.Protobuf.Descriptor.Descriptor_Proto_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Extension_Range_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Extension_Range,
-        Google.Protobuf.Extension_Range_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Extension_Range,
+        Google.Protobuf.Descriptor.Extension_Range_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Reserved_Range_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Reserved_Range, Google.Protobuf.Reserved_Range_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Reserved_Range,
+        Google.Protobuf.Descriptor.Reserved_Range_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Enum_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Enum_Descriptor_Proto,
-        Google.Protobuf.Enum_Descriptor_Proto_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Enum_Descriptor_Proto,
+        Google.Protobuf.Descriptor.Enum_Descriptor_Proto_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Enum_Options_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Enum_Options, Google.Protobuf.Enum_Options_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Enum_Options,
+        Google.Protobuf.Descriptor.Enum_Options_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Enum_Value_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Enum_Value_Descriptor_Proto,
-        Google.Protobuf.Enum_Value_Descriptor_Proto_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto,
+        Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Enum_Value_Options_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Enum_Value_Options,
-        Google.Protobuf.Enum_Value_Options_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Enum_Value_Options,
+        Google.Protobuf.Descriptor.Enum_Value_Options_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Field_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Field_Descriptor_Proto,
-        Google.Protobuf.Field_Descriptor_Proto_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Field_Descriptor_Proto,
+        Google.Protobuf.Descriptor.Field_Descriptor_Proto_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    type Integer_Label is  range 1 .. 3
-     with Size => Google.Protobuf.Label'Size;
+     with Size => Google.Protobuf.Descriptor.Label'Size;
 
    package Label_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.Label, Integer_Label, Google.Protobuf.Label_Vectors);
+       (Google.Protobuf.Descriptor.Label, Integer_Label,
+        Google.Protobuf.Descriptor.Label_Vectors);
 
    type Integer_PB_Type is  range 1 .. 18
-     with Size => Google.Protobuf.PB_Type'Size;
+     with Size => Google.Protobuf.Descriptor.PB_Type'Size;
 
    package PB_Type_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.PB_Type, Integer_PB_Type,
-        Google.Protobuf.PB_Type_Vectors);
+       (Google.Protobuf.Descriptor.PB_Type, Integer_PB_Type,
+        Google.Protobuf.Descriptor.PB_Type_Vectors);
 
    package Field_Options_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Field_Options, Google.Protobuf.Field_Options_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Field_Options,
+        Google.Protobuf.Descriptor.Field_Options_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    type Integer_CType is  range 0 .. 2
-     with Size => Google.Protobuf.CType'Size;
+     with Size => Google.Protobuf.Descriptor.CType'Size;
 
    package CType_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.CType, Integer_CType, Google.Protobuf.CType_Vectors);
+       (Google.Protobuf.Descriptor.CType, Integer_CType,
+        Google.Protobuf.Descriptor.CType_Vectors);
 
    type Integer_JSType is  range 0 .. 2
-     with Size => Google.Protobuf.JSType'Size;
+     with Size => Google.Protobuf.Descriptor.JSType'Size;
 
    package JSType_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.JSType, Integer_JSType,
-        Google.Protobuf.JSType_Vectors);
+       (Google.Protobuf.Descriptor.JSType, Integer_JSType,
+        Google.Protobuf.Descriptor.JSType_Vectors);
 
    package File_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.File_Descriptor_Proto,
-        Google.Protobuf.File_Descriptor_Proto_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.File_Descriptor_Proto,
+        Google.Protobuf.Descriptor.File_Descriptor_Proto_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package File_Options_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.File_Options, Google.Protobuf.File_Options_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.File_Options,
+        Google.Protobuf.Descriptor.File_Options_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    type Integer_Optimize_Mode is  range 1 .. 3
-     with Size => Google.Protobuf.Optimize_Mode'Size;
+     with Size => Google.Protobuf.Descriptor.Optimize_Mode'Size;
 
    package Optimize_Mode_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.Optimize_Mode, Integer_Optimize_Mode,
-        Google.Protobuf.Optimize_Mode_Vectors);
+       (Google.Protobuf.Descriptor.Optimize_Mode, Integer_Optimize_Mode,
+        Google.Protobuf.Descriptor.Optimize_Mode_Vectors);
 
    package Annotation_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Annotation, Google.Protobuf.Annotation_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Annotation,
+        Google.Protobuf.Descriptor.Annotation_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Message_Options_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Message_Options,
-        Google.Protobuf.Message_Options_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Message_Options,
+        Google.Protobuf.Descriptor.Message_Options_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Method_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Method_Descriptor_Proto,
-        Google.Protobuf.Method_Descriptor_Proto_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Method_Descriptor_Proto,
+        Google.Protobuf.Descriptor.Method_Descriptor_Proto_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Method_Options_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Method_Options, Google.Protobuf.Method_Options_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Method_Options,
+        Google.Protobuf.Descriptor.Method_Options_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Oneof_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Oneof_Descriptor_Proto,
-        Google.Protobuf.Oneof_Descriptor_Proto_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Oneof_Descriptor_Proto,
+        Google.Protobuf.Descriptor.Oneof_Descriptor_Proto_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Oneof_Options_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Oneof_Options, Google.Protobuf.Oneof_Options_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Oneof_Options,
+        Google.Protobuf.Descriptor.Oneof_Options_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Service_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Service_Descriptor_Proto,
-        Google.Protobuf.Service_Descriptor_Proto_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Service_Descriptor_Proto,
+        Google.Protobuf.Descriptor.Service_Descriptor_Proto_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Service_Options_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Service_Options,
-        Google.Protobuf.Service_Options_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Service_Options,
+        Google.Protobuf.Descriptor.Service_Options_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Source_Code_Info_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Source_Code_Info,
-        Google.Protobuf.Source_Code_Info_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Source_Code_Info,
+        Google.Protobuf.Descriptor.Source_Code_Info_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Location_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Location, Google.Protobuf.Location_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Location,
+        Google.Protobuf.Descriptor.Location_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Uninterpreted_Option_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Uninterpreted_Option,
-        Google.Protobuf.Uninterpreted_Option_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Uninterpreted_Option,
+        Google.Protobuf.Descriptor.Uninterpreted_Option_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package Name_Part_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Name_Part, Google.Protobuf.Name_Part_Vector,
-        Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.Name_Part,
+        Google.Protobuf.Descriptor.Name_Part_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    function Length (Self : File_Descriptor_Set_Vector) return Natural is
    begin
@@ -251,7 +273,7 @@ package body Google.Protobuf is
          WS.Start_Message (Value'Address);
          for J in 1 .. Value.File.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
-            Google.Protobuf.File_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
               (Stream, Value.File.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -396,31 +418,32 @@ package body Google.Protobuf is
          WS.Write_Varint (11, Value.Weak_Dependency);
          for J in 1 .. Value.Message_Type.Length loop
             WS.Write_Key ((4, PB_Support.Length_Delimited));
-            Google.Protobuf.Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Descriptor_Proto'Write
               (Stream, Value.Message_Type.Get (J));
          end loop;
          for J in 1 .. Value.Enum_Type.Length loop
             WS.Write_Key ((5, PB_Support.Length_Delimited));
-            Google.Protobuf.Enum_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Enum_Descriptor_Proto'Write
               (Stream, Value.Enum_Type.Get (J));
          end loop;
          for J in 1 .. Value.Service.Length loop
             WS.Write_Key ((6, PB_Support.Length_Delimited));
-            Google.Protobuf.Service_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Service_Descriptor_Proto'Write
               (Stream, Value.Service.Get (J));
          end loop;
          for J in 1 .. Value.Extension.Length loop
             WS.Write_Key ((7, PB_Support.Length_Delimited));
-            Google.Protobuf.Field_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
               (Stream, Value.Extension.Get (J));
          end loop;
          if Value.Options.Is_Set then
             WS.Write_Key ((8, PB_Support.Length_Delimited));
-            Google.Protobuf.File_Options'Write (Stream, Value.Options.Value);
+            Google.Protobuf.Descriptor.File_Options'Write
+              (Stream, Value.Options.Value);
          end if;
          if Value.Source_Code_Info.Is_Set then
             WS.Write_Key ((9, PB_Support.Length_Delimited));
-            Google.Protobuf.Source_Code_Info'Write
+            Google.Protobuf.Descriptor.Source_Code_Info'Write
               (Stream, Value.Source_Code_Info.Value);
          end if;
          WS.Write (12, Value.Syntax);
@@ -551,42 +574,42 @@ package body Google.Protobuf is
          WS.Write (1, Value.Name);
          for J in 1 .. Value.Field.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
-            Google.Protobuf.Field_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
               (Stream, Value.Field.Get (J));
          end loop;
          for J in 1 .. Value.Extension.Length loop
             WS.Write_Key ((6, PB_Support.Length_Delimited));
-            Google.Protobuf.Field_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
               (Stream, Value.Extension.Get (J));
          end loop;
          for J in 1 .. Value.Nested_Type.Length loop
             WS.Write_Key ((3, PB_Support.Length_Delimited));
-            Google.Protobuf.Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Descriptor_Proto'Write
               (Stream, Value.Nested_Type.Get (J));
          end loop;
          for J in 1 .. Value.Enum_Type.Length loop
             WS.Write_Key ((4, PB_Support.Length_Delimited));
-            Google.Protobuf.Enum_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Enum_Descriptor_Proto'Write
               (Stream, Value.Enum_Type.Get (J));
          end loop;
          for J in 1 .. Value.Extension_Range.Length loop
             WS.Write_Key ((5, PB_Support.Length_Delimited));
-            Google.Protobuf.Extension_Range'Write
+            Google.Protobuf.Descriptor.Extension_Range'Write
               (Stream, Value.Extension_Range.Get (J));
          end loop;
          for J in 1 .. Value.Oneof_Decl.Length loop
             WS.Write_Key ((8, PB_Support.Length_Delimited));
-            Google.Protobuf.Oneof_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Oneof_Descriptor_Proto'Write
               (Stream, Value.Oneof_Decl.Get (J));
          end loop;
          if Value.Options.Is_Set then
             WS.Write_Key ((7, PB_Support.Length_Delimited));
-            Google.Protobuf.Message_Options'Write
+            Google.Protobuf.Descriptor.Message_Options'Write
               (Stream, Value.Options.Value);
          end if;
          for J in 1 .. Value.Reserved_Range.Length loop
             WS.Write_Key ((9, PB_Support.Length_Delimited));
-            Google.Protobuf.Reserved_Range'Write
+            Google.Protobuf.Descriptor.Reserved_Range'Write
               (Stream, Value.Reserved_Range.Get (J));
          end loop;
          WS.Write (10, Value.Reserved_Name);
@@ -921,7 +944,8 @@ package body Google.Protobuf is
          WS.Write (10, Value.Json_Name);
          if Value.Options.Is_Set then
             WS.Write_Key ((8, PB_Support.Length_Delimited));
-            Google.Protobuf.Field_Options'Write (Stream, Value.Options.Value);
+            Google.Protobuf.Descriptor.Field_Options'Write
+              (Stream, Value.Options.Value);
          end if;
          if WS.End_Message (Value'Address, Offset) then
             Write_Field_Descriptor_Proto (WS'Access, Value);
@@ -1028,7 +1052,8 @@ package body Google.Protobuf is
          WS.Write (1, Value.Name);
          if Value.Options.Is_Set then
             WS.Write_Key ((2, PB_Support.Length_Delimited));
-            Google.Protobuf.Oneof_Options'Write (Stream, Value.Options.Value);
+            Google.Protobuf.Descriptor.Oneof_Options'Write
+              (Stream, Value.Options.Value);
          end if;
          if WS.End_Message (Value'Address, Offset) then
             Write_Oneof_Descriptor_Proto (WS'Access, Value);
@@ -1138,12 +1163,13 @@ package body Google.Protobuf is
          WS.Write (1, Value.Name);
          for J in 1 .. Value.Value.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
-            Google.Protobuf.Enum_Value_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto'Write
               (Stream, Value.Value.Get (J));
          end loop;
          if Value.Options.Is_Set then
             WS.Write_Key ((3, PB_Support.Length_Delimited));
-            Google.Protobuf.Enum_Options'Write (Stream, Value.Options.Value);
+            Google.Protobuf.Descriptor.Enum_Options'Write
+              (Stream, Value.Options.Value);
          end if;
          if WS.End_Message (Value'Address, Offset) then
             Write_Enum_Descriptor_Proto (WS'Access, Value);
@@ -1260,7 +1286,7 @@ package body Google.Protobuf is
          WS.Write_Varint (2, Value.Number);
          if Value.Options.Is_Set then
             WS.Write_Key ((3, PB_Support.Length_Delimited));
-            Google.Protobuf.Enum_Value_Options'Write
+            Google.Protobuf.Descriptor.Enum_Value_Options'Write
               (Stream, Value.Options.Value);
          end if;
          if WS.End_Message (Value'Address, Offset) then
@@ -1372,12 +1398,12 @@ package body Google.Protobuf is
          WS.Write (1, Value.Name);
          for J in 1 .. Value.Method.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
-            Google.Protobuf.Method_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.Method_Descriptor_Proto'Write
               (Stream, Value.Method.Get (J));
          end loop;
          if Value.Options.Is_Set then
             WS.Write_Key ((3, PB_Support.Length_Delimited));
-            Google.Protobuf.Service_Options'Write
+            Google.Protobuf.Descriptor.Service_Options'Write
               (Stream, Value.Options.Value);
          end if;
          if WS.End_Message (Value'Address, Offset) then
@@ -1500,7 +1526,8 @@ package body Google.Protobuf is
          WS.Write (3, Value.Output_Type);
          if Value.Options.Is_Set then
             WS.Write_Key ((4, PB_Support.Length_Delimited));
-            Google.Protobuf.Method_Options'Write (Stream, Value.Options.Value);
+            Google.Protobuf.Descriptor.Method_Options'Write
+              (Stream, Value.Options.Value);
          end if;
          WS.Write (5, Value.Client_Streaming);
          WS.Write (6, Value.Server_Streaming);
@@ -1655,7 +1682,7 @@ package body Google.Protobuf is
          WS.Write (37, Value.Csharp_Namespace);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
-            Google.Protobuf.Uninterpreted_Option'Write
+            Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -1769,7 +1796,7 @@ package body Google.Protobuf is
          WS.Write (7, Value.Map_Entry);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
-            Google.Protobuf.Uninterpreted_Option'Write
+            Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -1886,7 +1913,7 @@ package body Google.Protobuf is
          WS.Write (10, Value.Weak);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
-            Google.Protobuf.Uninterpreted_Option'Write
+            Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -1984,7 +2011,7 @@ package body Google.Protobuf is
          WS.Start_Message (Value'Address);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
-            Google.Protobuf.Uninterpreted_Option'Write
+            Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -2090,7 +2117,7 @@ package body Google.Protobuf is
          WS.Write (3, Value.Deprecated);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
-            Google.Protobuf.Uninterpreted_Option'Write
+            Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -2194,7 +2221,7 @@ package body Google.Protobuf is
          WS.Write (1, Value.Deprecated);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
-            Google.Protobuf.Uninterpreted_Option'Write
+            Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -2296,7 +2323,7 @@ package body Google.Protobuf is
          WS.Write (33, Value.Deprecated);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
-            Google.Protobuf.Uninterpreted_Option'Write
+            Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -2398,7 +2425,7 @@ package body Google.Protobuf is
          WS.Write (33, Value.Deprecated);
          for J in 1 .. Value.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
-            Google.Protobuf.Uninterpreted_Option'Write
+            Google.Protobuf.Descriptor.Uninterpreted_Option'Write
               (Stream, Value.Uninterpreted_Option.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -2515,7 +2542,8 @@ package body Google.Protobuf is
          WS.Start_Message (Value'Address);
          for J in 1 .. Value.Name.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
-            Google.Protobuf.Name_Part'Write (Stream, Value.Name.Get (J));
+            Google.Protobuf.Descriptor.Name_Part'Write
+              (Stream, Value.Name.Get (J));
          end loop;
          WS.Write (3, Value.Identifier_Value);
          WS.Write_Varint (4, Value.Positive_Int_Value);
@@ -2714,7 +2742,8 @@ package body Google.Protobuf is
          WS.Start_Message (Value'Address);
          for J in 1 .. Value.Location.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
-            Google.Protobuf.Location'Write (Stream, Value.Location.Get (J));
+            Google.Protobuf.Descriptor.Location'Write
+              (Stream, Value.Location.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
             Write_Source_Code_Info (WS'Access, Value);
@@ -2917,7 +2946,7 @@ package body Google.Protobuf is
          WS.Start_Message (Value'Address);
          for J in 1 .. Value.Annotation.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
-            Google.Protobuf.Annotation'Write
+            Google.Protobuf.Descriptor.Annotation'Write
               (Stream, Value.Annotation.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -3030,4 +3059,4 @@ package body Google.Protobuf is
       end;
    end Write_Annotation;
 
-end Google.Protobuf;
+end Google.Protobuf.Descriptor;

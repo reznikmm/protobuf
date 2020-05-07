@@ -26,7 +26,8 @@ with Ada.Wide_Wide_Text_IO;
 
 with League.Strings;
 
-with Google.Protobuf.Compiler;
+with Google.Protobuf.Compiler.Plugin;
+with Google.Protobuf.Descriptor;
 
 with Compiler.Context;
 with Compiler.File_Descriptors;
@@ -36,8 +37,8 @@ procedure Compiler.Run is
    Input  : Ada.Streams.Stream_IO.File_Type;
    Stream : Ada.Streams.Stream_IO.Stream_Access;
    Output : Ada.Streams.Stream_IO.File_Type;
-   Request : Google.Protobuf.Compiler.Code_Generator_Request;
-   Result  : Google.Protobuf.Compiler.Code_Generator_Response;
+   Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
+   Result  : Google.Protobuf.Compiler.Plugin.Code_Generator_Response;
 begin
    Ada.Streams.Stream_IO.Open
      (File => Input,
@@ -45,7 +46,8 @@ begin
       Name => Ada.Command_Line.Argument (1));
 
    Stream := Ada.Streams.Stream_IO.Stream (Input);
-   Google.Protobuf.Compiler.Code_Generator_Request'Read (Stream, Request);
+   Google.Protobuf.Compiler.Plugin.Code_Generator_Request'Read
+     (Stream, Request);
 
    Compiler.Context.Populate_Named_Types
      (Request, Compiler.Context.Named_Types);
@@ -64,13 +66,13 @@ begin
          use type League.Strings.Universal_String;
          Name : constant League.Strings.Universal_String :=
            Request.File_To_Generate.Element (J);
-         File : constant Google.Protobuf.File_Descriptor_Proto :=
+         File : constant Google.Protobuf.Descriptor.File_Descriptor_Proto :=
            Compiler.Context.Get_File (Request, Name);
          Base : constant League.Strings.Universal_String :=
            Compiler.File_Descriptors.File_Name (File);
       begin
          declare
-            Item : Google.Protobuf.Compiler.File;
+            Item : Google.Protobuf.Compiler.Plugin.File;
          begin
             Item.Name := Base & ".ads";
             Item.Content := Compiler.File_Descriptors.Specification_Text
@@ -79,7 +81,7 @@ begin
          end;
 
          declare
-            Item : Google.Protobuf.Compiler.File;
+            Item : Google.Protobuf.Compiler.Plugin.File;
          begin
             Item.Name := Base & ".adb";
             Item.Content := Compiler.File_Descriptors.Body_Text (File);
@@ -93,5 +95,6 @@ begin
       Name => Ada.Command_Line.Argument (1) & ".out");
 
    Stream := Ada.Streams.Stream_IO.Stream (Output);
-   Google.Protobuf.Compiler.Code_Generator_Response'Write (Stream, Result);
+   Google.Protobuf.Compiler.Plugin.Code_Generator_Response'Write
+     (Stream, Result);
 end Compiler.Run;

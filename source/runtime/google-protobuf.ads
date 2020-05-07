@@ -20,33 +20,8 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with League.Strings;
+package Google.Protobuf is
 
-with Google.Protobuf.Descriptor;
-with Google.Protobuf.Compiler.Plugin;
+   pragma Pure;
 
-with Compiler.Context;
-
-package Compiler.File_Descriptors is
-
-   procedure Populate_Named_Types
-     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto;
-      Map  : in out Compiler.Context.Named_Type_Maps.Map);
-   --  Fill Map with type information found in a file descriptor
-
-   function File_Name
-     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
-      return League.Strings.Universal_String;
-   --  Return base name for Ada package
-
-   function Specification_Text
-     (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
-      Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
-      return League.Strings.Universal_String;
-   --  Return base name for Ada package
-
-   function Body_Text
-     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
-      return League.Strings.Universal_String;
-
-end Compiler.File_Descriptors;
+end Google.Protobuf;

@@ -1,18 +1,23 @@
 with Ada.Finalization;
 with Ada.Streams;
-with Google.Protobuf;
+with Google.Protobuf.Descriptor;
 with League.String_Vectors;
 with League.Strings;
 
-package Google.Protobuf.Compiler is
+package Google.Protobuf.Compiler.Plugin is
 
    type Code_Generator_Request_Vector is tagged private;
+
+   type Code_Generator_Response_Vector is tagged private;
+
+   type File_Vector is tagged private;
 
    type Code_Generator_Request is
      record
         File_To_Generate : League.String_Vectors.Universal_String_Vector;
         Parameter        : League.Strings.Universal_String;
-        Proto_File       : Google.Protobuf.File_Descriptor_Proto_Vector;
+        Proto_File       : Google.Protobuf.Descriptor
+          .File_Descriptor_Proto_Vector;
      end record;
 
    type Optional_Code_Generator_Request (Is_Set : Boolean := False) is
@@ -37,8 +42,6 @@ package Google.Protobuf.Compiler is
    procedure Append
     (Self  : in out Code_Generator_Request_Vector;
      Value : Code_Generator_Request);
-
-   type File_Vector is tagged private;
 
    type File is
      record
@@ -65,12 +68,10 @@ package Google.Protobuf.Compiler is
 
    procedure Append (Self  : in out File_Vector; Value : File);
 
-   type Code_Generator_Response_Vector is tagged private;
-
    type Code_Generator_Response is
      record
         Error : League.Strings.Universal_String;
-        File  : Google.Protobuf.Compiler.File_Vector;
+        File  : Google.Protobuf.Compiler.Plugin.File_Vector;
      end record;
 
    type Optional_Code_Generator_Response (Is_Set : Boolean := False) is
@@ -183,4 +184,4 @@ private
    overriding procedure Finalize
     (Self : in out Code_Generator_Response_Vector);
 
-end Google.Protobuf.Compiler;
+end Google.Protobuf.Compiler.Plugin;

@@ -53,9 +53,9 @@ package body Compiler.Context is
    --------------
 
    function Get_File
-     (Request : Google.Protobuf.Compiler.Code_Generator_Request;
+     (Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
       Name    : League.Strings.Universal_String)
-      return Google.Protobuf.File_Descriptor_Proto
+      return Google.Protobuf.Descriptor.File_Descriptor_Proto
    is
       use type League.Strings.Universal_String;
    begin
@@ -73,7 +73,7 @@ package body Compiler.Context is
    --------------------------
 
    procedure Populate_Named_Types
-     (Request : Google.Protobuf.Compiler.Code_Generator_Request;
+     (Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
       Map     : in out Compiler.Context.Named_Type_Maps.Map) is
    begin
       for J in 1 .. Request.Proto_File.Length loop

@@ -2,17 +2,19 @@ with Ada.Unchecked_Deallocation;
 with PB_Support.IO;
 with PB_Support.Internal;
 
-package body Google.Protobuf.Compiler is
+package body Google.Protobuf.Compiler.Plugin is
 
    package File_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.File_Descriptor_Proto,
-        Google.Protobuf.File_Descriptor_Proto_Vector, Google.Protobuf.Append);
+       (Google.Protobuf.Descriptor.File_Descriptor_Proto,
+        Google.Protobuf.Descriptor.File_Descriptor_Proto_Vector,
+        Google.Protobuf.Descriptor.Append);
 
    package File_IO is
      new PB_Support.IO.Message_IO
-       (Google.Protobuf.Compiler.File, Google.Protobuf.Compiler.File_Vector,
-        Google.Protobuf.Compiler.Append);
+       (Google.Protobuf.Compiler.Plugin.File,
+        Google.Protobuf.Compiler.Plugin.File_Vector,
+        Google.Protobuf.Compiler.Plugin.Append);
 
    function Length (Self : Code_Generator_Request_Vector) return Natural is
    begin
@@ -114,7 +116,7 @@ package body Google.Protobuf.Compiler is
          WS.Write (2, Value.Parameter);
          for J in 1 .. Value.Proto_File.Length loop
             WS.Write_Key ((15, PB_Support.Length_Delimited));
-            Google.Protobuf.File_Descriptor_Proto'Write
+            Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
               (Stream, Value.Proto_File.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
@@ -219,7 +221,8 @@ package body Google.Protobuf.Compiler is
          WS.Write (1, Value.Error);
          for J in 1 .. Value.File.Length loop
             WS.Write_Key ((15, PB_Support.Length_Delimited));
-            Google.Protobuf.Compiler.File'Write (Stream, Value.File.Get (J));
+            Google.Protobuf.Compiler.Plugin.File'Write
+              (Stream, Value.File.Get (J));
          end loop;
          if WS.End_Message (Value'Address, Offset) then
             Write_Code_Generator_Response (WS'Access, Value);
@@ -323,4 +326,4 @@ package body Google.Protobuf.Compiler is
       end;
    end Write_File;
 
-end Google.Protobuf.Compiler;
+end Google.Protobuf.Compiler.Plugin;
