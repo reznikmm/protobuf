@@ -46,7 +46,7 @@ package body Compiler.Field_Descriptors is
    --  Default value for a field
 
    function Map (X : Google.Protobuf.Descriptor.PB_Type)
-     return League.Strings.Universal_String;
+     return Compiler.Context.Ada_Type_Name;
 
    function Is_Enum
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
@@ -130,6 +130,8 @@ package body Compiler.Field_Descriptors is
       Result : Ada_Pretty.Node_Access;
    begin
       if Self.Label = LABEL_REPEATED then
+         null;
+      elsif Self.Label = LABEL_OPTIONAL and Compiler.Context.Is_Proto_2 then
          null;
       elsif not Self.Type_Name.Is_Empty then
          declare
@@ -241,30 +243,30 @@ package body Compiler.Field_Descriptors is
    ---------
 
    function Map (X : Google.Protobuf.Descriptor.PB_Type)
-     return League.Strings.Universal_String
+     return Compiler.Context.Ada_Type_Name
    is
       use all type Google.Protobuf.Descriptor.PB_Type;
    begin
       case X is
-         when TYPE_DOUBLE   => return +"Interfaces.IEEE_Float_64";
-         when TYPE_FLOAT    => return +"Interfaces.IEEE_Float_32";
-         when TYPE_INT64    => return +"Interfaces.Integer_64";
-         when TYPE_UINT64   => return +"Interfaces.Unsigned_64";
-         when TYPE_INT32    => return +"Interfaces.Unsigned_32";
-         when TYPE_FIXED64  => return +"Interfaces.Unsigned_64";
-         when TYPE_FIXED32  => return +"Interfaces.Unsigned_32";
-         when TYPE_BOOL     => return +"Boolean";
-         when TYPE_STRING   => return +"League.Strings.Universal_String";
-         when TYPE_GROUP    => return +"group";
-         when TYPE_MESSAGE  => return +"message";
-         when TYPE_BYTES    => return +("League.Stream_Element_Vectors" &
-              ".Stream_Element_Vector");
-         when TYPE_UINT32   => return +"Interfaces.Unsigned_32";
-         when TYPE_ENUM     => return +"enum";
-         when TYPE_SFIXED32 => return +"Interfaces.Integer_32";
-         when TYPE_SFIXED64 => return +"Interfaces.Integer_64";
-         when TYPE_SINT32   => return +"Interfaces.Integer_32";
-         when TYPE_SINT64   => return +"Interfaces.Integer_64";
+         when TYPE_DOUBLE   => return (+"Interfaces", +"IEEE_Float_64");
+         when TYPE_FLOAT    => return (+"Interfaces", +"IEEE_Float_32");
+         when TYPE_INT64    => return (+"Interfaces", +"Integer_64");
+         when TYPE_UINT64   => return (+"Interfaces", +"Unsigned_64");
+         when TYPE_INT32    => return (+"Interfaces", +"Unsigned_32");
+         when TYPE_FIXED64  => return (+"Interfaces", +"Unsigned_64");
+         when TYPE_FIXED32  => return (+"Interfaces", +"Unsigned_32");
+         when TYPE_BOOL     => return (+"", +"Boolean");
+         when TYPE_STRING   => return (+"League.Strings", +"Universal_String");
+         when TYPE_BYTES    => return
+              (+"League.Stream_Element_Vectors",
+               +"Stream_Element_Vector");
+         when TYPE_UINT32   => return (+"Interfaces", +"Unsigned_32");
+         when TYPE_SFIXED32 => return (+"Interfaces", +"Integer_32");
+         when TYPE_SFIXED64 => return (+"Interfaces", +"Integer_64");
+         when TYPE_SINT32   => return (+"Interfaces", +"Integer_32");
+         when TYPE_SINT64   => return (+"Interfaces", +"Integer_64");
+         when TYPE_GROUP | TYPE_MESSAGE | TYPE_ENUM =>
+            raise Program_Error;
       end case;
    end Map;
 
@@ -285,7 +287,9 @@ package body Compiler.Field_Descriptors is
       Field := Integer (Self.Number);
       My_Name.Prepend ("V.");
 
-      if Self.Label = LABEL_OPTIONAL and Is_Message (Self) then
+      if Self.Label = LABEL_OPTIONAL and
+        (Is_Message (Self) or Compiler.Context.Is_Proto_2)
+      then
          Result := F.New_If
            (Condition  => F.New_Infix
               (Operator => +"not",
@@ -331,11 +335,10 @@ package body Compiler.Field_Descriptors is
       return League.Strings.Universal_String
    is
       use type League.Strings.Universal_String;
-      Result : League.Strings.Universal_String := +"PB_Support.IO.Read_";
-      Is_Option : constant Boolean := Self.Label = LABEL_OPTIONAL;
-      PB_Type   : constant League.Strings.Universal_String := Self.Type_Name;
-      Tp        : constant Compiler.Context.Ada_Type_Name :=
-        Type_Name (Self, Is_Option, False);
+      Result  : League.Strings.Universal_String := +"PB_Support.IO.Read_";
+      PB_Type : constant League.Strings.Universal_String := Self.Type_Name;
+      Tp      : constant Compiler.Context.Ada_Type_Name :=
+        Type_Name (Self, False, False);
    begin
       if Compiler.Context.Named_Types.Contains (PB_Type) then
          Result := Compiler.Context.Named_Types (PB_Type).Ada_Type.Type_Name;
@@ -365,7 +368,7 @@ package body Compiler.Field_Descriptors is
       use all type Google.Protobuf.Descriptor.PB_Type;
       Result : Compiler.Context.Ada_Type_Name;
    begin
-      if not Self.Type_Name.Is_Empty then
+      if not Self.Type_Name.Is_Empty then  --  Message or enum
          declare
             Value : constant League.Strings.Universal_String := Self.Type_Name;
          begin
@@ -376,9 +379,15 @@ package body Compiler.Field_Descriptors is
                begin
                   Result := Element.Ada_Type;
 
-                  if Is_Repeated then
+                  if Element.Is_Enumeration then
+                     if Is_Repeated then
+                        Result.Type_Name.Append ("_Vectors.Vector");
+                     elsif Is_Option then
+                        Result.Type_Name.Append ("_Vectors.Option");
+                     end if;
+                  elsif Is_Repeated then
                      Result.Type_Name.Append ("_Vector");
-                  elsif Is_Option and Self.PB_Type /= TYPE_ENUM then
+                  elsif Is_Option then
                      Result.Type_Name.Prepend ("Optional_");
                   end if;
                end;
@@ -387,29 +396,20 @@ package body Compiler.Field_Descriptors is
                  "Type not found: " & Value.To_UTF_8_String;
             end if;
          end;
+      elsif Is_Option and Compiler.Context.Is_Proto_2 then
+         Result := Map (Self.PB_Type);
+         Result.Package_Name :=
+           "PB_Support." & Result.Type_Name & "_Vectors";
+         Result.Type_Name := +"Option";
+      elsif not Is_Repeated then
+         Result := Map (Self.PB_Type);
+      elsif Self.PB_Type = TYPE_STRING then
+         Result := (+"League.String_Vectors", +"Universal_String_Vector");
       else
-         declare
-            Text : constant League.Strings.Universal_String :=
-              Map (Self.PB_Type);
-         begin
-            if Text.Index ('.') > 0 then
-               Result.Package_Name := Text.Head_To (Text.Last_Index ('.') - 1);
-               Result.Type_Name := Text.Tail_From (Text.Last_Index ('.') + 1);
-            else
-               Result.Type_Name := Text;
-            end if;
-
-            if Is_Repeated then
-               if Self.PB_Type = TYPE_STRING then
-                  Result.Package_Name := +"League.String_Vectors";
-                  Result.Type_Name := +"Universal_String_Vector";
-               else
-                  Result.Package_Name :=
-                    "PB_Support." & Result.Type_Name & "_Vectors";
-                  Result.Type_Name := +"Vector";
-               end if;
-            end if;
-         end;
+         Result := Map (Self.PB_Type);
+         Result.Package_Name :=
+           "PB_Support." & Result.Type_Name & "_Vectors";
+         Result.Type_Name := +"Vector";
       end if;
 
       return Result;
@@ -434,13 +434,19 @@ package body Compiler.Field_Descriptors is
         Compiler.Context.To_Ada_Name (Self.Name);
       Result  : Ada_Pretty.Node_Access;
       Get     : League.Strings.Universal_String;
+      Value   : League.Strings.Universal_String := "V." & My_Name;
    begin
       if Is_Message (Self) then
          if Self.Label = LABEL_REPEATED then
-            Get := +".Get (J)";
+            Value.Append (+".Get (J)");
          elsif Self.Label = LABEL_OPTIONAL then
-            Get := +".Value";
+            Value.Append (+".Value");
          end if;
+      elsif Self.Label = LABEL_OPTIONAL and Compiler.Context.Is_Proto_2 then
+         Value.Append (+".Value");
+      end if;
+
+      if Is_Message (Self) then
 
          Result := F.New_List
            (F.New_Statement
@@ -460,21 +466,18 @@ package body Compiler.Field_Descriptors is
                  (+Type_Name (Self, False, False) & "'Write"),
                 F.New_List
                  (F.New_Name (+"Stream"),
-                  F.New_Selected_Name ("V." & My_Name & Get)))));
+                  F.New_Selected_Name (Value)))));
 
          if Self.Label = LABEL_REPEATED then
             Result := F.New_For
               (F.New_Name (+"J"),
                F.New_Name (+"1 .. V." & My_Name & ".Length"),
                Result);
-         elsif Self.Label = LABEL_OPTIONAL then
-            Result := F.New_If
-              (F.New_Selected_Name ("V." & My_Name & ".Is_Set"),
-               Result);
          end if;
       elsif Is_Enum then
 
          Get := Compiler.Context.Named_Types (PB_Type).Ada_Type.Type_Name;
+
          Result := F.New_Statement
            (F.New_Apply
              (F.New_Selected_Name (Get & "_IO.Write"),
@@ -483,7 +486,7 @@ package body Compiler.Field_Descriptors is
                  F.New_Argument_Association
                   (F.New_Literal (Integer (Self.Number))),
                  F.New_Argument_Association
-                  (F.New_Selected_Name ("V." & My_Name))))));
+                  (F.New_Selected_Name (Value))))));
 
       else
 
@@ -494,7 +497,15 @@ package body Compiler.Field_Descriptors is
                (F.New_Argument_Association
                  (F.New_Literal (Integer (Self.Number))),
                 F.New_Argument_Association
-                 (F.New_Selected_Name ("V." & My_Name)))));
+                 (F.New_Selected_Name (Value)))));
+      end if;
+
+      if Self.Label = LABEL_OPTIONAL and
+        (Is_Message (Self) or Compiler.Context.Is_Proto_2)
+      then
+         Result := F.New_If
+           (F.New_Selected_Name ("V." & My_Name & ".Is_Set"),
+            Result);
       end if;
 
       return Result;

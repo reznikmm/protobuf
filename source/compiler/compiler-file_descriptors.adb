@@ -338,6 +338,8 @@ package body Compiler.File_Descriptors is
       Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
       return League.Strings.Universal_String
    is
+      use type League.Strings.Universal_String;
+
       function Get_Public return Ada_Pretty.Node_Access;
       --  Generate public part declaration list
       function Get_Private return Ada_Pretty.Node_Access;
@@ -434,7 +436,10 @@ package body Compiler.File_Descriptors is
       Unit   : constant Ada_Pretty.Node_Access :=
         F.New_Compilation_Unit (Root, Clauses);
    begin
+      Compiler.Context.Is_Proto_2 := Self.Syntax /= +"proto3";
+
       Result := F.To_Text (Unit).Join (Ada.Characters.Wide_Wide_Latin_1.LF);
+
       return Result;
    end Specification_Text;
 

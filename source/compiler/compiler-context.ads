@@ -33,6 +33,9 @@ with Google.Protobuf.Compiler.Plugin;
 
 package Compiler.Context is
 
+   Is_Proto_2 : Boolean := True;
+   --  Proto version of current file
+
    Factory : aliased Ada_Pretty.Factory;
    --  Node factory for pretty printing generated sources
 
