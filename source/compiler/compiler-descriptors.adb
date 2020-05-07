@@ -46,7 +46,8 @@ package body Compiler.Descriptors is
       Done   : Compiler.Context.String_Sets.Set) return Boolean;
 
    function Public_Spec
-     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access;
 
    function Read_Subprogram
@@ -320,7 +321,8 @@ package body Compiler.Descriptors is
    -----------------
 
    function Public_Spec
-     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -362,7 +364,8 @@ package body Compiler.Descriptors is
                       (Choice => F.New_Name (+"True"),
                        List   => F.New_Variable
                          (Name            => F.New_Name (+"Value"),
-                          Type_Definition => Me)),
+                          Type_Definition =>
+                            F.New_Selected_Name (Pkg & "." & My_Name))),
                   F.New_Case_Path
                     (Choice => F.New_Name (+"False"),
                      List   => F.New_Statement)))));
@@ -444,7 +447,7 @@ package body Compiler.Descriptors is
 
       if not Done.Contains (Name) then
          if Check_Dependency (Self, Pkg, Done) then
-            Result := F.New_List (Result, Public_Spec (Self));
+            Result := F.New_List (Result, Public_Spec (Self, Pkg));
             Done.Insert (Name);
             Ada.Wide_Wide_Text_IO.Put_Line (Name.To_Wide_Wide_String);
          else

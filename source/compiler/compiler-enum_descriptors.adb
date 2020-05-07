@@ -38,6 +38,12 @@ package body Compiler.Enum_Descriptors is
       return League.Strings.Universal_String;
    --  Return default value for given enum type as string
 
+   function Literal_Name
+     (Self  : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
+      Index : Positive)
+      return League.Strings.Universal_String;
+   --  Return default value for given enum type as string
+
    function Max_Value
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer;
    --  Maximum representation value
@@ -54,8 +60,29 @@ package body Compiler.Enum_Descriptors is
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
       return League.Strings.Universal_String is
    begin
-      return Self.Value.Get (1).Name;
+      return Literal_Name (Self, 1);
    end Default;
+
+   ------------------
+   -- Literal_Name --
+   ------------------
+
+   function Literal_Name
+     (Self  : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
+      Index : Positive)
+      return League.Strings.Universal_String
+   is
+      use type League.Strings.Universal_String;
+
+      Name  : constant League.Strings.Universal_String := Type_Name (Self);
+      Literal : League.Strings.Universal_String := Self.Value.Get (Index).Name;
+   begin
+      if Literal.To_Lowercase = Name.To_Lowercase then
+         Literal.Prepend ("PB_");
+      end if;
+
+      return Literal;
+   end Literal_Name;
 
    ---------------
    -- Max_Value --
@@ -141,15 +168,17 @@ package body Compiler.Enum_Descriptors is
             Next : constant
               Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto :=
                 Self.Value.Get (J);
-            Name : constant League.Strings.Universal_String := Next.Name;
+
+            Literal : constant League.Strings.Universal_String :=
+              Literal_Name (Self, J);
          begin
-            Item := F.New_Argument_Association (F.New_Name (Name));
+            Item := F.New_Argument_Association (F.New_Name (Literal));
             Result := F.New_List (Result, Item);
 
             Clause := F.New_List
               (Clause,
                F.New_Argument_Association
-                 (Choice => F.New_Name (Name),
+                 (Choice => F.New_Name (Literal),
                   Value  => F.New_Literal (Natural (Next.Number))));
 
          end;

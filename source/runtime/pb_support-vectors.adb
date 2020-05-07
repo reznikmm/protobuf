@@ -45,7 +45,7 @@ package body PB_Support.Vectors is
    procedure Append (Self : in out Vector; Value : Element_Type) is
       Old : Element_Array_Access := Self.Data;
       Init_Length : constant Positive :=
-        Positive'Max (1, 256 / Element_Type'Size);
+        Positive'Max (1, 256 / Natural'Max (1, Element_Type'Size));
    begin
       if Self.Length = 0 then
          Self.Data := new Element_Array (1 .. Init_Length);
