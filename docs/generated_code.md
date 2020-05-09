@@ -210,7 +210,48 @@ There is no special support for map fields for now.
 `Any` type isn't provided yet.
 
 ## Oneof
-`Oneof` construction isn't supported yet.
+Currently we support only single `Oneof` construction per message.
+For a such construction the compiler generates an enumeration type and
+a descriminated record type. Inside a message it generates one component
+with name `Variant`. For example:
+```protobuf
+message Value {
+  // The kind of value.
+  oneof kind {
+    // Represents a null value.
+    NullValue null_value = 1;
+    // Represents a double value.
+    double number_value = 2;
+  }
+}
+```
+
+Generated code looks like:
+```ada
+type Value_Variant_Kind is
+  (Kind_Not_Set,
+   Null_Value_Kind,
+   Number_Value_Kind);
+
+type Value_Variant (Kind : Value_Variant_Kind := Kind_Not_Set) is record
+   case Kind is
+      when Kind_Not_Set =>
+         null;
+      when Null_Value_Kind =>
+         Null_Value : Google.Protobuf.Struct.Null_Value :=
+           Google.Protobuf.Struct.PB_NULL_VALUE;
+      when Number_Value_Kind =>
+         Number_Value : Interfaces.IEEE_Float_64 := 0.0;
+   end case;
+end record;
+
+type Value is record
+   Variant : Value_Variant;
+end record;
+```
+
+A dedicated enumeration literal `<oneof_name>_Not_Set` represents a case
+when none of filed is set.
 
 ## Enumerations
 Given an enum definition like:

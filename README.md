@@ -7,7 +7,6 @@
 > Naive Google Protocol Buffers implementation in Ada
 
 Not implemented features:
-* [oneof](https://developers.google.com/protocol-buffers/docs/proto3#oneof)
 * packed strings and bytes fields
 * [ZigZag](https://developers.google.com/protocol-buffers/docs/encoding#signed-integers) types
 * messages with cycle dependencies

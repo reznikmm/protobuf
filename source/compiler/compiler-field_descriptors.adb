@@ -73,6 +73,27 @@ package body Compiler.Field_Descriptors is
       return League.Strings.Universal_String;
 
    ---------------
+   -- Case_Path --
+   ---------------
+
+   function Case_Path
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+      return Ada_Pretty.Node_Access
+   is
+      use type League.Strings.Universal_String;
+
+      My_Name : constant League.Strings.Universal_String :=
+        Compiler.Context.To_Ada_Name (Self.Name.Value);
+      Result : Ada_Pretty.Node_Access;
+   begin
+      Result := F.New_Case_Path
+        (F.New_Name (My_Name & "_Kind"),
+         Write_Call (Self));
+
+      return Result;
+   end Case_Path;
+
+   ---------------
    -- Component --
    ---------------
 
@@ -318,11 +339,22 @@ package body Compiler.Field_Descriptors is
       Field   : Integer;
    begin
       Field := Integer (Self.Number.Value);
-      My_Name.Prepend ("V.");
 
-      if Is_Optional (Self) and
+      if Self.Oneof_Index.Is_Set then
+         Result := F.New_Assignment
+           (F.New_Selected_Name (+"V.Variant"),
+            F.New_Parentheses
+              (F.New_List
+                   (F.New_Component_Association
+                        (F.New_Name (My_Name & "_Kind")),
+                    F.New_Component_Association
+                      (Choices => F.New_Name (+"others"),
+                       Value   => F.New_Name (+"<>")))));
+         My_Name.Prepend ("V.Variant.");
+      elsif Is_Optional (Self) and
         (Is_Message (Self) or Compiler.Context.Is_Proto_2)
       then
+         My_Name.Prepend ("V.");
          Result := F.New_If
            (Condition  => F.New_Infix
               (Operator => +"not",
@@ -332,12 +364,15 @@ package body Compiler.Field_Descriptors is
               (Left  => F.New_Selected_Name (My_Name),
                Right => F.New_Parentheses
                  (F.New_List
-                      (F.New_Argument_Association
+                      (F.New_Component_Association
                            (F.New_Name (+"True")),
-                       F.New_Argument_Association
-                         (F.New_Name (+"others => <>"))))));
+                       F.New_Component_Association
+                      (Choices => F.New_Name (+"others"),
+                       Value   => F.New_Name (+"<>"))))));
 
          My_Name.Append (".Value");
+      else
+         My_Name.Prepend ("V.");
       end if;
 
       Result := F.New_List
@@ -423,7 +458,7 @@ package body Compiler.Field_Descriptors is
                      end if;
                   elsif Is_Repeated then
                      Result.Type_Name.Append ("_Vector");
-                  elsif Is_Option then
+                  elsif Is_Option and not Self.Oneof_Index.Is_Set then
                      Result.Type_Name.Prepend ("Optional_");
                   end if;
                end;
@@ -470,7 +505,9 @@ package body Compiler.Field_Descriptors is
       Get     : League.Strings.Universal_String;
       Value   : League.Strings.Universal_String := "V." & My_Name;
    begin
-      if Is_Message (Self) then
+      if Self.Oneof_Index.Is_Set then
+         Value := "V.Variant." & My_Name;
+      elsif Is_Message (Self) then
          if Is_Repeated (Self) then
             Value.Append (+".Get (J)");
          elsif Is_Optional (Self) then
@@ -536,7 +573,8 @@ package body Compiler.Field_Descriptors is
       end if;
 
       if Is_Optional (Self) and
-        (Is_Message (Self) or Compiler.Context.Is_Proto_2)
+        (Is_Message (Self) or Compiler.Context.Is_Proto_2) and
+        not Self.Oneof_Index.Is_Set
       then
          Result := F.New_If
            (F.New_Selected_Name ("V." & My_Name & ".Is_Set"),

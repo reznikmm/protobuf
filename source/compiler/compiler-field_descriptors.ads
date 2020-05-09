@@ -41,6 +41,10 @@ package Compiler.Field_Descriptors is
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
+   function Case_Path
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+      return Ada_Pretty.Node_Access;
+
    function Write_Call
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Ada_Pretty.Node_Access;

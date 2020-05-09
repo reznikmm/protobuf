@@ -19,7 +19,10 @@
 --  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
+
 with Ada.Wide_Wide_Text_IO;
+
+with PB_Support.Unsigned_32_Vectors;
 
 with Compiler.Enum_Descriptors;
 with Compiler.Field_Descriptors;
@@ -57,6 +60,16 @@ package body Compiler.Descriptors is
    function Write_Subprogram
      (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access;
+
+   procedure One_Of_Declaration
+     (Self      : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Index     : Positive;
+      Types     : in out Ada_Pretty.Node_Access;
+      Component : in out Ada_Pretty.Node_Access);
+
+   function Is_One_Of
+     (Value : PB_Support.Unsigned_32_Vectors.Option;
+      Index : Positive) return Boolean;
 
    ----------------
    -- Enum_Types --
@@ -171,6 +184,99 @@ package body Compiler.Descriptors is
          Get_Used_Types (Self.Nested_Type.Get (J), Result);
       end loop;
    end Get_Used_Types;
+
+   ---------------
+   -- Is_One_Of --
+   ---------------
+
+   function Is_One_Of
+     (Value : PB_Support.Unsigned_32_Vectors.Option;
+      Index : Positive) return Boolean
+   is
+   begin
+      return Value.Is_Set and then Natural (Value.Value) + 1 = Index;
+   end Is_One_Of;
+
+   ------------------------
+   -- One_Of_Declaration --
+   ------------------------
+
+   ------------------------
+   -- One_Of_Declaration --
+   ------------------------
+
+   procedure One_Of_Declaration
+     (Self      : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Index     : Positive;
+      Types     : in out Ada_Pretty.Node_Access;
+      Component : in out Ada_Pretty.Node_Access)
+   is
+      Item : constant Google.Protobuf.Descriptor.Oneof_Descriptor_Proto :=
+        Self.Oneof_Decl.Get (Index);
+      Item_Name : constant League.Strings.Universal_String :=
+        Compiler.Context.To_Ada_Name (Item.Name.Value);
+      Next : Ada_Pretty.Node_Access;
+      Name : constant League.Strings.Universal_String :=
+        Compiler.Context.To_Ada_Name (Self.Name.Value) & "_Variant";
+      Choices : Ada_Pretty.Node_Access;
+   begin
+      Next := F.New_Name (Item_Name & "_Not_Set");
+
+      Choices :=
+        F.New_Case_Path
+          (Next,
+           F.New_Statement);
+
+      for J in 1 .. Self.Field.Length loop
+         declare
+            Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
+              := Self.Field.Get (J);
+            Literal : League.Strings.Universal_String;
+
+         begin
+            if Is_One_Of (Field.Oneof_Index, Index) then
+               Literal := Compiler.Context.To_Ada_Name (Field.Name.Value) &
+                 "_Kind";
+               Next := F.New_List
+                 (Next,
+                  F.New_Argument_Association (F.New_Name (Literal)));
+
+               Choices := F.New_List
+                 (Choices,
+                  F.New_Case_Path
+                    (F.New_Name (Literal),
+                     Compiler.Field_Descriptors.Component (Field)));
+            end if;
+         end;
+      end loop;
+
+      Types := F.New_List
+        (Types,
+         F.New_Type
+           (Name          => F.New_Name (Name & "_Kind"),
+            Definition    => F.New_Parentheses (Next)));
+
+      Types := F.New_List
+        (Types,
+         F.New_Type
+           (Name          => F.New_Name (Name),
+            Discriminants =>
+              F.New_Parameter
+                (Name            => F.New_Name (Item_Name),
+                 Type_Definition => F.New_Name (Name & "_Kind"),
+                 Initialization  => F.New_Name (Item_Name & "_Not_Set")),
+            Definition    => F.New_Record
+              (Components =>
+                F.New_Case
+                 (Expression => F.New_Name (Item_Name),
+                  List       => Choices))));
+
+      Component := F.New_List
+        (Component,
+         F.New_Variable
+           (Name            => F.New_Name (+"Variant"),
+            Type_Definition => F.New_Name (Name)));
+   end One_Of_Declaration;
 
    --------------------------
    -- Populate_Named_Types --
@@ -346,16 +452,30 @@ package body Compiler.Descriptors is
       Option : Ada_Pretty.Node_Access;
       Result : Ada_Pretty.Node_Access;
       Item   : Ada_Pretty.Node_Access;
+      One_Of : Ada_Pretty.Node_Access;
    begin
       for J in 1 .. Self.Field.Length loop
-         Item := Compiler.Field_Descriptors.Component (Self.Field.Get (J));
+         declare
+            Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
+              := Self.Field.Get (J);
+         begin
+            if not Field.Oneof_Index.Is_Set then
+               Item := Compiler.Field_Descriptors.Component (Field);
 
-         Result := F.New_List (Result, Item);
+               Result := F.New_List (Result, Item);
+            end if;
+         end;
       end loop;
 
-      Result := F.New_Type
-        (F.New_Name (My_Name),
-         Definition => F.New_Record (Components => Result));
+      for J in 1 .. Self.Oneof_Decl.Length loop
+         One_Of_Declaration (Self, J, One_Of, Result);
+      end loop;
+
+      Result := F.New_List
+        (One_Of,
+         F.New_Type
+           (F.New_Name (My_Name),
+            Definition => F.New_Record (Components => Result)));
 
       Is_Set := F.New_Name (+"Is_Set");
 
@@ -777,7 +897,6 @@ package body Compiler.Descriptors is
       Stream  : constant Ada_Pretty.Node_Access :=
         F.New_Selected_Name (+"PB_Support.Internal.Stream");
       Stmts   : Ada_Pretty.Node_Access;
-      Field   : Ada_Pretty.Node_Access;
    begin
       If_Stmt := F.New_If
         (F.New_List
@@ -806,8 +925,51 @@ package body Compiler.Descriptors is
       Stmts := F.New_Statement (F.New_Selected_Name (+"WS.Start_Message"));
 
       for J in 1 .. Self.Field.Length loop
-         Field := Compiler.Field_Descriptors.Write_Call (Self.Field.Get (J));
-         Stmts := F.New_List (Stmts, Field);
+         declare
+            Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
+              := Self.Field.Get (J);
+         begin
+            if not Field.Oneof_Index.Is_Set then
+               Stmts := F.New_List
+                 (Stmts,
+                  Compiler.Field_Descriptors.Write_Call (Field));
+            end if;
+         end;
+      end loop;
+
+      for K in 1 .. Self.Oneof_Decl.Length loop
+         declare
+            One_Of : constant Google.Protobuf.Descriptor.Oneof_Descriptor_Proto
+              := Self.Oneof_Decl.Get (K);
+            Name   : constant League.Strings.Universal_String :=
+              Compiler.Context.To_Ada_Name (One_Of.Name.Value);
+            Cases : Ada_Pretty.Node_Access;
+         begin
+            for J in 1 .. Self.Field.Length loop
+               declare
+                  Field : constant Google.Protobuf.Descriptor
+                    .Field_Descriptor_Proto := Self.Field.Get (J);
+               begin
+                  if Is_One_Of (Field.Oneof_Index, K) then
+                     Cases := F.New_List
+                       (Cases,
+                        Compiler.Field_Descriptors.Case_Path (Field));
+                  end if;
+               end;
+            end loop;
+
+            Cases := F.New_List
+              (Cases,
+               F.New_Case_Path
+                 (F.New_Name (Name & "_Not_Set"),
+                  F.New_Statement));
+
+            Stmts := F.New_List
+              (Stmts,
+               F.New_Case
+                 (F.New_Selected_Name ("V.Variant." & Name),
+                  Cases));
+         end;
       end loop;
 
       Stmts := F.New_List
