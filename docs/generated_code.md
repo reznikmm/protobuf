@@ -104,6 +104,34 @@ The compiler uses this mapping for predefined types:
 | string      | League.Strings.Universal_String |
 | bytes       | League.Stream_Element_Vectors.Stream_Element_Vector |
 
+For singular `proto3` fields and required `proto2` fields the compiler
+generates just a component of the corresponding type. For instance:
+
+```protobuf
+int32 foo = 1; # proto3
+required int32 foo = 1;  # proto2
+````
+
+```ada
+type Blah is record
+   Foo : Interfaces.Integer_32 := 0;
+```
+
+For optional proto2 fields the compiler uses an optional type from
+corresponding generic package instantiation. Such instantiations are
+parts of a protobuf support library provided by `protobuf_runtime.gpr`
+project. All optional types have the same shape:
+```ada
+   type Option (Is_Set : Boolean := False) is record
+      case Is_Set is
+         when True =>
+            Value : Element_Type;
+         when False =>
+            null;
+      end case;
+   end record;
+```
+
 ### Singular Enum Fields
 
 Given the enum type:
@@ -125,6 +153,12 @@ type Blah is record
    Foo : Bar := BAR_VALUE;
 end record;
 ```
+
+Note: enumeration parsing procedure uses Ada.Unchecked_Convention, so
+read value could be invalid when `enum` definition changed and new literals
+are added. To detect such situation you can check the component value
+with `X.Foo'Valid` attribute before using.
+
 
 ### Singular Embedded Message Fields
 Given the message type `Bar`, for any of these field definitions:
