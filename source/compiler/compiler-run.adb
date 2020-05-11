@@ -20,46 +20,25 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with Ada.Command_Line;
-with Ada.Streams.Stream_IO;
-with Ada.Wide_Wide_Text_IO;
-
 with League.Strings;
 
 with Google.Protobuf.Compiler.Plugin;
 with Google.Protobuf.Descriptor;
 
+with PB_Support.Stdio_Streams;
 with Compiler.Context;
 with Compiler.File_Descriptors;
 
 procedure Compiler.Run is
-   use type Compiler.Context.Ada_Type_Name;
-   Input  : Ada.Streams.Stream_IO.File_Type;
-   Stream : Ada.Streams.Stream_IO.Stream_Access;
-   Output : Ada.Streams.Stream_IO.File_Type;
+   Stream  : aliased PB_Support.Stdio_Streams.Stdio_Stream;
    Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
    Result  : Google.Protobuf.Compiler.Plugin.Code_Generator_Response;
 begin
-   Ada.Streams.Stream_IO.Open
-     (File => Input,
-      Mode => Ada.Streams.Stream_IO.In_File,
-      Name => Ada.Command_Line.Argument (1));
-
-   Stream := Ada.Streams.Stream_IO.Stream (Input);
    Google.Protobuf.Compiler.Plugin.Code_Generator_Request'Read
-     (Stream, Request);
+     (Stream'Unchecked_Access, Request);
 
    Compiler.Context.Populate_Named_Types
      (Request, Compiler.Context.Named_Types);
-
-   for J in Compiler.Context.Named_Types.Iterate loop
-      Ada.Wide_Wide_Text_IO.Put
-        (Compiler.Context.Named_Type_Maps.Key (J).To_Wide_Wide_String);
-      Ada.Wide_Wide_Text_IO.Put (" => ");
-      Ada.Wide_Wide_Text_IO.Put_Line
-        (League.Strings.To_Wide_Wide_String
-           (+Compiler.Context.Named_Type_Maps.Element (J).Ada_Type));
-   end loop;
 
    for J in 1 .. Request.File_To_Generate.Length loop
       declare
@@ -94,11 +73,6 @@ begin
       end;
    end loop;
 
-   Ada.Streams.Stream_IO.Create
-     (File => Output,
-      Name => Ada.Command_Line.Argument (1) & ".out");
-
-   Stream := Ada.Streams.Stream_IO.Stream (Output);
    Google.Protobuf.Compiler.Plugin.Code_Generator_Response'Write
-     (Stream, Result);
+     (Stream'Unchecked_Access, Result);
 end Compiler.Run;

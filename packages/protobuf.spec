@@ -61,7 +61,6 @@ make install DESTDIR=%{buildroot} LIBDIR=%{_libdir} PREFIX=%{_prefix} GPRDIR=%{_
 
 %files
 %doc LICENSE
-%{_bindir}/compiler-run
 %{_bindir}/protoc-gen-ada
 
 %files %{name}-runtime

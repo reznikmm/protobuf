@@ -20,8 +20,6 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with Ada.Wide_Wide_Text_IO;
-
 with PB_Support.Unsigned_32_Vectors;
 
 with Compiler.Enum_Descriptors;
@@ -583,7 +581,6 @@ package body Compiler.Descriptors is
          if Check_Dependency (Self, Pkg, Done) then
             Result := F.New_List (Result, Public_Spec (Self, Pkg));
             Done.Insert (Name);
-            Ada.Wide_Wide_Text_IO.Put_Line (Name.To_Wide_Wide_String);
          else
             Again := True;
          end if;

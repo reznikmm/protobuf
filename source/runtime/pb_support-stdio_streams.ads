@@ -20,29 +20,31 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with "matreshka_league.gpr";
-with "protobuf_runtime.gpr";
-with "ada_pretty.gpr";
+with Ada.Streams;
+with Interfaces.C_Streams;
 
-project Compiler is
-   for Source_Dirs use
-     ("../source/compiler",
-      "../source/compiler/generated");
+package PB_Support.Stdio_Streams is
 
-   for Object_Dir use "../.objs/compiler";
-   for Main use ("compiler-run.adb");
+   type Stdio_Stream is new Ada.Streams.Root_Stream_Type with private;
 
-   package Compiler is
-      for Default_Switches ("ada") use
-        ("-gnat12", "-gnatW8", "-g", "-gnatVa", "-gnatwa", "-gnaty", "-gnata");
-   end Compiler;
+   procedure Initialize
+     (Self   : in out Stdio_Stream'Class;
+      stdin  : Interfaces.C_Streams.FILEs := Interfaces.C_Streams.stdin;
+      stdout : Interfaces.C_Streams.FILEs := Interfaces.C_Streams.stdout);
 
-   package Builder is
-      for Executable ("compiler-run.adb") use "protoc-gen-ada";
-   end Builder;
+private
+   type Stdio_Stream is new Ada.Streams.Root_Stream_Type with record
+      stdin  : Interfaces.C_Streams.FILEs := Interfaces.C_Streams.stdin;
+      stdout : Interfaces.C_Streams.FILEs := Interfaces.C_Streams.stdout;
+   end record;
 
-   package Install is
-      for Artifacts ("bin") use ("../protoc-gen-ada");
-   end Install;
+   overriding procedure Read
+     (Self : in out Stdio_Stream;
+      Item : out Ada.Streams.Stream_Element_Array;
+      Last : out Ada.Streams.Stream_Element_Offset);
 
-end Compiler;
+   overriding procedure Write
+     (Self : in out Stdio_Stream;
+      Item : Ada.Streams.Stream_Element_Array);
+
+end PB_Support.Stdio_Streams;
