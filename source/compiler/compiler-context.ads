@@ -53,6 +53,16 @@ package Compiler.Context is
    function "+" (Self : Ada_Type_Name) return League.Strings.Universal_String;
    --  Join package name (if any) and type name into selected name.
 
+   function Relative_Name
+     (Full_Name : League.Strings.Universal_String;
+      Current_Package : League.Strings.Universal_String)
+      return League.Strings.Universal_String;
+   --  Try to avoid wrong interpretation of selected Full_Name when it's
+   --  used from Current_Package. Example:
+   --  Full_Name => Conformance.Conformance.Type_Name
+   --  Current_Package => Conformance.Conformance
+   --  Result => Conformance.Type_Name
+
    type Enumeration_Information is record
       Min, Max : Integer;  --  Minimum and maximum representation value
       Default  : League.Strings.Universal_String;  --  Default value

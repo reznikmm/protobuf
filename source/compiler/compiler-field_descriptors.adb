@@ -20,8 +20,6 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with League.Strings;
-
 package body Compiler.Field_Descriptors is
 
    use all type Google.Protobuf.Descriptor.Label;
@@ -41,8 +39,10 @@ package body Compiler.Field_Descriptors is
      return League.Strings.Universal_String;
    --  Default value for a predefined type
 
-   function Default (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-     return Ada_Pretty.Node_Access;
+   function Default
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
+        return Ada_Pretty.Node_Access;
    --  Default value for a field
 
    function Map (X : Google.Protobuf.Descriptor.PB_Type)
@@ -77,7 +77,8 @@ package body Compiler.Field_Descriptors is
    ---------------
 
    function Case_Path
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access
    is
       use type League.Strings.Universal_String;
@@ -88,7 +89,7 @@ package body Compiler.Field_Descriptors is
    begin
       Result := F.New_Case_Path
         (F.New_Name (My_Name & "_Kind"),
-         Write_Call (Self));
+         Write_Call (Self, Pkg));
 
       return Result;
    end Case_Path;
@@ -98,7 +99,8 @@ package body Compiler.Field_Descriptors is
    ---------------
 
    function Component
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access
    is
       use type Compiler.Context.Ada_Type_Name;
@@ -107,12 +109,14 @@ package body Compiler.Field_Descriptors is
         Compiler.Context.To_Ada_Name (Self.Name.Value);
       Is_Vector : constant Boolean := Is_Repeated (Self);
       Is_Option : constant Boolean := Is_Optional (Self);
+      My_Type : constant League.Strings.Universal_String :=
+        Compiler.Context.Relative_Name
+          (+Type_Name (Self, Is_Option,  Is_Vector), Pkg);
    begin
       Result := F.New_Variable
         (Name            => F.New_Name (Name),
-         Type_Definition => F.New_Selected_Name
-           (+Type_Name (Self, Is_Option,  Is_Vector)),
-         Initialization  => Default (Self));
+         Type_Definition => F.New_Selected_Name (My_Type),
+         Initialization  => Default (Self, Pkg));
 
       return Result;
    end Component;
@@ -153,7 +157,8 @@ package body Compiler.Field_Descriptors is
    -------------
 
    function Default
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access
    is
       Result : Ada_Pretty.Node_Access;
@@ -177,6 +182,7 @@ package body Compiler.Field_Descriptors is
                      Full := Element.Ada_Type.Package_Name;
                      Full.Append (".");
                      Full.Append (Element.Enum.Default);
+                     Full := Compiler.Context.Relative_Name (Full, Pkg);
                      Result := F.New_Selected_Name (Full);
                   end if;
                end;
@@ -491,7 +497,8 @@ package body Compiler.Field_Descriptors is
    ----------------
 
    function Write_Call
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access
    is
       use type Compiler.Context.Ada_Type_Name;
@@ -503,6 +510,7 @@ package body Compiler.Field_Descriptors is
         Compiler.Context.To_Ada_Name (Self.Name.Value);
       Result  : Ada_Pretty.Node_Access;
       Get     : League.Strings.Universal_String;
+      Full    : League.Strings.Universal_String;
       Value   : League.Strings.Universal_String := "V." & My_Name;
    begin
       if Self.Oneof_Index.Is_Set then
@@ -519,6 +527,9 @@ package body Compiler.Field_Descriptors is
 
       if Is_Message (Self) then
 
+         Full := Compiler.Context.Relative_Name
+           (+Type_Name (Self, False, False), Pkg);
+
          Result := F.New_List
            (F.New_Statement
              (F.New_Apply
@@ -533,8 +544,7 @@ package body Compiler.Field_Descriptors is
                          (+"PB_Support.Length_Delimited"))))))),
             F.New_Statement
              (F.New_Apply
-               (F.New_Selected_Name
-                 (+Type_Name (Self, False, False) & "'Write"),
+               (F.New_Selected_Name (Full & "'Write"),
                 F.New_List
                  (F.New_Name (+"Stream"),
                   F.New_Selected_Name (Value)))));

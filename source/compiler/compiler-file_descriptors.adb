@@ -66,6 +66,8 @@ package body Compiler.File_Descriptors is
       function Get_Subprograms return Ada_Pretty.Node_Access;
       function Get_Instances return Ada_Pretty.Node_Access;
 
+      Pkg : constant League.Strings.Universal_String := Package_Name (Self);
+
       -------------------
       -- Get_Instances --
       -------------------
@@ -76,6 +78,8 @@ package body Compiler.File_Descriptors is
          Info   : Compiler.Context.Named_Type;
          Types  : Compiler.Context.String_Sets.Set;
          Result : Ada_Pretty.Node_Access;
+         Full   : League.Strings.Universal_String;
+         Append : League.Strings.Universal_String;
          Min    : Integer;
          Max    : Integer;
       begin
@@ -87,6 +91,8 @@ package body Compiler.File_Descriptors is
                if Info.Is_Enumeration then
                   Min := Info.Enum.Min;
                   Max := Info.Enum.Max;
+
+                  Full := Compiler.Context.Relative_Name (+Info.Ada_Type, Pkg);
 
                   Result := F.New_List
                     (Result,
@@ -103,7 +109,7 @@ package body Compiler.File_Descriptors is
                         Aspects       => F.New_Argument_Association
                           (Choice => F.New_Name (+"Size"),
                            Value  => F.New_Selected_Name
-                             (+Info.Ada_Type & "'Size"))));
+                             (Full & "'Size"))));
 
                   Result := F.New_List
                     (Result,
@@ -114,13 +120,17 @@ package body Compiler.File_Descriptors is
                           (+"PB_Support.IO.Enum_IO"),
                         Actual_Part => F.New_List
                           ((F.New_Argument_Association
-                              (F.New_Selected_Name (+Info.Ada_Type)),
+                              (F.New_Selected_Name (Full)),
                             F.New_Name
                               ("Integer_" & Info.Ada_Type.Type_Name),
                             F.New_Argument_Association
                               (F.New_Selected_Name
-                                (+Info.Ada_Type & "_Vectors"))))));
+                                (Full & "_Vectors"))))));
                else
+                  Full := Compiler.Context.Relative_Name (+Info.Ada_Type, Pkg);
+                  Append := Compiler.Context.Relative_Name
+                    (Info.Ada_Type.Package_Name & ".Append", Pkg);
+
                   Result := F.New_List
                     (Result,
                      F.New_Package_Instantiation
@@ -130,13 +140,11 @@ package body Compiler.File_Descriptors is
                           (+"PB_Support.IO.Message_IO"),
                         Actual_Part => F.New_List
                           ((F.New_Argument_Association
-                               (F.New_Selected_Name (+Info.Ada_Type)),
+                               (F.New_Selected_Name (Full)),
                             F.New_Argument_Association
-                             (F.New_Selected_Name
-                               (+Info.Ada_Type & "_Vector")),
+                             (F.New_Selected_Name (Full & "_Vector")),
                             F.New_Argument_Association
-                             (F.New_Selected_Name
-                               (Info.Ada_Type.Package_Name & ".Append"))))));
+                             (F.New_Selected_Name (Append))))));
                end if;
             end if;
          end loop;
@@ -154,7 +162,7 @@ package body Compiler.File_Descriptors is
       begin
          for J in 1 .. Self.Message_Type.Length loop
             Next := Compiler.Descriptors.Subprograms
-              (Self.Message_Type.Get (J));
+              (Self.Message_Type.Get (J), Pkg);
             Result := F.New_List (Result, Next);
          end loop;
 
@@ -163,8 +171,7 @@ package body Compiler.File_Descriptors is
 
       Result : League.Strings.Universal_String;
 
-      Name   : constant Ada_Pretty.Node_Access :=
-        F.New_Selected_Name (Package_Name (Self));
+      Name   : constant Ada_Pretty.Node_Access := F.New_Selected_Name (Pkg);
 
       Root   : constant Ada_Pretty.Node_Access :=
         F.New_Package_Body

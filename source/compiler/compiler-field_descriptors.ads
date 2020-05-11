@@ -22,6 +22,8 @@
 
 with Ada_Pretty;
 
+with League.Strings;
+
 with Google.Protobuf.Descriptor;
 
 with Compiler.Context;
@@ -34,7 +36,8 @@ package Compiler.Field_Descriptors is
    --  Append dependency names to Result
 
    function Component
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access;
 
    function Read_Case
@@ -42,11 +45,13 @@ package Compiler.Field_Descriptors is
       return Ada_Pretty.Node_Access;
 
    function Case_Path
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access;
 
    function Write_Call
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access;
 
    procedure Get_Used_Types

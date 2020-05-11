@@ -87,6 +87,50 @@ package body Compiler.Context is
       end loop;
    end Populate_Named_Types;
 
+   -------------------
+   -- Relative_Name --
+   -------------------
+
+   function Relative_Name
+     (Full_Name : League.Strings.Universal_String;
+      Current_Package : League.Strings.Universal_String)
+      return League.Strings.Universal_String
+   is
+      use type League.Strings.Universal_String;
+      FN : constant League.String_Vectors.Universal_String_Vector :=
+        Full_Name.Split ('.');
+      CP : constant League.String_Vectors.Universal_String_Vector :=
+        Current_Package.Split ('.');
+
+   begin
+      for J in 1 .. FN.Length - 1 loop
+         declare
+            Prefix : constant League.Strings.Universal_String :=
+              FN.Element (J);
+            Ok : Boolean := True;
+         begin
+            for K in J + 1 .. CP.Length loop
+               Ok := Prefix /= CP.Element (K);
+               exit when not Ok;
+            end loop;
+
+            if Ok then
+               declare
+                  Result : League.String_Vectors.Universal_String_Vector;
+               begin
+                  for K in J .. FN.Length loop
+                     Result.Append (FN.Element (K));
+                  end loop;
+
+                  return Result.Join ('.');
+               end;
+            end if;
+         end;
+      end loop;
+
+      return FN.Element (FN.Length);
+   end Relative_Name;
+
    -----------------
    -- To_Ada_Name --
    -----------------

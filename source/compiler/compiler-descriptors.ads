@@ -68,7 +68,8 @@ package Compiler.Descriptors is
    --  Return list of private part declarations
 
    function Subprograms
-     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access;
    --  Return implementation of type subprograms
 

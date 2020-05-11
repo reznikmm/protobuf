@@ -58,12 +58,14 @@ package body Compiler.Descriptors is
       return Ada_Pretty.Node_Access;
 
    function Write_Subprogram
-     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access;
 
    procedure One_Of_Declaration
      (Self      : Google.Protobuf.Descriptor.Descriptor_Proto;
       Index     : Positive;
+      Pkg       : League.Strings.Universal_String;
       Types     : in out Ada_Pretty.Node_Access;
       Component : in out Ada_Pretty.Node_Access);
 
@@ -208,6 +210,7 @@ package body Compiler.Descriptors is
    procedure One_Of_Declaration
      (Self      : Google.Protobuf.Descriptor.Descriptor_Proto;
       Index     : Positive;
+      Pkg       : League.Strings.Universal_String;
       Types     : in out Ada_Pretty.Node_Access;
       Component : in out Ada_Pretty.Node_Access)
    is
@@ -245,7 +248,7 @@ package body Compiler.Descriptors is
                  (Choices,
                   F.New_Case_Path
                     (F.New_Name (Literal),
-                     Compiler.Field_Descriptors.Component (Field)));
+                     Compiler.Field_Descriptors.Component (Field, Pkg)));
             end if;
          end;
       end loop;
@@ -460,7 +463,7 @@ package body Compiler.Descriptors is
               := Self.Field.Get (J);
          begin
             if not Field.Oneof_Index.Is_Set then
-               Item := Compiler.Field_Descriptors.Component (Field);
+               Item := Compiler.Field_Descriptors.Component (Field, Pkg);
 
                Result := F.New_List (Result, Item);
             end if;
@@ -468,7 +471,7 @@ package body Compiler.Descriptors is
       end loop;
 
       for J in 1 .. Self.Oneof_Decl.Length loop
-         One_Of_Declaration (Self, J, One_Of, Result);
+         One_Of_Declaration (Self, J, Pkg, One_Of, Result);
       end loop;
 
       Result := F.New_List
@@ -494,7 +497,9 @@ package body Compiler.Descriptors is
                        List   => F.New_Variable
                          (Name            => F.New_Name (+"Value"),
                           Type_Definition =>
-                            F.New_Selected_Name (Pkg & "." & My_Name))),
+                            F.New_Selected_Name
+                             (Compiler.Context.Relative_Name
+                               (Pkg & "." & My_Name, Pkg)))),
                   F.New_Case_Path
                     (Choice => F.New_Name (+"False"),
                      List   => F.New_Statement)))));
@@ -656,7 +661,8 @@ package body Compiler.Descriptors is
    -----------------
 
    function Subprograms
-     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -828,14 +834,14 @@ package body Compiler.Descriptors is
 
       Read := Read_Subprogram (Self);
 
-      Write := Write_Subprogram (Self);
+      Write := Write_Subprogram (Self, Pkg);
 
       Result := F.New_List
         ((Count, Getter, Clear, Free, Append, Adjust, Final, Read, Write));
 
       for J in 1 .. Self.Nested_Type.Length loop
          Result := F.New_List
-           (Result, Subprograms (Self.Nested_Type.Get (J)));
+           (Result, Subprograms (Self.Nested_Type.Get (J), Pkg));
       end loop;
 
       return Result;
@@ -887,7 +893,8 @@ package body Compiler.Descriptors is
    ----------------------
 
    function Write_Subprogram
-     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -932,7 +939,7 @@ package body Compiler.Descriptors is
             if not Field.Oneof_Index.Is_Set then
                Stmts := F.New_List
                  (Stmts,
-                  Compiler.Field_Descriptors.Write_Call (Field));
+                  Compiler.Field_Descriptors.Write_Call (Field, Pkg));
             end if;
          end;
       end loop;
@@ -953,7 +960,7 @@ package body Compiler.Descriptors is
                   if Is_One_Of (Field.Oneof_Index, K) then
                      Cases := F.New_List
                        (Cases,
-                        Compiler.Field_Descriptors.Case_Path (Field));
+                        Compiler.Field_Descriptors.Case_Path (Field, Pkg));
                   end if;
                end;
             end loop;
