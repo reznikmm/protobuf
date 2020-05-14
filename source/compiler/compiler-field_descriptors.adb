@@ -312,7 +312,7 @@ package body Compiler.Field_Descriptors is
          when TYPE_FLOAT    => return (+"Interfaces", +"IEEE_Float_32");
          when TYPE_INT64    => return (+"Interfaces", +"Integer_64");
          when TYPE_UINT64   => return (+"Interfaces", +"Unsigned_64");
-         when TYPE_INT32    => return (+"Interfaces", +"Unsigned_32");
+         when TYPE_INT32    => return (+"Interfaces", +"Integer_32");
          when TYPE_FIXED64  => return (+"Interfaces", +"Unsigned_64");
          when TYPE_FIXED32  => return (+"Interfaces", +"Unsigned_32");
          when TYPE_BOOL     => return (+"", +"Boolean");

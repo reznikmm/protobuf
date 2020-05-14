@@ -433,6 +433,20 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write_Varint (Field, Value.Get (J));
+      end loop;
+   end Write_Varint;
+
+   ------------------
+   -- Write_Varint --
+   ------------------
+
+   not overriding procedure Write_Varint
+     (Self  : in out Stream;
+      Field : Field_Number;
       Value : Interfaces.Integer_64) is
    begin
       Self.Write_Key ((Field, Var_Int));

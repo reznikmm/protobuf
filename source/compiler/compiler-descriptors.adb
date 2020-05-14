@@ -20,7 +20,7 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with PB_Support.Unsigned_32_Vectors;
+with PB_Support.Integer_32_Vectors;
 
 with Compiler.Enum_Descriptors;
 with Compiler.Field_Descriptors;
@@ -68,7 +68,7 @@ package body Compiler.Descriptors is
       Component : in out Ada_Pretty.Node_Access);
 
    function Is_One_Of
-     (Value : PB_Support.Unsigned_32_Vectors.Option;
+     (Value : PB_Support.Integer_32_Vectors.Option;
       Index : Positive) return Boolean;
 
    ----------------
@@ -190,7 +190,7 @@ package body Compiler.Descriptors is
    ---------------
 
    function Is_One_Of
-     (Value : PB_Support.Unsigned_32_Vectors.Option;
+     (Value : PB_Support.Integer_32_Vectors.Option;
       Index : Positive) return Boolean
    is
    begin

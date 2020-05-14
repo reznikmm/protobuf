@@ -30,6 +30,7 @@ with League.String_Vectors;
 with PB_Support.Boolean_Vectors;
 with PB_Support.Internal;
 with PB_Support.Unsigned_32_Vectors;
+with PB_Support.Integer_32_Vectors;
 with PB_Support.Vectors;
 
 package PB_Support.IO is
@@ -94,6 +95,11 @@ package PB_Support.IO is
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.Integer_32);
+
+   procedure Read_Integer_32_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Integer_32_Vectors.Vector);
 
    procedure Read_Unsigned_32
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;

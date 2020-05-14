@@ -22,6 +22,16 @@
 
 package body PB_Support.Stdio_Streams is
 
+   -----------
+   -- Flush --
+   -----------
+
+   procedure Flush (Self : in out Stdio_Stream'Class) is
+      Ignore : Interfaces.C_Streams.int;
+   begin
+      Ignore := Interfaces.C_Streams.fflush (Self.stdout);
+   end Flush;
+
    ----------------
    -- Initialize --
    ----------------

@@ -31,6 +31,7 @@ with League.String_Vectors;
 with League.Strings;
 
 with PB_Support.Boolean_Vectors;
+with PB_Support.Integer_32_Vectors;
 with PB_Support.Unsigned_32_Vectors;
 
 package PB_Support.Internal is
@@ -125,6 +126,11 @@ package PB_Support.Internal is
      (Self  : in out Stream;
       Value : Interfaces.Integer_32)
         with Inline;
+
+   not overriding procedure Write_Varint
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector);
 
    not overriding procedure Write_Varint
      (Self  : in out Stream;

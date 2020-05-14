@@ -360,10 +360,10 @@ package body Google.Protobuf.Descriptor is
                PB_Support.IO.Read_Universal_String_Vector
                  (Stream, Key.Encoding, V.Dependency);
             when 10 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Integer_32_Vector
                  (Stream, Key.Encoding, V.Public_Dependency);
             when 11 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Integer_32_Vector
                  (Stream, Key.Encoding, V.Weak_Dependency);
             when 4 =>
                Descriptor_Proto_IO.Read_Vector
@@ -698,13 +698,13 @@ package body Google.Protobuf.Descriptor is
                if  not V.Start.Is_Set then
                   V.Start := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Integer_32
                  (Stream, Key.Encoding, V.Start.Value);
             when 2 =>
                if  not V.PB_End.Is_Set then
                   V.PB_End := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Integer_32
                  (Stream, Key.Encoding, V.PB_End.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -805,13 +805,13 @@ package body Google.Protobuf.Descriptor is
                if  not V.Start.Is_Set then
                   V.Start := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Integer_32
                  (Stream, Key.Encoding, V.Start.Value);
             when 2 =>
                if  not V.PB_End.Is_Set then
                   V.PB_End := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Integer_32
                  (Stream, Key.Encoding, V.PB_End.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -921,7 +921,7 @@ package body Google.Protobuf.Descriptor is
                if  not V.Number.Is_Set then
                   V.Number := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Integer_32
                  (Stream, Key.Encoding, V.Number.Value);
             when 4 =>
                if  not V.Label.Is_Set then
@@ -955,7 +955,7 @@ package body Google.Protobuf.Descriptor is
                if  not V.Oneof_Index.Is_Set then
                   V.Oneof_Index := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Integer_32
                  (Stream, Key.Encoding, V.Oneof_Index.Value);
             when 10 =>
                if  not V.Json_Name.Is_Set then
@@ -1338,7 +1338,7 @@ package body Google.Protobuf.Descriptor is
                if  not V.Number.Is_Set then
                   V.Number := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Integer_32
                  (Stream, Key.Encoding, V.Number.Value);
             when 3 =>
                if  not V.Options.Is_Set then
@@ -3085,10 +3085,10 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Integer_32_Vector
                  (Stream, Key.Encoding, V.Path);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Integer_32_Vector
                  (Stream, Key.Encoding, V.Span);
             when 3 =>
                if  not V.Leading_Comments.Is_Set then
@@ -3300,7 +3300,7 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Integer_32_Vector
                  (Stream, Key.Encoding, V.Path);
             when 2 =>
                if  not V.Source_File.Is_Set then
@@ -3312,13 +3312,13 @@ package body Google.Protobuf.Descriptor is
                if  not V.PB_Begin.Is_Set then
                   V.PB_Begin := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Integer_32
                  (Stream, Key.Encoding, V.PB_Begin.Value);
             when 4 =>
                if  not V.PB_End.Is_Set then
                   V.PB_End := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Integer_32
                  (Stream, Key.Encoding, V.PB_End.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);

@@ -32,6 +32,8 @@ package PB_Support.Stdio_Streams is
       stdin  : Interfaces.C_Streams.FILEs := Interfaces.C_Streams.stdin;
       stdout : Interfaces.C_Streams.FILEs := Interfaces.C_Streams.stdout);
 
+   procedure Flush (Self : in out Stdio_Stream'Class);
+
 private
    type Stdio_Stream is new Ada.Streams.Root_Stream_Type with record
       stdin  : Interfaces.C_Streams.FILEs := Interfaces.C_Streams.stdin;

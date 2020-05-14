@@ -4,10 +4,10 @@ with League.String_Vectors;
 with League.Strings;
 with PB_Support.Boolean_Vectors;
 with PB_Support.IEEE_Float_64_Vectors;
+with PB_Support.Integer_32_Vectors;
 with PB_Support.Integer_64_Vectors;
 with PB_Support.Stream_Element_Vector_Vectors;
 with PB_Support.Universal_String_Vectors;
-with PB_Support.Unsigned_32_Vectors;
 with PB_Support.Unsigned_64_Vectors;
 with PB_Support.Vectors;
 
@@ -135,8 +135,8 @@ package Google.Protobuf.Descriptor is
 
    type Extension_Range is
      record
-        Start  : PB_Support.Unsigned_32_Vectors.Option;
-        PB_End : PB_Support.Unsigned_32_Vectors.Option;
+        Start  : PB_Support.Integer_32_Vectors.Option;
+        PB_End : PB_Support.Integer_32_Vectors.Option;
      end record;
 
    type Optional_Extension_Range (Is_Set : Boolean := False) is
@@ -164,8 +164,8 @@ package Google.Protobuf.Descriptor is
 
    type Reserved_Range is
      record
-        Start  : PB_Support.Unsigned_32_Vectors.Option;
-        PB_End : PB_Support.Unsigned_32_Vectors.Option;
+        Start  : PB_Support.Integer_32_Vectors.Option;
+        PB_End : PB_Support.Integer_32_Vectors.Option;
      end record;
 
    type Optional_Reserved_Range (Is_Set : Boolean := False) is
@@ -511,8 +511,8 @@ package Google.Protobuf.Descriptor is
 
    type Location is
      record
-        Path                      : PB_Support.Unsigned_32_Vectors.Vector;
-        Span                      : PB_Support.Unsigned_32_Vectors.Vector;
+        Path                      : PB_Support.Integer_32_Vectors.Vector;
+        Span                      : PB_Support.Integer_32_Vectors.Vector;
         Leading_Comments          : PB_Support.Universal_String_Vectors.Option;
         Trailing_Comments         : PB_Support.Universal_String_Vectors.Option;
         Leading_Detached_Comments : League.String_Vectors
@@ -567,10 +567,10 @@ package Google.Protobuf.Descriptor is
 
    type Annotation is
      record
-        Path        : PB_Support.Unsigned_32_Vectors.Vector;
+        Path        : PB_Support.Integer_32_Vectors.Vector;
         Source_File : PB_Support.Universal_String_Vectors.Option;
-        PB_Begin    : PB_Support.Unsigned_32_Vectors.Option;
-        PB_End      : PB_Support.Unsigned_32_Vectors.Option;
+        PB_Begin    : PB_Support.Integer_32_Vectors.Option;
+        PB_End      : PB_Support.Integer_32_Vectors.Option;
      end record;
 
    type Optional_Annotation (Is_Set : Boolean := False) is
@@ -627,8 +627,8 @@ package Google.Protobuf.Descriptor is
         Name              : PB_Support.Universal_String_Vectors.Option;
         PB_Package        : PB_Support.Universal_String_Vectors.Option;
         Dependency        : League.String_Vectors.Universal_String_Vector;
-        Public_Dependency : PB_Support.Unsigned_32_Vectors.Vector;
-        Weak_Dependency   : PB_Support.Unsigned_32_Vectors.Vector;
+        Public_Dependency : PB_Support.Integer_32_Vectors.Vector;
+        Weak_Dependency   : PB_Support.Integer_32_Vectors.Vector;
         Message_Type      : Google.Protobuf.Descriptor.Descriptor_Proto_Vector;
         Enum_Type         : Google.Protobuf.Descriptor
           .Enum_Descriptor_Proto_Vector;
@@ -709,13 +709,13 @@ package Google.Protobuf.Descriptor is
    type Field_Descriptor_Proto is
      record
         Name          : PB_Support.Universal_String_Vectors.Option;
-        Number        : PB_Support.Unsigned_32_Vectors.Option;
+        Number        : PB_Support.Integer_32_Vectors.Option;
         Label         : Google.Protobuf.Descriptor.Label_Vectors.Option;
         PB_Type       : Google.Protobuf.Descriptor.PB_Type_Vectors.Option;
         Type_Name     : PB_Support.Universal_String_Vectors.Option;
         Extendee      : PB_Support.Universal_String_Vectors.Option;
         Default_Value : PB_Support.Universal_String_Vectors.Option;
-        Oneof_Index   : PB_Support.Unsigned_32_Vectors.Option;
+        Oneof_Index   : PB_Support.Integer_32_Vectors.Option;
         Json_Name     : PB_Support.Universal_String_Vectors.Option;
         Options       : Google.Protobuf.Descriptor.Optional_Field_Options;
      end record;
@@ -806,7 +806,7 @@ package Google.Protobuf.Descriptor is
    type Enum_Value_Descriptor_Proto is
      record
         Name    : PB_Support.Universal_String_Vectors.Option;
-        Number  : PB_Support.Unsigned_32_Vectors.Option;
+        Number  : PB_Support.Integer_32_Vectors.Option;
         Options : Google.Protobuf.Descriptor.Optional_Enum_Value_Options;
      end record;
 

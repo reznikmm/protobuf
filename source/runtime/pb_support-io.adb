@@ -305,6 +305,51 @@ package body PB_Support.IO is
       Value := Cast (Data);
    end Read_Integer_32;
 
+   ----------------------------
+   -- Read_Integer_32_Vector --
+   ----------------------------
+
+   procedure Read_Integer_32_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Integer_32_Vectors.Vector)
+   is
+      function Cast is new Ada.Unchecked_Conversion
+        (Interfaces.Unsigned_32, Interfaces.Integer_32);
+
+      Item : Interfaces.Unsigned_32 := 0;
+   begin
+      if Encoding = Var_Int then
+         Read_Unsigned_32 (Stream, Encoding, Item);
+         Value.Append (Cast (Item));
+      elsif Encoding = Length_Delimited then
+         declare
+            use type Interfaces.Unsigned_32;
+
+            Shift : Natural := 0;
+            Data  : Ada.Streams.Stream_Element_Array
+              (1 .. Read_Length (Stream));
+         begin
+            Ada.Streams.Stream_Element_Array'Read (Stream, Data);
+            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+
+            for J of Data loop
+               Item := Item or
+                 Interfaces.Shift_Left
+                   (Interfaces.Unsigned_32 (J and 16#7F#), Shift);
+
+               Shift := Shift + 7;
+
+               if (J and 16#80#) = 0 then
+                  Value.Append (Cast (Item));
+                  Item := 0;
+                  Shift := 0;
+               end if;
+            end loop;
+         end;
+      end if;
+   end Read_Integer_32_Vector;
+
    ---------------------
    -- Read_Integer_64 --
    ---------------------
