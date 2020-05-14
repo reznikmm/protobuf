@@ -20,6 +20,8 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
+with Ada.Containers.Ordered_Sets;
+
 package body Compiler.Enum_Descriptors is
 
    F : Ada_Pretty.Factory renames Compiler.Context.Factory;
@@ -177,45 +179,92 @@ package body Compiler.Enum_Descriptors is
    is
       use type League.Strings.Universal_String;
 
-      Name   : constant League.Strings.Universal_String := Type_Name (Self);
-      Result : Ada_Pretty.Node_Access;
-      Clause : Ada_Pretty.Node_Access;
-      Item   : Ada_Pretty.Node_Access;
+      type Enum is record
+         Value : Integer;
+         Name  : League.Strings.Universal_String;
+      end record;
+
+      function Less (Left, Right : Enum) return Boolean;
+
+      function Less (Left, Right : Enum) return Boolean is
+      begin
+         return Left.Value < Right.Value
+           or else (Left.Value = Right.Value and then Left.Name < Right.Name);
+      end Less;
+
+      package Enum_Sets is new Ada.Containers.Ordered_Sets (Enum, Less);
+
+      Name    : constant League.Strings.Universal_String := Type_Name (Self);
+      Result  : Ada_Pretty.Node_Access;
+      Clause  : Ada_Pretty.Node_Access;
+      Item    : Ada_Pretty.Node_Access;
+      Aliases : Ada_Pretty.Node_Access;
+      Enums   : Enum_Sets.Set;
+      Done    : Compiler.Context.String_Sets.Set;
+      First   : Boolean := True;
+      Prev    : Enum;
    begin
       for J in 1 .. Self.Value.Length loop
          declare
             Next : constant
               Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto :=
                 Self.Value.Get (J);
-
-            Literal : constant League.Strings.Universal_String :=
-              Literal_Name (Self, J);
          begin
-            Item := F.New_Argument_Association (F.New_Name (Literal));
+            Enums.Include
+              ((Value => Integer (Next.Number.Value),
+                Name  => Literal_Name (Self, J)));
+
+         end;
+      end loop;
+
+      Prev := Enums.Last_Element;
+
+      for J of Enums loop
+         if Done.Contains (J.Name.To_Lowercase) then
+            null;  --  Skip name that differs only in character case
+         elsif not First and Prev.Value = J.Value then
+            Done.Insert (J.Name.To_Lowercase);
+
+            Aliases := F.New_List
+              (Aliases,
+               F.New_Subprogram_Declaration
+                (Specification =>
+                  F.New_Subprogram_Specification
+                   (Name          => F.New_Name (J.Name),
+                    Result        => F.New_Name (Name)),
+                 Expression    =>
+                   F.New_Name (Prev.Name)));
+         else
+            Done.Insert (J.Name.To_Lowercase);
+            Item := F.New_Argument_Association (F.New_Name (J.Name));
             Result := F.New_List (Result, Item);
 
             Clause := F.New_List
               (Clause,
                F.New_Argument_Association
-                 (Choice => F.New_Name (Literal),
-                  Value  => Get_Literal (Integer (Next.Number.Value))));
+                (Choice => F.New_Name (J.Name),
+                 Value  => Get_Literal (J.Value)));
+         end if;
 
-         end;
+         Prev := J;
+         First := False;
       end loop;
+
+      Result := F.New_Type
+        (Name       => F.New_Name (Name),
+         Definition => F.New_Parentheses (Result));
 
       Clause := F.New_Statement
         (F.New_Apply
           (F.New_Name ("for " & Name & " use"),
            Clause));
 
-      Result := F.New_Type
-        (Name       => F.New_Name (Name),
-         Definition => F.New_Parentheses (Result));
-
-      Item := F.New_Package_Instantiation
-        (Name        => F.New_Name (Name & "_Vectors"),
-         Template    => F.New_Selected_Name (+"PB_Support.Vectors"),
-           Actual_Part => F.New_Name (Name));
+      Item := F.New_List
+        (Aliases,
+         F.New_Package_Instantiation
+          (Name        => F.New_Name (Name & "_Vectors"),
+           Template    => F.New_Selected_Name (+"PB_Support.Vectors"),
+           Actual_Part => F.New_Name (Name)));
 
       Result := F.New_List ((Result, Clause, Item));
 
