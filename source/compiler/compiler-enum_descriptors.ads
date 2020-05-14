@@ -39,4 +39,6 @@ package Compiler.Enum_Descriptors is
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
       return Ada_Pretty.Node_Access;
 
+   function Get_Literal (Value : Integer) return Ada_Pretty.Node_Access;
+
 end Compiler.Enum_Descriptors;

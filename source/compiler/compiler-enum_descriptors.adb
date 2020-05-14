@@ -63,6 +63,20 @@ package body Compiler.Enum_Descriptors is
       return Literal_Name (Self, 1);
    end Default;
 
+   -----------------
+   -- Get_Literal --
+   -----------------
+
+   function Get_Literal (Value : Integer) return Ada_Pretty.Node_Access is
+      Result : Ada_Pretty.Node_Access := F.New_Literal (abs Value);
+   begin
+      if Value < 0 then
+         Result := F.New_Infix (+"-", Result);
+      end if;
+
+      return Result;
+   end Get_Literal;
+
    ------------------
    -- Literal_Name --
    ------------------
@@ -184,7 +198,7 @@ package body Compiler.Enum_Descriptors is
               (Clause,
                F.New_Argument_Association
                  (Choice => F.New_Name (Literal),
-                  Value  => F.New_Literal (Natural (Next.Number.Value))));
+                  Value  => Get_Literal (Integer (Next.Number.Value))));
 
          end;
       end loop;

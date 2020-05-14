@@ -102,10 +102,10 @@ package body Compiler.File_Descriptors is
                         Definition    => F.New_Infix
                           (+"range",
                            F.New_List
-                             (F.New_Literal (Min),
-                              F.New_Infix
-                                (+"..",
-                                 F.New_Literal (Max)))),
+                            (Compiler.Enum_Descriptors.Get_Literal (Min),
+                             F.New_Infix
+                              (+"..",
+                               Compiler.Enum_Descriptors.Get_Literal (Max)))),
                         Aspects       => F.New_Argument_Association
                           (Choice => F.New_Name (+"Size"),
                            Value  => F.New_Selected_Name
