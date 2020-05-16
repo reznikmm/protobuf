@@ -50,6 +50,8 @@ begin
          Base : constant League.Strings.Universal_String :=
            Compiler.File_Descriptors.File_Name (File);
       begin
+         Compiler.Context.Fake.Clear;
+
          declare
             Item : Google.Protobuf.Compiler.Plugin.File;
          begin

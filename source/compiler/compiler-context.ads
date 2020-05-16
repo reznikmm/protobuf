@@ -45,6 +45,9 @@ package Compiler.Context is
       "=" => League.Strings."=");
    --  Set of strings
 
+   Fake : String_Sets.Set;
+   --  Set of id for each field that breaks circular usage.
+
    type Ada_Type_Name is record
       Package_Name : League.Strings.Universal_String;
       Type_Name    : League.Strings.Universal_String;

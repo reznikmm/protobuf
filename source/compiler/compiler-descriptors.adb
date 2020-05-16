@@ -42,28 +42,35 @@ package body Compiler.Descriptors is
    --  Return Ada type (simple) name
 
    function Check_Dependency
-     (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
-      Pkg    : League.Strings.Universal_String;
-      Done   : Compiler.Context.String_Sets.Set) return Boolean;
+     (Self  : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg   : League.Strings.Universal_String;
+      Done  : Compiler.Context.String_Sets.Set;
+      Force : Natural;
+      Fake  : in out Compiler.Context.String_Sets.Set) return Boolean;
 
    function Public_Spec
      (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String)
+      Pkg  : League.Strings.Universal_String;
+      Fake : Compiler.Context.String_Sets.Set)
       return Ada_Pretty.Node_Access;
 
    function Read_Subprogram
-     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String;
+      Fake : Compiler.Context.String_Sets.Set)
       return Ada_Pretty.Node_Access;
 
    function Write_Subprogram
      (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String)
+      Pkg  : League.Strings.Universal_String;
+      Fake : Compiler.Context.String_Sets.Set)
       return Ada_Pretty.Node_Access;
 
    procedure One_Of_Declaration
      (Self      : Google.Protobuf.Descriptor.Descriptor_Proto;
       Index     : Positive;
       Pkg       : League.Strings.Universal_String;
+      Fake      : Compiler.Context.String_Sets.Set;
       Types     : in out Ada_Pretty.Node_Access;
       Component : in out Ada_Pretty.Node_Access);
 
@@ -105,9 +112,14 @@ package body Compiler.Descriptors is
    ----------------------
 
    function Check_Dependency
-     (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
-      Pkg    : League.Strings.Universal_String;
-      Done   : Compiler.Context.String_Sets.Set) return Boolean is
+     (Self  : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg   : League.Strings.Universal_String;
+      Done  : Compiler.Context.String_Sets.Set;
+      Force : Natural;
+      Fake  : in out Compiler.Context.String_Sets.Set) return Boolean
+   is
+      Required : Compiler.Context.String_Sets.Set;
+      Tipe     : constant League.Strings.Universal_String := Type_Name (Self);
    begin
       for J in 1 .. Self.Field.Length loop
          declare
@@ -133,13 +145,20 @@ package body Compiler.Descriptors is
                          (Field.Label.Is_Set
                             and then Field.Label.Value = LABEL_REPEATED))
                then
-                  return False;
+                  Required.Insert
+                    (Compiler.Field_Descriptors.Unique_Id
+                       (Field, Pkg, Tipe));
                end if;
             end if;
          end;
       end loop;
 
-      return True;
+      if Natural (Required.Length) <= Force then
+         Fake.Union (Required);
+         return True;
+      else
+         return False;
+      end if;
    end Check_Dependency;
 
    ----------------
@@ -201,24 +220,22 @@ package body Compiler.Descriptors is
    -- One_Of_Declaration --
    ------------------------
 
-   ------------------------
-   -- One_Of_Declaration --
-   ------------------------
-
    procedure One_Of_Declaration
      (Self      : Google.Protobuf.Descriptor.Descriptor_Proto;
       Index     : Positive;
       Pkg       : League.Strings.Universal_String;
+      Fake      : Compiler.Context.String_Sets.Set;
       Types     : in out Ada_Pretty.Node_Access;
       Component : in out Ada_Pretty.Node_Access)
    is
+      My_Name : constant League.Strings.Universal_String := Type_Name (Self);
       Item : constant Google.Protobuf.Descriptor.Oneof_Descriptor_Proto :=
         Self.Oneof_Decl.Get (Index);
       Item_Name : constant League.Strings.Universal_String :=
         Compiler.Context.To_Ada_Name (Item.Name.Value);
       Next : Ada_Pretty.Node_Access;
       Name : constant League.Strings.Universal_String :=
-        Compiler.Context.To_Ada_Name (Self.Name.Value) & "_Variant";
+        My_Name & "_Variant";
       Choices : Ada_Pretty.Node_Access;
    begin
       Next := F.New_Name (Item_Name & "_Not_Set");
@@ -246,7 +263,8 @@ package body Compiler.Descriptors is
                  (Choices,
                   F.New_Case_Path
                     (F.New_Name (Literal),
-                     Compiler.Field_Descriptors.Component (Field, Pkg)));
+                     Compiler.Field_Descriptors.Component
+                       (Field, Pkg, My_Name, Fake)));
             end if;
          end;
       end loop;
@@ -438,7 +456,8 @@ package body Compiler.Descriptors is
 
    function Public_Spec
      (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String)
+      Pkg  : League.Strings.Universal_String;
+      Fake : Compiler.Context.String_Sets.Set)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -461,7 +480,8 @@ package body Compiler.Descriptors is
               := Self.Field.Get (J);
          begin
             if not Field.Oneof_Index.Is_Set then
-               Item := Compiler.Field_Descriptors.Component (Field, Pkg);
+               Item := Compiler.Field_Descriptors.Component
+                 (Field, Pkg, My_Name, Fake);
 
                Result := F.New_List (Result, Item);
             end if;
@@ -469,7 +489,7 @@ package body Compiler.Descriptors is
       end loop;
 
       for J in 1 .. Self.Oneof_Decl.Length loop
-         One_Of_Declaration (Self, J, Pkg, One_Of, Result);
+         One_Of_Declaration (Self, J, Pkg, Fake, One_Of, Result);
       end loop;
 
       Result := F.New_List
@@ -562,24 +582,28 @@ package body Compiler.Descriptors is
       Pkg    : League.Strings.Universal_String;
       Result : out Ada_Pretty.Node_Access;
       Again  : in out Boolean;
-      Done   : in out Compiler.Context.String_Sets.Set)
+      Done   : in out Compiler.Context.String_Sets.Set;
+      Force  : in out Natural)
    is
       Name : constant League.Strings.Universal_String := Type_Name (Self);
       Item : Ada_Pretty.Node_Access;
+      Fake : Compiler.Context.String_Sets.Set renames
+        Compiler.Context.Fake;
    begin
       Result := null;
 
       for J in 1 .. Self.Nested_Type.Length loop
-         Public_Spec (Self.Nested_Type.Get (J), Pkg, Item, Again, Done);
+         Public_Spec (Self.Nested_Type.Get (J), Pkg, Item, Again, Done, Force);
 
          if Item /= null then
             Result := F.New_List (Result, Item);
+            Force := 0;
          end if;
       end loop;
 
       if not Done.Contains (Name) then
-         if Check_Dependency (Self, Pkg, Done) then
-            Result := F.New_List (Result, Public_Spec (Self, Pkg));
+         if Check_Dependency (Self, Pkg, Done, Force, Fake) then
+            Result := F.New_List (Result, Public_Spec (Self, Pkg, Fake));
             Done.Insert (Name);
          else
             Again := True;
@@ -592,7 +616,9 @@ package body Compiler.Descriptors is
    ---------------------
 
    function Read_Subprogram
-     (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String;
+      Fake : Compiler.Context.String_Sets.Set)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -607,7 +633,7 @@ package body Compiler.Descriptors is
 
       for J in 1 .. Self.Field.Length loop
          Field := Compiler.Field_Descriptors.Read_Case
-           (Self.Field.Get (J));
+           (Self.Field.Get (J), Pkg, My_Name, Fake);
          Result := F.New_List (Result, Field);
       end loop;
 
@@ -829,9 +855,9 @@ package body Compiler.Descriptors is
                  (F.New_Name (+"Free"),
                   F.New_Selected_Name (+"Self.Data")))));
 
-      Read := Read_Subprogram (Self);
+      Read := Read_Subprogram (Self, Pkg, Compiler.Context.Fake);
 
-      Write := Write_Subprogram (Self, Pkg);
+      Write := Write_Subprogram (Self, Pkg, Compiler.Context.Fake);
 
       Result := F.New_List
         ((Count, Getter, Clear, Free, Append, Adjust, Final, Read, Write));
@@ -891,7 +917,8 @@ package body Compiler.Descriptors is
 
    function Write_Subprogram
      (Self : Google.Protobuf.Descriptor.Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String)
+      Pkg  : League.Strings.Universal_String;
+      Fake : Compiler.Context.String_Sets.Set)
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
@@ -936,7 +963,8 @@ package body Compiler.Descriptors is
             if not Field.Oneof_Index.Is_Set then
                Stmts := F.New_List
                  (Stmts,
-                  Compiler.Field_Descriptors.Write_Call (Field, Pkg));
+                  Compiler.Field_Descriptors.Write_Call
+                    (Field, Pkg, My_Name, Fake));
             end if;
          end;
       end loop;
@@ -957,7 +985,8 @@ package body Compiler.Descriptors is
                   if Is_One_Of (Field.Oneof_Index, K) then
                      Cases := F.New_List
                        (Cases,
-                        Compiler.Field_Descriptors.Case_Path (Field, Pkg));
+                        Compiler.Field_Descriptors.Case_Path
+                          (Field, Pkg, My_Name, Fake));
                   end if;
                end;
             end loop;

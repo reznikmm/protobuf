@@ -382,6 +382,8 @@ package body Compiler.File_Descriptors is
          Vector : Ada_Pretty.Node_Access;
          Done   : Compiler.Context.String_Sets.Set;
          Again  : Boolean := True;
+         Force  : Natural := 0;
+         Going  : Boolean;
       begin
          for J in 1 .. Self.Enum_Type.Length loop
             Next := Compiler.Enum_Descriptors.Public_Spec
@@ -414,6 +416,7 @@ package body Compiler.File_Descriptors is
 
          while Again loop
             Again := False;
+            Going := False;
 
             for J in 1 .. Self.Message_Type.Length loop
                declare
@@ -421,13 +424,19 @@ package body Compiler.File_Descriptors is
                     := Self.Message_Type.Get (J);
                begin
                   Compiler.Descriptors.Public_Spec
-                    (Item, Pkg, Next, Again, Done);
+                    (Item, Pkg, Next, Again, Done, Force);
 
                   if Next /= null then
                      Result := F.New_List (Result, Next);
+                     Force := 0;
+                     Going := True;
                   end if;
                end;
             end loop;
+
+            if not Going then
+               Force := Force + 1;
+            end if;
          end loop;
 
          return Result;

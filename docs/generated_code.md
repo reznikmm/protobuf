@@ -173,8 +173,17 @@ The compiler will generate the following accessor components:
 type Blah is record
   Foo_1 : Bar;
   Foo_2 : Optional_Bar;
-end record
+end record;
 ```
+
+#### Partial support for mutual dependent messages.
+With such representation we can't have mutual dependent message declarations,
+because this is not allowed in Ada. But if the field is repeated then all
+works fine, because a vector type breaks circular dependency.
+To give at least a minimum support for such case the compiler tries to
+break a circle by replacing a singular message fiels with a repeated one.
+User should ensure that the vector contains required number of elements
+(exactly one for `required` field and zero-or-one for `optional` field).
 
 ### Repeated Fields of Predefined Types
 For repeated fields of predefined types the compiler uses corresponding
@@ -201,7 +210,10 @@ For repeated fields of a message type the compiler uses
 a vector type declared with the message type.
 
 ### Oneof Fields
-Oneof fields isn't implemented yet.
+For now we support only single `Oneof` construction per message.
+Compiler generates a component with name `Variant` of a corresponding type.
+This component has a discriminant with name of `Oneof`.
+There is a single component for each disciminant value.
 
 ### Map Fields
 There is no special support for map fields for now.

@@ -55,7 +55,8 @@ package Compiler.Descriptors is
       Pkg    : League.Strings.Universal_String;
       Result : out Ada_Pretty.Node_Access;
       Again  : in out Boolean;
-      Done   : in out Compiler.Context.String_Sets.Set);
+      Done   : in out Compiler.Context.String_Sets.Set;
+      Force  : in out Natural);
 
    function Vector_Declarations
      (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
