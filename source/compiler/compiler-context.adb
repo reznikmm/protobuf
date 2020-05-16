@@ -141,22 +141,28 @@ package body Compiler.Context is
    is
       use type League.Strings.Universal_String;
 
-      Force_Upper    : Boolean := True;
-      Last_Was_Upper : Boolean := True;
+      Allow_Underscore : Boolean := False;
+      Force_Upper      : Boolean := True;
+      Last_Was_Upper   : Boolean := True;
       Result : League.Strings.Universal_String;
    begin
       if Reserved.Contains (Text.To_Lowercase) then
          return To_Ada_Name ("PB_" & Text);
+      elsif Text.Ends_With ("_") then
+         return To_Ada_Name (Text.Head (Text.Length - 1));
       end if;
 
       for J in 1 .. Text.Length loop
-         if Force_Upper then
+         if Text.Element (J).To_Wide_Wide_Character = '_' then
+            if Allow_Underscore then
+               Result.Append (Text.Element (J));
+            end if;
+
+            Force_Upper := True;
+         elsif Force_Upper then
             Result.Append (Text.Slice (J, J).To_Uppercase);
             Force_Upper := False;
             Last_Was_Upper := True;
-         elsif Text.Element (J).To_Wide_Wide_Character = '_' then
-            Force_Upper := True;
-            Result.Append (Text.Element (J));
          elsif Text.Slice (J, J).To_Uppercase /= Text.Slice (J, J) then
             Last_Was_Upper := False;
             Result.Append (Text.Element (J));
@@ -168,6 +174,7 @@ package body Compiler.Context is
             Result.Append (Text.Element (J));
          end if;
 
+         Allow_Underscore := Text.Element (J).To_Wide_Wide_Character /= '_';
       end loop;
 
       return Result;
