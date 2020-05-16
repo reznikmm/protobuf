@@ -25,3 +25,10 @@ clean:
 	gprclean -q -P gnat/compiler.gpr
 	gprclean -q -P gnat/protobuf_runtime.gpr
 
+check:
+		@echo Compile some predefined .proto files
+		for J in any duration empty field_mask struct timestamp wrappers; do\
+		  echo $$J; PATH=.objs/compiler/:$$PATH \
+		  protoc --ada_out=source/runtime/generated \
+			/usr/include/google/protobuf/$$J.proto; done
+		gprbuild -P gnat/protobuf_runtime.gpr

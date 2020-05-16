@@ -15,6 +15,8 @@ BuildRequires:   fedora-gnat-project-common  >= 3
 BuildRequires:   matreshka-devel
 BuildRequires:   ada-pretty-devel
 BuildRequires:   gprbuild
+# For tests:
+BuildRequires:   protobuf-devel
 
 Requires:   %{name}-runtime%{?_isa} = %{version}-%{release}
 
@@ -50,6 +52,11 @@ Requires:   fedora-gnat-project-common  >= 2
 
 %build
 make  %{?_smp_mflags} GPRBUILD_FLAGS="%Gnatmake_optflags"
+
+%check
+## find libs without RPATH, Fedora specific
+export LD_LIBRARY_PATH="%{buildroot}/%{_libdir}/:$LD_LIBRARY_PATH"
+make %{?_smp_mflags} GPRBUILD_FLAGS="%Gnatmake_optflags" check
 
 %install
 rm -rf %{buildroot}
