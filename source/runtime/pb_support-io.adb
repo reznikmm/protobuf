@@ -287,6 +287,72 @@ package body PB_Support.IO is
       end if;
    end Read_IEEE_Float_64;
 
+   -------------------------------
+   -- Read_IEEE_Float_64_Vector --
+   -------------------------------
+
+   procedure Read_IEEE_Float_64_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.IEEE_Float_64_Vectors.Vector)
+   is
+      Item : Interfaces.IEEE_Float_64;
+   begin
+      if Encoding = Fixed_64 then
+         Read_IEEE_Float_64 (Stream, Encoding, Item);
+         Value.Append (Item);
+      elsif Encoding = Length_Delimited then
+         declare
+            type IEEE_Float_64_Array is array
+              (Ada.Streams.Stream_Element_Count range <>) of
+                Interfaces.IEEE_Float_64;
+
+            Data  : IEEE_Float_64_Array (1 .. Read_Length (Stream) / 8);
+         begin
+            IEEE_Float_64_Array'Read (Stream, Data);
+
+            for J of Data loop
+               Value.Append (J);
+            end loop;
+         end;
+      else
+         raise Constraint_Error with "Unexpected encoding";
+      end if;
+   end Read_IEEE_Float_64_Vector;
+
+   -------------------------------
+   -- Read_IEEE_Float_32_Vector --
+   -------------------------------
+
+   procedure Read_IEEE_Float_32_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.IEEE_Float_32_Vectors.Vector)
+   is
+      Item : Interfaces.IEEE_Float_32;
+   begin
+      if Encoding = Fixed_32 then
+         Read_IEEE_Float_32 (Stream, Encoding, Item);
+         Value.Append (Item);
+      elsif Encoding = Length_Delimited then
+         declare
+            type IEEE_Float_32_Array is array
+              (Ada.Streams.Stream_Element_Count range <>) of
+                Interfaces.IEEE_Float_32;
+
+            Data  : IEEE_Float_32_Array (1 .. Read_Length (Stream) / 4);
+         begin
+            IEEE_Float_32_Array'Read (Stream, Data);
+
+            for J of Data loop
+               Value.Append (J);
+            end loop;
+         end;
+      else
+         raise Constraint_Error with "Unexpected encoding";
+      end if;
+   end Read_IEEE_Float_32_Vector;
+
    ---------------------
    -- Read_Integer_32 --
    ---------------------
@@ -349,6 +415,51 @@ package body PB_Support.IO is
          end;
       end if;
    end Read_Integer_32_Vector;
+
+   procedure Read_Integer_64_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Integer_64_Vectors.Vector)
+   is
+      ----------
+      -- Cast --
+      ----------
+
+      function Cast is new Ada.Unchecked_Conversion
+        (Interfaces.Unsigned_64, Interfaces.Integer_64);
+
+      Item : Interfaces.Unsigned_64 := 0;
+   begin
+      if Encoding = Var_Int then
+         Read_Unsigned_64 (Stream, Encoding, Item);
+         Value.Append (Cast (Item));
+      elsif Encoding = Length_Delimited then
+         declare
+            use type Interfaces.Unsigned_64;
+
+            Shift : Natural := 0;
+            Data  : Ada.Streams.Stream_Element_Array
+              (1 .. Read_Length (Stream));
+         begin
+            Ada.Streams.Stream_Element_Array'Read (Stream, Data);
+            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+
+            for J of Data loop
+               Item := Item or
+                 Interfaces.Shift_Left
+                   (Interfaces.Unsigned_64 (J and 16#7F#), Shift);
+
+               Shift := Shift + 7;
+
+               if (J and 16#80#) = 0 then
+                  Value.Append (Cast (Item));
+                  Item := 0;
+                  Shift := 0;
+               end if;
+            end loop;
+         end;
+      end if;
+   end Read_Integer_64_Vector;
 
    ---------------------
    -- Read_Integer_64 --
@@ -481,6 +592,22 @@ package body PB_Support.IO is
       Value.Append (Item);
    end Read_Universal_String_Vector;
 
+   ---------------------------------------
+   -- Read_Stream_Element_Vector_Vector --
+   ---------------------------------------
+
+   procedure Read_Stream_Element_Vector_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Stream_Element_Vector_Vectors.Vector)
+   is
+      Item : League.Stream_Element_Vectors.Stream_Element_Vector;
+   begin
+      --  FIXME: For now, unpacked vector only
+      Read_Stream_Element_Vector (Stream, Encoding, Item);
+      Value.Append (Item);
+   end Read_Stream_Element_Vector_Vector;
+
    ----------------------
    -- Read_Unsigned_32 --
    ----------------------
@@ -558,6 +685,48 @@ package body PB_Support.IO is
          end;
       end if;
    end Read_Unsigned_32_Vector;
+
+   -----------------------------
+   -- Read_Unsigned_64_Vector --
+   -----------------------------
+
+   procedure Read_Unsigned_64_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Unsigned_64_Vectors.Vector)
+   is
+      Item : Interfaces.Unsigned_64 := 0;
+   begin
+      if Encoding = Var_Int then
+         Read_Unsigned_64 (Stream, Encoding, Item);
+         Value.Append (Item);
+      elsif Encoding = Length_Delimited then
+         declare
+            use type Interfaces.Unsigned_64;
+
+            Shift : Natural := 0;
+            Data  : Ada.Streams.Stream_Element_Array
+              (1 .. Read_Length (Stream));
+         begin
+            Ada.Streams.Stream_Element_Array'Read (Stream, Data);
+            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+
+            for J of Data loop
+               Item := Item or
+                 Interfaces.Shift_Left
+                   (Interfaces.Unsigned_64 (J and 16#7F#), Shift);
+
+               Shift := Shift + 7;
+
+               if (J and 16#80#) = 0 then
+                  Value.Append (Item);
+                  Item := 0;
+                  Shift := 0;
+               end if;
+            end loop;
+         end;
+      end if;
+   end Read_Unsigned_64_Vector;
 
    ----------------------
    -- Read_Unsigned_64 --

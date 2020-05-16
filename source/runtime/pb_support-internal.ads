@@ -31,8 +31,13 @@ with League.String_Vectors;
 with League.Strings;
 
 with PB_Support.Boolean_Vectors;
+with PB_Support.IEEE_Float_32_Vectors;
+with PB_Support.IEEE_Float_64_Vectors;
 with PB_Support.Integer_32_Vectors;
+with PB_Support.Integer_64_Vectors;
+with PB_Support.Stream_Element_Vector_Vectors;
 with PB_Support.Unsigned_32_Vectors;
+with PB_Support.Unsigned_64_Vectors;
 
 package PB_Support.Internal is
    pragma Preelaborate;
@@ -78,7 +83,19 @@ package PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
+      Value : PB_Support.IEEE_Float_32_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write
+     (Self  : in out Stream;
+      Field : Field_Number;
       Value : Interfaces.IEEE_Float_64)
+        with Inline;
+
+   not overriding procedure Write
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.IEEE_Float_64_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write
@@ -97,6 +114,12 @@ package PB_Support.Internal is
      (Self  : in out Stream;
       Field : Field_Number;
       Value : League.Stream_Element_Vectors.Stream_Element_Vector)
+        with Inline;
+
+   not overriding procedure Write
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Stream_Element_Vector_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Varint
@@ -119,6 +142,11 @@ package PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
+      Value : PB_Support.Unsigned_64_Vectors.Vector);
+
+   not overriding procedure Write_Varint
+     (Self  : in out Stream;
+      Field : Field_Number;
       Value : Interfaces.Integer_32)
         with Inline;
 
@@ -136,6 +164,83 @@ package PB_Support.Internal is
      (Self  : in out Stream;
       Field : Field_Number;
       Value : Interfaces.Integer_64)
+        with Inline;
+
+   not overriding procedure Write_Varint
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector);
+
+   not overriding procedure Write_Zigzag
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Integer_32)
+        with Inline;
+
+   not overriding procedure Write_Zigzag
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Integer_64)
+        with Inline;
+
+   not overriding procedure Write_Zigzag
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Zigzag
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Integer_32)
+        with Inline;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Integer_64)
+        with Inline;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Unsigned_32)
+        with Inline;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Unsigned_64)
+        with Inline;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_32_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_64_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Key

@@ -28,9 +28,14 @@ with League.Stream_Element_Vectors;
 with League.String_Vectors;
 
 with PB_Support.Boolean_Vectors;
-with PB_Support.Internal;
-with PB_Support.Unsigned_32_Vectors;
+with PB_Support.IEEE_Float_32_Vectors;
+with PB_Support.IEEE_Float_64_Vectors;
 with PB_Support.Integer_32_Vectors;
+with PB_Support.Integer_64_Vectors;
+with PB_Support.Internal;
+with PB_Support.Stream_Element_Vector_Vectors;
+with PB_Support.Unsigned_32_Vectors;
+with PB_Support.Unsigned_64_Vectors;
 with PB_Support.Vectors;
 
 package PB_Support.IO is
@@ -61,6 +66,11 @@ package PB_Support.IO is
       Encoding : Wire_Type;
       Value    : in out League.Stream_Element_Vectors.Stream_Element_Vector);
 
+   procedure Read_Stream_Element_Vector_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Stream_Element_Vector_Vectors.Vector);
+
    procedure Read_Boolean
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
@@ -76,20 +86,40 @@ package PB_Support.IO is
       Encoding : Wire_Type;
       Value    : out Interfaces.IEEE_Float_64);
 
+   procedure Read_IEEE_Float_64_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.IEEE_Float_64_Vectors.Vector);
+
    procedure Read_IEEE_Float_32
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.IEEE_Float_32);
+
+   procedure Read_IEEE_Float_32_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.IEEE_Float_32_Vectors.Vector);
 
    procedure Read_Integer_64
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.Integer_64);
 
+   procedure Read_Integer_64_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Integer_64_Vectors.Vector);
+
    procedure Read_Unsigned_64
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.Unsigned_64);
+
+   procedure Read_Unsigned_64_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Unsigned_64_Vectors.Vector);
 
    procedure Read_Integer_32
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;

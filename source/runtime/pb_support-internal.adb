@@ -73,6 +73,36 @@ package body PB_Support.Internal is
       Value : Ada.Streams.Stream_Element_Count)
         with Inline;
 
+   procedure Write_Zigzag
+     (Self  : in out Stream;
+      Value : Interfaces.Integer_32)
+        with Inline;
+
+   procedure Write_Zigzag
+     (Self  : in out Stream;
+      Value : Interfaces.Integer_64)
+        with Inline;
+
+   procedure Write_Fixed
+     (Self  : in out Stream;
+      Value : Interfaces.Integer_32)
+        with Inline;
+
+   procedure Write_Fixed
+     (Self  : in out Stream;
+      Value : Interfaces.Integer_64)
+        with Inline;
+
+   procedure Write_Fixed
+     (Self  : in out Stream;
+      Value : Interfaces.Unsigned_32)
+        with Inline;
+
+   procedure Write_Fixed
+     (Self  : in out Stream;
+      Value : Interfaces.Unsigned_64)
+        with Inline;
+
    -------------------
    -- Start_Message --
    -------------------
@@ -200,6 +230,34 @@ package body PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
+      Value : PB_Support.IEEE_Float_32_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write (Field, Value.Get (J));
+      end loop;
+   end Write;
+
+   -----------
+   -- Write --
+   -----------
+
+   not overriding procedure Write
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.IEEE_Float_64_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write (Field, Value.Get (J));
+      end loop;
+   end Write;
+
+   -----------
+   -- Write --
+   -----------
+
+   not overriding procedure Write
+     (Self  : in out Stream;
+      Field : Field_Number;
       Value : Interfaces.IEEE_Float_64)
    is
    begin
@@ -263,6 +321,20 @@ package body PB_Support.Internal is
    begin
       for J in 1 .. Value.Length loop
          Self.Write (Field, Value.Element (J));
+      end loop;
+   end Write;
+
+   -----------
+   -- Write --
+   -----------
+
+   not overriding procedure Write
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Stream_Element_Vector_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write (Field, Value.Get (J));
       end loop;
    end Write;
 
@@ -447,6 +519,34 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write_Varint (Field, Value.Get (J));
+      end loop;
+   end Write_Varint;
+
+   ------------------
+   -- Write_Varint --
+   ------------------
+
+   not overriding procedure Write_Varint
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_64_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write_Varint (Field, Value.Get (J));
+      end loop;
+   end Write_Varint;
+
+   ------------------
+   -- Write_Varint --
+   ------------------
+
+   not overriding procedure Write_Varint
+     (Self  : in out Stream;
+      Field : Field_Number;
       Value : Interfaces.Integer_64) is
    begin
       Self.Write_Key ((Field, Var_Int));
@@ -506,5 +606,195 @@ package body PB_Support.Internal is
    begin
       Self.Write_Varint (Integer);
    end Write_Key;
+
+   procedure Write_Zigzag
+     (Self  : in out Stream;
+      Value : Interfaces.Integer_32)
+   is
+      use Interfaces;
+      Unsigned : constant Interfaces.Unsigned_32 :=
+        2 * Interfaces.Unsigned_32 (abs Value) +
+        Boolean'Pos (Value < 0);
+   begin
+      Self.Write_Varint (Unsigned);
+   end Write_Zigzag;
+
+   procedure Write_Zigzag
+     (Self  : in out Stream;
+      Value : Interfaces.Integer_64)
+   is
+      use Interfaces;
+      Unsigned : constant Interfaces.Unsigned_64 :=
+        2 * Interfaces.Unsigned_64 (abs Value) +
+        Boolean'Pos (Value < 0);
+   begin
+      Self.Write_Varint (Unsigned);
+   end Write_Zigzag;
+
+   ------------------
+   -- Write_Zigzag --
+   ------------------
+
+   not overriding procedure Write_Zigzag
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Integer_32) is
+   begin
+      Self.Write_Key ((Field, Var_Int));
+      Self.Write_Zigzag (Value);
+   end Write_Zigzag;
+
+   not overriding procedure Write_Zigzag
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Integer_64) is
+   begin
+      Self.Write_Key ((Field, Var_Int));
+      Self.Write_Zigzag (Value);
+   end Write_Zigzag;
+
+   not overriding procedure Write_Zigzag
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write_Zigzag (Field, Value.Get (J));
+      end loop;
+   end Write_Zigzag;
+
+   not overriding procedure Write_Zigzag
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write_Zigzag (Field, Value.Get (J));
+      end loop;
+   end Write_Zigzag;
+
+   -----------------
+   -- Write_Fixed --
+   -----------------
+
+   procedure Write_Fixed
+     (Self  : in out Stream;
+      Value : Interfaces.Integer_32) is
+   begin
+      if Self.Riffling then
+         Self.Written := Self.Written + 4;
+      else
+         Interfaces.Integer_32'Write (Self.Parent, Value);
+      end if;
+   end Write_Fixed;
+
+   procedure Write_Fixed
+     (Self  : in out Stream;
+      Value : Interfaces.Integer_64) is
+   begin
+      if Self.Riffling then
+         Self.Written := Self.Written + 8;
+      else
+         Interfaces.Integer_64'Write (Self.Parent, Value);
+      end if;
+   end Write_Fixed;
+
+   procedure Write_Fixed
+     (Self  : in out Stream;
+      Value : Interfaces.Unsigned_32) is
+   begin
+      if Self.Riffling then
+         Self.Written := Self.Written + 4;
+      else
+         Interfaces.Unsigned_32'Write (Self.Parent, Value);
+      end if;
+   end Write_Fixed;
+
+   procedure Write_Fixed
+     (Self  : in out Stream;
+      Value : Interfaces.Unsigned_64) is
+   begin
+      if Self.Riffling then
+         Self.Written := Self.Written + 8;
+      else
+         Interfaces.Unsigned_64'Write (Self.Parent, Value);
+      end if;
+   end Write_Fixed;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Integer_32) is
+   begin
+      Self.Write_Key ((Field, Fixed_32));
+      Self.Write_Fixed (Value);
+   end Write_Fixed;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Integer_64) is
+   begin
+      Self.Write_Key ((Field, Fixed_64));
+      Self.Write_Fixed (Value);
+   end Write_Fixed;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Unsigned_32) is
+   begin
+      Self.Write_Key ((Field, Fixed_32));
+      Self.Write_Fixed (Value);
+   end Write_Fixed;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : Interfaces.Unsigned_64) is
+   begin
+      Self.Write_Key ((Field, Fixed_64));
+      Self.Write_Fixed (Value);
+   end Write_Fixed;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write_Fixed (Field, Value.Get (J));
+      end loop;
+   end Write_Fixed;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write_Fixed (Field, Value.Get (J));
+      end loop;
+   end Write_Fixed;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_32_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write_Fixed (Field, Value.Get (J));
+      end loop;
+   end Write_Fixed;
+
+   not overriding procedure Write_Fixed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_64_Vectors.Vector) is
+   begin
+      for J in 1 .. Value.Length loop
+         Self.Write_Fixed (Field, Value.Get (J));
+      end loop;
+   end Write_Fixed;
 
 end PB_Support.Internal;

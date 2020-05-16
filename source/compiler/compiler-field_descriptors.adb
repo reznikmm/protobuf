@@ -609,6 +609,14 @@ package body Compiler.Field_Descriptors is
         TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 | TYPE_UINT32
       then
          Result.Append ("_Varint");
+      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+        TYPE_FIXED64 | TYPE_FIXED32 | TYPE_SFIXED32 | TYPE_SFIXED64
+      then
+         Result.Append ("_Fixed");
+      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+        TYPE_SINT32 | TYPE_SINT64
+      then
+         Result.Append ("_Zigzag");
       end if;
 
       return Result;
