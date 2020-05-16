@@ -1,3 +1,4 @@
+PROTOBUF_DIR ?= $(GITHUB_WORKSPACE)/google
 GPRBUILD_FLAGS = -p -j0
 PREFIX                 ?= /usr
 GPRDIR                 ?= $(PREFIX)/share/gpr
@@ -26,9 +27,11 @@ clean:
 	gprclean -q -P gnat/protobuf_runtime.gpr
 
 check:
-		@echo Compile some predefined .proto files
-		for J in any duration empty field_mask struct timestamp wrappers; do\
-		  echo $$J; PATH=.objs/compiler/:$$PATH \
-		  protoc --ada_out=source/runtime/generated \
-			/usr/include/google/protobuf/$$J.proto; done
-		gprbuild -P gnat/protobuf_runtime.gpr
+	@echo Compile some predefined .proto files
+	for J in any duration empty field_mask struct timestamp wrappers; do\
+	  echo $$J; PATH=.objs/compiler/:$$PATH \
+	  protoc --ada_out=source/runtime/generated \
+	   /usr/include/google/protobuf/$$J.proto; done
+	gprbuild -P gnat/protobuf_runtime.gpr
+	@echo Run conformance test if any
+	./conformance.sh $(PROTOBUF_DIR)

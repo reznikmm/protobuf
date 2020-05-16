@@ -8,6 +8,14 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: protobuf
+      - uses: actions/checkout@v2
+        with:
+          repository: protocolbuffers/protobuf
+          path: google
+      - uses: actions/cache@v1
+        with:
+          path: google_cache
+          key: ${{ runner.os }}-google-fc31
       - uses: reznikmm/fedora-ada-action@v1
         with:
           spec: protobuf/packages/protobuf.spec

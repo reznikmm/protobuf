@@ -17,6 +17,11 @@ BuildRequires:   ada-pretty-devel
 BuildRequires:   gprbuild
 # For tests:
 BuildRequires:   protobuf-devel
+BuildRequires:   autoconf
+BuildRequires:   automake
+BuildRequires:   libtool
+BuildRequires:   gcc-c++
+BuildRequires:   make
 
 Requires:   %{name}-runtime%{?_isa} = %{version}-%{release}
 
