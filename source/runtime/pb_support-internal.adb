@@ -490,12 +490,11 @@ package body PB_Support.Internal is
 
    not overriding procedure Write_Varint
      (Self  : in out Stream;
-      Value : Interfaces.Integer_32)
-   is
-      function Cast is new Ada.Unchecked_Conversion
-        (Interfaces.Integer_32, Interfaces.Unsigned_32);
+      Value : Interfaces.Integer_32) is
    begin
-      Self.Write_Varint (Cast (Value));
+      --  "If you use int32 or int64 as the type for a negative number, the
+      --  resulting varint is always ten bytes long"
+      Self.Write_Varint (Interfaces.Integer_64 (Value));
    end Write_Varint;
 
    ------------------
