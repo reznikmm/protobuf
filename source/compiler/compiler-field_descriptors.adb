@@ -435,10 +435,9 @@ package body Compiler.Field_Descriptors is
       Fake : Compiler.Context.String_Sets.Set)
       return League.Strings.Universal_String
    is
+      use all type Google.Protobuf.Descriptor.PB_Type;
       use type League.Strings.Universal_String;
-      Result  : League.Strings.Universal_String := +"PB_Support.IO.Read_";
-      Tp      : constant Compiler.Context.Ada_Type_Name :=
-        Type_Name (Self, False, False);
+      Result  : League.Strings.Universal_String := +"PB_Support.IO.Read";
    begin
       if Self.Type_Name.Is_Set
         and then Compiler.Context.Named_Types.Contains (Self.Type_Name.Value)
@@ -446,8 +445,18 @@ package body Compiler.Field_Descriptors is
          Result := Compiler.Context.Named_Types
            (Self.Type_Name.Value).Ada_Type.Type_Name;
          Result.Append ("_IO.Read");
-      else
-         Result.Append (Tp.Type_Name);
+      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+        TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 | TYPE_UINT32
+      then
+         Result.Append ("_Varint");
+      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+        TYPE_FIXED64 | TYPE_FIXED32 | TYPE_SFIXED32 | TYPE_SFIXED64
+      then
+         Result.Append ("_Fixed");
+      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+        TYPE_SINT32 | TYPE_SINT64
+      then
+         Result.Append ("_Zigzag");
       end if;
 
       if Is_Repeated (Self, Pkg, Tipe, Fake) then

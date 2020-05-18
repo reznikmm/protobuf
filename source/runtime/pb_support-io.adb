@@ -64,7 +64,7 @@ package body PB_Support.IO is
            (Integer_Element, Element);
          Int : Integer_Element;
       begin
-         Read_Integer_32 (Stream, Encoding, Interfaces.Integer_32 (Int));
+         Read_Varint (Stream, Encoding, Interfaces.Integer_32 (Int));
          Value := Cast (Int);
       end Read;
 
@@ -216,7 +216,7 @@ package body PB_Support.IO is
    -- Read_Boolean --
    ------------------
 
-   procedure Read_Boolean
+   procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Boolean)
@@ -230,13 +230,13 @@ package body PB_Support.IO is
          Ada.Streams.Stream_Element'Read (Stream, Data);
          Value := Value or ((Data and 16#7F#) /= 0);
       end loop;
-   end Read_Boolean;
+   end Read;
 
    -------------------------
-   -- Read_Boolean_Vector --
+   -- Read_Vector --
    -------------------------
 
-   procedure Read_Boolean_Vector
+   procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out PB_Support.Boolean_Vectors.Vector)
@@ -244,7 +244,7 @@ package body PB_Support.IO is
       Item : Boolean := False;
    begin
       if Encoding = Var_Int then
-         Read_Boolean (Stream, Encoding, Item);
+         Read (Stream, Encoding, Item);
          Value.Append (Item);
       elsif Encoding = Length_Delimited then
          declare
@@ -264,13 +264,13 @@ package body PB_Support.IO is
             end loop;
          end;
       end if;
-   end Read_Boolean_Vector;
+   end Read_Vector;
 
    ------------------------
    -- Read_IEEE_Float_32 --
    ------------------------
 
-   procedure Read_IEEE_Float_32
+   procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.IEEE_Float_32) is
@@ -279,18 +279,18 @@ package body PB_Support.IO is
          --  FIX this for big-endian
          Interfaces.IEEE_Float_32'Read (Stream, Value);
       elsif Encoding = Fixed_64 then
-         Read_IEEE_Float_64
+         Read
            (Stream, Encoding, Interfaces.IEEE_Float_64 (Value));
       else
          raise Constraint_Error with "unexpected wire encoding";
       end if;
-   end Read_IEEE_Float_32;
+   end Read;
 
    ------------------------
    -- Read_IEEE_Float_64 --
    ------------------------
 
-   procedure Read_IEEE_Float_64
+   procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.IEEE_Float_64) is
@@ -299,18 +299,18 @@ package body PB_Support.IO is
          --  FIX this for big-endian
          Interfaces.IEEE_Float_64'Read (Stream, Value);
       elsif Encoding = Fixed_32 then
-         Read_IEEE_Float_32
+         Read
            (Stream, Encoding, Interfaces.IEEE_Float_32 (Value));
       else
          raise Constraint_Error with "unexpected wire encoding";
       end if;
-   end Read_IEEE_Float_64;
+   end Read;
 
    -------------------------------
-   -- Read_IEEE_Float_64_Vector --
+   -- Read_Vector --
    -------------------------------
 
-   procedure Read_IEEE_Float_64_Vector
+   procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out PB_Support.IEEE_Float_64_Vectors.Vector)
@@ -318,7 +318,7 @@ package body PB_Support.IO is
       Item : Interfaces.IEEE_Float_64;
    begin
       if Encoding = Fixed_64 then
-         Read_IEEE_Float_64 (Stream, Encoding, Item);
+         Read (Stream, Encoding, Item);
          Value.Append (Item);
       elsif Encoding = Length_Delimited then
          declare
@@ -336,13 +336,13 @@ package body PB_Support.IO is
       else
          raise Constraint_Error with "Unexpected encoding";
       end if;
-   end Read_IEEE_Float_64_Vector;
+   end Read_Vector;
 
    -------------------------------
    -- Read_IEEE_Float_32_Vector --
    -------------------------------
 
-   procedure Read_IEEE_Float_32_Vector
+   procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out PB_Support.IEEE_Float_32_Vectors.Vector)
@@ -350,7 +350,7 @@ package body PB_Support.IO is
       Item : Interfaces.IEEE_Float_32;
    begin
       if Encoding = Fixed_32 then
-         Read_IEEE_Float_32 (Stream, Encoding, Item);
+         Read (Stream, Encoding, Item);
          Value.Append (Item);
       elsif Encoding = Length_Delimited then
          declare
@@ -369,13 +369,13 @@ package body PB_Support.IO is
       else
          raise Constraint_Error with "Unexpected encoding";
       end if;
-   end Read_IEEE_Float_32_Vector;
+   end Read_Vector;
 
    ---------------------
    -- Read_Integer_32 --
    ---------------------
 
-   procedure Read_Integer_32
+   procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.Integer_32)
@@ -385,15 +385,15 @@ package body PB_Support.IO is
 
       Data  : Interfaces.Unsigned_32;
    begin
-      Read_Unsigned_32 (Stream, Encoding, Data);
+      Read_Varint (Stream, Encoding, Data);
       Value := Cast (Data);
-   end Read_Integer_32;
+   end Read_Varint;
 
    ----------------------------
-   -- Read_Integer_32_Vector --
+   -- Read_Vector --
    ----------------------------
 
-   procedure Read_Integer_32_Vector
+   procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out PB_Support.Integer_32_Vectors.Vector)
@@ -404,7 +404,7 @@ package body PB_Support.IO is
       Item : Interfaces.Unsigned_32 := 0;
    begin
       if Encoding = Var_Int then
-         Read_Unsigned_32 (Stream, Encoding, Item);
+         Read_Varint (Stream, Encoding, Item);
          Value.Append (Cast (Item));
       elsif Encoding = Length_Delimited then
          declare
@@ -432,9 +432,9 @@ package body PB_Support.IO is
             end loop;
          end;
       end if;
-   end Read_Integer_32_Vector;
+   end Read_Varint_Vector;
 
-   procedure Read_Integer_64_Vector
+   procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out PB_Support.Integer_64_Vectors.Vector)
@@ -449,7 +449,7 @@ package body PB_Support.IO is
       Item : Interfaces.Unsigned_64 := 0;
    begin
       if Encoding = Var_Int then
-         Read_Unsigned_64 (Stream, Encoding, Item);
+         Read_Varint (Stream, Encoding, Item);
          Value.Append (Cast (Item));
       elsif Encoding = Length_Delimited then
          declare
@@ -477,13 +477,13 @@ package body PB_Support.IO is
             end loop;
          end;
       end if;
-   end Read_Integer_64_Vector;
+   end Read_Varint_Vector;
 
    ---------------------
    -- Read_Integer_64 --
    ---------------------
 
-   procedure Read_Integer_64
+   procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.Integer_64)
@@ -493,9 +493,9 @@ package body PB_Support.IO is
 
       Data  : Interfaces.Unsigned_64;
    begin
-      Read_Unsigned_64 (Stream, Encoding, Data);
+      Read_Varint (Stream, Encoding, Data);
       Value := Cast (Data);
-   end Read_Integer_64;
+   end Read_Varint;
 
    --------------
    -- Read_Key --
@@ -549,7 +549,7 @@ package body PB_Support.IO is
    is
       Result : Interfaces.Unsigned_64;
    begin
-      Read_Unsigned_64 (Stream, Var_Int, Result);
+      Read_Varint (Stream, Var_Int, Result);
 
       return Ada.Streams.Stream_Element_Count (Result);
    end Read_Length;
@@ -558,7 +558,7 @@ package body PB_Support.IO is
    -- Read_Stream_Element_Vector --
    --------------------------------
 
-   procedure Read_Stream_Element_Vector
+   procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out League.Stream_Element_Vectors.Stream_Element_Vector)
@@ -574,13 +574,13 @@ package body PB_Support.IO is
          Value.Clear;
          Value.Append (Data);
       end;
-   end Read_Stream_Element_Vector;
+   end Read;
 
    ---------------------------
    -- Read_Universal_String --
    ---------------------------
 
-   procedure Read_Universal_String
+   procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out League.Strings.Universal_String)
@@ -590,15 +590,15 @@ package body PB_Support.IO is
         League.Text_Codecs.Codec
           (League.Strings.To_Universal_String ("utf-8"));
    begin
-      Read_Stream_Element_Vector (Stream, Encoding, Data);
+      Read (Stream, Encoding, Data);
       Value := Codec.Decode (Data);
-   end Read_Universal_String;
+   end Read;
 
    ----------------------------------
-   -- Read_Universal_String_Vector --
+   -- Read_Vector --
    ----------------------------------
 
-   procedure Read_Universal_String_Vector
+   procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out League.String_Vectors.Universal_String_Vector)
@@ -606,15 +606,15 @@ package body PB_Support.IO is
       Item : League.Strings.Universal_String;
    begin
       --  FIXME: For now, unpacked vector only
-      Read_Universal_String (Stream, Encoding, Item);
+      Read (Stream, Encoding, Item);
       Value.Append (Item);
-   end Read_Universal_String_Vector;
+   end Read_Vector;
 
    ---------------------------------------
-   -- Read_Stream_Element_Vector_Vector --
+   -- Read_Vector --
    ---------------------------------------
 
-   procedure Read_Stream_Element_Vector_Vector
+   procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out PB_Support.Stream_Element_Vector_Vectors.Vector)
@@ -622,15 +622,15 @@ package body PB_Support.IO is
       Item : League.Stream_Element_Vectors.Stream_Element_Vector;
    begin
       --  FIXME: For now, unpacked vector only
-      Read_Stream_Element_Vector (Stream, Encoding, Item);
+      Read (Stream, Encoding, Item);
       Value.Append (Item);
-   end Read_Stream_Element_Vector_Vector;
+   end Read_Vector;
 
    ----------------------
    -- Read_Unsigned_32 --
    ----------------------
 
-   procedure Read_Unsigned_32
+   procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.Unsigned_32)
@@ -655,18 +655,18 @@ package body PB_Support.IO is
          --  FIX this for big-endian
          Interfaces.Unsigned_32'Read (Stream, Value);
       elsif Encoding = Fixed_64 then
-         Read_Unsigned_64
+         Read_Varint
            (Stream, Encoding, Interfaces.Unsigned_64 (Value));
       else
          raise Constraint_Error with "unexpected wire encoding";
       end if;
-   end Read_Unsigned_32;
+   end Read_Varint;
 
    -----------------------------
-   -- Read_Unsigned_32_Vector --
+   -- Read_Vector --
    -----------------------------
 
-   procedure Read_Unsigned_32_Vector
+   procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out PB_Support.Unsigned_32_Vectors.Vector)
@@ -674,7 +674,7 @@ package body PB_Support.IO is
       Item : Interfaces.Unsigned_32 := 0;
    begin
       if Encoding = Var_Int then
-         Read_Unsigned_32 (Stream, Encoding, Item);
+         Read_Varint (Stream, Encoding, Item);
          Value.Append (Item);
       elsif Encoding = Length_Delimited then
          declare
@@ -702,13 +702,13 @@ package body PB_Support.IO is
             end loop;
          end;
       end if;
-   end Read_Unsigned_32_Vector;
+   end Read_Varint_Vector;
 
    -----------------------------
-   -- Read_Unsigned_64_Vector --
+   -- Read_Vector --
    -----------------------------
 
-   procedure Read_Unsigned_64_Vector
+   procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : in out PB_Support.Unsigned_64_Vectors.Vector)
@@ -716,7 +716,7 @@ package body PB_Support.IO is
       Item : Interfaces.Unsigned_64 := 0;
    begin
       if Encoding = Var_Int then
-         Read_Unsigned_64 (Stream, Encoding, Item);
+         Read_Varint (Stream, Encoding, Item);
          Value.Append (Item);
       elsif Encoding = Length_Delimited then
          declare
@@ -744,13 +744,13 @@ package body PB_Support.IO is
             end loop;
          end;
       end if;
-   end Read_Unsigned_64_Vector;
+   end Read_Varint_Vector;
 
    ----------------------
    -- Read_Unsigned_64 --
    ----------------------
 
-   procedure Read_Unsigned_64
+   procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
       Value    : out Interfaces.Unsigned_64)
@@ -775,12 +775,159 @@ package body PB_Support.IO is
          --  FIX this for big-endian
          Interfaces.Unsigned_64'Read (Stream, Value);
       elsif Encoding = Fixed_32 then
-         Read_Unsigned_32
+         Read_Varint
            (Stream, Encoding, Interfaces.Unsigned_32 (Value));
       else
          raise Constraint_Error with "unexpected wire encoding";
       end if;
-   end Read_Unsigned_64;
+   end Read_Varint;
+
+   -----------------
+   -- Read_Zigzag --
+   -----------------
+
+   procedure Read_Zigzag
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : out Interfaces.Integer_32)
+   is
+      use type Interfaces.Integer_32;
+      use type Interfaces.Unsigned_32;
+
+      Temp : Interfaces.Unsigned_32;
+   begin
+      Read_Varint (Stream, Encoding, Temp);
+      Value := Interfaces.Integer_32 (Temp / 2);
+
+      if (Temp and 1) > 0 then
+         Value := -Value;
+      end if;
+   end Read_Zigzag;
+
+   -----------------
+   -- Read_Zigzag --
+   -----------------
+
+   procedure Read_Zigzag
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : out Interfaces.Integer_64)
+   is
+      use type Interfaces.Integer_64;
+      use type Interfaces.Unsigned_64;
+
+      Temp : Interfaces.Unsigned_64;
+   begin
+      Read_Varint (Stream, Encoding, Temp);
+      Value := Interfaces.Integer_64 (Temp / 2);
+
+      if (Temp and 1) > 0 then
+         Value := -Value;
+      end if;
+   end Read_Zigzag;
+
+   ------------------------
+   -- Read_Zigzag_Vector --
+   ------------------------
+
+   procedure Read_Zigzag_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : out PB_Support.Integer_32_Vectors.Vector) is
+   begin
+      if Encoding = Var_Int then
+         declare
+            Item : Interfaces.Integer_32 := 0;
+         begin
+            Read_Zigzag (Stream, Encoding, Item);
+            Value.Append (Item);
+         end;
+      elsif Encoding = Length_Delimited then
+         declare
+            use type Interfaces.Integer_32;
+            use type Interfaces.Unsigned_32;
+
+            Item  : Interfaces.Unsigned_32 := 0;
+            Shift : Natural := 0;
+            Data  : Ada.Streams.Stream_Element_Array
+              (1 .. Read_Length (Stream));
+         begin
+            Ada.Streams.Stream_Element_Array'Read (Stream, Data);
+            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+
+            for J of Data loop
+               Item := Item or
+                 Interfaces.Shift_Left
+                   (Interfaces.Unsigned_32 (J and 16#7F#), Shift);
+
+               Shift := Shift + 7;
+
+               if (J and 16#80#) = 0 then
+                  if (Item and 1) = 0 then
+                     Value.Append (Interfaces.Integer_32 (Item / 2));
+                  else
+                     Value.Append (-Interfaces.Integer_32 (Item / 2));
+                  end if;
+
+                  Item := 0;
+                  Shift := 0;
+               end if;
+            end loop;
+         end;
+      end if;
+   end Read_Zigzag_Vector;
+
+   ------------------------
+   -- Read_Zigzag_Vector --
+   ------------------------
+
+   procedure Read_Zigzag_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : out PB_Support.Integer_64_Vectors.Vector)
+   is
+   begin
+      if Encoding = Var_Int then
+         declare
+            Item : Interfaces.Integer_64 := 0;
+         begin
+            Read_Zigzag (Stream, Encoding, Item);
+            Value.Append (Item);
+         end;
+      elsif Encoding = Length_Delimited then
+         declare
+            use type Interfaces.Integer_64;
+            use type Interfaces.Unsigned_64;
+
+            Item  : Interfaces.Unsigned_64 := 0;
+            Shift : Natural := 0;
+            Data  : Ada.Streams.Stream_Element_Array
+              (1 .. Read_Length (Stream));
+         begin
+            Ada.Streams.Stream_Element_Array'Read (Stream, Data);
+            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+
+            for J of Data loop
+               Item := Item or
+                 Interfaces.Shift_Left
+                   (Interfaces.Unsigned_64 (J and 16#7F#), Shift);
+
+               Shift := Shift + 7;
+
+               if (J and 16#80#) = 0 then
+                  if (Item and 1) = 0 then
+                     Value.Append (Interfaces.Integer_64 (Item / 2));
+                  else
+                     Value.Append (-Interfaces.Integer_64 (Item / 2));
+                  end if;
+
+                  Item := 0;
+                  Shift := 0;
+               end if;
+            end loop;
+         end;
+      end if;
+   end Read_Zigzag_Vector;
 
    -------------------
    -- Unknown_Field --
