@@ -90,7 +90,7 @@ package body PB_Support.IO is
                     Parent => Stream);
             begin
                while Stop.Left > 0 loop
-                  Read (Stop'Unchecked_Access, Encoding, Item);
+                  Read (Stop'Unchecked_Access, Var_Int, Item);
                   Vectors.Append (Value, Item);
                end loop;
             end;

@@ -202,6 +202,7 @@ package body PB_Support.Internal is
          Id := Self.Stack.Last_Element;
          Self.Stack.Delete_Last;
          Self.Size (Id) := Self.Written - Self.Size (Id);
+         Self.Write (Self.Size (Id));
       end if;
 
       Self.Level := Self.Level - 1;
