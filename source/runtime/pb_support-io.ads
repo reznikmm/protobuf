@@ -51,6 +51,11 @@ package PB_Support.IO is
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class)
       return Ada.Streams.Stream_Element_Count;
 
+   function Read_Array_Length
+     (Stream    : not null access Ada.Streams.Root_Stream_Type'Class;
+      Item_Size : Ada.Streams.Stream_Element_Count)
+      return Natural;
+
    procedure Read_Universal_String
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;

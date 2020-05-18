@@ -193,6 +193,25 @@ package body PB_Support.IO is
       Self.Left := Self.Left - (Last - Item'First + 1);
    end Read;
 
+   -----------------------
+   -- Read_Array_Length --
+   -----------------------
+
+   function Read_Array_Length
+     (Stream    : not null access Ada.Streams.Root_Stream_Type'Class;
+      Item_Size : Ada.Streams.Stream_Element_Count)
+      return Natural
+   is
+      Length : constant Ada.Streams.Stream_Element_Count :=
+        Read_Length (Stream);
+   begin
+      if Length mod Item_Size = 0 then
+         return Natural (Length / Item_Size);
+      else
+         raise Constraint_Error with "Unexpected array length";
+      end if;
+   end Read_Array_Length;
+
    ------------------
    -- Read_Boolean --
    ------------------
@@ -304,10 +323,9 @@ package body PB_Support.IO is
       elsif Encoding = Length_Delimited then
          declare
             type IEEE_Float_64_Array is array
-              (Ada.Streams.Stream_Element_Count range <>) of
-                Interfaces.IEEE_Float_64;
+              (Positive range <>) of Interfaces.IEEE_Float_64;
 
-            Data  : IEEE_Float_64_Array (1 .. Read_Length (Stream) / 8);
+            Data  : IEEE_Float_64_Array (1 .. Read_Array_Length (Stream, 8));
          begin
             IEEE_Float_64_Array'Read (Stream, Data);
 
@@ -337,10 +355,10 @@ package body PB_Support.IO is
       elsif Encoding = Length_Delimited then
          declare
             type IEEE_Float_32_Array is array
-              (Ada.Streams.Stream_Element_Count range <>) of
+              (Positive range <>) of
                 Interfaces.IEEE_Float_32;
 
-            Data  : IEEE_Float_32_Array (1 .. Read_Length (Stream) / 4);
+            Data  : IEEE_Float_32_Array (1 .. Read_Array_Length (Stream, 4));
          begin
             IEEE_Float_32_Array'Read (Stream, Data);
 
