@@ -183,8 +183,7 @@ package body Google.Protobuf.Struct is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
@@ -283,16 +282,15 @@ package body Google.Protobuf.Struct is
                Null_Value_IO.Read (Stream, Key.Encoding, V.Variant.Null_Value);
             when 2 =>
                V.Variant := (Number_Value_Kind, others => <>);
-               PB_Support.IO.Read_IEEE_Float_64
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Number_Value);
             when 3 =>
                V.Variant := (String_Value_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.String_Value);
             when 4 =>
                V.Variant := (Bool_Value_Kind, others => <>);
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Variant.Bool_Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Variant.Bool_Value);
             when 5 =>
                V.Variant := (Struct_Value_Kind, others => <>);
                Struct_IO.Read (Stream, Key.Encoding, V.Variant.Struct_Value);

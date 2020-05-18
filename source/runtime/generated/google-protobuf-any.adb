@@ -58,11 +58,9 @@ package body Google.Protobuf.Any is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Type_Url);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Type_Url);
             when 2 =>
-               PB_Support.IO.Read_Stream_Element_Vector
-                 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;

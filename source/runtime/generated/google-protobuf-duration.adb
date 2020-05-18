@@ -59,9 +59,9 @@ package body Google.Protobuf.Duration is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_64 (Stream, Key.Encoding, V.Seconds);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Seconds);
             when 2 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Nanos);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Nanos);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;

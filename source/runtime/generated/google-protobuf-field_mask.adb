@@ -63,8 +63,7 @@ package body Google.Protobuf.Field_Mask is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String_Vector
-                 (Stream, Key.Encoding, V.Paths);
+               PB_Support.IO.Read_Vector (Stream, Key.Encoding, V.Paths);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;

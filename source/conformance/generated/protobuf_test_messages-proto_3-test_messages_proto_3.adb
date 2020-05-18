@@ -368,50 +368,45 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Optional_Int_32);
             when 2 =>
-               PB_Support.IO.Read_Integer_64
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Optional_Int_64);
             when 3 =>
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Optional_Uint_32);
             when 4 =>
-               PB_Support.IO.Read_Unsigned_64
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Optional_Uint_64);
             when 5 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Zigzag
                  (Stream, Key.Encoding, V.Optional_Sint_32);
             when 6 =>
-               PB_Support.IO.Read_Integer_64
+               PB_Support.IO.Read_Zigzag
                  (Stream, Key.Encoding, V.Optional_Sint_64);
             when 7 =>
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Fixed
                  (Stream, Key.Encoding, V.Optional_Fixed_32);
             when 8 =>
-               PB_Support.IO.Read_Unsigned_64
+               PB_Support.IO.Read_Fixed
                  (Stream, Key.Encoding, V.Optional_Fixed_64);
             when 9 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Fixed
                  (Stream, Key.Encoding, V.Optional_Sfixed_32);
             when 10 =>
-               PB_Support.IO.Read_Integer_64
+               PB_Support.IO.Read_Fixed
                  (Stream, Key.Encoding, V.Optional_Sfixed_64);
             when 11 =>
-               PB_Support.IO.Read_IEEE_Float_32
-                 (Stream, Key.Encoding, V.Optional_Float);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Float);
             when 12 =>
-               PB_Support.IO.Read_IEEE_Float_64
-                 (Stream, Key.Encoding, V.Optional_Double);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Double);
             when 13 =>
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Optional_Bool);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Bool);
             when 14 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Optional_String);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_String);
             when 15 =>
-               PB_Support.IO.Read_Stream_Element_Vector
-                 (Stream, Key.Encoding, V.Optional_Bytes);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Bytes);
             when 18 =>
                if  not V.Optional_Nested_Message.Is_Set then
                   V.Optional_Nested_Message := (True, others => <>);
@@ -434,58 +429,57 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                Aliased_Enum_IO.Read
                  (Stream, Key.Encoding, V.Optional_Aliased_Enum);
             when 24 =>
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Optional_String_Piece);
             when 25 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Optional_Cord);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Cord);
             when 27 =>
                Test_All_Types_Proto_3_IO.Read_Vector
                  (Stream, Key.Encoding, V.Recursive_Message);
             when 31 =>
-               PB_Support.IO.Read_Integer_32_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Repeated_Int_32);
             when 32 =>
-               PB_Support.IO.Read_Integer_64_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Repeated_Int_64);
             when 33 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Repeated_Uint_32);
             when 34 =>
-               PB_Support.IO.Read_Unsigned_64_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Repeated_Uint_64);
             when 35 =>
-               PB_Support.IO.Read_Integer_32_Vector
+               PB_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Repeated_Sint_32);
             when 36 =>
-               PB_Support.IO.Read_Integer_64_Vector
+               PB_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Repeated_Sint_64);
             when 37 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Repeated_Fixed_32);
             when 38 =>
-               PB_Support.IO.Read_Unsigned_64_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Repeated_Fixed_64);
             when 39 =>
-               PB_Support.IO.Read_Integer_32_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Repeated_Sfixed_32);
             when 40 =>
-               PB_Support.IO.Read_Integer_64_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Repeated_Sfixed_64);
             when 41 =>
-               PB_Support.IO.Read_IEEE_Float_32_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Float);
             when 42 =>
-               PB_Support.IO.Read_IEEE_Float_64_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Double);
             when 43 =>
-               PB_Support.IO.Read_Boolean_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Bool);
             when 44 =>
-               PB_Support.IO.Read_Universal_String_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_String);
             when 45 =>
-               PB_Support.IO.Read_Stream_Element_Vector_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Bytes);
             when 48 =>
                Nested_Message_IO.Read_Vector
@@ -500,91 +494,90 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                Foreign_Enum_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Foreign_Enum);
             when 54 =>
-               PB_Support.IO.Read_Universal_String_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_String_Piece);
             when 55 =>
-               PB_Support.IO.Read_Universal_String_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Cord);
             when 75 =>
-               PB_Support.IO.Read_Integer_32_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Packed_Int_32);
             when 76 =>
-               PB_Support.IO.Read_Integer_64_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Packed_Int_64);
             when 77 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Packed_Uint_32);
             when 78 =>
-               PB_Support.IO.Read_Unsigned_64_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Packed_Uint_64);
             when 79 =>
-               PB_Support.IO.Read_Integer_32_Vector
+               PB_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Packed_Sint_32);
             when 80 =>
-               PB_Support.IO.Read_Integer_64_Vector
+               PB_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Packed_Sint_64);
             when 81 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Packed_Fixed_32);
             when 82 =>
-               PB_Support.IO.Read_Unsigned_64_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Packed_Fixed_64);
             when 83 =>
-               PB_Support.IO.Read_Integer_32_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Packed_Sfixed_32);
             when 84 =>
-               PB_Support.IO.Read_Integer_64_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Packed_Sfixed_64);
             when 85 =>
-               PB_Support.IO.Read_IEEE_Float_32_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Packed_Float);
             when 86 =>
-               PB_Support.IO.Read_IEEE_Float_64_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Packed_Double);
             when 87 =>
-               PB_Support.IO.Read_Boolean_Vector
-                 (Stream, Key.Encoding, V.Packed_Bool);
+               PB_Support.IO.Read_Vector (Stream, Key.Encoding, V.Packed_Bool);
             when 88 =>
                Nested_Enum_IO.Read_Vector
                  (Stream, Key.Encoding, V.Packed_Nested_Enum);
             when 89 =>
-               PB_Support.IO.Read_Integer_32_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Unpacked_Int_32);
             when 90 =>
-               PB_Support.IO.Read_Integer_64_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Unpacked_Int_64);
             when 91 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Unpacked_Uint_32);
             when 92 =>
-               PB_Support.IO.Read_Unsigned_64_Vector
+               PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Unpacked_Uint_64);
             when 93 =>
-               PB_Support.IO.Read_Integer_32_Vector
+               PB_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Unpacked_Sint_32);
             when 94 =>
-               PB_Support.IO.Read_Integer_64_Vector
+               PB_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Unpacked_Sint_64);
             when 95 =>
-               PB_Support.IO.Read_Unsigned_32_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Unpacked_Fixed_32);
             when 96 =>
-               PB_Support.IO.Read_Unsigned_64_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Unpacked_Fixed_64);
             when 97 =>
-               PB_Support.IO.Read_Integer_32_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Unpacked_Sfixed_32);
             when 98 =>
-               PB_Support.IO.Read_Integer_64_Vector
+               PB_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Unpacked_Sfixed_64);
             when 99 =>
-               PB_Support.IO.Read_IEEE_Float_32_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Float);
             when 100 =>
-               PB_Support.IO.Read_IEEE_Float_64_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Double);
             when 101 =>
-               PB_Support.IO.Read_Boolean_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Bool);
             when 102 =>
                Nested_Enum_IO.Read_Vector
@@ -648,7 +641,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                  (Stream, Key.Encoding, V.Map_String_Foreign_Enum);
             when 111 =>
                V.Variant := (Oneof_Uint_32_Kind, others => <>);
-               PB_Support.IO.Read_Unsigned_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Variant.Oneof_Uint_32);
             when 112 =>
                V.Variant := (Oneof_Nested_Message_Kind, others => <>);
@@ -656,27 +649,26 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                  (Stream, Key.Encoding, V.Variant.Oneof_Nested_Message);
             when 113 =>
                V.Variant := (Oneof_String_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_String);
             when 114 =>
                V.Variant := (Oneof_Bytes_Kind, others => <>);
-               PB_Support.IO.Read_Stream_Element_Vector
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Bytes);
             when 115 =>
                V.Variant := (Oneof_Bool_Kind, others => <>);
-               PB_Support.IO.Read_Boolean
-                 (Stream, Key.Encoding, V.Variant.Oneof_Bool);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Variant.Oneof_Bool);
             when 116 =>
                V.Variant := (Oneof_Uint_64_Kind, others => <>);
-               PB_Support.IO.Read_Unsigned_64
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Variant.Oneof_Uint_64);
             when 117 =>
                V.Variant := (Oneof_Float_Kind, others => <>);
-               PB_Support.IO.Read_IEEE_Float_32
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Float);
             when 118 =>
                V.Variant := (Oneof_Double_Kind, others => <>);
-               PB_Support.IO.Read_IEEE_Float_64
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Double);
             when 119 =>
                V.Variant := (Oneof_Enum_Kind, others => <>);
@@ -815,58 +807,57 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                List_Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_List_Value);
             when 401 =>
-               PB_Support.IO.Read_Integer_32
-                 (Stream, Key.Encoding, V.Fieldname_1);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Fieldname_1);
             when 402 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_2);
             when 403 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_3);
             when 404 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_4);
             when 405 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_0name_5);
             when 406 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_0_Name_6);
             when 407 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_7);
             when 408 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_8);
             when 409 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_9);
             when 410 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_10);
             when 411 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.FIELD_NAME11);
             when 412 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.FIELD_Name_12);
             when 413 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_13);
             when 414 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_14);
             when 415 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_15);
             when 416 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_16);
             when 417 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_17);
             when 418 =>
-               PB_Support.IO.Read_Integer_32
+               PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_18);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -1365,7 +1356,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.A);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.A);
             when 2 =>
                Test_All_Types_Proto_3_IO.Read_Vector
                  (Stream, Key.Encoding, V.Corecursive);
@@ -1469,9 +1460,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1567,9 +1558,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_64 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Integer_64 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1666,9 +1657,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1765,9 +1756,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_64 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_64 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1864,9 +1855,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1963,9 +1954,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_64 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Integer_64 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2062,9 +2053,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2161,9 +2152,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_64 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Unsigned_64 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2265,9 +2256,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2369,9 +2360,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_64 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Integer_64 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2467,10 +2458,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_IEEE_Float_32
-                 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2566,10 +2556,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_IEEE_Float_64
-                 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2664,9 +2653,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2763,11 +2752,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2863,11 +2850,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Stream_Element_Vector
-                 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -2970,8 +2955,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
@@ -3084,8 +3068,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
@@ -3197,8 +3180,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
                Nested_Enum_IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
@@ -3303,8 +3285,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Key);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
                Foreign_Enum_IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
@@ -3399,7 +3380,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.C);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.C);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;

@@ -63,8 +63,7 @@ package body Google.Protobuf.Wrappers is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_IEEE_Float_64
-                 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -154,8 +153,7 @@ package body Google.Protobuf.Wrappers is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_IEEE_Float_32
-                 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -245,7 +243,7 @@ package body Google.Protobuf.Wrappers is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_64 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -335,7 +333,7 @@ package body Google.Protobuf.Wrappers is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_64 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -425,7 +423,7 @@ package body Google.Protobuf.Wrappers is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Integer_32 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -515,7 +513,7 @@ package body Google.Protobuf.Wrappers is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Unsigned_32 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -605,7 +603,7 @@ package body Google.Protobuf.Wrappers is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Boolean (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -695,8 +693,7 @@ package body Google.Protobuf.Wrappers is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -786,8 +783,7 @@ package body Google.Protobuf.Wrappers is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Stream_Element_Vector
-                 (Stream, Key.Encoding, V.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;

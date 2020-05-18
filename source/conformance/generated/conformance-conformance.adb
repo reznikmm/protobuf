@@ -84,8 +84,7 @@ package body Conformance.Conformance is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String_Vector
-                 (Stream, Key.Encoding, V.Failure);
+               PB_Support.IO.Read_Vector (Stream, Key.Encoding, V.Failure);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -180,26 +179,25 @@ package body Conformance.Conformance is
          case Key.Field is
             when 1 =>
                V.Variant := (Protobuf_Payload_Kind, others => <>);
-               PB_Support.IO.Read_Stream_Element_Vector
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Protobuf_Payload);
             when 2 =>
                V.Variant := (Json_Payload_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Json_Payload);
             when 7 =>
                V.Variant := (Jspb_Payload_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Jspb_Payload);
             when 8 =>
                V.Variant := (Text_Payload_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Text_Payload);
             when 3 =>
                Wire_Format_IO.Read
                  (Stream, Key.Encoding, V.Requested_Output_Format);
             when 4 =>
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Message_Type);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Message_Type);
             when 5 =>
                Test_Category_IO.Read (Stream, Key.Encoding, V.Test_Category);
             when 6 =>
@@ -209,7 +207,7 @@ package body Conformance.Conformance is
                Jspb_Encoding_Config_IO.Read
                  (Stream, Key.Encoding, V.Jspb_Encoding_Options.Value);
             when 9 =>
-               PB_Support.IO.Read_Boolean
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Print_Unknown_Fields);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -325,35 +323,34 @@ package body Conformance.Conformance is
          case Key.Field is
             when 1 =>
                V.Variant := (Parse_Error_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Parse_Error);
             when 6 =>
                V.Variant := (Serialize_Error_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Serialize_Error);
             when 2 =>
                V.Variant := (Runtime_Error_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Runtime_Error);
             when 3 =>
                V.Variant := (Protobuf_Payload_Kind, others => <>);
-               PB_Support.IO.Read_Stream_Element_Vector
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Protobuf_Payload);
             when 4 =>
                V.Variant := (Json_Payload_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Json_Payload);
             when 5 =>
                V.Variant := (Skipped_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Variant.Skipped);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Variant.Skipped);
             when 7 =>
                V.Variant := (Jspb_Payload_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Jspb_Payload);
             when 8 =>
                V.Variant := (Text_Payload_Kind, others => <>);
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Text_Payload);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -467,7 +464,7 @@ package body Conformance.Conformance is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Boolean
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Use_Jspb_Array_Any_Format);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);

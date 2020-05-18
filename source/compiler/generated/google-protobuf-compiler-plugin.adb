@@ -80,14 +80,13 @@ package body Google.Protobuf.Compiler.Plugin is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Universal_String_Vector
+               PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.File_To_Generate);
             when 2 =>
                if  not V.Parameter.Is_Set then
                   V.Parameter := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Parameter.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Parameter.Value);
             when 15 =>
                File_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Proto_File);
@@ -197,8 +196,7 @@ package body Google.Protobuf.Compiler.Plugin is
                if  not V.Error.Is_Set then
                   V.Error := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Error.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Error.Value);
             when 15 =>
                File_IO.Read_Vector (Stream, Key.Encoding, V.File);
             when others =>
@@ -296,20 +294,18 @@ package body Google.Protobuf.Compiler.Plugin is
                if  not V.Name.Is_Set then
                   V.Name := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Name.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
                if  not V.Insertion_Point.Is_Set then
                   V.Insertion_Point := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Universal_String
+               PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Insertion_Point.Value);
             when 15 =>
                if  not V.Content.Is_Set then
                   V.Content := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Universal_String
-                 (Stream, Key.Encoding, V.Content.Value);
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Content.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
