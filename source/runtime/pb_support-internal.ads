@@ -74,6 +74,13 @@ package PB_Support.Internal is
       Field : Field_Number;
       Value : PB_Support.Boolean_Vectors.Vector);
 
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Boolean;
+      Default : Boolean)
+        with Inline;
+
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
@@ -84,6 +91,13 @@ package PB_Support.Internal is
      (Self  : in out Stream;
       Field : Field_Number;
       Value : PB_Support.IEEE_Float_32_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.IEEE_Float_32;
+      Default : Interfaces.IEEE_Float_32)
         with Inline;
 
    not overriding procedure Write
@@ -98,6 +112,13 @@ package PB_Support.Internal is
       Value : PB_Support.IEEE_Float_64_Vectors.Vector)
         with Inline;
 
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.IEEE_Float_64;
+      Default : Interfaces.IEEE_Float_64)
+        with Inline;
+
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
@@ -110,6 +131,14 @@ package PB_Support.Internal is
       Value : League.String_Vectors.Universal_String_Vector)
         with Inline;
 
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : League.Strings.Universal_String;
+      Default : League.Strings.Universal_String :=
+        League.Strings.Empty_Universal_String)
+          with Inline;
+
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
@@ -121,6 +150,14 @@ package PB_Support.Internal is
       Field : Field_Number;
       Value : PB_Support.Stream_Element_Vector_Vectors.Vector)
         with Inline;
+
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : League.Stream_Element_Vectors.Stream_Element_Vector;
+      Default : League.Stream_Element_Vectors.Stream_Element_Vector :=
+        League.Stream_Element_Vectors.Empty_Stream_Element_Vector)
+          with Inline;
 
    not overriding procedure Write_Varint
      (Self  : in out Stream;
@@ -171,6 +208,34 @@ package PB_Support.Internal is
       Field : Field_Number;
       Value : PB_Support.Integer_64_Vectors.Vector);
 
+   not overriding procedure Write_Varint_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Unsigned_32;
+      Default : Interfaces.Unsigned_32)
+        with Inline;
+
+   not overriding procedure Write_Varint_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Unsigned_64;
+      Default : Interfaces.Unsigned_64)
+        with Inline;
+
+   not overriding procedure Write_Varint_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_32;
+      Default : Interfaces.Integer_32)
+        with Inline;
+
+   not overriding procedure Write_Varint_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_64;
+      Default : Interfaces.Integer_64)
+        with Inline;
+
    not overriding procedure Write_Zigzag
      (Self  : in out Stream;
       Field : Field_Number;
@@ -193,6 +258,20 @@ package PB_Support.Internal is
      (Self  : in out Stream;
       Field : Field_Number;
       Value : PB_Support.Integer_64_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Zigzag_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_32;
+      Default : Interfaces.Integer_32)
+        with Inline;
+
+   not overriding procedure Write_Zigzag_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_64;
+      Default : Interfaces.Integer_64)
         with Inline;
 
    not overriding procedure Write_Fixed
@@ -241,6 +320,34 @@ package PB_Support.Internal is
      (Self  : in out Stream;
       Field : Field_Number;
       Value : PB_Support.Unsigned_64_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Fixed_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Unsigned_32;
+      Default : Interfaces.Unsigned_32)
+        with Inline;
+
+   not overriding procedure Write_Fixed_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Unsigned_64;
+      Default : Interfaces.Unsigned_64)
+        with Inline;
+
+   not overriding procedure Write_Fixed_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_32;
+      Default : Interfaces.Integer_32)
+        with Inline;
+
+   not overriding procedure Write_Fixed_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_64;
+      Default : Interfaces.Integer_64)
         with Inline;
 
    not overriding procedure Write_Key

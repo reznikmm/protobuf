@@ -567,6 +567,58 @@ package body PB_Support.Internal is
       Self.Write_Varint (Cast (Value));
    end Write_Varint;
 
+   not overriding procedure Write_Varint_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Unsigned_32;
+      Default : Interfaces.Unsigned_32)
+   is
+      use type Interfaces.Unsigned_32;
+   begin
+      if Value /= Default then
+         Self.Write_Varint (Field, Value);
+      end if;
+   end Write_Varint_Option;
+
+   not overriding procedure Write_Varint_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Unsigned_64;
+      Default : Interfaces.Unsigned_64)
+   is
+      use type Interfaces.Unsigned_64;
+   begin
+      if Value /= Default then
+         Self.Write_Varint (Field, Value);
+      end if;
+   end Write_Varint_Option;
+
+   not overriding procedure Write_Varint_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_32;
+      Default : Interfaces.Integer_32)
+   is
+      use type Interfaces.Integer_32;
+   begin
+      if Value /= Default then
+         Self.Write_Varint (Field, Value);
+      end if;
+   end Write_Varint_Option;
+
+   not overriding procedure Write_Varint_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_64;
+      Default : Interfaces.Integer_64)
+   is
+      use type Interfaces.Integer_64;
+   begin
+      if Value /= Default then
+         Self.Write_Varint (Field, Value);
+      end if;
+   end Write_Varint_Option;
+
    -----------
    -- Write --
    -----------
@@ -606,6 +658,71 @@ package body PB_Support.Internal is
    begin
       Self.Write_Varint (Integer);
    end Write_Key;
+
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Boolean;
+      Default : Boolean) is
+   begin
+      if Value /= Default then
+         Self.Write (Field, Value);
+      end if;
+   end Write_Option;
+
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.IEEE_Float_32;
+      Default : Interfaces.IEEE_Float_32)
+   is
+      use type Interfaces.IEEE_Float_32;
+   begin
+      if Value /= Default then
+         Self.Write (Field, Value);
+      end if;
+   end Write_Option;
+
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.IEEE_Float_64;
+      Default : Interfaces.IEEE_Float_64)
+   is
+      use type Interfaces.IEEE_Float_64;
+   begin
+      if Value /= Default then
+         Self.Write (Field, Value);
+      end if;
+   end Write_Option;
+
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : League.Strings.Universal_String;
+      Default : League.Strings.Universal_String :=
+        League.Strings.Empty_Universal_String)
+   is
+      use type League.Strings.Universal_String;
+   begin
+      if Value /= Default then
+         Self.Write (Field, Value);
+      end if;
+   end Write_Option;
+
+   not overriding procedure Write_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : League.Stream_Element_Vectors.Stream_Element_Vector;
+      Default : League.Stream_Element_Vectors.Stream_Element_Vector :=
+        League.Stream_Element_Vectors.Empty_Stream_Element_Vector)
+   is
+      use type League.Stream_Element_Vectors.Stream_Element_Vector;
+   begin
+      if Value /= Default then
+         Self.Write (Field, Value);
+      end if;
+   end Write_Option;
 
    procedure Write_Zigzag
      (Self  : in out Stream;
@@ -672,6 +789,32 @@ package body PB_Support.Internal is
          Self.Write_Zigzag (Field, Value.Get (J));
       end loop;
    end Write_Zigzag;
+
+   not overriding procedure Write_Zigzag_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_32;
+      Default : Interfaces.Integer_32)
+   is
+      use type Interfaces.Integer_32;
+   begin
+      if Value /= Default then
+         Self.Write_Zigzag (Field, Value);
+      end if;
+   end Write_Zigzag_Option;
+
+   not overriding procedure Write_Zigzag_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_64;
+      Default : Interfaces.Integer_64)
+   is
+      use type Interfaces.Integer_64;
+   begin
+      if Value /= Default then
+         Self.Write_Zigzag (Field, Value);
+      end if;
+   end Write_Zigzag_Option;
 
    -----------------
    -- Write_Fixed --
@@ -796,5 +939,57 @@ package body PB_Support.Internal is
          Self.Write_Fixed (Field, Value.Get (J));
       end loop;
    end Write_Fixed;
+
+   not overriding procedure Write_Fixed_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Unsigned_32;
+      Default : Interfaces.Unsigned_32)
+   is
+      use type Interfaces.Unsigned_32;
+   begin
+      if Value /= Default then
+         Self.Write_Fixed (Field, Value);
+      end if;
+   end Write_Fixed_Option;
+
+   not overriding procedure Write_Fixed_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Unsigned_64;
+      Default : Interfaces.Unsigned_64)
+   is
+      use type Interfaces.Unsigned_64;
+   begin
+      if Value /= Default then
+         Self.Write_Fixed (Field, Value);
+      end if;
+   end Write_Fixed_Option;
+
+   not overriding procedure Write_Fixed_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_32;
+      Default : Interfaces.Integer_32)
+   is
+      use type Interfaces.Integer_32;
+   begin
+      if Value /= Default then
+         Self.Write_Fixed (Field, Value);
+      end if;
+   end Write_Fixed_Option;
+
+   not overriding procedure Write_Fixed_Option
+     (Self    : in out Stream;
+      Field   : Field_Number;
+      Value   : Interfaces.Integer_64;
+      Default : Interfaces.Integer_64)
+   is
+      use type Interfaces.Integer_64;
+   begin
+      if Value /= Default then
+         Self.Write_Fixed (Field, Value);
+      end if;
+   end Write_Fixed_Option;
 
 end PB_Support.Internal;

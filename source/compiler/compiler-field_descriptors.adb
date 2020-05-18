@@ -566,6 +566,7 @@ package body Compiler.Field_Descriptors is
       Result  : Ada_Pretty.Node_Access;
       Get     : League.Strings.Universal_String;
       Full    : League.Strings.Universal_String;
+      Initial : League.Strings.Universal_String;
       Value   : League.Strings.Universal_String := "V." & My_Name;
    begin
       if Self.Oneof_Index.Is_Set then
@@ -615,26 +616,54 @@ package body Compiler.Field_Descriptors is
          Get := Compiler.Context.Named_Types
            (Self.Type_Name.Value).Ada_Type.Type_Name;
 
-         Result := F.New_Statement
-           (F.New_Apply
-             (F.New_Selected_Name (Get & "_IO.Write"),
+         Result := F.New_List
+           ((F.New_Argument_Association (F.New_Name (+"WS")),
+            F.New_Argument_Association
+              (F.New_Literal (Integer (Self.Number.Value))),
+            F.New_Argument_Association
+              (F.New_Selected_Name (Value))));
+
+         if Is_Option and not Self.Oneof_Index.Is_Set then
+            Result := F.New_Apply
+             (F.New_Selected_Name (Get & "_IO.Write_Option"),
               F.New_List
-               ((F.New_Argument_Association (F.New_Name (+"WS")),
-                 F.New_Argument_Association
-                  (F.New_Literal (Integer (Self.Number.Value))),
-                 F.New_Argument_Association
-                  (F.New_Selected_Name (Value))))));
+                (Result,
+                 Default (Self, Pkg, Tipe, Fake)));
+         else
+            Result := F.New_Apply
+             (F.New_Selected_Name (Get & "_IO.Write"),
+              Result);
+         end if;
+
+         Result := F.New_Statement (Result);
 
       else
+         Result := F.New_List
+           (F.New_Argument_Association
+             (F.New_Literal (Integer (Self.Number.Value))),
+            F.New_Argument_Association
+             (F.New_Selected_Name (Value)));
 
-         Result := F.New_Statement
-           (F.New_Apply
-             (F.New_Selected_Name ("WS." & Write_Name (Self)),
-              F.New_List
-               (F.New_Argument_Association
-                 (F.New_Literal (Integer (Self.Number.Value))),
-                F.New_Argument_Association
-                 (F.New_Selected_Name (Value)))));
+         if Is_Option and not Self.Oneof_Index.Is_Set then
+            Initial := Default (Self.PB_Type.Value);
+
+            if Initial.Is_Empty then
+               Result := F.New_Apply
+                 (F.New_Selected_Name ("WS." & Write_Name (Self) & "_Option"),
+                  Result);
+            else
+               Result := F.New_Apply
+                 (F.New_Selected_Name ("WS." & Write_Name (Self) & "_Option"),
+                  F.New_List (Result, F.New_Name (Initial)));
+            end if;
+         else
+            Result := F.New_Apply
+              (F.New_Selected_Name ("WS." & Write_Name (Self)),
+               Result);
+         end if;
+
+
+         Result := F.New_Statement (Result);
       end if;
 
       if Is_Option and

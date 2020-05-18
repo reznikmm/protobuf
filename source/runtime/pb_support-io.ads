@@ -234,6 +234,13 @@ package PB_Support.IO is
         (Stream : in out Internal.Stream;
          Field  : Field_Number;
          Value  : Vectors.Vector);
+
+      procedure Write_Option
+        (Stream  : in out Internal.Stream;
+         Field   : Field_Number;
+         Value   : Element;
+         Default : Element);
+
    end Enum_IO;
 
    generic

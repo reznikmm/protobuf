@@ -128,6 +128,21 @@ package body PB_Support.IO is
          end loop;
       end Write;
 
+      ------------------
+      -- Write_Option --
+      ------------------
+
+      procedure Write_Option
+        (Stream  : in out Internal.Stream;
+         Field   : Field_Number;
+         Value   : Element;
+         Default : Element) is
+      begin
+         if Value /= Default then
+            Write (Stream, Field, Value);
+         end if;
+      end Write_Option;
+
    end Enum_IO;
 
    ----------------
