@@ -232,6 +232,122 @@ package body PB_Support.IO is
       end loop;
    end Read;
 
+   -----------------------
+   -- Read_Fixed_Vector --
+   -----------------------
+
+   procedure Read_Fixed_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Integer_64_Vectors.Vector)
+   is
+      Item : Interfaces.Integer_64;
+   begin
+      if Encoding = Fixed_64 then
+         Read_Fixed (Stream, Encoding, Item);
+         Value.Append (Item);
+      elsif Encoding = Length_Delimited then
+         declare
+            type Integer_64_Array is
+              array (Positive range <>) of Interfaces.Integer_64;
+
+            Data  : Integer_64_Array (1 .. Read_Array_Length (Stream, 8));
+         begin
+            Integer_64_Array'Read (Stream, Data);
+
+            for J of Data loop
+               Value.Append (J);
+            end loop;
+         end;
+      else
+         raise Constraint_Error with "Unexpected encoding";
+      end if;
+   end Read_Fixed_Vector;
+
+   procedure Read_Fixed_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Integer_32_Vectors.Vector)
+   is
+      Item : Interfaces.Integer_32;
+   begin
+      if Encoding = Fixed_32 then
+         Read_Fixed (Stream, Encoding, Item);
+         Value.Append (Item);
+      elsif Encoding = Length_Delimited then
+         declare
+            type Integer_32_Array is
+              array (Positive range <>) of Interfaces.Integer_32;
+
+            Data  : Integer_32_Array (1 .. Read_Array_Length (Stream, 4));
+         begin
+            Integer_32_Array'Read (Stream, Data);
+
+            for J of Data loop
+               Value.Append (J);
+            end loop;
+         end;
+      else
+         raise Constraint_Error with "Unexpected encoding";
+      end if;
+   end Read_Fixed_Vector;
+
+   procedure Read_Fixed_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Unsigned_64_Vectors.Vector)
+   is
+      Item : Interfaces.Unsigned_64;
+   begin
+      if Encoding = Fixed_64 then
+         Read_Fixed (Stream, Encoding, Item);
+         Value.Append (Item);
+      elsif Encoding = Length_Delimited then
+         declare
+            type Unsigned_64_Array is
+              array (Positive range <>) of Interfaces.Unsigned_64;
+
+            Data  : Unsigned_64_Array (1 .. Read_Array_Length (Stream, 8));
+         begin
+            Unsigned_64_Array'Read (Stream, Data);
+
+            for J of Data loop
+               Value.Append (J);
+            end loop;
+         end;
+      else
+         raise Constraint_Error with "Unexpected encoding";
+      end if;
+   end Read_Fixed_Vector;
+
+   procedure Read_Fixed_Vector
+     (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Encoding : Wire_Type;
+      Value    : in out PB_Support.Unsigned_32_Vectors.Vector)
+   is
+      Item : Interfaces.Unsigned_32;
+   begin
+      if Encoding = Fixed_32 then
+         Read_Fixed (Stream, Encoding, Item);
+         Value.Append (Item);
+      elsif Encoding = Length_Delimited then
+         declare
+            type Unsigned_32_Array is
+              array (Positive range <>) of Interfaces.Unsigned_32;
+
+            Data  : Unsigned_32_Array (1 .. Read_Array_Length (Stream, 4));
+         begin
+            Unsigned_32_Array'Read (Stream, Data);
+
+            for J of Data loop
+               Value.Append (J);
+            end loop;
+         end;
+      else
+         raise Constraint_Error with "Unexpected encoding";
+      end if;
+   end Read_Fixed_Vector;
+
    -------------------------
    -- Read_Vector --
    -------------------------

@@ -174,8 +174,7 @@ package PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_64_Vectors.Vector)
-        renames Read_Varint_Vector;
+      Value    : in out PB_Support.Integer_64_Vectors.Vector);
 
    procedure Read_Fixed
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -185,8 +184,7 @@ package PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_64_Vectors.Vector)
-        renames Read_Varint_Vector;
+      Value    : in out PB_Support.Unsigned_64_Vectors.Vector);
 
    procedure Read_Fixed
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -196,8 +194,7 @@ package PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_32_Vectors.Vector)
-        renames Read_Varint_Vector;
+      Value    : in out PB_Support.Integer_32_Vectors.Vector);
 
    procedure Read_Fixed
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -207,8 +204,7 @@ package PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_32_Vectors.Vector)
-        renames Read_Varint_Vector;
+      Value    : in out PB_Support.Unsigned_32_Vectors.Vector);
 
    procedure Unknown_Field
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
