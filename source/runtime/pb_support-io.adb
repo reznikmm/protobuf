@@ -51,6 +51,9 @@ package body PB_Support.IO is
 
    package body Enum_IO is
 
+      function Cast is new Ada.Unchecked_Conversion
+        (Element, Integer_Element);
+
       ----------
       -- Read --
       ----------
@@ -106,12 +109,9 @@ package body PB_Support.IO is
          Field  : Field_Number;
          Value  : Element)
       is
-         function Cast is new Ada.Unchecked_Conversion
-           (Element, Integer_Element);
          Int : constant Integer_Element := Cast (Value);
       begin
-         Internal.Write_Varint
-           (Stream, Field, Interfaces.Integer_32 (Int));
+         Stream.Write_Varint (Field, Interfaces.Integer_32 (Int));
       end Write;
 
       -----------
@@ -142,6 +142,31 @@ package body PB_Support.IO is
             Write (Stream, Field, Value);
          end if;
       end Write_Option;
+
+      procedure Write_Packed
+        (Stream : in out Internal.Stream;
+         Field  : Field_Number;
+         Value  : Vectors.Vector)
+      is
+         Length : Ada.Streams.Stream_Element_Count := 0;
+      begin
+         if Value.Length = 0 then
+            return;
+         end if;
+
+         for J in 1 .. Value.Length loop
+            Length := Length + PB_Support.Internal.Size
+              (Interfaces.Integer_32 (Cast (Value.Get (J))));
+         end loop;
+
+         Stream.Write_Key ((Field, Length_Delimited));
+         Stream.Write (Length);
+
+         for J in 1 .. Value.Length loop
+            Stream.Write_Varint
+              (Interfaces.Integer_32 (Cast (Value.Get (J))));
+         end loop;
+      end Write_Packed;
 
    end Enum_IO;
 

@@ -68,11 +68,6 @@ package body PB_Support.Internal is
       Value : Interfaces.Integer_64)
         with Inline;
 
-   procedure Write
-     (Self  : in out Stream;
-      Value : Ada.Streams.Stream_Element_Count)
-        with Inline;
-
    procedure Write_Zigzag
      (Self  : in out Stream;
       Value : Interfaces.Integer_32)
@@ -102,6 +97,68 @@ package body PB_Support.Internal is
      (Self  : in out Stream;
       Value : Interfaces.Unsigned_64)
         with Inline;
+
+   ----------
+   -- Size --
+   ----------
+
+   function Size (Value : Interfaces.Unsigned_32)
+     return Ada.Streams.Stream_Element_Count
+   is
+      use type Interfaces.Unsigned_32;
+
+      Left : Interfaces.Unsigned_32 := Value;
+      Last : Ada.Streams.Stream_Element_Count := 0;
+   begin
+      while Left >= 16#80# loop
+         Last := Last + 1;
+         Left := Interfaces.Shift_Right (Left, 7);
+      end loop;
+
+      Last := Last + 1;
+      return Last;
+   end Size;
+
+   function Size (Value : Interfaces.Unsigned_64)
+     return Ada.Streams.Stream_Element_Count
+   is
+      use type Interfaces.Unsigned_64;
+
+      Left : Interfaces.Unsigned_64 := Value;
+      Last : Ada.Streams.Stream_Element_Count := 0;
+   begin
+      while Left >= 16#80# loop
+         Last := Last + 1;
+         Left := Interfaces.Shift_Right (Left, 7);
+      end loop;
+
+      Last := Last + 1;
+      return Last;
+   end Size;
+
+   function Size (Value : Interfaces.Integer_32)
+     return Ada.Streams.Stream_Element_Count
+   is
+      use type Interfaces.Integer_32;
+   begin
+      if Value < 0 then
+         return 10;
+      else
+         return Size (Interfaces.Unsigned_32 (Value));
+      end if;
+   end Size;
+
+   function Size (Value : Interfaces.Integer_64)
+     return Ada.Streams.Stream_Element_Count
+   is
+      use type Interfaces.Integer_64;
+   begin
+      if Value < 0 then
+         return 10;
+      else
+         return Size (Interfaces.Unsigned_64 (Value));
+      end if;
+   end Size;
 
    -------------------
    -- Start_Message --
@@ -618,6 +675,114 @@ package body PB_Support.Internal is
       end if;
    end Write_Varint_Option;
 
+   not overriding procedure Write_Varint_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_32_Vectors.Vector)
+   is
+      Length : Ada.Streams.Stream_Element_Count := 0;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      for J in 1 .. Value.Length loop
+         Length := Length + Size (Value.Get (J));
+      end loop;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Varint (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Varint_Packed;
+
+   not overriding procedure Write_Varint_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_64_Vectors.Vector)
+   is
+      Length : Ada.Streams.Stream_Element_Count := 0;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      for J in 1 .. Value.Length loop
+         Length := Length + Size (Value.Get (J));
+      end loop;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Varint (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Varint_Packed;
+
+   not overriding procedure Write_Varint_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector)
+   is
+      Length : Ada.Streams.Stream_Element_Count := 0;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      for J in 1 .. Value.Length loop
+         Length := Length + Size (Value.Get (J));
+      end loop;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Varint (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Varint_Packed;
+
+   not overriding procedure Write_Varint_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector)
+   is
+      Length : Ada.Streams.Stream_Element_Count := 0;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      for J in 1 .. Value.Length loop
+         Length := Length + Size (Value.Get (J));
+      end loop;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Varint (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Varint_Packed;
+
    -----------
    -- Write --
    -----------
@@ -723,6 +888,81 @@ package body PB_Support.Internal is
       end if;
    end Write_Option;
 
+   not overriding procedure Write_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Boolean_Vectors.Vector)
+   is
+      Length : constant Ada.Streams.Stream_Element_Count :=
+        Ada.Streams.Stream_Element_Count (Value.Length);
+      Data   : Ada.Streams.Stream_Element_Array (1 .. Length);
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in Data'Range loop
+            Data (J) := Boolean'Pos (Value.Get (Positive (J)));
+         end loop;
+
+         Self.Parent.Write (Data);
+      end if;
+   end Write_Packed;
+
+   not overriding procedure Write_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.IEEE_Float_32_Vectors.Vector)
+   is
+      Length : constant Ada.Streams.Stream_Element_Count :=
+        Ada.Streams.Stream_Element_Count (Value.Length) * 4;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Packed;
+
+   not overriding procedure Write_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.IEEE_Float_64_Vectors.Vector)
+   is
+      Length : constant Ada.Streams.Stream_Element_Count :=
+        Ada.Streams.Stream_Element_Count (Value.Length) * 8;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Packed;
+
    procedure Write_Zigzag
      (Self  : in out Stream;
       Value : Interfaces.Integer_32)
@@ -814,6 +1054,66 @@ package body PB_Support.Internal is
          Self.Write_Zigzag (Field, Value);
       end if;
    end Write_Zigzag_Option;
+
+   not overriding procedure Write_Zigzag_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector)
+   is
+      use type Interfaces.Integer_32;
+      use type Interfaces.Unsigned_32;
+      Length : Ada.Streams.Stream_Element_Count := 0;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      for J in 1 .. Value.Length loop
+         Length := Length +
+           Size (2 * Interfaces.Unsigned_32 (abs Value.Get (J)));
+      end loop;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Zigzag (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Zigzag_Packed;
+
+   not overriding procedure Write_Zigzag_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector)
+   is
+      use type Interfaces.Integer_64;
+      use type Interfaces.Unsigned_64;
+      Length : Ada.Streams.Stream_Element_Count := 0;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      for J in 1 .. Value.Length loop
+         Length := Length +
+           Size (2 * Interfaces.Unsigned_64 (abs Value.Get (J)));
+      end loop;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Zigzag (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Zigzag_Packed;
 
    -----------------
    -- Write_Fixed --
@@ -990,5 +1290,101 @@ package body PB_Support.Internal is
          Self.Write_Fixed (Field, Value);
       end if;
    end Write_Fixed_Option;
+
+   not overriding procedure Write_Fixed_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector)
+   is
+      Length : constant Ada.Streams.Stream_Element_Count :=
+        Ada.Streams.Stream_Element_Count (Value.Length) * 4;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Fixed (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Fixed_Packed;
+
+   not overriding procedure Write_Fixed_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector)
+   is
+      Length : constant Ada.Streams.Stream_Element_Count :=
+        Ada.Streams.Stream_Element_Count (Value.Length) * 8;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Fixed (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Fixed_Packed;
+
+   not overriding procedure Write_Fixed_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_32_Vectors.Vector)
+   is
+      Length : constant Ada.Streams.Stream_Element_Count :=
+        Ada.Streams.Stream_Element_Count (Value.Length) * 4;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Fixed (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Fixed_Packed;
+
+   not overriding procedure Write_Fixed_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_64_Vectors.Vector)
+   is
+      Length : constant Ada.Streams.Stream_Element_Count :=
+        Ada.Streams.Stream_Element_Count (Value.Length) * 8;
+   begin
+      if Value.Length = 0 then
+         return;
+      end if;
+
+      Self.Write_Key ((Field, Length_Delimited));
+      Self.Write (Length);
+
+      if Self.Riffling then
+         Self.Written := Self.Written + Length;
+      else
+         for J in 1 .. Value.Length loop
+            Self.Write_Fixed (Value.Get (J));
+         end loop;
+      end if;
+   end Write_Fixed_Packed;
 
 end PB_Support.Internal;

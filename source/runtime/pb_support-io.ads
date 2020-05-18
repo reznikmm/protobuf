@@ -235,6 +235,11 @@ package PB_Support.IO is
          Field  : Field_Number;
          Value  : Vectors.Vector);
 
+      procedure Write_Packed
+        (Stream : in out Internal.Stream;
+         Field  : Field_Number;
+         Value  : Vectors.Vector);
+
       procedure Write_Option
         (Stream  : in out Internal.Stream;
          Field   : Field_Number;

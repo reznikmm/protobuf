@@ -74,6 +74,11 @@ package PB_Support.Internal is
       Field : Field_Number;
       Value : PB_Support.Boolean_Vectors.Vector);
 
+   not overriding procedure Write_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Boolean_Vectors.Vector);
+
    not overriding procedure Write_Option
      (Self    : in out Stream;
       Field   : Field_Number;
@@ -93,6 +98,11 @@ package PB_Support.Internal is
       Value : PB_Support.IEEE_Float_32_Vectors.Vector)
         with Inline;
 
+   not overriding procedure Write_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.IEEE_Float_32_Vectors.Vector);
+
    not overriding procedure Write_Option
      (Self    : in out Stream;
       Field   : Field_Number;
@@ -111,6 +121,11 @@ package PB_Support.Internal is
       Field : Field_Number;
       Value : PB_Support.IEEE_Float_64_Vectors.Vector)
         with Inline;
+
+   not overriding procedure Write_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.IEEE_Float_64_Vectors.Vector);
 
    not overriding procedure Write_Option
      (Self    : in out Stream;
@@ -168,6 +183,12 @@ package PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
+      Value : PB_Support.Unsigned_32_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Varint_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
       Value : PB_Support.Unsigned_32_Vectors.Vector);
 
    not overriding procedure Write_Varint
@@ -177,6 +198,12 @@ package PB_Support.Internal is
         with Inline;
 
    not overriding procedure Write_Varint
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_64_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
       Value : PB_Support.Unsigned_64_Vectors.Vector);
@@ -195,6 +222,12 @@ package PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Varint_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
       Value : PB_Support.Integer_32_Vectors.Vector);
 
    not overriding procedure Write_Varint
@@ -204,6 +237,12 @@ package PB_Support.Internal is
         with Inline;
 
    not overriding procedure Write_Varint
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector)
+        with Inline;
+
+   not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
       Value : PB_Support.Integer_64_Vectors.Vector);
@@ -259,6 +298,16 @@ package PB_Support.Internal is
       Field : Field_Number;
       Value : PB_Support.Integer_64_Vectors.Vector)
         with Inline;
+
+   not overriding procedure Write_Zigzag_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector);
+
+   not overriding procedure Write_Zigzag_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector);
 
    not overriding procedure Write_Zigzag_Option
      (Self    : in out Stream;
@@ -322,6 +371,26 @@ package PB_Support.Internal is
       Value : PB_Support.Unsigned_64_Vectors.Vector)
         with Inline;
 
+   not overriding procedure Write_Fixed_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_32_Vectors.Vector);
+
+   not overriding procedure Write_Fixed_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Integer_64_Vectors.Vector);
+
+   not overriding procedure Write_Fixed_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_32_Vectors.Vector);
+
+   not overriding procedure Write_Fixed_Packed
+     (Self  : in out Stream;
+      Field : Field_Number;
+      Value : PB_Support.Unsigned_64_Vectors.Vector);
+
    not overriding procedure Write_Fixed_Option
      (Self    : in out Stream;
       Field   : Field_Number;
@@ -354,6 +423,23 @@ package PB_Support.Internal is
      (Self  : in out Stream;
       Value : Key)
         with Inline;
+
+   procedure Write
+     (Self  : in out Stream;
+      Value : Ada.Streams.Stream_Element_Count)
+        with Inline;
+
+   function Size (Value : Interfaces.Unsigned_32)
+     return Ada.Streams.Stream_Element_Count;
+
+   function Size (Value : Interfaces.Unsigned_64)
+     return Ada.Streams.Stream_Element_Count;
+
+   function Size (Value : Interfaces.Integer_32)
+     return Ada.Streams.Stream_Element_Count;
+
+   function Size (Value : Interfaces.Integer_64)
+     return Ada.Streams.Stream_Element_Count;
 
 private
 
