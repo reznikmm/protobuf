@@ -443,6 +443,13 @@ package body Compiler.Field_Descriptors is
          My_Name.Prepend ("V.");
       end if;
 
+      if Fake.Contains (Unique_Id (Self, Pkg, Tipe)) then
+         Result := F.New_List
+           (Result,
+            F.New_Statement
+              (F.New_Selected_Name (My_Name & ".Clear")));
+      end if;
+
       Result := F.New_List
         (Result,
          F.New_Statement
