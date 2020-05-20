@@ -40,10 +40,11 @@ package body Compiler.Field_Descriptors is
    --  Default value for a predefined type
 
    function Default
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String;
-      Tipe : League.Strings.Universal_String;
-      Fake : Compiler.Context.String_Sets.Set)
+     (Self      : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Is_Option : Boolean;
+      Pkg       : League.Strings.Universal_String;
+      Tipe      : League.Strings.Universal_String;
+      Fake      : Compiler.Context.String_Sets.Set)
       return Ada_Pretty.Node_Access;
    --  Default value for a field
 
@@ -125,7 +126,8 @@ package body Compiler.Field_Descriptors is
       Name : constant League.Strings.Universal_String :=
         Compiler.Context.To_Ada_Name (Self.Name.Value);
       Is_Vector : constant Boolean := Is_Repeated (Self, Pkg, Tipe, Fake);
-      Is_Option : constant Boolean := Is_Optional (Self) and not Is_Vector;
+      Is_Option : constant Boolean :=
+        Is_Optional (Self) and not Is_Vector and not Self.Oneof_Index.Is_Set;
       My_Type : constant League.Strings.Universal_String :=
         Compiler.Context.Relative_Name
           (+Type_Name (Self, Is_Option,  Is_Vector), Pkg);
@@ -133,7 +135,7 @@ package body Compiler.Field_Descriptors is
       Result := F.New_Variable
         (Name            => F.New_Name (Name),
          Type_Definition => F.New_Selected_Name (My_Type),
-         Initialization  => Default (Self, Pkg, Tipe, Fake));
+         Initialization  => Default (Self, Is_Option, Pkg, Tipe, Fake));
 
       return Result;
    end Component;
@@ -174,17 +176,18 @@ package body Compiler.Field_Descriptors is
    -------------
 
    function Default
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String;
-      Tipe : League.Strings.Universal_String;
-      Fake : Compiler.Context.String_Sets.Set)
+     (Self      : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Is_Option : Boolean;
+      Pkg       : League.Strings.Universal_String;
+      Tipe      : League.Strings.Universal_String;
+      Fake      : Compiler.Context.String_Sets.Set)
       return Ada_Pretty.Node_Access
    is
       Result : Ada_Pretty.Node_Access;
    begin
       if Is_Repeated (Self, Pkg, Tipe, Fake) then
          null;
-      elsif Is_Optional (Self) and Compiler.Context.Is_Proto_2 then
+      elsif Is_Option and Compiler.Context.Is_Proto_2 then
          null;
       elsif Self.Type_Name.Is_Set then
          declare
@@ -234,7 +237,8 @@ package body Compiler.Field_Descriptors is
    is
       Is_Vector : constant Boolean := Is_Repeated
         (Self, +"", +"", Compiler.Context.String_Sets.Empty_Set);
-      Is_Option : constant Boolean := Is_Optional (Self) and not Is_Vector;
+      Is_Option : constant Boolean :=
+        Is_Optional (Self) and not Is_Vector and not Self.Oneof_Index.Is_Set;
       My_Pkg    : constant League.Strings.Universal_String :=
         Type_Name (Self, Is_Option, Is_Vector).Package_Name;
    begin
@@ -418,9 +422,8 @@ package body Compiler.Field_Descriptors is
                       (Choices => F.New_Name (+"others"),
                        Value   => F.New_Name (+"<>")))));
          My_Name.Prepend ("V.Variant.");
-      elsif not Is_Vector and
-        Is_Optional (Self) and
-        (Is_Message (Self) or Compiler.Context.Is_Proto_2)
+      elsif not Is_Vector and Is_Optional (Self)
+        and (Is_Message (Self) or Compiler.Context.Is_Proto_2)
       then
          My_Name.Prepend ("V.");
          Result := F.New_If
@@ -670,12 +673,12 @@ package body Compiler.Field_Descriptors is
             F.New_Argument_Association
               (F.New_Selected_Name (Value))));
 
-         if Is_Option then
+         if Is_Option and not Compiler.Context.Is_Proto_2 then
             Result := F.New_Apply
              (F.New_Selected_Name (Get & "_IO.Write_Option"),
               F.New_List
                 (Result,
-                 Default (Self, Pkg, Tipe, Fake)));
+                 Default (Self, False, Pkg, Tipe, Fake)));
          elsif Is_Packed (Self) then
             Result := F.New_Apply
              (F.New_Selected_Name (Get & "_IO.Write_Packed"),
@@ -695,7 +698,7 @@ package body Compiler.Field_Descriptors is
             F.New_Argument_Association
              (F.New_Selected_Name (Value)));
 
-         if Is_Option then
+         if Is_Option and not Compiler.Context.Is_Proto_2 then
             Initial := Default (Self.PB_Type.Value);
 
             if Initial.Is_Empty then
@@ -757,7 +760,7 @@ package body Compiler.Field_Descriptors is
          Result.Append ("_Zigzag");
       end if;
 
-      if Is_Option then
+      if Is_Option and not Compiler.Context.Is_Proto_2 then
          Result.Append ("_Option");
       elsif Packed then
          Result.Append ("_Packed");
