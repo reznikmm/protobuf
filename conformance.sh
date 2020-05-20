@@ -23,6 +23,7 @@ if [ ! -f $PB_CACHE/conformance-test-runner ] ; then
 fi
 
 for J in conformance/conformance.proto \
+ src/google/protobuf/test_messages_proto2.proto \
  src/google/protobuf/test_messages_proto3.proto
 do
   PATH=.objs/compiler/:$PATH protoc \

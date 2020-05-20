@@ -31,6 +31,7 @@ with PB_Support.Memory_Streams;
 with PB_Support.Stdio_Streams;
 
 with Conformance.Conformance;
+with Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2;
 with Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3;
 
 procedure Conformance.Run is
@@ -80,6 +81,24 @@ procedure Conformance.Run is
          begin
             Conformance.Failure_Set'Read (Input'Access, Message);
             Conformance.Failure_Set'Write (Output'Access, Message);
+         exception
+            when E : others =>
+               Responce.Variant :=
+                 (Conformance.Parse_Error_Kind,
+                  "Parse_Error:"
+                  & League.Strings.From_UTF_8_String
+                    (Ada.Exceptions.Exception_Information (E)));
+               return;
+         end;
+      elsif Request.Message_Type =
+        +"protobuf_test_messages.proto2.TestAllTypesProto2"
+      then
+         declare
+            use Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2;
+            Message : Test_All_Types_Proto_2;
+         begin
+            Test_All_Types_Proto_2'Read (Input'Unchecked_Access, Message);
+            Test_All_Types_Proto_2'Write (Output'Access, Message);
          exception
             when E : others =>
                Responce.Variant :=
