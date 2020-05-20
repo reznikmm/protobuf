@@ -434,6 +434,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             when 25 =>
                PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Cord);
             when 27 =>
+               V.Recursive_Message.Clear;
                Test_All_Types_Proto_3_IO.Read_Vector
                  (Stream, Key.Encoding, V.Recursive_Message);
             when 31 =>
@@ -882,21 +883,21 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Optional_Int_32);
-         WS.Write_Varint (2, V.Optional_Int_64);
-         WS.Write_Varint (3, V.Optional_Uint_32);
-         WS.Write_Varint (4, V.Optional_Uint_64);
-         WS.Write_Zigzag (5, V.Optional_Sint_32);
-         WS.Write_Zigzag (6, V.Optional_Sint_64);
-         WS.Write_Fixed (7, V.Optional_Fixed_32);
-         WS.Write_Fixed (8, V.Optional_Fixed_64);
-         WS.Write_Fixed (9, V.Optional_Sfixed_32);
-         WS.Write_Fixed (10, V.Optional_Sfixed_64);
-         WS.Write (11, V.Optional_Float);
-         WS.Write (12, V.Optional_Double);
-         WS.Write (13, V.Optional_Bool);
-         WS.Write (14, V.Optional_String);
-         WS.Write (15, V.Optional_Bytes);
+         WS.Write_Varint_Option (1, V.Optional_Int_32, 0);
+         WS.Write_Varint_Option (2, V.Optional_Int_64, 0);
+         WS.Write_Varint_Option (3, V.Optional_Uint_32, 0);
+         WS.Write_Varint_Option (4, V.Optional_Uint_64, 0);
+         WS.Write_Zigzag_Option (5, V.Optional_Sint_32, 0);
+         WS.Write_Zigzag_Option (6, V.Optional_Sint_64, 0);
+         WS.Write_Fixed_Option (7, V.Optional_Fixed_32, 0);
+         WS.Write_Fixed_Option (8, V.Optional_Fixed_64, 0);
+         WS.Write_Fixed_Option (9, V.Optional_Sfixed_32, 0);
+         WS.Write_Fixed_Option (10, V.Optional_Sfixed_64, 0);
+         WS.Write_Option (11, V.Optional_Float, 0.0);
+         WS.Write_Option (12, V.Optional_Double, 0.0);
+         WS.Write_Option (13, V.Optional_Bool, False);
+         WS.Write_Option (14, V.Optional_String);
+         WS.Write_Option (15, V.Optional_Bytes);
          if V.Optional_Nested_Message.Is_Set then
             WS.Write_Key ((18, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -909,30 +910,36 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
               .Foreign_Message'Write
               (Stream, V.Optional_Foreign_Message.Value);
          end if;
-         Nested_Enum_IO.Write (WS, 21, V.Optional_Nested_Enum);
-         Foreign_Enum_IO.Write (WS, 22, V.Optional_Foreign_Enum);
-         Aliased_Enum_IO.Write (WS, 23, V.Optional_Aliased_Enum);
-         WS.Write (24, V.Optional_String_Piece);
-         WS.Write (25, V.Optional_Cord);
+         Nested_Enum_IO.Write_Option
+           (WS, 21, V.Optional_Nested_Enum,
+            Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOO);
+         Foreign_Enum_IO.Write_Option
+           (WS, 22, V.Optional_Foreign_Enum,
+            Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOREIGN_FOO);
+         Aliased_Enum_IO.Write_Option
+           (WS, 23, V.Optional_Aliased_Enum,
+            Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.ALIAS_FOO);
+         WS.Write_Option (24, V.Optional_String_Piece);
+         WS.Write_Option (25, V.Optional_Cord);
          for J in 1 .. V.Recursive_Message.Length loop
             WS.Write_Key ((27, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Test_All_Types_Proto_3'Write
               (Stream, V.Recursive_Message.Get (J));
          end loop;
-         WS.Write_Varint (31, V.Repeated_Int_32);
-         WS.Write_Varint (32, V.Repeated_Int_64);
-         WS.Write_Varint (33, V.Repeated_Uint_32);
-         WS.Write_Varint (34, V.Repeated_Uint_64);
-         WS.Write_Zigzag (35, V.Repeated_Sint_32);
-         WS.Write_Zigzag (36, V.Repeated_Sint_64);
-         WS.Write_Fixed (37, V.Repeated_Fixed_32);
-         WS.Write_Fixed (38, V.Repeated_Fixed_64);
-         WS.Write_Fixed (39, V.Repeated_Sfixed_32);
-         WS.Write_Fixed (40, V.Repeated_Sfixed_64);
-         WS.Write (41, V.Repeated_Float);
-         WS.Write (42, V.Repeated_Double);
-         WS.Write (43, V.Repeated_Bool);
+         WS.Write_Varint_Packed (31, V.Repeated_Int_32);
+         WS.Write_Varint_Packed (32, V.Repeated_Int_64);
+         WS.Write_Varint_Packed (33, V.Repeated_Uint_32);
+         WS.Write_Varint_Packed (34, V.Repeated_Uint_64);
+         WS.Write_Zigzag_Packed (35, V.Repeated_Sint_32);
+         WS.Write_Zigzag_Packed (36, V.Repeated_Sint_64);
+         WS.Write_Fixed_Packed (37, V.Repeated_Fixed_32);
+         WS.Write_Fixed_Packed (38, V.Repeated_Fixed_64);
+         WS.Write_Fixed_Packed (39, V.Repeated_Sfixed_32);
+         WS.Write_Fixed_Packed (40, V.Repeated_Sfixed_64);
+         WS.Write_Packed (41, V.Repeated_Float);
+         WS.Write_Packed (42, V.Repeated_Double);
+         WS.Write_Packed (43, V.Repeated_Bool);
          WS.Write (44, V.Repeated_String);
          WS.Write (45, V.Repeated_Bytes);
          for J in 1 .. V.Repeated_Nested_Message.Length loop
@@ -947,24 +954,24 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
               .Foreign_Message'Write
               (Stream, V.Repeated_Foreign_Message.Get (J));
          end loop;
-         Nested_Enum_IO.Write (WS, 51, V.Repeated_Nested_Enum);
-         Foreign_Enum_IO.Write (WS, 52, V.Repeated_Foreign_Enum);
+         Nested_Enum_IO.Write_Packed (WS, 51, V.Repeated_Nested_Enum);
+         Foreign_Enum_IO.Write_Packed (WS, 52, V.Repeated_Foreign_Enum);
          WS.Write (54, V.Repeated_String_Piece);
          WS.Write (55, V.Repeated_Cord);
-         WS.Write_Varint (75, V.Packed_Int_32);
-         WS.Write_Varint (76, V.Packed_Int_64);
-         WS.Write_Varint (77, V.Packed_Uint_32);
-         WS.Write_Varint (78, V.Packed_Uint_64);
-         WS.Write_Zigzag (79, V.Packed_Sint_32);
-         WS.Write_Zigzag (80, V.Packed_Sint_64);
-         WS.Write_Fixed (81, V.Packed_Fixed_32);
-         WS.Write_Fixed (82, V.Packed_Fixed_64);
-         WS.Write_Fixed (83, V.Packed_Sfixed_32);
-         WS.Write_Fixed (84, V.Packed_Sfixed_64);
-         WS.Write (85, V.Packed_Float);
-         WS.Write (86, V.Packed_Double);
-         WS.Write (87, V.Packed_Bool);
-         Nested_Enum_IO.Write (WS, 88, V.Packed_Nested_Enum);
+         WS.Write_Varint_Packed (75, V.Packed_Int_32);
+         WS.Write_Varint_Packed (76, V.Packed_Int_64);
+         WS.Write_Varint_Packed (77, V.Packed_Uint_32);
+         WS.Write_Varint_Packed (78, V.Packed_Uint_64);
+         WS.Write_Zigzag_Packed (79, V.Packed_Sint_32);
+         WS.Write_Zigzag_Packed (80, V.Packed_Sint_64);
+         WS.Write_Fixed_Packed (81, V.Packed_Fixed_32);
+         WS.Write_Fixed_Packed (82, V.Packed_Fixed_64);
+         WS.Write_Fixed_Packed (83, V.Packed_Sfixed_32);
+         WS.Write_Fixed_Packed (84, V.Packed_Sfixed_64);
+         WS.Write_Packed (85, V.Packed_Float);
+         WS.Write_Packed (86, V.Packed_Double);
+         WS.Write_Packed (87, V.Packed_Bool);
+         Nested_Enum_IO.Write_Packed (WS, 88, V.Packed_Nested_Enum);
          WS.Write_Varint (89, V.Unpacked_Int_32);
          WS.Write_Varint (90, V.Unpacked_Int_64);
          WS.Write_Varint (91, V.Unpacked_Uint_32);
@@ -1246,24 +1253,24 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             Google.Protobuf.Struct.List_Value'Write
               (Stream, V.Repeated_List_Value.Get (J));
          end loop;
-         WS.Write_Varint (401, V.Fieldname_1);
-         WS.Write_Varint (402, V.Field_Name_2);
-         WS.Write_Varint (403, V.Field_Name_3);
-         WS.Write_Varint (404, V.Field_Name_4);
-         WS.Write_Varint (405, V.Field_0name_5);
-         WS.Write_Varint (406, V.Field_0_Name_6);
-         WS.Write_Varint (407, V.Field_Name_7);
-         WS.Write_Varint (408, V.Field_Name_8);
-         WS.Write_Varint (409, V.Field_Name_9);
-         WS.Write_Varint (410, V.Field_Name_10);
-         WS.Write_Varint (411, V.FIELD_NAME11);
-         WS.Write_Varint (412, V.FIELD_Name_12);
-         WS.Write_Varint (413, V.Field_Name_13);
-         WS.Write_Varint (414, V.Field_Name_14);
-         WS.Write_Varint (415, V.Field_Name_15);
-         WS.Write_Varint (416, V.Field_Name_16);
-         WS.Write_Varint (417, V.Field_Name_17);
-         WS.Write_Varint (418, V.Field_Name_18);
+         WS.Write_Varint_Option (401, V.Fieldname_1, 0);
+         WS.Write_Varint_Option (402, V.Field_Name_2, 0);
+         WS.Write_Varint_Option (403, V.Field_Name_3, 0);
+         WS.Write_Varint_Option (404, V.Field_Name_4, 0);
+         WS.Write_Varint_Option (405, V.Field_0name_5, 0);
+         WS.Write_Varint_Option (406, V.Field_0_Name_6, 0);
+         WS.Write_Varint_Option (407, V.Field_Name_7, 0);
+         WS.Write_Varint_Option (408, V.Field_Name_8, 0);
+         WS.Write_Varint_Option (409, V.Field_Name_9, 0);
+         WS.Write_Varint_Option (410, V.Field_Name_10, 0);
+         WS.Write_Varint_Option (411, V.FIELD_NAME11, 0);
+         WS.Write_Varint_Option (412, V.FIELD_Name_12, 0);
+         WS.Write_Varint_Option (413, V.Field_Name_13, 0);
+         WS.Write_Varint_Option (414, V.Field_Name_14, 0);
+         WS.Write_Varint_Option (415, V.Field_Name_15, 0);
+         WS.Write_Varint_Option (416, V.Field_Name_16, 0);
+         WS.Write_Varint_Option (417, V.Field_Name_17, 0);
+         WS.Write_Varint_Option (418, V.Field_Name_18, 0);
          case V.Variant.Oneof_Field is
             when Oneof_Uint_32_Kind =>
                WS.Write_Varint (111, V.Variant.Oneof_Uint_32);
@@ -1358,6 +1365,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             when 1 =>
                PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.A);
             when 2 =>
+               V.Corecursive.Clear;
                Test_All_Types_Proto_3_IO.Read_Vector
                  (Stream, Key.Encoding, V.Corecursive);
             when others =>
@@ -1383,7 +1391,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.A);
+         WS.Write_Varint_Option (1, V.A, 0);
          for J in 1 .. V.Corecursive.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -1486,8 +1494,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Key);
-         WS.Write_Varint (2, V.Value);
+         WS.Write_Varint_Option (1, V.Key, 0);
+         WS.Write_Varint_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Int_32Int_32Entry (WS'Access, V);
          end if;
@@ -1584,8 +1592,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Key);
-         WS.Write_Varint (2, V.Value);
+         WS.Write_Varint_Option (1, V.Key, 0);
+         WS.Write_Varint_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Int_64Int_64Entry (WS'Access, V);
          end if;
@@ -1683,8 +1691,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Key);
-         WS.Write_Varint (2, V.Value);
+         WS.Write_Varint_Option (1, V.Key, 0);
+         WS.Write_Varint_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Uint_32Uint_32Entry (WS'Access, V);
          end if;
@@ -1782,8 +1790,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Key);
-         WS.Write_Varint (2, V.Value);
+         WS.Write_Varint_Option (1, V.Key, 0);
+         WS.Write_Varint_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Uint_64Uint_64Entry (WS'Access, V);
          end if;
@@ -1881,8 +1889,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Zigzag (1, V.Key);
-         WS.Write_Zigzag (2, V.Value);
+         WS.Write_Zigzag_Option (1, V.Key, 0);
+         WS.Write_Zigzag_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Sint_32Sint_32Entry (WS'Access, V);
          end if;
@@ -1980,8 +1988,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Zigzag (1, V.Key);
-         WS.Write_Zigzag (2, V.Value);
+         WS.Write_Zigzag_Option (1, V.Key, 0);
+         WS.Write_Zigzag_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Sint_64Sint_64Entry (WS'Access, V);
          end if;
@@ -2079,8 +2087,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Fixed (1, V.Key);
-         WS.Write_Fixed (2, V.Value);
+         WS.Write_Fixed_Option (1, V.Key, 0);
+         WS.Write_Fixed_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Fixed_32Fixed_32Entry (WS'Access, V);
          end if;
@@ -2178,8 +2186,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Fixed (1, V.Key);
-         WS.Write_Fixed (2, V.Value);
+         WS.Write_Fixed_Option (1, V.Key, 0);
+         WS.Write_Fixed_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Fixed_64Fixed_64Entry (WS'Access, V);
          end if;
@@ -2282,8 +2290,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Fixed (1, V.Key);
-         WS.Write_Fixed (2, V.Value);
+         WS.Write_Fixed_Option (1, V.Key, 0);
+         WS.Write_Fixed_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Sfixed_32Sfixed_32Entry (WS'Access, V);
          end if;
@@ -2386,8 +2394,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Fixed (1, V.Key);
-         WS.Write_Fixed (2, V.Value);
+         WS.Write_Fixed_Option (1, V.Key, 0);
+         WS.Write_Fixed_Option (2, V.Value, 0);
          if WS.End_Message then
             Write_Map_Sfixed_64Sfixed_64Entry (WS'Access, V);
          end if;
@@ -2484,8 +2492,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Key);
-         WS.Write (2, V.Value);
+         WS.Write_Varint_Option (1, V.Key, 0);
+         WS.Write_Option (2, V.Value, 0.0);
          if WS.End_Message then
             Write_Map_Int_32Float_Entry (WS'Access, V);
          end if;
@@ -2582,8 +2590,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Key);
-         WS.Write (2, V.Value);
+         WS.Write_Varint_Option (1, V.Key, 0);
+         WS.Write_Option (2, V.Value, 0.0);
          if WS.End_Message then
             Write_Map_Int_32Double_Entry (WS'Access, V);
          end if;
@@ -2679,8 +2687,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Key);
-         WS.Write (2, V.Value);
+         WS.Write_Option (1, V.Key, False);
+         WS.Write_Option (2, V.Value, False);
          if WS.End_Message then
             Write_Map_Bool_Bool_Entry (WS'Access, V);
          end if;
@@ -2778,8 +2786,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Key);
-         WS.Write (2, V.Value);
+         WS.Write_Option (1, V.Key);
+         WS.Write_Option (2, V.Value);
          if WS.End_Message then
             Write_Map_String_String_Entry (WS'Access, V);
          end if;
@@ -2876,8 +2884,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Key);
-         WS.Write (2, V.Value);
+         WS.Write_Option (1, V.Key);
+         WS.Write_Option (2, V.Value);
          if WS.End_Message then
             Write_Map_String_Bytes_Entry (WS'Access, V);
          end if;
@@ -2984,7 +2992,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Key);
+         WS.Write_Option (1, V.Key);
          if V.Value.Is_Set then
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -3097,7 +3105,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Key);
+         WS.Write_Option (1, V.Key);
          if V.Value.Is_Set then
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -3206,8 +3214,10 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Key);
-         Nested_Enum_IO.Write (WS, 2, V.Value);
+         WS.Write_Option (1, V.Key);
+         Nested_Enum_IO.Write_Option
+           (WS, 2, V.Value,
+            Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOO);
          if WS.End_Message then
             Write_Map_String_Nested_Enum_Entry (WS'Access, V);
          end if;
@@ -3311,8 +3321,10 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Key);
-         Foreign_Enum_IO.Write (WS, 2, V.Value);
+         WS.Write_Option (1, V.Key);
+         Foreign_Enum_IO.Write_Option
+           (WS, 2, V.Value,
+            Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOREIGN_FOO);
          if WS.End_Message then
             Write_Map_String_Foreign_Enum_Entry (WS'Access, V);
          end if;
@@ -3404,7 +3416,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.C);
+         WS.Write_Varint_Option (1, V.C, 0);
          if WS.End_Message then
             Write_Foreign_Message (WS'Access, V);
          end if;

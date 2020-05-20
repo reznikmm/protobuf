@@ -232,15 +232,17 @@ package body Conformance.Conformance is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         Wire_Format_IO.Write (WS, 3, V.Requested_Output_Format);
-         WS.Write (4, V.Message_Type);
-         Test_Category_IO.Write (WS, 5, V.Test_Category);
+         Wire_Format_IO.Write_Option
+           (WS, 3, V.Requested_Output_Format, Conformance.UNSPECIFIED);
+         WS.Write_Option (4, V.Message_Type);
+         Test_Category_IO.Write_Option
+           (WS, 5, V.Test_Category, Conformance.UNSPECIFIED_TEST);
          if V.Jspb_Encoding_Options.Is_Set then
             WS.Write_Key ((6, PB_Support.Length_Delimited));
             Conformance.Jspb_Encoding_Config'Write
               (Stream, V.Jspb_Encoding_Options.Value);
          end if;
-         WS.Write (9, V.Print_Unknown_Fields);
+         WS.Write_Option (9, V.Print_Unknown_Fields, False);
          case V.Variant.Payload is
             when Protobuf_Payload_Kind =>
                WS.Write (1, V.Variant.Protobuf_Payload);
@@ -489,7 +491,7 @@ package body Conformance.Conformance is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Use_Jspb_Array_Any_Format);
+         WS.Write_Option (1, V.Use_Jspb_Array_Any_Format, False);
          if WS.End_Message then
             Write_Jspb_Encoding_Config (WS'Access, V);
          end if;

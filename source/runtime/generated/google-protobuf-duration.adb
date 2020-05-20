@@ -85,8 +85,8 @@ package body Google.Protobuf.Duration is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Seconds);
-         WS.Write_Varint (2, V.Nanos);
+         WS.Write_Varint_Option (1, V.Seconds, 0);
+         WS.Write_Varint_Option (2, V.Nanos, 0);
          if WS.End_Message then
             Write_Duration (WS'Access, V);
          end if;

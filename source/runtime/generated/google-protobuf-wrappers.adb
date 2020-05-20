@@ -87,7 +87,7 @@ package body Google.Protobuf.Wrappers is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Value);
+         WS.Write_Option (1, V.Value, 0.0);
          if WS.End_Message then
             Write_Double_Value (WS'Access, V);
          end if;
@@ -177,7 +177,7 @@ package body Google.Protobuf.Wrappers is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Value);
+         WS.Write_Option (1, V.Value, 0.0);
          if WS.End_Message then
             Write_Float_Value (WS'Access, V);
          end if;
@@ -267,7 +267,7 @@ package body Google.Protobuf.Wrappers is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Value);
+         WS.Write_Varint_Option (1, V.Value, 0);
          if WS.End_Message then
             Write_Int_64Value (WS'Access, V);
          end if;
@@ -357,7 +357,7 @@ package body Google.Protobuf.Wrappers is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Value);
+         WS.Write_Varint_Option (1, V.Value, 0);
          if WS.End_Message then
             Write_UInt_64Value (WS'Access, V);
          end if;
@@ -447,7 +447,7 @@ package body Google.Protobuf.Wrappers is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Value);
+         WS.Write_Varint_Option (1, V.Value, 0);
          if WS.End_Message then
             Write_Int_32Value (WS'Access, V);
          end if;
@@ -537,7 +537,7 @@ package body Google.Protobuf.Wrappers is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Value);
+         WS.Write_Varint_Option (1, V.Value, 0);
          if WS.End_Message then
             Write_UInt_32Value (WS'Access, V);
          end if;
@@ -627,7 +627,7 @@ package body Google.Protobuf.Wrappers is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Value);
+         WS.Write_Option (1, V.Value, False);
          if WS.End_Message then
             Write_Bool_Value (WS'Access, V);
          end if;
@@ -717,7 +717,7 @@ package body Google.Protobuf.Wrappers is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Value);
+         WS.Write_Option (1, V.Value);
          if WS.End_Message then
             Write_String_Value (WS'Access, V);
          end if;
@@ -807,7 +807,7 @@ package body Google.Protobuf.Wrappers is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Value);
+         WS.Write_Option (1, V.Value);
          if WS.End_Message then
             Write_Bytes_Value (WS'Access, V);
          end if;

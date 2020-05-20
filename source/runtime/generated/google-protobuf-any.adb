@@ -84,8 +84,8 @@ package body Google.Protobuf.Any is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Type_Url);
-         WS.Write (2, V.Value);
+         WS.Write_Option (1, V.Type_Url);
+         WS.Write_Option (2, V.Value);
          if WS.End_Message then
             Write_Any (WS'Access, V);
          end if;

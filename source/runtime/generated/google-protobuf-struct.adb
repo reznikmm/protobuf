@@ -212,7 +212,7 @@ package body Google.Protobuf.Struct is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Key);
+         WS.Write_Option (1, V.Key);
          if V.Value.Is_Set then
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Struct.Value'Write (Stream, V.Value.Value);
