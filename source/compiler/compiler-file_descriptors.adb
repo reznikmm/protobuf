@@ -162,7 +162,7 @@ package body Compiler.File_Descriptors is
       begin
          for J in 1 .. Self.Message_Type.Length loop
             Next := Compiler.Descriptors.Subprograms
-              (Self.Message_Type.Get (J), Pkg);
+              (Self.Message_Type (J), Pkg);
             Result := F.New_List (Result, Next);
          end loop;
 
@@ -226,12 +226,7 @@ package body Compiler.File_Descriptors is
       end loop;
 
       for J in 1 .. Self.Message_Type.Length loop
-         declare
-            Item : constant Google.Protobuf.Descriptor.Descriptor_Proto :=
-              Self.Message_Type.Get (J);
-         begin
-            Compiler.Descriptors.Dependency (Item, Set);
-         end;
+         Compiler.Descriptors.Dependency (Self.Message_Type (J), Set);
       end loop;
 
       for J of Set loop
@@ -278,7 +273,7 @@ package body Compiler.File_Descriptors is
    begin
       for J in 1 .. Self.Message_Type.Length loop
          Compiler.Descriptors.Get_Used_Types
-           (Self.Message_Type.Get (J), Result);
+           (Self.Message_Type (J), Result);
       end loop;
    end Get_Used_Types;
 
@@ -328,7 +323,7 @@ package body Compiler.File_Descriptors is
 
       for J in 1 .. Self.Message_Type.Length loop
          Compiler.Descriptors.Populate_Named_Types
-           (Self   => Self.Message_Type.Get (J),
+           (Self   => Self.Message_Type (J),
             PB_Prefix => PB_Package,
             Ada_Package => Ada_Package,
             Map    => Map);
@@ -336,7 +331,7 @@ package body Compiler.File_Descriptors is
 
       for J in 1 .. Self.Enum_Type.Length loop
          Compiler.Enum_Descriptors.Populate_Named_Types
-           (Self        => Self.Enum_Type.Get (J),
+           (Self        => Self.Enum_Type (J),
             PB_Prefix   => PB_Package,
             Ada_Package => Ada_Package,
             Map         => Map);
@@ -363,7 +358,7 @@ package body Compiler.File_Descriptors is
       begin
          for J in 1 .. Self.Message_Type.Length loop
             Next := Compiler.Descriptors.Private_Spec
-              (Self.Message_Type.Get (J));
+              (Self.Message_Type (J));
             Result := F.New_List (Result, Next);
          end loop;
 
@@ -386,8 +381,7 @@ package body Compiler.File_Descriptors is
          Going  : Boolean;
       begin
          for J in 1 .. Self.Enum_Type.Length loop
-            Next := Compiler.Enum_Descriptors.Public_Spec
-              (Self.Enum_Type.Get (J));
+            Next := Compiler.Enum_Descriptors.Public_Spec (Self.Enum_Type (J));
 
             if Next /= null then
                Result := F.New_List (Result, Next);
@@ -395,19 +389,16 @@ package body Compiler.File_Descriptors is
          end loop;
 
          for J in 1 .. Self.Message_Type.Length loop
-            declare
-               Item : constant Google.Protobuf.Descriptor.Descriptor_Proto :=
-                 Self.Message_Type.Get (J);
-            begin
-               Next := Compiler.Descriptors.Enum_Types (Item);
+            Next := Compiler.Descriptors.Enum_Types (Self.Message_Type (J));
 
-               if Next /= null then
-                  Result := F.New_List (Result, Next);
-               end if;
+            if Next /= null then
+               Result := F.New_List (Result, Next);
+            end if;
 
-               Next := Compiler.Descriptors.Vector_Declarations (Item);
-               Vector := F.New_List (Vector, Next);
-            end;
+            Next := Compiler.Descriptors.Vector_Declarations
+              (Self.Message_Type (J));
+
+            Vector := F.New_List (Vector, Next);
          end loop;
 
          if Vector /= null then
@@ -419,19 +410,14 @@ package body Compiler.File_Descriptors is
             Going := False;
 
             for J in 1 .. Self.Message_Type.Length loop
-               declare
-                  Item : constant Google.Protobuf.Descriptor.Descriptor_Proto
-                    := Self.Message_Type.Get (J);
-               begin
-                  Compiler.Descriptors.Public_Spec
-                    (Item, Pkg, Next, Again, Done, Force);
+               Compiler.Descriptors.Public_Spec
+                 (Self.Message_Type (J), Pkg, Next, Again, Done, Force);
 
-                  if Next /= null then
-                     Result := F.New_List (Result, Next);
-                     Force := 0;
-                     Going := True;
-                  end if;
-               end;
+               if Next /= null then
+                  Result := F.New_List (Result, Next);
+                  Force := 0;
+                  Going := True;
+               end if;
             end loop;
 
             if not Going then

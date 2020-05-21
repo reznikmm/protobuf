@@ -92,7 +92,7 @@ package body Compiler.Enum_Descriptors is
 
       Name  : constant League.Strings.Universal_String := Type_Name (Self);
       Literal : League.Strings.Universal_String :=
-        Self.Value.Get (Index).Name.Value;
+        Self.Value (Index).Name.Value;
    begin
       if Literal.To_Lowercase = Name.To_Lowercase then
          Literal.Prepend ("PB_");
@@ -108,11 +108,11 @@ package body Compiler.Enum_Descriptors is
    function Max_Value
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer
    is
-      Result : Integer := Integer (Self.Value.Get (1).Number.Value);
+      Result : Integer := Integer (Self.Value (1).Number.Value);
       Next   : Integer;
    begin
       for J in 2 .. Self.Value.Length loop
-         Next := Integer (Self.Value.Get (J).Number.Value);
+         Next := Integer (Self.Value (J).Number.Value);
          Result := Integer'Max (Result, Next);
       end loop;
 
@@ -126,11 +126,11 @@ package body Compiler.Enum_Descriptors is
    function Min_Value
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer
    is
-      Result : Integer := Integer (Self.Value.Get (1).Number.Value);
+      Result : Integer := Integer (Self.Value (1).Number.Value);
       Next   : Integer;
    begin
       for J in 2 .. Self.Value.Length loop
-         Next := Integer (Self.Value.Get (J).Number.Value);
+         Next := Integer (Self.Value (J).Number.Value);
          Result := Integer'Min (Result, Next);
       end loop;
 
@@ -205,16 +205,9 @@ package body Compiler.Enum_Descriptors is
       Prev    : Enum;
    begin
       for J in 1 .. Self.Value.Length loop
-         declare
-            Next : constant
-              Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto :=
-                Self.Value.Get (J);
-         begin
-            Enums.Include
-              ((Value => Integer (Next.Number.Value),
-                Name  => Literal_Name (Self, J)));
-
-         end;
+         Enums.Include
+           ((Value => Integer (Self.Value (J).Number.Value),
+             Name  => Literal_Name (Self, J)));
       end loop;
 
       Prev := Enums.Last_Element;

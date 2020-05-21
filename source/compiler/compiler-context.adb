@@ -62,7 +62,7 @@ package body Compiler.Context is
       for J in 1 .. Request.Proto_File.Length loop
          declare
             Result : constant Google.Protobuf.Descriptor.File_Descriptor_Proto
-              := Request.Proto_File.Get (J);
+              := Request.Proto_File (J);
          begin
             if Result.Name.Is_Set and then Result.Name.Value = Name then
                return Result;
@@ -83,7 +83,7 @@ package body Compiler.Context is
    begin
       for J in 1 .. Request.Proto_File.Length loop
          Compiler.File_Descriptors.Populate_Named_Types
-           (Request.Proto_File.Get (J), Map);
+           (Request.Proto_File (J), Map);
       end loop;
    end Populate_Named_Types;
 

@@ -631,7 +631,7 @@ package body Compiler.Field_Descriptors is
          Value := "V.Variant." & My_Name;
       elsif Is_Message (Self) then
          if Is_Vector then
-            Value.Append (+".Get (J)");
+            Value.Append (+" (J)");
          elsif Is_Option then
             Value.Append (+".Value");
          end if;

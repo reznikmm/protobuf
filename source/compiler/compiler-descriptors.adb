@@ -100,14 +100,13 @@ package body Compiler.Descriptors is
       Item   : Ada_Pretty.Node_Access;
    begin
       for J in 1 .. Self.Enum_Type.Length loop
-         Item := Compiler.Enum_Descriptors.Public_Spec
-           (Self.Enum_Type.Get (J));
+         Item := Compiler.Enum_Descriptors.Public_Spec (Self.Enum_Type (J));
 
          Result := F.New_List (Result, Item);
       end loop;
 
       for J in 1 .. Self.Nested_Type.Length loop
-         Item := Enum_Types (Self.Nested_Type.Get (J));
+         Item := Enum_Types (Self.Nested_Type (J));
 
          if Item /= null then
             Result := F.New_List (Result, Item);
@@ -135,7 +134,7 @@ package body Compiler.Descriptors is
          declare
             use all type Google.Protobuf.Descriptor.Label;
             Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
-              := Self.Field.Get (J);
+              := Self.Field (J);
             Type_Name  : League.Strings.Universal_String;
             Named_Type : Compiler.Context.Named_Type;
          begin
@@ -188,11 +187,11 @@ package body Compiler.Descriptors is
       end if;
 
       for J in 1 .. Self.Field.Length loop
-         Compiler.Field_Descriptors.Dependency (Self.Field.Get (J), Result);
+         Compiler.Field_Descriptors.Dependency (Self.Field (J), Result);
       end loop;
 
       for J in 1 .. Self.Nested_Type.Length loop
-         Dependency (Self.Nested_Type.Get (J), Result);
+         Dependency (Self.Nested_Type (J), Result);
       end loop;
    end Dependency;
 
@@ -205,12 +204,11 @@ package body Compiler.Descriptors is
       Result : in out Compiler.Context.String_Sets.Set) is
    begin
       for J in 1 .. Self.Field.Length loop
-         Compiler.Field_Descriptors.Get_Used_Types
-           (Self.Field.Get (J), Result);
+         Compiler.Field_Descriptors.Get_Used_Types (Self.Field (J), Result);
       end loop;
 
       for J in 1 .. Self.Nested_Type.Length loop
-         Get_Used_Types (Self.Nested_Type.Get (J), Result);
+         Get_Used_Types (Self.Nested_Type (J), Result);
       end loop;
    end Get_Used_Types;
 
@@ -331,10 +329,8 @@ package body Compiler.Descriptors is
       Component : in out Ada_Pretty.Node_Access)
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
-      Item : constant Google.Protobuf.Descriptor.Oneof_Descriptor_Proto :=
-        Self.Oneof_Decl.Get (Index);
       Item_Name : constant League.Strings.Universal_String :=
-        Compiler.Context.To_Ada_Name (Item.Name.Value);
+        Compiler.Context.To_Ada_Name (Self.Oneof_Decl (Index).Name.Value);
       Next : Ada_Pretty.Node_Access;
       Name : constant League.Strings.Universal_String :=
         My_Name & "_Variant";
@@ -350,7 +346,7 @@ package body Compiler.Descriptors is
       for J in 1 .. Self.Field.Length loop
          declare
             Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
-              := Self.Field.Get (J);
+              := Self.Field (J);
             Literal : League.Strings.Universal_String;
 
          begin
@@ -427,7 +423,7 @@ package body Compiler.Descriptors is
 
       for J in 1 .. Self.Nested_Type.Length loop
          Populate_Named_Types
-           (Self        => Self.Nested_Type.Get (J),
+           (Self        => Self.Nested_Type (J),
             PB_Prefix   => Key,
             Ada_Package => Ada_Package,
             Map         => Map);
@@ -435,7 +431,7 @@ package body Compiler.Descriptors is
 
       for J in 1 .. Self.Enum_Type.Length loop
          Compiler.Enum_Descriptors.Populate_Named_Types
-           (Self        => Self.Enum_Type.Get (J),
+           (Self        => Self.Enum_Type (J),
             PB_Prefix   => Key,
             Ada_Package => Ada_Package,
             Map         => Map);
@@ -463,7 +459,7 @@ package body Compiler.Descriptors is
       Final  : Ada_Pretty.Node_Access;
    begin
       for J in 1 .. Self.Nested_Type.Length loop
-         Item := Private_Spec (Self.Nested_Type.Get (J));
+         Item := Private_Spec (Self.Nested_Type (J));
          Result := F.New_List (Result, Item);
       end loop;
 
@@ -567,7 +563,6 @@ package body Compiler.Descriptors is
       V_Name : Ada_Pretty.Node_Access;
       P_Self : Ada_Pretty.Node_Access;
       Is_Set : Ada_Pretty.Node_Access;
-      Getter : Ada_Pretty.Node_Access;
       Count  : Ada_Pretty.Node_Access;
       Clear  : Ada_Pretty.Node_Access;
       Append : Ada_Pretty.Node_Access;
@@ -579,17 +574,12 @@ package body Compiler.Descriptors is
       Indexing : Ada_Pretty.Node_Access;
    begin
       for J in 1 .. Self.Field.Length loop
-         declare
-            Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
-              := Self.Field.Get (J);
-         begin
-            if not Field.Oneof_Index.Is_Set then
-               Item := Compiler.Field_Descriptors.Component
-                 (Field, Pkg, My_Name, Fake);
+         if not Self.Field (J).Oneof_Index.Is_Set then
+            Item := Compiler.Field_Descriptors.Component
+              (Self.Field (J), Pkg, My_Name, Fake);
 
-               Result := F.New_List (Result, Item);
-            end if;
-         end;
+            Result := F.New_List (Result, Item);
+         end if;
       end loop;
 
       for J in 1 .. Self.Oneof_Decl.Length loop
@@ -638,18 +628,6 @@ package body Compiler.Descriptors is
                Type_Definition => V_Name),
             Result     => F.New_Name (+"Natural")));
 
-      Getter := F.New_Subprogram_Declaration
-        (F.New_Subprogram_Specification
-           (Name       => F.New_Name (+"Get"),
-            Parameters => F.New_List
-              (F.New_Parameter
-                 (Name            => P_Self,
-                  Type_Definition => V_Name),
-               F.New_Parameter
-                 (Name            => F.New_Name (+"Index"),
-                  Type_Definition => F.New_Name (+"Positive"))),
-            Result     => Me));
-
       Clear := F.New_Subprogram_Declaration
         (F.New_Subprogram_Specification
            (Name       => F.New_Name (+"Clear"),
@@ -675,8 +653,7 @@ package body Compiler.Descriptors is
         (Indexing_Spec (Self, +"Variable", True),
          Indexing_Spec (Self, +"Constant", False));
 
-      Result := F.New_List
-        ((Result, Option, Count, Getter, Clear, Append, Indexing));
+      Result := F.New_List ((Result, Option, Count, Clear, Append, Indexing));
 
       return Result;
    end Public_Spec;
@@ -701,7 +678,7 @@ package body Compiler.Descriptors is
       Result := null;
 
       for J in 1 .. Self.Nested_Type.Length loop
-         Public_Spec (Self.Nested_Type.Get (J), Pkg, Item, Again, Done, Force);
+         Public_Spec (Self.Nested_Type (J), Pkg, Item, Again, Done, Force);
 
          if Item /= null then
             Result := F.New_List (Result, Item);
@@ -739,8 +716,8 @@ package body Compiler.Descriptors is
       begin
          if Field.Oneof_Index.Is_Set then
             return Compiler.Context.To_Ada_Name
-              (Self.Oneof_Decl.Get
-                 (Natural (Field.Oneof_Index.Value) + 1).Name.Value);
+              (Self.Oneof_Decl
+                (Natural (Field.Oneof_Index.Value) + 1).Name.Value);
          else
             return League.Strings.Empty_Universal_String;
          end if;
@@ -758,11 +735,11 @@ package body Compiler.Descriptors is
 
       for J in 1 .. Self.Field.Length loop
          Field := Compiler.Field_Descriptors.Read_Case
-           (Self.Field.Get (J),
+           (Self.Field (J),
             Pkg,
             My_Name,
             Fake,
-            Oneof_Name (Self.Field.Get (J)));
+            Oneof_Name (Self.Field (J)));
          Result := F.New_List (Result, Field);
       end loop;
 
@@ -823,7 +800,6 @@ package body Compiler.Descriptors is
       V_Name  : Ada_Pretty.Node_Access;
       P_Self : Ada_Pretty.Node_Access;
       Free   : Ada_Pretty.Node_Access;
-      Getter : Ada_Pretty.Node_Access;
       Count  : Ada_Pretty.Node_Access;
       Clear  : Ada_Pretty.Node_Access;
       Append : Ada_Pretty.Node_Access;
@@ -846,20 +822,6 @@ package body Compiler.Descriptors is
             Result     => F.New_Name (+"Natural")),
          Statements => F.New_Return
            (F.New_Selected_Name (+"Self.Length")));
-
-      Getter := F.New_Subprogram_Body
-        (F.New_Subprogram_Specification
-           (Name       => F.New_Name (+"Get"),
-            Parameters => F.New_List
-              (F.New_Parameter
-                 (Name            => P_Self,
-                  Type_Definition => V_Name),
-               F.New_Parameter
-                 (Name            => F.New_Name (+"Index"),
-                  Type_Definition => F.New_Name (+"Positive"))),
-            Result     => Me),
-         Statements => F.New_Return
-           (F.New_Selected_Name (+"Self.Data (Index)")));
 
       Clear := F.New_Subprogram_Body
         (F.New_Subprogram_Specification
@@ -995,12 +957,11 @@ package body Compiler.Descriptors is
          Indexing_Body (Self, +"Constant", False));
 
       Result := F.New_List
-        ((Count, Getter, Clear, Free, Append, Adjust, Final, Ref,
-          Read, Write));
+        ((Count, Clear, Free, Append, Adjust, Final, Ref, Read, Write));
 
       for J in 1 .. Self.Nested_Type.Length loop
          Result := F.New_List
-           (Result, Subprograms (Self.Nested_Type.Get (J), Pkg));
+           (Result, Subprograms (Self.Nested_Type (J), Pkg));
       end loop;
 
       return Result;
@@ -1049,7 +1010,7 @@ package body Compiler.Descriptors is
                 F.New_Name (+"Constant_Indexing")))));
 
       for J in 1 .. Self.Nested_Type.Length loop
-         Item := Vector_Declarations (Self.Nested_Type.Get (J));
+         Item := Vector_Declarations (Self.Nested_Type (J));
 
          Result := F.New_List (Result, Item);
       end loop;
@@ -1102,39 +1063,27 @@ package body Compiler.Descriptors is
       Stmts := F.New_Statement (F.New_Selected_Name (+"WS.Start_Message"));
 
       for J in 1 .. Self.Field.Length loop
-         declare
-            Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
-              := Self.Field.Get (J);
-         begin
-            if not Field.Oneof_Index.Is_Set then
-               Stmts := F.New_List
-                 (Stmts,
-                  Compiler.Field_Descriptors.Write_Call
-                    (Field, Pkg, My_Name, Fake));
-            end if;
-         end;
+         if not Self.Field (J).Oneof_Index.Is_Set then
+            Stmts := F.New_List
+              (Stmts,
+               Compiler.Field_Descriptors.Write_Call
+                 (Self.Field (J), Pkg, My_Name, Fake));
+         end if;
       end loop;
 
       for K in 1 .. Self.Oneof_Decl.Length loop
          declare
-            One_Of : constant Google.Protobuf.Descriptor.Oneof_Descriptor_Proto
-              := Self.Oneof_Decl.Get (K);
             Name   : constant League.Strings.Universal_String :=
-              Compiler.Context.To_Ada_Name (One_Of.Name.Value);
+              Compiler.Context.To_Ada_Name (Self.Oneof_Decl (K).Name.Value);
             Cases : Ada_Pretty.Node_Access;
          begin
             for J in 1 .. Self.Field.Length loop
-               declare
-                  Field : constant Google.Protobuf.Descriptor
-                    .Field_Descriptor_Proto := Self.Field.Get (J);
-               begin
-                  if Is_One_Of (Field.Oneof_Index, K) then
-                     Cases := F.New_List
-                       (Cases,
-                        Compiler.Field_Descriptors.Case_Path
-                          (Field, Pkg, My_Name, Fake));
-                  end if;
-               end;
+               if Is_One_Of (Self.Field (J).Oneof_Index, K) then
+                  Cases := F.New_List
+                    (Cases,
+                     Compiler.Field_Descriptors.Case_Path
+                       (Self.Field (J), Pkg, My_Name, Fake));
+               end if;
             end loop;
 
             Cases := F.New_List
