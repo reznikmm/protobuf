@@ -78,6 +78,16 @@ package body Compiler.Descriptors is
      (Value : PB_Support.Integer_32_Vectors.Option;
       Index : Positive) return Boolean;
 
+   function Indexing_Spec
+     (Self     : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Prefix   : League.Strings.Universal_String;
+      Variable : Boolean) return Ada_Pretty.Node_Access;
+
+   function Indexing_Body
+     (Self     : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Prefix   : League.Strings.Universal_String;
+      Variable : Boolean) return Ada_Pretty.Node_Access;
+
    ----------------
    -- Enum_Types --
    ----------------
@@ -203,6 +213,98 @@ package body Compiler.Descriptors is
          Get_Used_Types (Self.Nested_Type.Get (J), Result);
       end loop;
    end Get_Used_Types;
+
+   -------------------
+   -- Indexing_Body --
+   -------------------
+
+   function Indexing_Body
+     (Self     : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Prefix   : League.Strings.Universal_String;
+      Variable : Boolean) return Ada_Pretty.Node_Access
+   is
+      My_Name  : constant League.Strings.Universal_String := Type_Name (Self);
+      Ref_Name : constant League.Strings.Universal_String :=
+        My_Name & "_" & Prefix & "_Reference";
+      Result   : Ada_Pretty.Node_Access;
+   begin
+      Result := F.New_Subprogram_Body
+        (Specification =>
+          F.New_Subprogram_Specification
+           (Name          => F.New_Name ("Get_" & Ref_Name),
+            Is_Overriding => Ada_Pretty.False,
+            Parameters    => F.New_List
+             (F.New_Parameter
+               (Name            => F.New_Name (+"Self"),
+                Type_Definition => F.New_Name (My_Name & "_Vector"),
+                Is_In           => Variable,
+                Is_Out          => Variable,
+                Is_Aliased      => True),
+              F.New_Parameter
+               (Name            => F.New_Name (+"Index"),
+                Type_Definition => F.New_Name (+"Positive"))),
+            Result        => F.New_Name (Ref_Name)),
+         Statements    => F.New_Return
+           (F.New_Parentheses
+                (F.New_Argument_Association
+                     (Value  => F.New_Name (+"Self.Data (Index)'Access"),
+                      Choice => F.New_Name (+"Element")))));
+
+      return Result;
+   end Indexing_Body;
+
+   -------------------
+   -- Indexing_Spec --
+   -------------------
+
+   function Indexing_Spec
+     (Self     : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Prefix   : League.Strings.Universal_String;
+      Variable : Boolean) return Ada_Pretty.Node_Access
+   is
+      My_Name  : constant League.Strings.Universal_String := Type_Name (Self);
+      Ref_Name : constant League.Strings.Universal_String :=
+        My_Name & "_" & Prefix & "_Reference";
+      Map      : constant array (Boolean) of Ada_Pretty.Access_Modifier :=
+        (True => Ada_Pretty.Unspecified,
+         False => Ada_Pretty.Access_Constant);
+      Result   : Ada_Pretty.Node_Access;
+   begin
+      Result := F.New_Type
+        (Name          => F.New_Name (Ref_Name),
+         Discriminants => F.New_Parameter
+           (Name            => F.New_Name (+"Element"),
+            Type_Definition => F.New_Null_Exclusion
+              (F.New_Access
+                (Target   => F.New_Name (My_Name),
+                 Modifier => Map (Variable)))),
+         Definition    => F.New_Record,
+         Aspects       => F.New_Argument_Association
+           (Choice => F.New_Name (+"Implicit_Dereference"),
+            Value  => F.New_Name (+"Element")));
+
+      Result := F.New_List
+        (Result,
+         F.New_Subprogram_Declaration
+          (Specification =>
+           F.New_Subprogram_Specification
+            (Name          => F.New_Name ("Get_" & Ref_Name),
+             Is_Overriding => Ada_Pretty.False,
+             Parameters    => F.New_List
+              (F.New_Parameter
+                (Name            => F.New_Name (+"Self"),
+                 Type_Definition => F.New_Name (My_Name & "_Vector"),
+                 Is_In           => Variable,
+                 Is_Out          => Variable,
+                 Is_Aliased      => True),
+               F.New_Parameter
+                (Name            => F.New_Name (+"Index"),
+                 Type_Definition => F.New_Name (+"Positive"))),
+            Result        => F.New_Name (Ref_Name)),
+            Aspects       => F.New_Name (+"Inline")));
+
+      return Result;
+   end Indexing_Spec;
 
    ---------------
    -- Is_One_Of --
@@ -400,7 +502,7 @@ package body Compiler.Descriptors is
         (Name          => F.New_Name (My_Name & "_Array"),
          Definition    => F.New_Array
            (Indexes   => F.New_Name (+"Positive range <>"),
-            Component => F.New_Name (My_Name)));
+            Component => F.New_Name ("aliased " & My_Name)));
 
       Array_Access := F.New_Type
         (Name          => F.New_Name (My_Name & "_Array_Access"),
@@ -473,6 +575,8 @@ package body Compiler.Descriptors is
       Result : Ada_Pretty.Node_Access;
       Item   : Ada_Pretty.Node_Access;
       One_Of : Ada_Pretty.Node_Access;
+
+      Indexing : Ada_Pretty.Node_Access;
    begin
       for J in 1 .. Self.Field.Length loop
          declare
@@ -567,8 +671,12 @@ package body Compiler.Descriptors is
                F.New_Parameter
                  (F.New_Name (+"V"), Me))));
 
+      Indexing := F.New_List
+        (Indexing_Spec (Self, +"Variable", True),
+         Indexing_Spec (Self, +"Constant", False));
+
       Result := F.New_List
-        ((Result, Option, Count, Getter, Clear, Append));
+        ((Result, Option, Count, Getter, Clear, Append, Indexing));
 
       return Result;
    end Public_Spec;
@@ -689,8 +797,9 @@ package body Compiler.Descriptors is
       return Ada_Pretty.Node_Access
    is
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
-      Me     : constant Ada_Pretty.Node_Access := F.New_Name (My_Name);
-      V_Name : Ada_Pretty.Node_Access;
+      Me      : constant Ada_Pretty.Node_Access := F.New_Name (My_Name);
+
+      V_Name  : Ada_Pretty.Node_Access;
       P_Self : Ada_Pretty.Node_Access;
       Free   : Ada_Pretty.Node_Access;
       Getter : Ada_Pretty.Node_Access;
@@ -701,6 +810,7 @@ package body Compiler.Descriptors is
       Final  : Ada_Pretty.Node_Access;
       Read   : Ada_Pretty.Node_Access;
       Write  : Ada_Pretty.Node_Access;
+      Ref    : Ada_Pretty.Node_Access;
       Result : Ada_Pretty.Node_Access;
    begin
       V_Name := F.New_Name (My_Name & "_Vector");
@@ -859,8 +969,13 @@ package body Compiler.Descriptors is
 
       Write := Write_Subprogram (Self, Pkg, Compiler.Context.Fake);
 
+      Ref := F.New_List
+        (Indexing_Body (Self, +"Variable", True),
+         Indexing_Body (Self, +"Constant", False));
+
       Result := F.New_List
-        ((Count, Getter, Clear, Free, Append, Adjust, Final, Read, Write));
+        ((Count, Getter, Clear, Free, Append, Adjust, Final, Ref,
+          Read, Write));
 
       for J in 1 .. Self.Nested_Type.Length loop
          Result := F.New_List
@@ -893,14 +1008,24 @@ package body Compiler.Descriptors is
      (Self : Google.Protobuf.Descriptor.Descriptor_Proto)
       return Ada_Pretty.Node_Access
    is
-      My_Name : constant League.Strings.Universal_String := Type_Name (Self);
-      Result  : Ada_Pretty.Node_Access;
-      Item    : Ada_Pretty.Node_Access;
+      My_Name  : constant League.Strings.Universal_String := Type_Name (Self);
+
+      Result   : Ada_Pretty.Node_Access;
+      Item     : Ada_Pretty.Node_Access;
    begin
-      Result := F.New_Type
-        (Name        => F.New_Name (My_Name & "_Vector"),
-         Definition  => F.New_Private_Record
-           (Is_Tagged   => True));
+      Result := F.New_List
+        (Result,
+         F.New_Type
+          (Name        => F.New_Name (My_Name & "_Vector"),
+           Definition  => F.New_Private_Record
+             (Is_Tagged   => True),
+           Aspects     => F.New_List
+             (F.New_Argument_Association
+               (F.New_Name ("Get_" & My_Name & "_Variable_Reference"),
+                F.New_Name (+"Variable_Indexing")),
+             F.New_Argument_Association
+               (F.New_Name ("Get_" & My_Name & "_Constant_Reference"),
+                F.New_Name (+"Constant_Indexing")))));
 
       for J in 1 .. Self.Nested_Type.Length loop
          Item := Vector_Declarations (Self.Nested_Type.Get (J));

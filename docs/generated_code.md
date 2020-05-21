@@ -46,7 +46,7 @@ end;
 ```
 
 Also, for each message declaration the compiler creates corresponding
-_vector_ and _optiional_ types:
+_vector_ and _optiional_ types. Optional type looks like this:
 
 ```ada
    type Optional_Blah (Is_Set : Boolean := False) is
@@ -58,15 +58,52 @@ _vector_ and _optiional_ types:
               null;
         end case;
      end record;
+```
+A user can check if optional field is present by checking its discriminant.
 
-   type Blah_Vector is tagged private;
+```ada
+procedure Process (V : in out Optional_Blah) is
+begin
+   if V.Is_Set then  --  Check if the field present
+      Print (V.Value);  --  Access the field value
+      V := (Is_Set => False);  --  Clear the field
+   else
+      V := (Is_Set => True, Value => 123);  --  Assign
+   end if; 
+end Process;
+```
+Vector type a bit more complex. To allow indexing on the vector compiler
+generates Ada 2012 `Variable_Indexing`, `Constant_Indexing`
+aspects and all related constructs.
+These are mostly meaningless for the user, but makes Ada compiler happy.
+It aliso generate `Length`, `Clear` and `Append` routines.
+
+```ada
+   type Blah_Vector is tagged private
+     with
+       Variable_Indexing => Get_Blah_Variable_Reference,
+       Constant_Indexing => Get_Blah_Constant_Reference;
+   
+   type Blah_Variable_Reference
+     (Element : not null access Blah) is null record
+       with Implicit_Dereference => Element;
+   
+   function Get_Blah_Variable_Reference
+    (Self  : aliased in out Blah_Vector;
+     Index : Positive) return Blah_Variable_Reference
+       with Inline;
+
+   type Blah_Constant_Reference
+     (Element : not null access constant Blah) is
+       null record
+         with Implicit_Dereference => Element;
+   
+   function Get_Blah_Constant_Reference
+    (Self  : aliased in out Blah_Vector;
+     Index : Positive) return Blah_Constant_Reference
+       with Inline;
 
    function Length (Self : Blah_Vector) return Natural;
-
-   function Get
-    (Self  : Blah_Vector;
-     Index : Positive)
-      return Blah;
 
    procedure Clear (Self : in out Blah_Vector);
 
@@ -75,7 +112,18 @@ _vector_ and _optiional_ types:
      Value : Blah);
 ```
 
-An implementation of a vector type provides deep copy semantic.
+With these declarations a user can process vectors like this:
+```ada
+procedure Process (V : in out Blah_Vector) is
+begin
+   for J in 1 .. V.Length loop
+      Print (V (J));
+   end loop;
+   V.Clear;
+   V.Append (123);
+end Process;
+```
+
 
 ## Nested Types
 A message can be declared inside another message. For example:
