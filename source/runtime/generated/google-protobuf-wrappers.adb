@@ -9,14 +9,6 @@ package body Google.Protobuf.Wrappers is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Double_Value_Vector;
-     Index : Positive)
-      return Double_Value is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Double_Value_Vector) is
    begin
       Self.Length := 0;
@@ -114,14 +106,6 @@ package body Google.Protobuf.Wrappers is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Float_Value_Vector;
-     Index : Positive)
-      return Float_Value is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Float_Value_Vector) is
    begin
@@ -221,14 +205,6 @@ package body Google.Protobuf.Wrappers is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Int_64Value_Vector;
-     Index : Positive)
-      return Int_64Value is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Int_64Value_Vector) is
    begin
       Self.Length := 0;
@@ -326,14 +302,6 @@ package body Google.Protobuf.Wrappers is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : UInt_64Value_Vector;
-     Index : Positive)
-      return UInt_64Value is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out UInt_64Value_Vector) is
    begin
@@ -433,14 +401,6 @@ package body Google.Protobuf.Wrappers is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Int_32Value_Vector;
-     Index : Positive)
-      return Int_32Value is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Int_32Value_Vector) is
    begin
       Self.Length := 0;
@@ -538,14 +498,6 @@ package body Google.Protobuf.Wrappers is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : UInt_32Value_Vector;
-     Index : Positive)
-      return UInt_32Value is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out UInt_32Value_Vector) is
    begin
@@ -645,14 +597,6 @@ package body Google.Protobuf.Wrappers is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Bool_Value_Vector;
-     Index : Positive)
-      return Bool_Value is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Bool_Value_Vector) is
    begin
       Self.Length := 0;
@@ -751,14 +695,6 @@ package body Google.Protobuf.Wrappers is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : String_Value_Vector;
-     Index : Positive)
-      return String_Value is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out String_Value_Vector) is
    begin
       Self.Length := 0;
@@ -856,14 +792,6 @@ package body Google.Protobuf.Wrappers is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Bytes_Value_Vector;
-     Index : Positive)
-      return Bytes_Value is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Bytes_Value_Vector) is
    begin

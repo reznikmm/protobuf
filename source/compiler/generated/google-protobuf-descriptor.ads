@@ -55,62 +55,113 @@ package Google.Protobuf.Descriptor is
 
    package JSType_Vectors is new PB_Support.Vectors (JSType);
 
-   type File_Descriptor_Set_Vector is tagged private;
+   type File_Descriptor_Set_Vector is tagged private
+     with Variable_Indexing => Get_File_Descriptor_Set_Variable_Reference,
+     Constant_Indexing => Get_File_Descriptor_Set_Constant_Reference;
 
-   type File_Descriptor_Proto_Vector is tagged private;
+   type File_Descriptor_Proto_Vector is tagged private
+     with Variable_Indexing => Get_File_Descriptor_Proto_Variable_Reference,
+     Constant_Indexing => Get_File_Descriptor_Proto_Constant_Reference;
 
-   type Descriptor_Proto_Vector is tagged private;
+   type Descriptor_Proto_Vector is tagged private
+     with Variable_Indexing => Get_Descriptor_Proto_Variable_Reference,
+     Constant_Indexing => Get_Descriptor_Proto_Constant_Reference;
 
-   type Extension_Range_Vector is tagged private;
+   type Extension_Range_Vector is tagged private
+     with Variable_Indexing => Get_Extension_Range_Variable_Reference,
+     Constant_Indexing => Get_Extension_Range_Constant_Reference;
 
-   type Reserved_Range_Vector is tagged private;
+   type Reserved_Range_Vector is tagged private
+     with Variable_Indexing => Get_Reserved_Range_Variable_Reference,
+     Constant_Indexing => Get_Reserved_Range_Constant_Reference;
 
-   type Field_Descriptor_Proto_Vector is tagged private;
+   type Field_Descriptor_Proto_Vector is tagged private
+     with Variable_Indexing => Get_Field_Descriptor_Proto_Variable_Reference,
+     Constant_Indexing => Get_Field_Descriptor_Proto_Constant_Reference;
 
-   type Oneof_Descriptor_Proto_Vector is tagged private;
+   type Oneof_Descriptor_Proto_Vector is tagged private
+     with Variable_Indexing => Get_Oneof_Descriptor_Proto_Variable_Reference,
+     Constant_Indexing => Get_Oneof_Descriptor_Proto_Constant_Reference;
 
-   type Enum_Descriptor_Proto_Vector is tagged private;
+   type Enum_Descriptor_Proto_Vector is tagged private
+     with Variable_Indexing => Get_Enum_Descriptor_Proto_Variable_Reference,
+     Constant_Indexing => Get_Enum_Descriptor_Proto_Constant_Reference;
 
-   type Enum_Value_Descriptor_Proto_Vector is tagged private;
+   type Enum_Value_Descriptor_Proto_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Enum_Value_Descriptor_Proto_Variable_Reference,
+     Constant_Indexing => Get_Enum_Value_Descriptor_Proto_Constant_Reference;
 
-   type Service_Descriptor_Proto_Vector is tagged private;
+   type Service_Descriptor_Proto_Vector is tagged private
+     with Variable_Indexing => Get_Service_Descriptor_Proto_Variable_Reference,
+     Constant_Indexing => Get_Service_Descriptor_Proto_Constant_Reference;
 
-   type Method_Descriptor_Proto_Vector is tagged private;
+   type Method_Descriptor_Proto_Vector is tagged private
+     with Variable_Indexing => Get_Method_Descriptor_Proto_Variable_Reference,
+     Constant_Indexing => Get_Method_Descriptor_Proto_Constant_Reference;
 
-   type File_Options_Vector is tagged private;
+   type File_Options_Vector is tagged private
+     with Variable_Indexing => Get_File_Options_Variable_Reference,
+     Constant_Indexing => Get_File_Options_Constant_Reference;
 
-   type Message_Options_Vector is tagged private;
+   type Message_Options_Vector is tagged private
+     with Variable_Indexing => Get_Message_Options_Variable_Reference,
+     Constant_Indexing => Get_Message_Options_Constant_Reference;
 
-   type Field_Options_Vector is tagged private;
+   type Field_Options_Vector is tagged private
+     with Variable_Indexing => Get_Field_Options_Variable_Reference,
+     Constant_Indexing => Get_Field_Options_Constant_Reference;
 
-   type Oneof_Options_Vector is tagged private;
+   type Oneof_Options_Vector is tagged private
+     with Variable_Indexing => Get_Oneof_Options_Variable_Reference,
+     Constant_Indexing => Get_Oneof_Options_Constant_Reference;
 
-   type Enum_Options_Vector is tagged private;
+   type Enum_Options_Vector is tagged private
+     with Variable_Indexing => Get_Enum_Options_Variable_Reference,
+     Constant_Indexing => Get_Enum_Options_Constant_Reference;
 
-   type Enum_Value_Options_Vector is tagged private;
+   type Enum_Value_Options_Vector is tagged private
+     with Variable_Indexing => Get_Enum_Value_Options_Variable_Reference,
+     Constant_Indexing => Get_Enum_Value_Options_Constant_Reference;
 
-   type Service_Options_Vector is tagged private;
+   type Service_Options_Vector is tagged private
+     with Variable_Indexing => Get_Service_Options_Variable_Reference,
+     Constant_Indexing => Get_Service_Options_Constant_Reference;
 
-   type Method_Options_Vector is tagged private;
+   type Method_Options_Vector is tagged private
+     with Variable_Indexing => Get_Method_Options_Variable_Reference,
+     Constant_Indexing => Get_Method_Options_Constant_Reference;
 
-   type Uninterpreted_Option_Vector is tagged private;
+   type Uninterpreted_Option_Vector is tagged private
+     with Variable_Indexing => Get_Uninterpreted_Option_Variable_Reference,
+     Constant_Indexing => Get_Uninterpreted_Option_Constant_Reference;
 
-   type Name_Part_Vector is tagged private;
+   type Name_Part_Vector is tagged private
+     with Variable_Indexing => Get_Name_Part_Variable_Reference,
+     Constant_Indexing => Get_Name_Part_Constant_Reference;
 
-   type Source_Code_Info_Vector is tagged private;
+   type Source_Code_Info_Vector is tagged private
+     with Variable_Indexing => Get_Source_Code_Info_Variable_Reference,
+     Constant_Indexing => Get_Source_Code_Info_Constant_Reference;
 
-   type Location_Vector is tagged private;
+   type Location_Vector is tagged private
+     with Variable_Indexing => Get_Location_Variable_Reference,
+     Constant_Indexing => Get_Location_Constant_Reference;
 
-   type Generated_Code_Info_Vector is tagged private;
+   type Generated_Code_Info_Vector is tagged private
+     with Variable_Indexing => Get_Generated_Code_Info_Variable_Reference,
+     Constant_Indexing => Get_Generated_Code_Info_Constant_Reference;
 
-   type Annotation_Vector is tagged private;
+   type Annotation_Vector is tagged private
+     with Variable_Indexing => Get_Annotation_Variable_Reference,
+     Constant_Indexing => Get_Annotation_Constant_Reference;
 
    type File_Descriptor_Set is
      record
         File : Google.Protobuf.Descriptor.File_Descriptor_Proto_Vector;
      end record;
 
-   type Optional_File_Descriptor_Set (Is_Set : Boolean := False) is
+   type Optional_File_Descriptor_Set  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -122,16 +173,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : File_Descriptor_Set_Vector) return Natural;
 
-   function Get
-    (Self  : File_Descriptor_Set_Vector;
-     Index : Positive)
-      return File_Descriptor_Set;
-
    procedure Clear (Self : in out File_Descriptor_Set_Vector);
 
    procedure Append
     (Self : in out File_Descriptor_Set_Vector;
      V    : File_Descriptor_Set);
+
+   type File_Descriptor_Set_Variable_Reference
+     (Element : not null access File_Descriptor_Set) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Descriptor_Set_Variable_Reference
+    (Self  : aliased in out File_Descriptor_Set_Vector;
+     Index : Positive)
+      return File_Descriptor_Set_Variable_Reference
+     with Inline;
+
+   type File_Descriptor_Set_Constant_Reference
+     (Element : not null access constant File_Descriptor_Set) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Descriptor_Set_Constant_Reference
+    (Self  : aliased File_Descriptor_Set_Vector;
+     Index : Positive)
+      return File_Descriptor_Set_Constant_Reference
+     with Inline;
 
    type Extension_Range is
      record
@@ -139,7 +205,7 @@ package Google.Protobuf.Descriptor is
         PB_End : PB_Support.Integer_32_Vectors.Option;
      end record;
 
-   type Optional_Extension_Range (Is_Set : Boolean := False) is
+   type Optional_Extension_Range  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -151,16 +217,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Extension_Range_Vector) return Natural;
 
-   function Get
-    (Self  : Extension_Range_Vector;
-     Index : Positive)
-      return Extension_Range;
-
    procedure Clear (Self : in out Extension_Range_Vector);
 
    procedure Append
     (Self : in out Extension_Range_Vector;
      V    : Extension_Range);
+
+   type Extension_Range_Variable_Reference
+     (Element : not null access Extension_Range) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Extension_Range_Variable_Reference
+    (Self  : aliased in out Extension_Range_Vector;
+     Index : Positive)
+      return Extension_Range_Variable_Reference
+     with Inline;
+
+   type Extension_Range_Constant_Reference
+     (Element : not null access constant Extension_Range) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Extension_Range_Constant_Reference
+    (Self  : aliased Extension_Range_Vector;
+     Index : Positive)
+      return Extension_Range_Constant_Reference
+     with Inline;
 
    type Reserved_Range is
      record
@@ -168,7 +249,7 @@ package Google.Protobuf.Descriptor is
         PB_End : PB_Support.Integer_32_Vectors.Option;
      end record;
 
-   type Optional_Reserved_Range (Is_Set : Boolean := False) is
+   type Optional_Reserved_Range  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -180,16 +261,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Reserved_Range_Vector) return Natural;
 
-   function Get
-    (Self  : Reserved_Range_Vector;
-     Index : Positive)
-      return Reserved_Range;
-
    procedure Clear (Self : in out Reserved_Range_Vector);
 
    procedure Append
     (Self : in out Reserved_Range_Vector;
      V    : Reserved_Range);
+
+   type Reserved_Range_Variable_Reference
+     (Element : not null access Reserved_Range) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Reserved_Range_Variable_Reference
+    (Self  : aliased in out Reserved_Range_Vector;
+     Index : Positive)
+      return Reserved_Range_Variable_Reference
+     with Inline;
+
+   type Reserved_Range_Constant_Reference
+     (Element : not null access constant Reserved_Range) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Reserved_Range_Constant_Reference
+    (Self  : aliased Reserved_Range_Vector;
+     Index : Positive)
+      return Reserved_Range_Constant_Reference
+     with Inline;
 
    type File_Options is
      record
@@ -217,7 +313,7 @@ package Google.Protobuf.Descriptor is
           .Uninterpreted_Option_Vector;
      end record;
 
-   type Optional_File_Options (Is_Set : Boolean := False) is
+   type Optional_File_Options  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -229,14 +325,29 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : File_Options_Vector) return Natural;
 
-   function Get
-    (Self  : File_Options_Vector;
-     Index : Positive)
-      return File_Options;
-
    procedure Clear (Self : in out File_Options_Vector);
 
    procedure Append (Self : in out File_Options_Vector; V    : File_Options);
+
+   type File_Options_Variable_Reference
+     (Element : not null access File_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Options_Variable_Reference
+    (Self  : aliased in out File_Options_Vector;
+     Index : Positive)
+      return File_Options_Variable_Reference
+     with Inline;
+
+   type File_Options_Constant_Reference
+     (Element : not null access constant File_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Options_Constant_Reference
+    (Self  : aliased File_Options_Vector;
+     Index : Positive)
+      return File_Options_Constant_Reference
+     with Inline;
 
    type Message_Options is
      record
@@ -248,7 +359,7 @@ package Google.Protobuf.Descriptor is
           .Uninterpreted_Option_Vector;
      end record;
 
-   type Optional_Message_Options (Is_Set : Boolean := False) is
+   type Optional_Message_Options  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -260,16 +371,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Message_Options_Vector) return Natural;
 
-   function Get
-    (Self  : Message_Options_Vector;
-     Index : Positive)
-      return Message_Options;
-
    procedure Clear (Self : in out Message_Options_Vector);
 
    procedure Append
     (Self : in out Message_Options_Vector;
      V    : Message_Options);
+
+   type Message_Options_Variable_Reference
+     (Element : not null access Message_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Message_Options_Variable_Reference
+    (Self  : aliased in out Message_Options_Vector;
+     Index : Positive)
+      return Message_Options_Variable_Reference
+     with Inline;
+
+   type Message_Options_Constant_Reference
+     (Element : not null access constant Message_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Message_Options_Constant_Reference
+    (Self  : aliased Message_Options_Vector;
+     Index : Positive)
+      return Message_Options_Constant_Reference
+     with Inline;
 
    type Field_Options is
      record
@@ -284,7 +410,7 @@ package Google.Protobuf.Descriptor is
           .Uninterpreted_Option_Vector;
      end record;
 
-   type Optional_Field_Options (Is_Set : Boolean := False) is
+   type Optional_Field_Options  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -296,14 +422,29 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Field_Options_Vector) return Natural;
 
-   function Get
-    (Self  : Field_Options_Vector;
-     Index : Positive)
-      return Field_Options;
-
    procedure Clear (Self : in out Field_Options_Vector);
 
    procedure Append (Self : in out Field_Options_Vector; V    : Field_Options);
+
+   type Field_Options_Variable_Reference
+     (Element : not null access Field_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Field_Options_Variable_Reference
+    (Self  : aliased in out Field_Options_Vector;
+     Index : Positive)
+      return Field_Options_Variable_Reference
+     with Inline;
+
+   type Field_Options_Constant_Reference
+     (Element : not null access constant Field_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Field_Options_Constant_Reference
+    (Self  : aliased Field_Options_Vector;
+     Index : Positive)
+      return Field_Options_Constant_Reference
+     with Inline;
 
    type Oneof_Options is
      record
@@ -311,7 +452,7 @@ package Google.Protobuf.Descriptor is
           .Uninterpreted_Option_Vector;
      end record;
 
-   type Optional_Oneof_Options (Is_Set : Boolean := False) is
+   type Optional_Oneof_Options  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -323,14 +464,29 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Oneof_Options_Vector) return Natural;
 
-   function Get
-    (Self  : Oneof_Options_Vector;
-     Index : Positive)
-      return Oneof_Options;
-
    procedure Clear (Self : in out Oneof_Options_Vector);
 
    procedure Append (Self : in out Oneof_Options_Vector; V    : Oneof_Options);
+
+   type Oneof_Options_Variable_Reference
+     (Element : not null access Oneof_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Oneof_Options_Variable_Reference
+    (Self  : aliased in out Oneof_Options_Vector;
+     Index : Positive)
+      return Oneof_Options_Variable_Reference
+     with Inline;
+
+   type Oneof_Options_Constant_Reference
+     (Element : not null access constant Oneof_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Oneof_Options_Constant_Reference
+    (Self  : aliased Oneof_Options_Vector;
+     Index : Positive)
+      return Oneof_Options_Constant_Reference
+     with Inline;
 
    type Enum_Options is
      record
@@ -340,7 +496,7 @@ package Google.Protobuf.Descriptor is
           .Uninterpreted_Option_Vector;
      end record;
 
-   type Optional_Enum_Options (Is_Set : Boolean := False) is
+   type Optional_Enum_Options  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -352,14 +508,29 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Enum_Options_Vector) return Natural;
 
-   function Get
-    (Self  : Enum_Options_Vector;
-     Index : Positive)
-      return Enum_Options;
-
    procedure Clear (Self : in out Enum_Options_Vector);
 
    procedure Append (Self : in out Enum_Options_Vector; V    : Enum_Options);
+
+   type Enum_Options_Variable_Reference
+     (Element : not null access Enum_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Options_Variable_Reference
+    (Self  : aliased in out Enum_Options_Vector;
+     Index : Positive)
+      return Enum_Options_Variable_Reference
+     with Inline;
+
+   type Enum_Options_Constant_Reference
+     (Element : not null access constant Enum_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Options_Constant_Reference
+    (Self  : aliased Enum_Options_Vector;
+     Index : Positive)
+      return Enum_Options_Constant_Reference
+     with Inline;
 
    type Enum_Value_Options is
      record
@@ -368,7 +539,7 @@ package Google.Protobuf.Descriptor is
           .Uninterpreted_Option_Vector;
      end record;
 
-   type Optional_Enum_Value_Options (Is_Set : Boolean := False) is
+   type Optional_Enum_Value_Options  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -380,16 +551,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Enum_Value_Options_Vector) return Natural;
 
-   function Get
-    (Self  : Enum_Value_Options_Vector;
-     Index : Positive)
-      return Enum_Value_Options;
-
    procedure Clear (Self : in out Enum_Value_Options_Vector);
 
    procedure Append
     (Self : in out Enum_Value_Options_Vector;
      V    : Enum_Value_Options);
+
+   type Enum_Value_Options_Variable_Reference
+     (Element : not null access Enum_Value_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Value_Options_Variable_Reference
+    (Self  : aliased in out Enum_Value_Options_Vector;
+     Index : Positive)
+      return Enum_Value_Options_Variable_Reference
+     with Inline;
+
+   type Enum_Value_Options_Constant_Reference
+     (Element : not null access constant Enum_Value_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Value_Options_Constant_Reference
+    (Self  : aliased Enum_Value_Options_Vector;
+     Index : Positive)
+      return Enum_Value_Options_Constant_Reference
+     with Inline;
 
    type Service_Options is
      record
@@ -398,7 +584,7 @@ package Google.Protobuf.Descriptor is
           .Uninterpreted_Option_Vector;
      end record;
 
-   type Optional_Service_Options (Is_Set : Boolean := False) is
+   type Optional_Service_Options  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -410,16 +596,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Service_Options_Vector) return Natural;
 
-   function Get
-    (Self  : Service_Options_Vector;
-     Index : Positive)
-      return Service_Options;
-
    procedure Clear (Self : in out Service_Options_Vector);
 
    procedure Append
     (Self : in out Service_Options_Vector;
      V    : Service_Options);
+
+   type Service_Options_Variable_Reference
+     (Element : not null access Service_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Service_Options_Variable_Reference
+    (Self  : aliased in out Service_Options_Vector;
+     Index : Positive)
+      return Service_Options_Variable_Reference
+     with Inline;
+
+   type Service_Options_Constant_Reference
+     (Element : not null access constant Service_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Service_Options_Constant_Reference
+    (Self  : aliased Service_Options_Vector;
+     Index : Positive)
+      return Service_Options_Constant_Reference
+     with Inline;
 
    type Method_Options is
      record
@@ -428,7 +629,7 @@ package Google.Protobuf.Descriptor is
           .Uninterpreted_Option_Vector;
      end record;
 
-   type Optional_Method_Options (Is_Set : Boolean := False) is
+   type Optional_Method_Options  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -440,16 +641,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Method_Options_Vector) return Natural;
 
-   function Get
-    (Self  : Method_Options_Vector;
-     Index : Positive)
-      return Method_Options;
-
    procedure Clear (Self : in out Method_Options_Vector);
 
    procedure Append
     (Self : in out Method_Options_Vector;
      V    : Method_Options);
+
+   type Method_Options_Variable_Reference
+     (Element : not null access Method_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Method_Options_Variable_Reference
+    (Self  : aliased in out Method_Options_Vector;
+     Index : Positive)
+      return Method_Options_Variable_Reference
+     with Inline;
+
+   type Method_Options_Constant_Reference
+     (Element : not null access constant Method_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Method_Options_Constant_Reference
+    (Self  : aliased Method_Options_Vector;
+     Index : Positive)
+      return Method_Options_Constant_Reference
+     with Inline;
 
    type Name_Part is
      record
@@ -457,7 +673,7 @@ package Google.Protobuf.Descriptor is
         Is_Extension : Boolean := False;
      end record;
 
-   type Optional_Name_Part (Is_Set : Boolean := False) is
+   type Optional_Name_Part  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -469,11 +685,29 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Name_Part_Vector) return Natural;
 
-   function Get (Self  : Name_Part_Vector; Index : Positive) return Name_Part;
-
    procedure Clear (Self : in out Name_Part_Vector);
 
    procedure Append (Self : in out Name_Part_Vector; V    : Name_Part);
+
+   type Name_Part_Variable_Reference  (Element : not null access Name_Part) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Name_Part_Variable_Reference
+    (Self  : aliased in out Name_Part_Vector;
+     Index : Positive)
+      return Name_Part_Variable_Reference
+     with Inline;
+
+   type Name_Part_Constant_Reference
+     (Element : not null access constant Name_Part) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Name_Part_Constant_Reference
+    (Self  : aliased Name_Part_Vector;
+     Index : Positive)
+      return Name_Part_Constant_Reference
+     with Inline;
 
    type Uninterpreted_Option is
      record
@@ -486,7 +720,7 @@ package Google.Protobuf.Descriptor is
         Aggregate_Value    : PB_Support.Universal_String_Vectors.Option;
      end record;
 
-   type Optional_Uninterpreted_Option (Is_Set : Boolean := False) is
+   type Optional_Uninterpreted_Option  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -498,16 +732,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Uninterpreted_Option_Vector) return Natural;
 
-   function Get
-    (Self  : Uninterpreted_Option_Vector;
-     Index : Positive)
-      return Uninterpreted_Option;
-
    procedure Clear (Self : in out Uninterpreted_Option_Vector);
 
    procedure Append
     (Self : in out Uninterpreted_Option_Vector;
      V    : Uninterpreted_Option);
+
+   type Uninterpreted_Option_Variable_Reference
+     (Element : not null access Uninterpreted_Option) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Uninterpreted_Option_Variable_Reference
+    (Self  : aliased in out Uninterpreted_Option_Vector;
+     Index : Positive)
+      return Uninterpreted_Option_Variable_Reference
+     with Inline;
+
+   type Uninterpreted_Option_Constant_Reference
+     (Element : not null access constant Uninterpreted_Option) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Uninterpreted_Option_Constant_Reference
+    (Self  : aliased Uninterpreted_Option_Vector;
+     Index : Positive)
+      return Uninterpreted_Option_Constant_Reference
+     with Inline;
 
    type Location is
      record
@@ -519,7 +768,7 @@ package Google.Protobuf.Descriptor is
           .Universal_String_Vector;
      end record;
 
-   type Optional_Location (Is_Set : Boolean := False) is
+   type Optional_Location  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -531,18 +780,36 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Location_Vector) return Natural;
 
-   function Get (Self  : Location_Vector; Index : Positive) return Location;
-
    procedure Clear (Self : in out Location_Vector);
 
    procedure Append (Self : in out Location_Vector; V    : Location);
+
+   type Location_Variable_Reference  (Element : not null access Location) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Location_Variable_Reference
+    (Self  : aliased in out Location_Vector;
+     Index : Positive)
+      return Location_Variable_Reference
+     with Inline;
+
+   type Location_Constant_Reference
+     (Element : not null access constant Location) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Location_Constant_Reference
+    (Self  : aliased Location_Vector;
+     Index : Positive)
+      return Location_Constant_Reference
+     with Inline;
 
    type Source_Code_Info is
      record
         Location : Google.Protobuf.Descriptor.Location_Vector;
      end record;
 
-   type Optional_Source_Code_Info (Is_Set : Boolean := False) is
+   type Optional_Source_Code_Info  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -554,16 +821,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Source_Code_Info_Vector) return Natural;
 
-   function Get
-    (Self  : Source_Code_Info_Vector;
-     Index : Positive)
-      return Source_Code_Info;
-
    procedure Clear (Self : in out Source_Code_Info_Vector);
 
    procedure Append
     (Self : in out Source_Code_Info_Vector;
      V    : Source_Code_Info);
+
+   type Source_Code_Info_Variable_Reference
+     (Element : not null access Source_Code_Info) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Source_Code_Info_Variable_Reference
+    (Self  : aliased in out Source_Code_Info_Vector;
+     Index : Positive)
+      return Source_Code_Info_Variable_Reference
+     with Inline;
+
+   type Source_Code_Info_Constant_Reference
+     (Element : not null access constant Source_Code_Info) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Source_Code_Info_Constant_Reference
+    (Self  : aliased Source_Code_Info_Vector;
+     Index : Positive)
+      return Source_Code_Info_Constant_Reference
+     with Inline;
 
    type Annotation is
      record
@@ -573,7 +855,7 @@ package Google.Protobuf.Descriptor is
         PB_End      : PB_Support.Integer_32_Vectors.Option;
      end record;
 
-   type Optional_Annotation (Is_Set : Boolean := False) is
+   type Optional_Annotation  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -585,21 +867,36 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Annotation_Vector) return Natural;
 
-   function Get
-    (Self  : Annotation_Vector;
-     Index : Positive)
-      return Annotation;
-
    procedure Clear (Self : in out Annotation_Vector);
 
    procedure Append (Self : in out Annotation_Vector; V    : Annotation);
+
+   type Annotation_Variable_Reference
+     (Element : not null access Annotation) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Annotation_Variable_Reference
+    (Self  : aliased in out Annotation_Vector;
+     Index : Positive)
+      return Annotation_Variable_Reference
+     with Inline;
+
+   type Annotation_Constant_Reference
+     (Element : not null access constant Annotation) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Annotation_Constant_Reference
+    (Self  : aliased Annotation_Vector;
+     Index : Positive)
+      return Annotation_Constant_Reference
+     with Inline;
 
    type Generated_Code_Info is
      record
         Annotation : Google.Protobuf.Descriptor.Annotation_Vector;
      end record;
 
-   type Optional_Generated_Code_Info (Is_Set : Boolean := False) is
+   type Optional_Generated_Code_Info  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -611,16 +908,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Generated_Code_Info_Vector) return Natural;
 
-   function Get
-    (Self  : Generated_Code_Info_Vector;
-     Index : Positive)
-      return Generated_Code_Info;
-
    procedure Clear (Self : in out Generated_Code_Info_Vector);
 
    procedure Append
     (Self : in out Generated_Code_Info_Vector;
      V    : Generated_Code_Info);
+
+   type Generated_Code_Info_Variable_Reference
+     (Element : not null access Generated_Code_Info) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Generated_Code_Info_Variable_Reference
+    (Self  : aliased in out Generated_Code_Info_Vector;
+     Index : Positive)
+      return Generated_Code_Info_Variable_Reference
+     with Inline;
+
+   type Generated_Code_Info_Constant_Reference
+     (Element : not null access constant Generated_Code_Info) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Generated_Code_Info_Constant_Reference
+    (Self  : aliased Generated_Code_Info_Vector;
+     Index : Positive)
+      return Generated_Code_Info_Constant_Reference
+     with Inline;
 
    type File_Descriptor_Proto is
      record
@@ -642,7 +954,7 @@ package Google.Protobuf.Descriptor is
         Syntax            : PB_Support.Universal_String_Vectors.Option;
      end record;
 
-   type Optional_File_Descriptor_Proto (Is_Set : Boolean := False) is
+   type Optional_File_Descriptor_Proto  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -654,16 +966,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : File_Descriptor_Proto_Vector) return Natural;
 
-   function Get
-    (Self  : File_Descriptor_Proto_Vector;
-     Index : Positive)
-      return File_Descriptor_Proto;
-
    procedure Clear (Self : in out File_Descriptor_Proto_Vector);
 
    procedure Append
     (Self : in out File_Descriptor_Proto_Vector;
      V    : File_Descriptor_Proto);
+
+   type File_Descriptor_Proto_Variable_Reference
+     (Element : not null access File_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out File_Descriptor_Proto_Vector;
+     Index : Positive)
+      return File_Descriptor_Proto_Variable_Reference
+     with Inline;
+
+   type File_Descriptor_Proto_Constant_Reference
+     (Element : not null access constant File_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Descriptor_Proto_Constant_Reference
+    (Self  : aliased File_Descriptor_Proto_Vector;
+     Index : Positive)
+      return File_Descriptor_Proto_Constant_Reference
+     with Inline;
 
    type Descriptor_Proto is
      record
@@ -683,7 +1010,7 @@ package Google.Protobuf.Descriptor is
         Reserved_Name   : League.String_Vectors.Universal_String_Vector;
      end record;
 
-   type Optional_Descriptor_Proto (Is_Set : Boolean := False) is
+   type Optional_Descriptor_Proto  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -695,16 +1022,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Descriptor_Proto_Vector) return Natural;
 
-   function Get
-    (Self  : Descriptor_Proto_Vector;
-     Index : Positive)
-      return Descriptor_Proto;
-
    procedure Clear (Self : in out Descriptor_Proto_Vector);
 
    procedure Append
     (Self : in out Descriptor_Proto_Vector;
      V    : Descriptor_Proto);
+
+   type Descriptor_Proto_Variable_Reference
+     (Element : not null access Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Descriptor_Proto_Vector;
+     Index : Positive)
+      return Descriptor_Proto_Variable_Reference
+     with Inline;
+
+   type Descriptor_Proto_Constant_Reference
+     (Element : not null access constant Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Descriptor_Proto_Vector;
+     Index : Positive)
+      return Descriptor_Proto_Constant_Reference
+     with Inline;
 
    type Field_Descriptor_Proto is
      record
@@ -720,7 +1062,7 @@ package Google.Protobuf.Descriptor is
         Options       : Google.Protobuf.Descriptor.Optional_Field_Options;
      end record;
 
-   type Optional_Field_Descriptor_Proto (Is_Set : Boolean := False) is
+   type Optional_Field_Descriptor_Proto  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -732,16 +1074,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Field_Descriptor_Proto_Vector) return Natural;
 
-   function Get
-    (Self  : Field_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Field_Descriptor_Proto;
-
    procedure Clear (Self : in out Field_Descriptor_Proto_Vector);
 
    procedure Append
     (Self : in out Field_Descriptor_Proto_Vector;
      V    : Field_Descriptor_Proto);
+
+   type Field_Descriptor_Proto_Variable_Reference
+     (Element : not null access Field_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Field_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Field_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Field_Descriptor_Proto_Variable_Reference
+     with Inline;
+
+   type Field_Descriptor_Proto_Constant_Reference
+     (Element : not null access constant Field_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Field_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Field_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Field_Descriptor_Proto_Constant_Reference
+     with Inline;
 
    type Oneof_Descriptor_Proto is
      record
@@ -749,7 +1106,7 @@ package Google.Protobuf.Descriptor is
         Options : Google.Protobuf.Descriptor.Optional_Oneof_Options;
      end record;
 
-   type Optional_Oneof_Descriptor_Proto (Is_Set : Boolean := False) is
+   type Optional_Oneof_Descriptor_Proto  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -761,16 +1118,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Oneof_Descriptor_Proto_Vector) return Natural;
 
-   function Get
-    (Self  : Oneof_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Oneof_Descriptor_Proto;
-
    procedure Clear (Self : in out Oneof_Descriptor_Proto_Vector);
 
    procedure Append
     (Self : in out Oneof_Descriptor_Proto_Vector;
      V    : Oneof_Descriptor_Proto);
+
+   type Oneof_Descriptor_Proto_Variable_Reference
+     (Element : not null access Oneof_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Oneof_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Oneof_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Oneof_Descriptor_Proto_Variable_Reference
+     with Inline;
+
+   type Oneof_Descriptor_Proto_Constant_Reference
+     (Element : not null access constant Oneof_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Oneof_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Oneof_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Oneof_Descriptor_Proto_Constant_Reference
+     with Inline;
 
    type Enum_Descriptor_Proto is
      record
@@ -780,7 +1152,7 @@ package Google.Protobuf.Descriptor is
         Options : Google.Protobuf.Descriptor.Optional_Enum_Options;
      end record;
 
-   type Optional_Enum_Descriptor_Proto (Is_Set : Boolean := False) is
+   type Optional_Enum_Descriptor_Proto  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -792,16 +1164,31 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Enum_Descriptor_Proto_Vector) return Natural;
 
-   function Get
-    (Self  : Enum_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Enum_Descriptor_Proto;
-
    procedure Clear (Self : in out Enum_Descriptor_Proto_Vector);
 
    procedure Append
     (Self : in out Enum_Descriptor_Proto_Vector;
      V    : Enum_Descriptor_Proto);
+
+   type Enum_Descriptor_Proto_Variable_Reference
+     (Element : not null access Enum_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Enum_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Descriptor_Proto_Variable_Reference
+     with Inline;
+
+   type Enum_Descriptor_Proto_Constant_Reference
+     (Element : not null access constant Enum_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Enum_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Descriptor_Proto_Constant_Reference
+     with Inline;
 
    type Enum_Value_Descriptor_Proto is
      record
@@ -810,7 +1197,7 @@ package Google.Protobuf.Descriptor is
         Options : Google.Protobuf.Descriptor.Optional_Enum_Value_Options;
      end record;
 
-   type Optional_Enum_Value_Descriptor_Proto (Is_Set : Boolean := False) is
+   type Optional_Enum_Value_Descriptor_Proto  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -822,16 +1209,32 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Enum_Value_Descriptor_Proto_Vector) return Natural;
 
-   function Get
-    (Self  : Enum_Value_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Enum_Value_Descriptor_Proto;
-
    procedure Clear (Self : in out Enum_Value_Descriptor_Proto_Vector);
 
    procedure Append
     (Self : in out Enum_Value_Descriptor_Proto_Vector;
      V    : Enum_Value_Descriptor_Proto);
+
+   type Enum_Value_Descriptor_Proto_Variable_Reference
+     (Element : not null access Enum_Value_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Value_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Enum_Value_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Value_Descriptor_Proto_Variable_Reference
+     with Inline;
+
+   type Enum_Value_Descriptor_Proto_Constant_Reference
+     (Element : not null access constant Enum_Value_Descriptor_Proto) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Value_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Enum_Value_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Value_Descriptor_Proto_Constant_Reference
+     with Inline;
 
    type Service_Descriptor_Proto is
      record
@@ -840,7 +1243,7 @@ package Google.Protobuf.Descriptor is
         Options : Google.Protobuf.Descriptor.Optional_Service_Options;
      end record;
 
-   type Optional_Service_Descriptor_Proto (Is_Set : Boolean := False) is
+   type Optional_Service_Descriptor_Proto  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -852,16 +1255,32 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Service_Descriptor_Proto_Vector) return Natural;
 
-   function Get
-    (Self  : Service_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Service_Descriptor_Proto;
-
    procedure Clear (Self : in out Service_Descriptor_Proto_Vector);
 
    procedure Append
     (Self : in out Service_Descriptor_Proto_Vector;
      V    : Service_Descriptor_Proto);
+
+   type Service_Descriptor_Proto_Variable_Reference
+     (Element : not null access Service_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Service_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Service_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Service_Descriptor_Proto_Variable_Reference
+     with Inline;
+
+   type Service_Descriptor_Proto_Constant_Reference
+     (Element : not null access constant Service_Descriptor_Proto) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Service_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Service_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Service_Descriptor_Proto_Constant_Reference
+     with Inline;
 
    type Method_Descriptor_Proto is
      record
@@ -873,7 +1292,7 @@ package Google.Protobuf.Descriptor is
         Server_Streaming : PB_Support.Boolean_Vectors.Option;
      end record;
 
-   type Optional_Method_Descriptor_Proto (Is_Set : Boolean := False) is
+   type Optional_Method_Descriptor_Proto  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -885,16 +1304,32 @@ package Google.Protobuf.Descriptor is
 
    function Length (Self : Method_Descriptor_Proto_Vector) return Natural;
 
-   function Get
-    (Self  : Method_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Method_Descriptor_Proto;
-
    procedure Clear (Self : in out Method_Descriptor_Proto_Vector);
 
    procedure Append
     (Self : in out Method_Descriptor_Proto_Vector;
      V    : Method_Descriptor_Proto);
+
+   type Method_Descriptor_Proto_Variable_Reference
+     (Element : not null access Method_Descriptor_Proto) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Method_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Method_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Method_Descriptor_Proto_Variable_Reference
+     with Inline;
+
+   type Method_Descriptor_Proto_Constant_Reference
+     (Element : not null access constant Method_Descriptor_Proto) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Method_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Method_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Method_Descriptor_Proto_Constant_Reference
+     with Inline;
 private
 
    procedure Read_File_Descriptor_Set
@@ -910,7 +1345,7 @@ private
    for File_Descriptor_Set'Write use Write_File_Descriptor_Set;
 
    type File_Descriptor_Set_Array is
-     array (Positive range <>) of File_Descriptor_Set;
+     array (Positive range <>) of aliased File_Descriptor_Set;
 
    type File_Descriptor_Set_Array_Access is access File_Descriptor_Set_Array;
 
@@ -938,7 +1373,7 @@ private
    for File_Descriptor_Proto'Write use Write_File_Descriptor_Proto;
 
    type File_Descriptor_Proto_Array is
-     array (Positive range <>) of File_Descriptor_Proto;
+     array (Positive range <>) of aliased File_Descriptor_Proto;
 
    type File_Descriptor_Proto_Array_Access is
      access File_Descriptor_Proto_Array;
@@ -966,7 +1401,8 @@ private
 
    for Extension_Range'Write use Write_Extension_Range;
 
-   type Extension_Range_Array is array (Positive range <>) of Extension_Range;
+   type Extension_Range_Array is
+     array (Positive range <>) of aliased Extension_Range;
 
    type Extension_Range_Array_Access is access Extension_Range_Array;
 
@@ -993,7 +1429,8 @@ private
 
    for Reserved_Range'Write use Write_Reserved_Range;
 
-   type Reserved_Range_Array is array (Positive range <>) of Reserved_Range;
+   type Reserved_Range_Array is
+     array (Positive range <>) of aliased Reserved_Range;
 
    type Reserved_Range_Array_Access is access Reserved_Range_Array;
 
@@ -1021,7 +1458,7 @@ private
    for Descriptor_Proto'Write use Write_Descriptor_Proto;
 
    type Descriptor_Proto_Array is
-     array (Positive range <>) of Descriptor_Proto;
+     array (Positive range <>) of aliased Descriptor_Proto;
 
    type Descriptor_Proto_Array_Access is access Descriptor_Proto_Array;
 
@@ -1049,7 +1486,7 @@ private
    for Field_Descriptor_Proto'Write use Write_Field_Descriptor_Proto;
 
    type Field_Descriptor_Proto_Array is
-     array (Positive range <>) of Field_Descriptor_Proto;
+     array (Positive range <>) of aliased Field_Descriptor_Proto;
 
    type Field_Descriptor_Proto_Array_Access is
      access Field_Descriptor_Proto_Array;
@@ -1078,7 +1515,7 @@ private
    for Oneof_Descriptor_Proto'Write use Write_Oneof_Descriptor_Proto;
 
    type Oneof_Descriptor_Proto_Array is
-     array (Positive range <>) of Oneof_Descriptor_Proto;
+     array (Positive range <>) of aliased Oneof_Descriptor_Proto;
 
    type Oneof_Descriptor_Proto_Array_Access is
      access Oneof_Descriptor_Proto_Array;
@@ -1107,7 +1544,7 @@ private
    for Enum_Descriptor_Proto'Write use Write_Enum_Descriptor_Proto;
 
    type Enum_Descriptor_Proto_Array is
-     array (Positive range <>) of Enum_Descriptor_Proto;
+     array (Positive range <>) of aliased Enum_Descriptor_Proto;
 
    type Enum_Descriptor_Proto_Array_Access is
      access Enum_Descriptor_Proto_Array;
@@ -1136,7 +1573,7 @@ private
    for Enum_Value_Descriptor_Proto'Write use Write_Enum_Value_Descriptor_Proto;
 
    type Enum_Value_Descriptor_Proto_Array is
-     array (Positive range <>) of Enum_Value_Descriptor_Proto;
+     array (Positive range <>) of aliased Enum_Value_Descriptor_Proto;
 
    type Enum_Value_Descriptor_Proto_Array_Access is
      access Enum_Value_Descriptor_Proto_Array;
@@ -1167,7 +1604,7 @@ private
    for Service_Descriptor_Proto'Write use Write_Service_Descriptor_Proto;
 
    type Service_Descriptor_Proto_Array is
-     array (Positive range <>) of Service_Descriptor_Proto;
+     array (Positive range <>) of aliased Service_Descriptor_Proto;
 
    type Service_Descriptor_Proto_Array_Access is
      access Service_Descriptor_Proto_Array;
@@ -1197,7 +1634,7 @@ private
    for Method_Descriptor_Proto'Write use Write_Method_Descriptor_Proto;
 
    type Method_Descriptor_Proto_Array is
-     array (Positive range <>) of Method_Descriptor_Proto;
+     array (Positive range <>) of aliased Method_Descriptor_Proto;
 
    type Method_Descriptor_Proto_Array_Access is
      access Method_Descriptor_Proto_Array;
@@ -1226,7 +1663,8 @@ private
 
    for File_Options'Write use Write_File_Options;
 
-   type File_Options_Array is array (Positive range <>) of File_Options;
+   type File_Options_Array is
+     array (Positive range <>) of aliased File_Options;
 
    type File_Options_Array_Access is access File_Options_Array;
 
@@ -1253,7 +1691,8 @@ private
 
    for Message_Options'Write use Write_Message_Options;
 
-   type Message_Options_Array is array (Positive range <>) of Message_Options;
+   type Message_Options_Array is
+     array (Positive range <>) of aliased Message_Options;
 
    type Message_Options_Array_Access is access Message_Options_Array;
 
@@ -1280,7 +1719,8 @@ private
 
    for Field_Options'Write use Write_Field_Options;
 
-   type Field_Options_Array is array (Positive range <>) of Field_Options;
+   type Field_Options_Array is
+     array (Positive range <>) of aliased Field_Options;
 
    type Field_Options_Array_Access is access Field_Options_Array;
 
@@ -1307,7 +1747,8 @@ private
 
    for Oneof_Options'Write use Write_Oneof_Options;
 
-   type Oneof_Options_Array is array (Positive range <>) of Oneof_Options;
+   type Oneof_Options_Array is
+     array (Positive range <>) of aliased Oneof_Options;
 
    type Oneof_Options_Array_Access is access Oneof_Options_Array;
 
@@ -1334,7 +1775,8 @@ private
 
    for Enum_Options'Write use Write_Enum_Options;
 
-   type Enum_Options_Array is array (Positive range <>) of Enum_Options;
+   type Enum_Options_Array is
+     array (Positive range <>) of aliased Enum_Options;
 
    type Enum_Options_Array_Access is access Enum_Options_Array;
 
@@ -1362,7 +1804,7 @@ private
    for Enum_Value_Options'Write use Write_Enum_Value_Options;
 
    type Enum_Value_Options_Array is
-     array (Positive range <>) of Enum_Value_Options;
+     array (Positive range <>) of aliased Enum_Value_Options;
 
    type Enum_Value_Options_Array_Access is access Enum_Value_Options_Array;
 
@@ -1389,7 +1831,8 @@ private
 
    for Service_Options'Write use Write_Service_Options;
 
-   type Service_Options_Array is array (Positive range <>) of Service_Options;
+   type Service_Options_Array is
+     array (Positive range <>) of aliased Service_Options;
 
    type Service_Options_Array_Access is access Service_Options_Array;
 
@@ -1416,7 +1859,8 @@ private
 
    for Method_Options'Write use Write_Method_Options;
 
-   type Method_Options_Array is array (Positive range <>) of Method_Options;
+   type Method_Options_Array is
+     array (Positive range <>) of aliased Method_Options;
 
    type Method_Options_Array_Access is access Method_Options_Array;
 
@@ -1443,7 +1887,7 @@ private
 
    for Name_Part'Write use Write_Name_Part;
 
-   type Name_Part_Array is array (Positive range <>) of Name_Part;
+   type Name_Part_Array is array (Positive range <>) of aliased Name_Part;
 
    type Name_Part_Array_Access is access Name_Part_Array;
 
@@ -1471,7 +1915,7 @@ private
    for Uninterpreted_Option'Write use Write_Uninterpreted_Option;
 
    type Uninterpreted_Option_Array is
-     array (Positive range <>) of Uninterpreted_Option;
+     array (Positive range <>) of aliased Uninterpreted_Option;
 
    type Uninterpreted_Option_Array_Access is access Uninterpreted_Option_Array;
 
@@ -1498,7 +1942,7 @@ private
 
    for Location'Write use Write_Location;
 
-   type Location_Array is array (Positive range <>) of Location;
+   type Location_Array is array (Positive range <>) of aliased Location;
 
    type Location_Array_Access is access Location_Array;
 
@@ -1526,7 +1970,7 @@ private
    for Source_Code_Info'Write use Write_Source_Code_Info;
 
    type Source_Code_Info_Array is
-     array (Positive range <>) of Source_Code_Info;
+     array (Positive range <>) of aliased Source_Code_Info;
 
    type Source_Code_Info_Array_Access is access Source_Code_Info_Array;
 
@@ -1553,7 +1997,7 @@ private
 
    for Annotation'Write use Write_Annotation;
 
-   type Annotation_Array is array (Positive range <>) of Annotation;
+   type Annotation_Array is array (Positive range <>) of aliased Annotation;
 
    type Annotation_Array_Access is access Annotation_Array;
 
@@ -1581,7 +2025,7 @@ private
    for Generated_Code_Info'Write use Write_Generated_Code_Info;
 
    type Generated_Code_Info_Array is
-     array (Positive range <>) of Generated_Code_Info;
+     array (Positive range <>) of aliased Generated_Code_Info;
 
    type Generated_Code_Info_Array_Access is access Generated_Code_Info_Array;
 

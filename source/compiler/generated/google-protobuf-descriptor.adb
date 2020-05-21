@@ -187,14 +187,6 @@ package body Google.Protobuf.Descriptor is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : File_Descriptor_Set_Vector;
-     Index : Positive)
-      return File_Descriptor_Set is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out File_Descriptor_Set_Vector) is
    begin
       Self.Length := 0;
@@ -237,6 +229,22 @@ package body Google.Protobuf.Descriptor is
       end if;
    end Finalize;
 
+   not overriding function Get_File_Descriptor_Set_Variable_Reference
+    (Self  : aliased in out File_Descriptor_Set_Vector;
+     Index : Positive)
+      return File_Descriptor_Set_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_File_Descriptor_Set_Variable_Reference;
+
+   not overriding function Get_File_Descriptor_Set_Constant_Reference
+    (Self  : aliased File_Descriptor_Set_Vector;
+     Index : Positive)
+      return File_Descriptor_Set_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_File_Descriptor_Set_Constant_Reference;
+
    procedure Read_File_Descriptor_Set
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out File_Descriptor_Set) is
@@ -273,7 +281,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.File.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
-              (Stream, V.File.Get (J));
+              (Stream, V.File (J));
          end loop;
          if WS.End_Message then
             Write_File_Descriptor_Set (WS'Access, V);
@@ -285,14 +293,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : File_Descriptor_Proto_Vector;
-     Index : Positive)
-      return File_Descriptor_Proto is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out File_Descriptor_Proto_Vector) is
    begin
@@ -336,6 +336,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_File_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out File_Descriptor_Proto_Vector;
+     Index : Positive)
+      return File_Descriptor_Proto_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_File_Descriptor_Proto_Variable_Reference;
+
+   not overriding function Get_File_Descriptor_Proto_Constant_Reference
+    (Self  : aliased File_Descriptor_Proto_Vector;
+     Index : Positive)
+      return File_Descriptor_Proto_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_File_Descriptor_Proto_Constant_Reference;
 
    procedure Read_File_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -425,22 +441,22 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Message_Type.Length loop
             WS.Write_Key ((4, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Descriptor_Proto'Write
-              (Stream, V.Message_Type.Get (J));
+              (Stream, V.Message_Type (J));
          end loop;
          for J in 1 .. V.Enum_Type.Length loop
             WS.Write_Key ((5, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Descriptor_Proto'Write
-              (Stream, V.Enum_Type.Get (J));
+              (Stream, V.Enum_Type (J));
          end loop;
          for J in 1 .. V.Service.Length loop
             WS.Write_Key ((6, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Service_Descriptor_Proto'Write
-              (Stream, V.Service.Get (J));
+              (Stream, V.Service (J));
          end loop;
          for J in 1 .. V.Extension.Length loop
             WS.Write_Key ((7, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
-              (Stream, V.Extension.Get (J));
+              (Stream, V.Extension (J));
          end loop;
          if V.Options.Is_Set then
             WS.Write_Key ((8, PB_Support.Length_Delimited));
@@ -465,14 +481,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Descriptor_Proto_Vector;
-     Index : Positive)
-      return Descriptor_Proto is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Descriptor_Proto_Vector) is
    begin
@@ -514,6 +522,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Descriptor_Proto_Vector;
+     Index : Positive)
+      return Descriptor_Proto_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Descriptor_Proto_Variable_Reference;
+
+   not overriding function Get_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Descriptor_Proto_Vector;
+     Index : Positive)
+      return Descriptor_Proto_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Descriptor_Proto_Constant_Reference;
 
    procedure Read_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -585,32 +609,32 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Field.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
-              (Stream, V.Field.Get (J));
+              (Stream, V.Field (J));
          end loop;
          for J in 1 .. V.Extension.Length loop
             WS.Write_Key ((6, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Descriptor_Proto'Write
-              (Stream, V.Extension.Get (J));
+              (Stream, V.Extension (J));
          end loop;
          for J in 1 .. V.Nested_Type.Length loop
             WS.Write_Key ((3, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Descriptor_Proto'Write
-              (Stream, V.Nested_Type.Get (J));
+              (Stream, V.Nested_Type (J));
          end loop;
          for J in 1 .. V.Enum_Type.Length loop
             WS.Write_Key ((4, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Descriptor_Proto'Write
-              (Stream, V.Enum_Type.Get (J));
+              (Stream, V.Enum_Type (J));
          end loop;
          for J in 1 .. V.Extension_Range.Length loop
             WS.Write_Key ((5, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Extension_Range'Write
-              (Stream, V.Extension_Range.Get (J));
+              (Stream, V.Extension_Range (J));
          end loop;
          for J in 1 .. V.Oneof_Decl.Length loop
             WS.Write_Key ((8, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Oneof_Descriptor_Proto'Write
-              (Stream, V.Oneof_Decl.Get (J));
+              (Stream, V.Oneof_Decl (J));
          end loop;
          if V.Options.Is_Set then
             WS.Write_Key ((7, PB_Support.Length_Delimited));
@@ -620,7 +644,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Reserved_Range.Length loop
             WS.Write_Key ((9, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Reserved_Range'Write
-              (Stream, V.Reserved_Range.Get (J));
+              (Stream, V.Reserved_Range (J));
          end loop;
          WS.Write (10, V.Reserved_Name);
          if WS.End_Message then
@@ -633,14 +657,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Extension_Range_Vector;
-     Index : Positive)
-      return Extension_Range is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Extension_Range_Vector) is
    begin
@@ -681,6 +697,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Extension_Range_Variable_Reference
+    (Self  : aliased in out Extension_Range_Vector;
+     Index : Positive)
+      return Extension_Range_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Extension_Range_Variable_Reference;
+
+   not overriding function Get_Extension_Range_Constant_Reference
+    (Self  : aliased Extension_Range_Vector;
+     Index : Positive)
+      return Extension_Range_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Extension_Range_Constant_Reference;
 
    procedure Read_Extension_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -740,14 +772,6 @@ package body Google.Protobuf.Descriptor is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Reserved_Range_Vector;
-     Index : Positive)
-      return Reserved_Range is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Reserved_Range_Vector) is
    begin
       Self.Length := 0;
@@ -787,6 +811,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Reserved_Range_Variable_Reference
+    (Self  : aliased in out Reserved_Range_Vector;
+     Index : Positive)
+      return Reserved_Range_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Reserved_Range_Variable_Reference;
+
+   not overriding function Get_Reserved_Range_Constant_Reference
+    (Self  : aliased Reserved_Range_Vector;
+     Index : Positive)
+      return Reserved_Range_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Reserved_Range_Constant_Reference;
 
    procedure Read_Reserved_Range
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -846,14 +886,6 @@ package body Google.Protobuf.Descriptor is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Field_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Field_Descriptor_Proto is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Field_Descriptor_Proto_Vector) is
    begin
       Self.Length := 0;
@@ -896,6 +928,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Field_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Field_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Field_Descriptor_Proto_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Field_Descriptor_Proto_Variable_Reference;
+
+   not overriding function Get_Field_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Field_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Field_Descriptor_Proto_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Field_Descriptor_Proto_Constant_Reference;
 
    procedure Read_Field_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1023,14 +1071,6 @@ package body Google.Protobuf.Descriptor is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Oneof_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Oneof_Descriptor_Proto is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Oneof_Descriptor_Proto_Vector) is
    begin
       Self.Length := 0;
@@ -1073,6 +1113,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Oneof_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Oneof_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Oneof_Descriptor_Proto_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Oneof_Descriptor_Proto_Variable_Reference;
+
+   not overriding function Get_Oneof_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Oneof_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Oneof_Descriptor_Proto_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Oneof_Descriptor_Proto_Constant_Reference;
 
    procedure Read_Oneof_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1133,14 +1189,6 @@ package body Google.Protobuf.Descriptor is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Enum_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Enum_Descriptor_Proto is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Enum_Descriptor_Proto_Vector) is
    begin
       Self.Length := 0;
@@ -1183,6 +1231,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Enum_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Enum_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Descriptor_Proto_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Descriptor_Proto_Variable_Reference;
+
+   not overriding function Get_Enum_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Enum_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Descriptor_Proto_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Descriptor_Proto_Constant_Reference;
 
    procedure Read_Enum_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1233,7 +1297,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Value.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto'Write
-              (Stream, V.Value.Get (J));
+              (Stream, V.Value (J));
          end loop;
          if V.Options.Is_Set then
             WS.Write_Key ((3, PB_Support.Length_Delimited));
@@ -1252,14 +1316,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Enum_Value_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Enum_Value_Descriptor_Proto is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Enum_Value_Descriptor_Proto_Vector) is
    begin
@@ -1307,6 +1363,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Enum_Value_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Enum_Value_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Value_Descriptor_Proto_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Value_Descriptor_Proto_Variable_Reference;
+
+   not overriding function Get_Enum_Value_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Enum_Value_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Enum_Value_Descriptor_Proto_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Value_Descriptor_Proto_Constant_Reference;
 
    procedure Read_Enum_Value_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1377,14 +1449,6 @@ package body Google.Protobuf.Descriptor is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Service_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Service_Descriptor_Proto is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Service_Descriptor_Proto_Vector) is
    begin
       Self.Length := 0;
@@ -1428,6 +1492,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Service_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Service_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Service_Descriptor_Proto_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Service_Descriptor_Proto_Variable_Reference;
+
+   not overriding function Get_Service_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Service_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Service_Descriptor_Proto_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Service_Descriptor_Proto_Constant_Reference;
 
    procedure Read_Service_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1478,7 +1558,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Method.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Method_Descriptor_Proto'Write
-              (Stream, V.Method.Get (J));
+              (Stream, V.Method (J));
          end loop;
          if V.Options.Is_Set then
             WS.Write_Key ((3, PB_Support.Length_Delimited));
@@ -1495,14 +1575,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Method_Descriptor_Proto_Vector;
-     Index : Positive)
-      return Method_Descriptor_Proto is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Method_Descriptor_Proto_Vector) is
    begin
@@ -1547,6 +1619,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Method_Descriptor_Proto_Variable_Reference
+    (Self  : aliased in out Method_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Method_Descriptor_Proto_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Method_Descriptor_Proto_Variable_Reference;
+
+   not overriding function Get_Method_Descriptor_Proto_Constant_Reference
+    (Self  : aliased Method_Descriptor_Proto_Vector;
+     Index : Positive)
+      return Method_Descriptor_Proto_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Method_Descriptor_Proto_Constant_Reference;
 
    procedure Read_Method_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1641,14 +1729,6 @@ package body Google.Protobuf.Descriptor is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : File_Options_Vector;
-     Index : Positive)
-      return File_Options is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out File_Options_Vector) is
    begin
       Self.Length := 0;
@@ -1686,6 +1766,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_File_Options_Variable_Reference
+    (Self  : aliased in out File_Options_Vector;
+     Index : Positive)
+      return File_Options_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_File_Options_Variable_Reference;
+
+   not overriding function Get_File_Options_Constant_Reference
+    (Self  : aliased File_Options_Vector;
+     Index : Positive)
+      return File_Options_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_File_Options_Constant_Reference;
 
    procedure Read_File_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1846,7 +1942,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, V.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option (J));
          end loop;
          if WS.End_Message then
             Write_File_Options (WS'Access, V);
@@ -1858,14 +1954,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Message_Options_Vector;
-     Index : Positive)
-      return Message_Options is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Message_Options_Vector) is
    begin
@@ -1906,6 +1994,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Message_Options_Variable_Reference
+    (Self  : aliased in out Message_Options_Vector;
+     Index : Positive)
+      return Message_Options_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Message_Options_Variable_Reference;
+
+   not overriding function Get_Message_Options_Constant_Reference
+    (Self  : aliased Message_Options_Vector;
+     Index : Positive)
+      return Message_Options_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Message_Options_Constant_Reference;
 
    procedure Read_Message_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1978,7 +2082,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, V.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option (J));
          end loop;
          if WS.End_Message then
             Write_Message_Options (WS'Access, V);
@@ -1990,14 +2094,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Field_Options_Vector;
-     Index : Positive)
-      return Field_Options is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Field_Options_Vector) is
    begin
@@ -2038,6 +2134,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Field_Options_Variable_Reference
+    (Self  : aliased in out Field_Options_Vector;
+     Index : Positive)
+      return Field_Options_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Field_Options_Variable_Reference;
+
+   not overriding function Get_Field_Options_Constant_Reference
+    (Self  : aliased Field_Options_Vector;
+     Index : Positive)
+      return Field_Options_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Field_Options_Constant_Reference;
 
    procedure Read_Field_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2123,7 +2235,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, V.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option (J));
          end loop;
          if WS.End_Message then
             Write_Field_Options (WS'Access, V);
@@ -2135,14 +2247,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Oneof_Options_Vector;
-     Index : Positive)
-      return Oneof_Options is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Oneof_Options_Vector) is
    begin
@@ -2184,6 +2288,22 @@ package body Google.Protobuf.Descriptor is
       end if;
    end Finalize;
 
+   not overriding function Get_Oneof_Options_Variable_Reference
+    (Self  : aliased in out Oneof_Options_Vector;
+     Index : Positive)
+      return Oneof_Options_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Oneof_Options_Variable_Reference;
+
+   not overriding function Get_Oneof_Options_Constant_Reference
+    (Self  : aliased Oneof_Options_Vector;
+     Index : Positive)
+      return Oneof_Options_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Oneof_Options_Constant_Reference;
+
    procedure Read_Oneof_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Oneof_Options) is
@@ -2220,7 +2340,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, V.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option (J));
          end loop;
          if WS.End_Message then
             Write_Oneof_Options (WS'Access, V);
@@ -2232,14 +2352,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Enum_Options_Vector;
-     Index : Positive)
-      return Enum_Options is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Enum_Options_Vector) is
    begin
@@ -2278,6 +2390,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Enum_Options_Variable_Reference
+    (Self  : aliased in out Enum_Options_Vector;
+     Index : Positive)
+      return Enum_Options_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Options_Variable_Reference;
+
+   not overriding function Get_Enum_Options_Constant_Reference
+    (Self  : aliased Enum_Options_Vector;
+     Index : Positive)
+      return Enum_Options_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Options_Constant_Reference;
 
    procedure Read_Enum_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2331,7 +2459,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, V.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option (J));
          end loop;
          if WS.End_Message then
             Write_Enum_Options (WS'Access, V);
@@ -2343,14 +2471,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Enum_Value_Options_Vector;
-     Index : Positive)
-      return Enum_Value_Options is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Enum_Value_Options_Vector) is
    begin
@@ -2393,6 +2513,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Enum_Value_Options_Variable_Reference
+    (Self  : aliased in out Enum_Value_Options_Vector;
+     Index : Positive)
+      return Enum_Value_Options_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Value_Options_Variable_Reference;
+
+   not overriding function Get_Enum_Value_Options_Constant_Reference
+    (Self  : aliased Enum_Value_Options_Vector;
+     Index : Positive)
+      return Enum_Value_Options_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Value_Options_Constant_Reference;
 
    procedure Read_Enum_Value_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2438,7 +2574,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, V.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option (J));
          end loop;
          if WS.End_Message then
             Write_Enum_Value_Options (WS'Access, V);
@@ -2450,14 +2586,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Service_Options_Vector;
-     Index : Positive)
-      return Service_Options is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Service_Options_Vector) is
    begin
@@ -2498,6 +2626,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Service_Options_Variable_Reference
+    (Self  : aliased in out Service_Options_Vector;
+     Index : Positive)
+      return Service_Options_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Service_Options_Variable_Reference;
+
+   not overriding function Get_Service_Options_Constant_Reference
+    (Self  : aliased Service_Options_Vector;
+     Index : Positive)
+      return Service_Options_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Service_Options_Constant_Reference;
 
    procedure Read_Service_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2543,7 +2687,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, V.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option (J));
          end loop;
          if WS.End_Message then
             Write_Service_Options (WS'Access, V);
@@ -2555,14 +2699,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Method_Options_Vector;
-     Index : Positive)
-      return Method_Options is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Method_Options_Vector) is
    begin
@@ -2603,6 +2739,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Method_Options_Variable_Reference
+    (Self  : aliased in out Method_Options_Vector;
+     Index : Positive)
+      return Method_Options_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Method_Options_Variable_Reference;
+
+   not overriding function Get_Method_Options_Constant_Reference
+    (Self  : aliased Method_Options_Vector;
+     Index : Positive)
+      return Method_Options_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Method_Options_Constant_Reference;
 
    procedure Read_Method_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2648,7 +2800,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
-              (Stream, V.Uninterpreted_Option.Get (J));
+              (Stream, V.Uninterpreted_Option (J));
          end loop;
          if WS.End_Message then
             Write_Method_Options (WS'Access, V);
@@ -2660,14 +2812,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Uninterpreted_Option_Vector;
-     Index : Positive)
-      return Uninterpreted_Option is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Uninterpreted_Option_Vector) is
    begin
@@ -2710,6 +2854,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Uninterpreted_Option_Variable_Reference
+    (Self  : aliased in out Uninterpreted_Option_Vector;
+     Index : Positive)
+      return Uninterpreted_Option_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Uninterpreted_Option_Variable_Reference;
+
+   not overriding function Get_Uninterpreted_Option_Constant_Reference
+    (Self  : aliased Uninterpreted_Option_Vector;
+     Index : Positive)
+      return Uninterpreted_Option_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Uninterpreted_Option_Constant_Reference;
 
    procedure Read_Uninterpreted_Option
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2779,8 +2939,7 @@ package body Google.Protobuf.Descriptor is
          WS.Start_Message;
          for J in 1 .. V.Name.Length loop
             WS.Write_Key ((2, PB_Support.Length_Delimited));
-            Google.Protobuf.Descriptor.Name_Part'Write
-              (Stream, V.Name.Get (J));
+            Google.Protobuf.Descriptor.Name_Part'Write (Stream, V.Name (J));
          end loop;
          if V.Identifier_Value.Is_Set then
             WS.Write (3, V.Identifier_Value.Value);
@@ -2810,14 +2969,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Name_Part_Vector;
-     Index : Positive)
-      return Name_Part is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Name_Part_Vector) is
    begin
@@ -2856,6 +3007,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Name_Part_Variable_Reference
+    (Self  : aliased in out Name_Part_Vector;
+     Index : Positive)
+      return Name_Part_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Name_Part_Variable_Reference;
+
+   not overriding function Get_Name_Part_Constant_Reference
+    (Self  : aliased Name_Part_Vector;
+     Index : Positive)
+      return Name_Part_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Name_Part_Constant_Reference;
 
    procedure Read_Name_Part
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2904,14 +3071,6 @@ package body Google.Protobuf.Descriptor is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Source_Code_Info_Vector;
-     Index : Positive)
-      return Source_Code_Info is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Source_Code_Info_Vector) is
    begin
       Self.Length := 0;
@@ -2953,6 +3112,22 @@ package body Google.Protobuf.Descriptor is
       end if;
    end Finalize;
 
+   not overriding function Get_Source_Code_Info_Variable_Reference
+    (Self  : aliased in out Source_Code_Info_Vector;
+     Index : Positive)
+      return Source_Code_Info_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Source_Code_Info_Variable_Reference;
+
+   not overriding function Get_Source_Code_Info_Constant_Reference
+    (Self  : aliased Source_Code_Info_Vector;
+     Index : Positive)
+      return Source_Code_Info_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Source_Code_Info_Constant_Reference;
+
    procedure Read_Source_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Source_Code_Info) is
@@ -2987,8 +3162,7 @@ package body Google.Protobuf.Descriptor is
          WS.Start_Message;
          for J in 1 .. V.Location.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
-            Google.Protobuf.Descriptor.Location'Write
-              (Stream, V.Location.Get (J));
+            Google.Protobuf.Descriptor.Location'Write (Stream, V.Location (J));
          end loop;
          if WS.End_Message then
             Write_Source_Code_Info (WS'Access, V);
@@ -3000,11 +3174,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get (Self  : Location_Vector; Index : Positive) return Location is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Location_Vector) is
    begin
@@ -3042,6 +3211,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Location_Variable_Reference
+    (Self  : aliased in out Location_Vector;
+     Index : Positive)
+      return Location_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Location_Variable_Reference;
+
+   not overriding function Get_Location_Constant_Reference
+    (Self  : aliased Location_Vector;
+     Index : Positive)
+      return Location_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Location_Constant_Reference;
 
    procedure Read_Location
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -3092,8 +3277,8 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Path);
-         WS.Write_Varint (2, V.Span);
+         WS.Write_Varint_Packed (1, V.Path);
+         WS.Write_Varint_Packed (2, V.Span);
          if V.Leading_Comments.Is_Set then
             WS.Write (3, V.Leading_Comments.Value);
          end if;
@@ -3111,14 +3296,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Generated_Code_Info_Vector;
-     Index : Positive)
-      return Generated_Code_Info is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Generated_Code_Info_Vector) is
    begin
@@ -3162,6 +3339,22 @@ package body Google.Protobuf.Descriptor is
       end if;
    end Finalize;
 
+   not overriding function Get_Generated_Code_Info_Variable_Reference
+    (Self  : aliased in out Generated_Code_Info_Vector;
+     Index : Positive)
+      return Generated_Code_Info_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Generated_Code_Info_Variable_Reference;
+
+   not overriding function Get_Generated_Code_Info_Constant_Reference
+    (Self  : aliased Generated_Code_Info_Vector;
+     Index : Positive)
+      return Generated_Code_Info_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Generated_Code_Info_Constant_Reference;
+
    procedure Read_Generated_Code_Info
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Generated_Code_Info) is
@@ -3197,7 +3390,7 @@ package body Google.Protobuf.Descriptor is
          for J in 1 .. V.Annotation.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Annotation'Write
-              (Stream, V.Annotation.Get (J));
+              (Stream, V.Annotation (J));
          end loop;
          if WS.End_Message then
             Write_Generated_Code_Info (WS'Access, V);
@@ -3209,14 +3402,6 @@ package body Google.Protobuf.Descriptor is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Annotation_Vector;
-     Index : Positive)
-      return Annotation is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Annotation_Vector) is
    begin
@@ -3255,6 +3440,22 @@ package body Google.Protobuf.Descriptor is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Annotation_Variable_Reference
+    (Self  : aliased in out Annotation_Vector;
+     Index : Positive)
+      return Annotation_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Annotation_Variable_Reference;
+
+   not overriding function Get_Annotation_Constant_Reference
+    (Self  : aliased Annotation_Vector;
+     Index : Positive)
+      return Annotation_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Annotation_Constant_Reference;
 
    procedure Read_Annotation
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -3305,7 +3506,7 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write_Varint (1, V.Path);
+         WS.Write_Varint_Packed (1, V.Path);
          if V.Source_File.Is_Set then
             WS.Write (2, V.Source_File.Value);
          end if;

@@ -39,11 +39,6 @@ package body Google.Protobuf.Struct is
       return Self.Length;
    end Length;
 
-   function Get (Self  : Struct_Vector; Index : Positive) return Struct is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Struct_Vector) is
    begin
       Self.Length := 0;
@@ -131,8 +126,7 @@ package body Google.Protobuf.Struct is
          WS.Start_Message;
          for J in 1 .. V.Fields.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
-            Google.Protobuf.Struct.Fields_Entry'Write
-              (Stream, V.Fields.Get (J));
+            Google.Protobuf.Struct.Fields_Entry'Write (Stream, V.Fields (J));
          end loop;
          if WS.End_Message then
             Write_Struct (WS'Access, V);
@@ -144,14 +138,6 @@ package body Google.Protobuf.Struct is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Fields_Entry_Vector;
-     Index : Positive)
-      return Fields_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Fields_Entry_Vector) is
    begin
@@ -259,11 +245,6 @@ package body Google.Protobuf.Struct is
    begin
       return Self.Length;
    end Length;
-
-   function Get (Self  : Value_Vector; Index : Positive) return Value is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Value_Vector) is
    begin
@@ -411,14 +392,6 @@ package body Google.Protobuf.Struct is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : List_Value_Vector;
-     Index : Positive)
-      return List_Value is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out List_Value_Vector) is
    begin
       Self.Length := 0;
@@ -507,7 +480,7 @@ package body Google.Protobuf.Struct is
          WS.Start_Message;
          for J in 1 .. V.Values.Length loop
             WS.Write_Key ((1, PB_Support.Length_Delimited));
-            Google.Protobuf.Struct.Value'Write (Stream, V.Values.Get (J));
+            Google.Protobuf.Struct.Value'Write (Stream, V.Values (J));
          end loop;
          if WS.End_Message then
             Write_List_Value (WS'Access, V);

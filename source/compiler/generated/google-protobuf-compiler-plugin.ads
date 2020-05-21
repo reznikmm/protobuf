@@ -6,11 +6,17 @@ with PB_Support.Universal_String_Vectors;
 
 package Google.Protobuf.Compiler.Plugin is
 
-   type Code_Generator_Request_Vector is tagged private;
+   type Code_Generator_Request_Vector is tagged private
+     with Variable_Indexing => Get_Code_Generator_Request_Variable_Reference,
+     Constant_Indexing => Get_Code_Generator_Request_Constant_Reference;
 
-   type Code_Generator_Response_Vector is tagged private;
+   type Code_Generator_Response_Vector is tagged private
+     with Variable_Indexing => Get_Code_Generator_Response_Variable_Reference,
+     Constant_Indexing => Get_Code_Generator_Response_Constant_Reference;
 
-   type File_Vector is tagged private;
+   type File_Vector is tagged private
+     with Variable_Indexing => Get_File_Variable_Reference,
+     Constant_Indexing => Get_File_Constant_Reference;
 
    type Code_Generator_Request is
      record
@@ -20,7 +26,7 @@ package Google.Protobuf.Compiler.Plugin is
           .File_Descriptor_Proto_Vector;
      end record;
 
-   type Optional_Code_Generator_Request (Is_Set : Boolean := False) is
+   type Optional_Code_Generator_Request  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -32,16 +38,31 @@ package Google.Protobuf.Compiler.Plugin is
 
    function Length (Self : Code_Generator_Request_Vector) return Natural;
 
-   function Get
-    (Self  : Code_Generator_Request_Vector;
-     Index : Positive)
-      return Code_Generator_Request;
-
    procedure Clear (Self : in out Code_Generator_Request_Vector);
 
    procedure Append
     (Self : in out Code_Generator_Request_Vector;
      V    : Code_Generator_Request);
+
+   type Code_Generator_Request_Variable_Reference
+     (Element : not null access Code_Generator_Request) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Code_Generator_Request_Variable_Reference
+    (Self  : aliased in out Code_Generator_Request_Vector;
+     Index : Positive)
+      return Code_Generator_Request_Variable_Reference
+     with Inline;
+
+   type Code_Generator_Request_Constant_Reference
+     (Element : not null access constant Code_Generator_Request) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Code_Generator_Request_Constant_Reference
+    (Self  : aliased Code_Generator_Request_Vector;
+     Index : Positive)
+      return Code_Generator_Request_Constant_Reference
+     with Inline;
 
    type File is
      record
@@ -50,7 +71,7 @@ package Google.Protobuf.Compiler.Plugin is
         Content         : PB_Support.Universal_String_Vectors.Option;
      end record;
 
-   type Optional_File (Is_Set : Boolean := False) is
+   type Optional_File  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -62,11 +83,29 @@ package Google.Protobuf.Compiler.Plugin is
 
    function Length (Self : File_Vector) return Natural;
 
-   function Get (Self  : File_Vector; Index : Positive) return File;
-
    procedure Clear (Self : in out File_Vector);
 
    procedure Append (Self : in out File_Vector; V    : File);
+
+   type File_Variable_Reference  (Element : not null access File) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Variable_Reference
+    (Self  : aliased in out File_Vector;
+     Index : Positive)
+      return File_Variable_Reference
+     with Inline;
+
+   type File_Constant_Reference  (Element : not null access constant File) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Constant_Reference
+    (Self  : aliased File_Vector;
+     Index : Positive)
+      return File_Constant_Reference
+     with Inline;
 
    type Code_Generator_Response is
      record
@@ -74,7 +113,7 @@ package Google.Protobuf.Compiler.Plugin is
         File  : Google.Protobuf.Compiler.Plugin.File_Vector;
      end record;
 
-   type Optional_Code_Generator_Response (Is_Set : Boolean := False) is
+   type Optional_Code_Generator_Response  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -86,16 +125,32 @@ package Google.Protobuf.Compiler.Plugin is
 
    function Length (Self : Code_Generator_Response_Vector) return Natural;
 
-   function Get
-    (Self  : Code_Generator_Response_Vector;
-     Index : Positive)
-      return Code_Generator_Response;
-
    procedure Clear (Self : in out Code_Generator_Response_Vector);
 
    procedure Append
     (Self : in out Code_Generator_Response_Vector;
      V    : Code_Generator_Response);
+
+   type Code_Generator_Response_Variable_Reference
+     (Element : not null access Code_Generator_Response) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Code_Generator_Response_Variable_Reference
+    (Self  : aliased in out Code_Generator_Response_Vector;
+     Index : Positive)
+      return Code_Generator_Response_Variable_Reference
+     with Inline;
+
+   type Code_Generator_Response_Constant_Reference
+     (Element : not null access constant Code_Generator_Response) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Code_Generator_Response_Constant_Reference
+    (Self  : aliased Code_Generator_Response_Vector;
+     Index : Positive)
+      return Code_Generator_Response_Constant_Reference
+     with Inline;
 private
 
    procedure Read_Code_Generator_Request
@@ -111,7 +166,7 @@ private
    for Code_Generator_Request'Write use Write_Code_Generator_Request;
 
    type Code_Generator_Request_Array is
-     array (Positive range <>) of Code_Generator_Request;
+     array (Positive range <>) of aliased Code_Generator_Request;
 
    type Code_Generator_Request_Array_Access is
      access Code_Generator_Request_Array;
@@ -139,7 +194,7 @@ private
 
    for File'Write use Write_File;
 
-   type File_Array is array (Positive range <>) of File;
+   type File_Array is array (Positive range <>) of aliased File;
 
    type File_Array_Access is access File_Array;
 
@@ -167,7 +222,7 @@ private
    for Code_Generator_Response'Write use Write_Code_Generator_Response;
 
    type Code_Generator_Response_Array is
-     array (Positive range <>) of Code_Generator_Response;
+     array (Positive range <>) of aliased Code_Generator_Response;
 
    type Code_Generator_Response_Array_Access is
      access Code_Generator_Response_Array;

@@ -9,11 +9,6 @@ package body Google.Protobuf.Any is
       return Self.Length;
    end Length;
 
-   function Get (Self  : Any_Vector; Index : Positive) return Any is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Any_Vector) is
    begin
       Self.Length := 0;

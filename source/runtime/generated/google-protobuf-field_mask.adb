@@ -9,14 +9,6 @@ package body Google.Protobuf.Field_Mask is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Field_Mask_Vector;
-     Index : Positive)
-      return Field_Mask is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Field_Mask_Vector) is
    begin
       Self.Length := 0;

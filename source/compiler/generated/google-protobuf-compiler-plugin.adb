@@ -21,14 +21,6 @@ package body Google.Protobuf.Compiler.Plugin is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Code_Generator_Request_Vector;
-     Index : Positive)
-      return Code_Generator_Request is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Code_Generator_Request_Vector) is
    begin
       Self.Length := 0;
@@ -71,6 +63,22 @@ package body Google.Protobuf.Compiler.Plugin is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Code_Generator_Request_Variable_Reference
+    (Self  : aliased in out Code_Generator_Request_Vector;
+     Index : Positive)
+      return Code_Generator_Request_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Code_Generator_Request_Variable_Reference;
+
+   not overriding function Get_Code_Generator_Request_Constant_Reference
+    (Self  : aliased Code_Generator_Request_Vector;
+     Index : Positive)
+      return Code_Generator_Request_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Code_Generator_Request_Constant_Reference;
 
    procedure Read_Code_Generator_Request
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -120,7 +128,7 @@ package body Google.Protobuf.Compiler.Plugin is
          for J in 1 .. V.Proto_File.Length loop
             WS.Write_Key ((15, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
-              (Stream, V.Proto_File.Get (J));
+              (Stream, V.Proto_File (J));
          end loop;
          if WS.End_Message then
             Write_Code_Generator_Request (WS'Access, V);
@@ -132,14 +140,6 @@ package body Google.Protobuf.Compiler.Plugin is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Code_Generator_Response_Vector;
-     Index : Positive)
-      return Code_Generator_Response is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Code_Generator_Response_Vector) is
    begin
@@ -185,6 +185,22 @@ package body Google.Protobuf.Compiler.Plugin is
       end if;
    end Finalize;
 
+   not overriding function Get_Code_Generator_Response_Variable_Reference
+    (Self  : aliased in out Code_Generator_Response_Vector;
+     Index : Positive)
+      return Code_Generator_Response_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Code_Generator_Response_Variable_Reference;
+
+   not overriding function Get_Code_Generator_Response_Constant_Reference
+    (Self  : aliased Code_Generator_Response_Vector;
+     Index : Positive)
+      return Code_Generator_Response_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Code_Generator_Response_Constant_Reference;
+
    procedure Read_Code_Generator_Response
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Code_Generator_Response) is
@@ -227,8 +243,7 @@ package body Google.Protobuf.Compiler.Plugin is
          end if;
          for J in 1 .. V.File.Length loop
             WS.Write_Key ((15, PB_Support.Length_Delimited));
-            Google.Protobuf.Compiler.Plugin.File'Write
-              (Stream, V.File.Get (J));
+            Google.Protobuf.Compiler.Plugin.File'Write (Stream, V.File (J));
          end loop;
          if WS.End_Message then
             Write_Code_Generator_Response (WS'Access, V);
@@ -240,11 +255,6 @@ package body Google.Protobuf.Compiler.Plugin is
    begin
       return Self.Length;
    end Length;
-
-   function Get (Self  : File_Vector; Index : Positive) return File is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out File_Vector) is
    begin
@@ -282,6 +292,22 @@ package body Google.Protobuf.Compiler.Plugin is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_File_Variable_Reference
+    (Self  : aliased in out File_Vector;
+     Index : Positive)
+      return File_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_File_Variable_Reference;
+
+   not overriding function Get_File_Constant_Reference
+    (Self  : aliased File_Vector;
+     Index : Positive)
+      return File_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_File_Constant_Reference;
 
    procedure Read_File
     (Stream : access Ada.Streams.Root_Stream_Type'Class;

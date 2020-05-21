@@ -26,8 +26,6 @@ package Google.Protobuf.Timestamp is
 
    function Length (Self : Timestamp_Vector) return Natural;
 
-   function Get (Self  : Timestamp_Vector; Index : Positive) return Timestamp;
-
    procedure Clear (Self : in out Timestamp_Vector);
 
    procedure Append (Self : in out Timestamp_Vector; V    : Timestamp);

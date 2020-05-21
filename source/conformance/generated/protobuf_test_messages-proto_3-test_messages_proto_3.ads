@@ -161,11 +161,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function Length (Self : Map_Int_32Int_32Entry_Vector) return Natural;
 
-   function Get
-    (Self  : Map_Int_32Int_32Entry_Vector;
-     Index : Positive)
-      return Map_Int_32Int_32Entry;
-
    procedure Clear (Self : in out Map_Int_32Int_32Entry_Vector);
 
    procedure Append
@@ -211,11 +206,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function Length (Self : Map_Int_64Int_64Entry_Vector) return Natural;
 
-   function Get
-    (Self  : Map_Int_64Int_64Entry_Vector;
-     Index : Positive)
-      return Map_Int_64Int_64Entry;
-
    procedure Clear (Self : in out Map_Int_64Int_64Entry_Vector);
 
    procedure Append
@@ -260,11 +250,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Map_Uint_32Uint_32Entry_Vector) return Natural;
-
-   function Get
-    (Self  : Map_Uint_32Uint_32Entry_Vector;
-     Index : Positive)
-      return Map_Uint_32Uint_32Entry;
 
    procedure Clear (Self : in out Map_Uint_32Uint_32Entry_Vector);
 
@@ -312,11 +297,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function Length (Self : Map_Uint_64Uint_64Entry_Vector) return Natural;
 
-   function Get
-    (Self  : Map_Uint_64Uint_64Entry_Vector;
-     Index : Positive)
-      return Map_Uint_64Uint_64Entry;
-
    procedure Clear (Self : in out Map_Uint_64Uint_64Entry_Vector);
 
    procedure Append
@@ -362,11 +342,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Map_Sint_32Sint_32Entry_Vector) return Natural;
-
-   function Get
-    (Self  : Map_Sint_32Sint_32Entry_Vector;
-     Index : Positive)
-      return Map_Sint_32Sint_32Entry;
 
    procedure Clear (Self : in out Map_Sint_32Sint_32Entry_Vector);
 
@@ -414,11 +389,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function Length (Self : Map_Sint_64Sint_64Entry_Vector) return Natural;
 
-   function Get
-    (Self  : Map_Sint_64Sint_64Entry_Vector;
-     Index : Positive)
-      return Map_Sint_64Sint_64Entry;
-
    procedure Clear (Self : in out Map_Sint_64Sint_64Entry_Vector);
 
    procedure Append
@@ -464,11 +434,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Map_Fixed_32Fixed_32Entry_Vector) return Natural;
-
-   function Get
-    (Self  : Map_Fixed_32Fixed_32Entry_Vector;
-     Index : Positive)
-      return Map_Fixed_32Fixed_32Entry;
 
    procedure Clear (Self : in out Map_Fixed_32Fixed_32Entry_Vector);
 
@@ -516,11 +481,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function Length (Self : Map_Fixed_64Fixed_64Entry_Vector) return Natural;
 
-   function Get
-    (Self  : Map_Fixed_64Fixed_64Entry_Vector;
-     Index : Positive)
-      return Map_Fixed_64Fixed_64Entry;
-
    procedure Clear (Self : in out Map_Fixed_64Fixed_64Entry_Vector);
 
    procedure Append
@@ -566,11 +526,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Map_Sfixed_32Sfixed_32Entry_Vector) return Natural;
-
-   function Get
-    (Self  : Map_Sfixed_32Sfixed_32Entry_Vector;
-     Index : Positive)
-      return Map_Sfixed_32Sfixed_32Entry;
 
    procedure Clear (Self : in out Map_Sfixed_32Sfixed_32Entry_Vector);
 
@@ -618,11 +573,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function Length (Self : Map_Sfixed_64Sfixed_64Entry_Vector) return Natural;
 
-   function Get
-    (Self  : Map_Sfixed_64Sfixed_64Entry_Vector;
-     Index : Positive)
-      return Map_Sfixed_64Sfixed_64Entry;
-
    procedure Clear (Self : in out Map_Sfixed_64Sfixed_64Entry_Vector);
 
    procedure Append
@@ -669,11 +619,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function Length (Self : Map_Int_32Float_Entry_Vector) return Natural;
 
-   function Get
-    (Self  : Map_Int_32Float_Entry_Vector;
-     Index : Positive)
-      return Map_Int_32Float_Entry;
-
    procedure Clear (Self : in out Map_Int_32Float_Entry_Vector);
 
    procedure Append
@@ -718,11 +663,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Map_Int_32Double_Entry_Vector) return Natural;
-
-   function Get
-    (Self  : Map_Int_32Double_Entry_Vector;
-     Index : Positive)
-      return Map_Int_32Double_Entry;
 
    procedure Clear (Self : in out Map_Int_32Double_Entry_Vector);
 
@@ -769,11 +709,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function Length (Self : Map_Bool_Bool_Entry_Vector) return Natural;
 
-   function Get
-    (Self  : Map_Bool_Bool_Entry_Vector;
-     Index : Positive)
-      return Map_Bool_Bool_Entry;
-
    procedure Clear (Self : in out Map_Bool_Bool_Entry_Vector);
 
    procedure Append
@@ -818,11 +753,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Map_String_String_Entry_Vector) return Natural;
-
-   function Get
-    (Self  : Map_String_String_Entry_Vector;
-     Index : Positive)
-      return Map_String_String_Entry;
 
    procedure Clear (Self : in out Map_String_String_Entry_Vector);
 
@@ -870,11 +800,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function Length (Self : Map_String_Bytes_Entry_Vector) return Natural;
 
-   function Get
-    (Self  : Map_String_Bytes_Entry_Vector;
-     Index : Positive)
-      return Map_String_Bytes_Entry;
-
    procedure Clear (Self : in out Map_String_Bytes_Entry_Vector);
 
    procedure Append
@@ -921,11 +846,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Map_String_Nested_Enum_Entry_Vector) return Natural;
-
-   function Get
-    (Self  : Map_String_Nested_Enum_Entry_Vector;
-     Index : Positive)
-      return Map_String_Nested_Enum_Entry;
 
    procedure Clear (Self : in out Map_String_Nested_Enum_Entry_Vector);
 
@@ -977,11 +897,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : Map_String_Foreign_Enum_Entry_Vector)
       return Natural;
 
-   function Get
-    (Self  : Map_String_Foreign_Enum_Entry_Vector;
-     Index : Positive)
-      return Map_String_Foreign_Enum_Entry;
-
    procedure Clear (Self : in out Map_String_Foreign_Enum_Entry_Vector);
 
    procedure Append
@@ -1023,11 +938,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Foreign_Message_Vector) return Natural;
-
-   function Get
-    (Self  : Foreign_Message_Vector;
-     Index : Positive)
-      return Foreign_Message;
 
    procedure Clear (Self : in out Foreign_Message_Vector);
 
@@ -1078,11 +988,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : Map_String_Foreign_Message_Entry_Vector)
       return Natural;
 
-   function Get
-    (Self  : Map_String_Foreign_Message_Entry_Vector;
-     Index : Positive)
-      return Map_String_Foreign_Message_Entry;
-
    procedure Clear (Self : in out Map_String_Foreign_Message_Entry_Vector);
 
    procedure Append
@@ -1130,11 +1035,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Nested_Message_Vector) return Natural;
-
-   function Get
-    (Self  : Nested_Message_Vector;
-     Index : Positive)
-      return Nested_Message;
 
    procedure Clear (Self : in out Nested_Message_Vector);
 
@@ -1184,11 +1084,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    function Length
     (Self : Map_String_Nested_Message_Entry_Vector)
       return Natural;
-
-   function Get
-    (Self  : Map_String_Nested_Message_Entry_Vector;
-     Index : Positive)
-      return Map_String_Nested_Message_Entry;
 
    procedure Clear (Self : in out Map_String_Nested_Message_Entry_Vector);
 
@@ -1479,11 +1374,6 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      end record;
 
    function Length (Self : Test_All_Types_Proto_3_Vector) return Natural;
-
-   function Get
-    (Self  : Test_All_Types_Proto_3_Vector;
-     Index : Positive)
-      return Test_All_Types_Proto_3;
 
    procedure Clear (Self : in out Test_All_Types_Proto_3_Vector);
 

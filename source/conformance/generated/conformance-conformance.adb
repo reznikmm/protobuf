@@ -30,14 +30,6 @@ package body Conformance.Conformance is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Failure_Set_Vector;
-     Index : Positive)
-      return Failure_Set is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Failure_Set_Vector) is
    begin
       Self.Length := 0;
@@ -135,14 +127,6 @@ package body Conformance.Conformance is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Conformance_Request_Vector;
-     Index : Positive)
-      return Conformance_Request is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Conformance_Request_Vector) is
    begin
@@ -305,14 +289,6 @@ package body Conformance.Conformance is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Conformance_Response_Vector;
-     Index : Positive)
-      return Conformance_Response is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Conformance_Response_Vector) is
    begin
@@ -479,14 +455,6 @@ package body Conformance.Conformance is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Jspb_Encoding_Config_Vector;
-     Index : Positive)
-      return Jspb_Encoding_Config is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Jspb_Encoding_Config_Vector) is
    begin

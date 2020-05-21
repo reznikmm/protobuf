@@ -309,14 +309,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Test_All_Types_Proto_3_Vector;
-     Index : Positive)
-      return Test_All_Types_Proto_3 is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Test_All_Types_Proto_3_Vector) is
    begin
       Self.Length := 0;
@@ -961,7 +953,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             WS.Write_Key ((27, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Test_All_Types_Proto_3'Write
-              (Stream, V.Recursive_Message.Get (J));
+              (Stream, V.Recursive_Message (J));
          end loop;
          WS.Write_Varint_Packed (31, V.Repeated_Int_32);
          WS.Write_Varint_Packed (32, V.Repeated_Int_64);
@@ -982,13 +974,13 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             WS.Write_Key ((48, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Nested_Message'Write
-              (Stream, V.Repeated_Nested_Message.Get (J));
+              (Stream, V.Repeated_Nested_Message (J));
          end loop;
          for J in 1 .. V.Repeated_Foreign_Message.Length loop
             WS.Write_Key ((49, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Foreign_Message'Write
-              (Stream, V.Repeated_Foreign_Message.Get (J));
+              (Stream, V.Repeated_Foreign_Message (J));
          end loop;
          Nested_Enum_IO.Write_Packed (WS, 51, V.Repeated_Nested_Enum);
          Foreign_Enum_IO.Write_Packed (WS, 52, V.Repeated_Foreign_Enum);
@@ -1026,115 +1018,115 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             WS.Write_Key ((56, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Int_32Int_32Entry'Write
-              (Stream, V.Map_Int_32_Int_32.Get (J));
+              (Stream, V.Map_Int_32_Int_32 (J));
          end loop;
          for J in 1 .. V.Map_Int_64_Int_64.Length loop
             WS.Write_Key ((57, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Int_64Int_64Entry'Write
-              (Stream, V.Map_Int_64_Int_64.Get (J));
+              (Stream, V.Map_Int_64_Int_64 (J));
          end loop;
          for J in 1 .. V.Map_Uint_32_Uint_32.Length loop
             WS.Write_Key ((58, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Uint_32Uint_32Entry'Write
-              (Stream, V.Map_Uint_32_Uint_32.Get (J));
+              (Stream, V.Map_Uint_32_Uint_32 (J));
          end loop;
          for J in 1 .. V.Map_Uint_64_Uint_64.Length loop
             WS.Write_Key ((59, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Uint_64Uint_64Entry'Write
-              (Stream, V.Map_Uint_64_Uint_64.Get (J));
+              (Stream, V.Map_Uint_64_Uint_64 (J));
          end loop;
          for J in 1 .. V.Map_Sint_32_Sint_32.Length loop
             WS.Write_Key ((60, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Sint_32Sint_32Entry'Write
-              (Stream, V.Map_Sint_32_Sint_32.Get (J));
+              (Stream, V.Map_Sint_32_Sint_32 (J));
          end loop;
          for J in 1 .. V.Map_Sint_64_Sint_64.Length loop
             WS.Write_Key ((61, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Sint_64Sint_64Entry'Write
-              (Stream, V.Map_Sint_64_Sint_64.Get (J));
+              (Stream, V.Map_Sint_64_Sint_64 (J));
          end loop;
          for J in 1 .. V.Map_Fixed_32_Fixed_32.Length loop
             WS.Write_Key ((62, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Fixed_32Fixed_32Entry'Write
-              (Stream, V.Map_Fixed_32_Fixed_32.Get (J));
+              (Stream, V.Map_Fixed_32_Fixed_32 (J));
          end loop;
          for J in 1 .. V.Map_Fixed_64_Fixed_64.Length loop
             WS.Write_Key ((63, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Fixed_64Fixed_64Entry'Write
-              (Stream, V.Map_Fixed_64_Fixed_64.Get (J));
+              (Stream, V.Map_Fixed_64_Fixed_64 (J));
          end loop;
          for J in 1 .. V.Map_Sfixed_32_Sfixed_32.Length loop
             WS.Write_Key ((64, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Sfixed_32Sfixed_32Entry'Write
-              (Stream, V.Map_Sfixed_32_Sfixed_32.Get (J));
+              (Stream, V.Map_Sfixed_32_Sfixed_32 (J));
          end loop;
          for J in 1 .. V.Map_Sfixed_64_Sfixed_64.Length loop
             WS.Write_Key ((65, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Sfixed_64Sfixed_64Entry'Write
-              (Stream, V.Map_Sfixed_64_Sfixed_64.Get (J));
+              (Stream, V.Map_Sfixed_64_Sfixed_64 (J));
          end loop;
          for J in 1 .. V.Map_Int_32_Float.Length loop
             WS.Write_Key ((66, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Int_32Float_Entry'Write
-              (Stream, V.Map_Int_32_Float.Get (J));
+              (Stream, V.Map_Int_32_Float (J));
          end loop;
          for J in 1 .. V.Map_Int_32_Double.Length loop
             WS.Write_Key ((67, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Int_32Double_Entry'Write
-              (Stream, V.Map_Int_32_Double.Get (J));
+              (Stream, V.Map_Int_32_Double (J));
          end loop;
          for J in 1 .. V.Map_Bool_Bool.Length loop
             WS.Write_Key ((68, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Bool_Bool_Entry'Write
-              (Stream, V.Map_Bool_Bool.Get (J));
+              (Stream, V.Map_Bool_Bool (J));
          end loop;
          for J in 1 .. V.Map_String_String.Length loop
             WS.Write_Key ((69, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_String_Entry'Write
-              (Stream, V.Map_String_String.Get (J));
+              (Stream, V.Map_String_String (J));
          end loop;
          for J in 1 .. V.Map_String_Bytes.Length loop
             WS.Write_Key ((70, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Bytes_Entry'Write
-              (Stream, V.Map_String_Bytes.Get (J));
+              (Stream, V.Map_String_Bytes (J));
          end loop;
          for J in 1 .. V.Map_String_Nested_Message.Length loop
             WS.Write_Key ((71, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Nested_Message_Entry'Write
-              (Stream, V.Map_String_Nested_Message.Get (J));
+              (Stream, V.Map_String_Nested_Message (J));
          end loop;
          for J in 1 .. V.Map_String_Foreign_Message.Length loop
             WS.Write_Key ((72, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Foreign_Message_Entry'Write
-              (Stream, V.Map_String_Foreign_Message.Get (J));
+              (Stream, V.Map_String_Foreign_Message (J));
          end loop;
          for J in 1 .. V.Map_String_Nested_Enum.Length loop
             WS.Write_Key ((73, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Nested_Enum_Entry'Write
-              (Stream, V.Map_String_Nested_Enum.Get (J));
+              (Stream, V.Map_String_Nested_Enum (J));
          end loop;
          for J in 1 .. V.Map_String_Foreign_Enum.Length loop
             WS.Write_Key ((74, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Foreign_Enum_Entry'Write
-              (Stream, V.Map_String_Foreign_Enum.Get (J));
+              (Stream, V.Map_String_Foreign_Enum (J));
          end loop;
          if V.Optional_Bool_Wrapper.Is_Set then
             WS.Write_Key ((201, PB_Support.Length_Delimited));
@@ -1184,47 +1176,47 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
          for J in 1 .. V.Repeated_Bool_Wrapper.Length loop
             WS.Write_Key ((211, PB_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Bool_Value'Write
-              (Stream, V.Repeated_Bool_Wrapper.Get (J));
+              (Stream, V.Repeated_Bool_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Int_32_Wrapper.Length loop
             WS.Write_Key ((212, PB_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Int_32Value'Write
-              (Stream, V.Repeated_Int_32_Wrapper.Get (J));
+              (Stream, V.Repeated_Int_32_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Int_64_Wrapper.Length loop
             WS.Write_Key ((213, PB_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Int_64Value'Write
-              (Stream, V.Repeated_Int_64_Wrapper.Get (J));
+              (Stream, V.Repeated_Int_64_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Uint_32_Wrapper.Length loop
             WS.Write_Key ((214, PB_Support.Length_Delimited));
             Google.Protobuf.Wrappers.UInt_32Value'Write
-              (Stream, V.Repeated_Uint_32_Wrapper.Get (J));
+              (Stream, V.Repeated_Uint_32_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Uint_64_Wrapper.Length loop
             WS.Write_Key ((215, PB_Support.Length_Delimited));
             Google.Protobuf.Wrappers.UInt_64Value'Write
-              (Stream, V.Repeated_Uint_64_Wrapper.Get (J));
+              (Stream, V.Repeated_Uint_64_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Float_Wrapper.Length loop
             WS.Write_Key ((216, PB_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Float_Value'Write
-              (Stream, V.Repeated_Float_Wrapper.Get (J));
+              (Stream, V.Repeated_Float_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Double_Wrapper.Length loop
             WS.Write_Key ((217, PB_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Double_Value'Write
-              (Stream, V.Repeated_Double_Wrapper.Get (J));
+              (Stream, V.Repeated_Double_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_String_Wrapper.Length loop
             WS.Write_Key ((218, PB_Support.Length_Delimited));
             Google.Protobuf.Wrappers.String_Value'Write
-              (Stream, V.Repeated_String_Wrapper.Get (J));
+              (Stream, V.Repeated_String_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Bytes_Wrapper.Length loop
             WS.Write_Key ((219, PB_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Bytes_Value'Write
-              (Stream, V.Repeated_Bytes_Wrapper.Get (J));
+              (Stream, V.Repeated_Bytes_Wrapper (J));
          end loop;
          if V.Optional_Duration.Is_Set then
             WS.Write_Key ((301, PB_Support.Length_Delimited));
@@ -1258,36 +1250,35 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
          for J in 1 .. V.Repeated_Duration.Length loop
             WS.Write_Key ((311, PB_Support.Length_Delimited));
             Google.Protobuf.Duration.Duration'Write
-              (Stream, V.Repeated_Duration.Get (J));
+              (Stream, V.Repeated_Duration (J));
          end loop;
          for J in 1 .. V.Repeated_Timestamp.Length loop
             WS.Write_Key ((312, PB_Support.Length_Delimited));
             Google.Protobuf.Timestamp.Timestamp'Write
-              (Stream, V.Repeated_Timestamp.Get (J));
+              (Stream, V.Repeated_Timestamp (J));
          end loop;
          for J in 1 .. V.Repeated_Fieldmask.Length loop
             WS.Write_Key ((313, PB_Support.Length_Delimited));
             Google.Protobuf.Field_Mask.Field_Mask'Write
-              (Stream, V.Repeated_Fieldmask.Get (J));
+              (Stream, V.Repeated_Fieldmask (J));
          end loop;
          for J in 1 .. V.Repeated_Struct.Length loop
             WS.Write_Key ((324, PB_Support.Length_Delimited));
             Google.Protobuf.Struct.Struct'Write
-              (Stream, V.Repeated_Struct.Get (J));
+              (Stream, V.Repeated_Struct (J));
          end loop;
          for J in 1 .. V.Repeated_Any.Length loop
             WS.Write_Key ((315, PB_Support.Length_Delimited));
-            Google.Protobuf.Any.Any'Write (Stream, V.Repeated_Any.Get (J));
+            Google.Protobuf.Any.Any'Write (Stream, V.Repeated_Any (J));
          end loop;
          for J in 1 .. V.Repeated_Value.Length loop
             WS.Write_Key ((316, PB_Support.Length_Delimited));
-            Google.Protobuf.Struct.Value'Write
-              (Stream, V.Repeated_Value.Get (J));
+            Google.Protobuf.Struct.Value'Write (Stream, V.Repeated_Value (J));
          end loop;
          for J in 1 .. V.Repeated_List_Value.Length loop
             WS.Write_Key ((317, PB_Support.Length_Delimited));
             Google.Protobuf.Struct.List_Value'Write
-              (Stream, V.Repeated_List_Value.Get (J));
+              (Stream, V.Repeated_List_Value (J));
          end loop;
          WS.Write_Varint_Option (401, V.Fieldname_1, 0);
          WS.Write_Varint_Option (402, V.Field_Name_2, 0);
@@ -1342,14 +1333,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Nested_Message_Vector;
-     Index : Positive)
-      return Nested_Message is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Nested_Message_Vector) is
    begin
@@ -1450,7 +1433,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             WS.Write_Key ((2, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Test_All_Types_Proto_3'Write
-              (Stream, V.Corecursive.Get (J));
+              (Stream, V.Corecursive (J));
          end loop;
          if WS.End_Message then
             Write_Nested_Message (WS'Access, V);
@@ -1462,14 +1445,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Map_Int_32Int_32Entry_Vector;
-     Index : Positive)
-      return Map_Int_32Int_32Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Map_Int_32Int_32Entry_Vector) is
    begin
@@ -1577,14 +1552,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_Int_64Int_64Entry_Vector;
-     Index : Positive)
-      return Map_Int_64Int_64Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_Int_64Int_64Entry_Vector) is
    begin
       Self.Length := 0;
@@ -1690,14 +1657,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Map_Uint_32Uint_32Entry_Vector;
-     Index : Positive)
-      return Map_Uint_32Uint_32Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Map_Uint_32Uint_32Entry_Vector) is
    begin
@@ -1806,14 +1765,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_Uint_64Uint_64Entry_Vector;
-     Index : Positive)
-      return Map_Uint_64Uint_64Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_Uint_64Uint_64Entry_Vector) is
    begin
       Self.Length := 0;
@@ -1920,14 +1871,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Map_Sint_32Sint_32Entry_Vector;
-     Index : Positive)
-      return Map_Sint_32Sint_32Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Map_Sint_32Sint_32Entry_Vector) is
    begin
@@ -2036,14 +1979,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_Sint_64Sint_64Entry_Vector;
-     Index : Positive)
-      return Map_Sint_64Sint_64Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_Sint_64Sint_64Entry_Vector) is
    begin
       Self.Length := 0;
@@ -2151,14 +2086,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_Fixed_32Fixed_32Entry_Vector;
-     Index : Positive)
-      return Map_Fixed_32Fixed_32Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_Fixed_32Fixed_32Entry_Vector) is
    begin
       Self.Length := 0;
@@ -2265,14 +2192,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Map_Fixed_64Fixed_64Entry_Vector;
-     Index : Positive)
-      return Map_Fixed_64Fixed_64Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Map_Fixed_64Fixed_64Entry_Vector) is
    begin
@@ -2382,14 +2301,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Map_Sfixed_32Sfixed_32Entry_Vector;
-     Index : Positive)
-      return Map_Sfixed_32Sfixed_32Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Map_Sfixed_32Sfixed_32Entry_Vector) is
    begin
@@ -2503,14 +2414,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_Sfixed_64Sfixed_64Entry_Vector;
-     Index : Positive)
-      return Map_Sfixed_64Sfixed_64Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_Sfixed_64Sfixed_64Entry_Vector) is
    begin
       Self.Length := 0;
@@ -2621,14 +2524,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_Int_32Float_Entry_Vector;
-     Index : Positive)
-      return Map_Int_32Float_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_Int_32Float_Entry_Vector) is
    begin
       Self.Length := 0;
@@ -2734,14 +2629,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Map_Int_32Double_Entry_Vector;
-     Index : Positive)
-      return Map_Int_32Double_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Map_Int_32Double_Entry_Vector) is
    begin
@@ -2849,14 +2736,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_Bool_Bool_Entry_Vector;
-     Index : Positive)
-      return Map_Bool_Bool_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_Bool_Bool_Entry_Vector) is
    begin
       Self.Length := 0;
@@ -2961,14 +2840,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Map_String_String_Entry_Vector;
-     Index : Positive)
-      return Map_String_String_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Map_String_String_Entry_Vector) is
    begin
@@ -3077,14 +2948,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_String_Bytes_Entry_Vector;
-     Index : Positive)
-      return Map_String_Bytes_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_String_Bytes_Entry_Vector) is
    begin
       Self.Length := 0;
@@ -3192,14 +3055,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Map_String_Nested_Message_Entry_Vector;
-     Index : Positive)
-      return Map_String_Nested_Message_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Map_String_Nested_Message_Entry_Vector) is
    begin
@@ -3322,14 +3177,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_String_Foreign_Message_Entry_Vector;
-     Index : Positive)
-      return Map_String_Foreign_Message_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_String_Foreign_Message_Entry_Vector) is
    begin
       Self.Length := 0;
@@ -3451,14 +3298,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_String_Nested_Enum_Entry_Vector;
-     Index : Positive)
-      return Map_String_Nested_Enum_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_String_Nested_Enum_Entry_Vector) is
    begin
       Self.Length := 0;
@@ -3573,14 +3412,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Map_String_Foreign_Enum_Entry_Vector;
-     Index : Positive)
-      return Map_String_Foreign_Enum_Entry is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Map_String_Foreign_Enum_Entry_Vector) is
    begin
       Self.Length := 0;
@@ -3693,14 +3524,6 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    begin
       return Self.Length;
    end Length;
-
-   function Get
-    (Self  : Foreign_Message_Vector;
-     Index : Positive)
-      return Foreign_Message is
-   begin
-      return Self.Data (Index);
-   end Get;
 
    procedure Clear (Self : in out Foreign_Message_Vector) is
    begin

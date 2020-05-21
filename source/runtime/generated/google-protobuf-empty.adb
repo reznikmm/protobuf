@@ -9,11 +9,6 @@ package body Google.Protobuf.Empty is
       return Self.Length;
    end Length;
 
-   function Get (Self  : Empty_Vector; Index : Positive) return Empty is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Empty_Vector) is
    begin
       Self.Length := 0;

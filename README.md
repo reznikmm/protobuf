@@ -3,20 +3,22 @@
 [![Build Status](https://github.com/reznikmm/protobuf/workflows/Build/badge.svg)](https://github.com/reznikmm/protobuf/actions)
 [![Download](https://api.bintray.com/packages/reznikmm/matreshka/protobuf/images/download.svg) ](https://bintray.com/reznikmm/matreshka/protobuf/_latestVersion)
 
-> Naive Google Protocol Buffers implementation in Ada
+> A Google Protocol Buffers implementation in Ada
 
 ## Install
 
-Run
+The prefered installation method is compiling from sources. Just checkout repository and run:
 ```
 make all install PREFIX=/path/to/install
 ```
 
+There are also (a precompiled RPM for Fedora Linux)[https://bintray.com/reznikmm/matreshka/protobuf/].
+
 ### Dependencies
 It depends on
-* [Matreshka](https://forge.ada-ru.org/matreshka) library.
-* [ada_pretty](https://github.com/reznikmm/ada-pretty/tree/master) - pretty printing library.
-* `protoc` - protobuf compiler
+* [matreshka](https://forge.ada-ru.org/matreshka) - the Matreshka framework.
+* [ada_pretty](https://github.com/reznikmm/ada-pretty) - an Ada pretty printing library.
+* [protoc](https://github.com/protocolbuffers/protobuf)` - the protobuf compiler.
 
 ## Usage
 Launch `protoc` with `--ada_out=<dir>` option having `protoc-gen-ada` in

@@ -21,8 +21,6 @@ package Google.Protobuf.Empty is
 
    function Length (Self : Empty_Vector) return Natural;
 
-   function Get (Self  : Empty_Vector; Index : Positive) return Empty;
-
    procedure Clear (Self : in out Empty_Vector);
 
    procedure Append (Self : in out Empty_Vector; V    : Empty);

@@ -26,8 +26,6 @@ package Google.Protobuf.Duration is
 
    function Length (Self : Duration_Vector) return Natural;
 
-   function Get (Self  : Duration_Vector; Index : Positive) return Duration;
-
    procedure Clear (Self : in out Duration_Vector);
 
    procedure Append (Self : in out Duration_Vector; V    : Duration);

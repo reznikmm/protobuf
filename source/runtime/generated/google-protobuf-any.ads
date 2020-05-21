@@ -27,8 +27,6 @@ package Google.Protobuf.Any is
 
    function Length (Self : Any_Vector) return Natural;
 
-   function Get (Self  : Any_Vector; Index : Positive) return Any;
-
    procedure Clear (Self : in out Any_Vector);
 
    procedure Append (Self : in out Any_Vector; V    : Any);

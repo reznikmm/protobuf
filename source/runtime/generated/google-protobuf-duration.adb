@@ -9,11 +9,6 @@ package body Google.Protobuf.Duration is
       return Self.Length;
    end Length;
 
-   function Get (Self  : Duration_Vector; Index : Positive) return Duration is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Duration_Vector) is
    begin
       Self.Length := 0;

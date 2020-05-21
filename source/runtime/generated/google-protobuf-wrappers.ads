@@ -59,11 +59,6 @@ package Google.Protobuf.Wrappers is
 
    function Length (Self : Double_Value_Vector) return Natural;
 
-   function Get
-    (Self  : Double_Value_Vector;
-     Index : Positive)
-      return Double_Value;
-
    procedure Clear (Self : in out Double_Value_Vector);
 
    procedure Append (Self : in out Double_Value_Vector; V    : Double_Value);
@@ -105,11 +100,6 @@ package Google.Protobuf.Wrappers is
 
    function Length (Self : Float_Value_Vector) return Natural;
 
-   function Get
-    (Self  : Float_Value_Vector;
-     Index : Positive)
-      return Float_Value;
-
    procedure Clear (Self : in out Float_Value_Vector);
 
    procedure Append (Self : in out Float_Value_Vector; V    : Float_Value);
@@ -147,11 +137,6 @@ package Google.Protobuf.Wrappers is
      end record;
 
    function Length (Self : Int_64Value_Vector) return Natural;
-
-   function Get
-    (Self  : Int_64Value_Vector;
-     Index : Positive)
-      return Int_64Value;
 
    procedure Clear (Self : in out Int_64Value_Vector);
 
@@ -191,11 +176,6 @@ package Google.Protobuf.Wrappers is
 
    function Length (Self : UInt_64Value_Vector) return Natural;
 
-   function Get
-    (Self  : UInt_64Value_Vector;
-     Index : Positive)
-      return UInt_64Value;
-
    procedure Clear (Self : in out UInt_64Value_Vector);
 
    procedure Append (Self : in out UInt_64Value_Vector; V    : UInt_64Value);
@@ -233,11 +213,6 @@ package Google.Protobuf.Wrappers is
      end record;
 
    function Length (Self : Int_32Value_Vector) return Natural;
-
-   function Get
-    (Self  : Int_32Value_Vector;
-     Index : Positive)
-      return Int_32Value;
 
    procedure Clear (Self : in out Int_32Value_Vector);
 
@@ -277,11 +252,6 @@ package Google.Protobuf.Wrappers is
 
    function Length (Self : UInt_32Value_Vector) return Natural;
 
-   function Get
-    (Self  : UInt_32Value_Vector;
-     Index : Positive)
-      return UInt_32Value;
-
    procedure Clear (Self : in out UInt_32Value_Vector);
 
    procedure Append (Self : in out UInt_32Value_Vector; V    : UInt_32Value);
@@ -319,11 +289,6 @@ package Google.Protobuf.Wrappers is
      end record;
 
    function Length (Self : Bool_Value_Vector) return Natural;
-
-   function Get
-    (Self  : Bool_Value_Vector;
-     Index : Positive)
-      return Bool_Value;
 
    procedure Clear (Self : in out Bool_Value_Vector);
 
@@ -366,11 +331,6 @@ package Google.Protobuf.Wrappers is
 
    function Length (Self : String_Value_Vector) return Natural;
 
-   function Get
-    (Self  : String_Value_Vector;
-     Index : Positive)
-      return String_Value;
-
    procedure Clear (Self : in out String_Value_Vector);
 
    procedure Append (Self : in out String_Value_Vector; V    : String_Value);
@@ -411,11 +371,6 @@ package Google.Protobuf.Wrappers is
      end record;
 
    function Length (Self : Bytes_Value_Vector) return Natural;
-
-   function Get
-    (Self  : Bytes_Value_Vector;
-     Index : Positive)
-      return Bytes_Value;
 
    procedure Clear (Self : in out Bytes_Value_Vector);
 

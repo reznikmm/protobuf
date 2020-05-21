@@ -45,8 +45,6 @@ package Google.Protobuf.Struct is
 
    function Length (Self : Struct_Vector) return Natural;
 
-   function Get (Self  : Struct_Vector; Index : Positive) return Struct;
-
    procedure Clear (Self : in out Struct_Vector);
 
    procedure Append (Self : in out Struct_Vector; V    : Struct);
@@ -87,11 +85,6 @@ package Google.Protobuf.Struct is
      end record;
 
    function Length (Self : List_Value_Vector) return Natural;
-
-   function Get
-    (Self  : List_Value_Vector;
-     Index : Positive)
-      return List_Value;
 
    procedure Clear (Self : in out List_Value_Vector);
 
@@ -161,8 +154,6 @@ package Google.Protobuf.Struct is
 
    function Length (Self : Value_Vector) return Natural;
 
-   function Get (Self  : Value_Vector; Index : Positive) return Value;
-
    procedure Clear (Self : in out Value_Vector);
 
    procedure Append (Self : in out Value_Vector; V    : Value);
@@ -204,11 +195,6 @@ package Google.Protobuf.Struct is
      end record;
 
    function Length (Self : Fields_Entry_Vector) return Natural;
-
-   function Get
-    (Self  : Fields_Entry_Vector;
-     Index : Positive)
-      return Fields_Entry;
 
    procedure Clear (Self : in out Fields_Entry_Vector);
 

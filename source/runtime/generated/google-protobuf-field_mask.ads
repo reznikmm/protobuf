@@ -25,11 +25,6 @@ package Google.Protobuf.Field_Mask is
 
    function Length (Self : Field_Mask_Vector) return Natural;
 
-   function Get
-    (Self  : Field_Mask_Vector;
-     Index : Positive)
-      return Field_Mask;
-
    procedure Clear (Self : in out Field_Mask_Vector);
 
    procedure Append (Self : in out Field_Mask_Vector; V    : Field_Mask);

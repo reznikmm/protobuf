@@ -62,11 +62,6 @@ package Conformance.Conformance is
 
    function Length (Self : Failure_Set_Vector) return Natural;
 
-   function Get
-    (Self  : Failure_Set_Vector;
-     Index : Positive)
-      return Failure_Set;
-
    procedure Clear (Self : in out Failure_Set_Vector);
 
    procedure Append (Self : in out Failure_Set_Vector; V    : Failure_Set);
@@ -145,11 +140,6 @@ package Conformance.Conformance is
 
    function Length (Self : Conformance_Response_Vector) return Natural;
 
-   function Get
-    (Self  : Conformance_Response_Vector;
-     Index : Positive)
-      return Conformance_Response;
-
    procedure Clear (Self : in out Conformance_Response_Vector);
 
    procedure Append
@@ -192,11 +182,6 @@ package Conformance.Conformance is
      end record;
 
    function Length (Self : Jspb_Encoding_Config_Vector) return Natural;
-
-   function Get
-    (Self  : Jspb_Encoding_Config_Vector;
-     Index : Positive)
-      return Jspb_Encoding_Config;
 
    procedure Clear (Self : in out Jspb_Encoding_Config_Vector);
 
@@ -272,11 +257,6 @@ package Conformance.Conformance is
      end record;
 
    function Length (Self : Conformance_Request_Vector) return Natural;
-
-   function Get
-    (Self  : Conformance_Request_Vector;
-     Index : Positive)
-      return Conformance_Request;
 
    procedure Clear (Self : in out Conformance_Request_Vector);
 

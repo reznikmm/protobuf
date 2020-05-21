@@ -9,14 +9,6 @@ package body Google.Protobuf.Timestamp is
       return Self.Length;
    end Length;
 
-   function Get
-    (Self  : Timestamp_Vector;
-     Index : Positive)
-      return Timestamp is
-   begin
-      return Self.Data (Index);
-   end Get;
-
    procedure Clear (Self : in out Timestamp_Vector) is
    begin
       Self.Length := 0;
