@@ -75,10 +75,7 @@ package body Compiler.Field_Descriptors is
        return Boolean;
 
    function Read_Name
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String;
-      Tipe : League.Strings.Universal_String;
-      Fake : Compiler.Context.String_Sets.Set)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return League.Strings.Universal_String;
 
    function Write_Name
@@ -396,10 +393,11 @@ package body Compiler.Field_Descriptors is
    ---------------
 
    function Read_Case
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String;
-      Tipe : League.Strings.Universal_String;
-      Fake : Compiler.Context.String_Sets.Set)
+     (Self  : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg   : League.Strings.Universal_String;
+      Tipe  : League.Strings.Universal_String;
+      Fake  : Compiler.Context.String_Sets.Set;
+      Oneof : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access
    is
       use type League.Strings.Universal_String;
@@ -412,15 +410,19 @@ package body Compiler.Field_Descriptors is
       Field := Integer (Self.Number.Value);
 
       if Self.Oneof_Index.Is_Set then
-         Result := F.New_Assignment
-           (F.New_Selected_Name (+"V.Variant"),
-            F.New_Parentheses
+         Result := F.New_If
+          (Condition  => F.New_List
+            (F.New_Selected_Name ("V.Variant." & Oneof),
+             F.New_Infix (+"/=", F.New_Name (My_Name & "_Kind"))),
+           Then_Path  => F.New_Assignment
+            (F.New_Selected_Name (+"V.Variant"),
+             F.New_Parentheses
               (F.New_List
-                   (F.New_Component_Association
-                        (F.New_Name (My_Name & "_Kind")),
-                    F.New_Component_Association
-                      (Choices => F.New_Name (+"others"),
-                       Value   => F.New_Name (+"<>")))));
+                (F.New_Component_Association (F.New_Name (My_Name & "_Kind")),
+                 F.New_Component_Association
+                  (Choices => F.New_Name (+"others"),
+                   Value   => F.New_Name (+"<>"))))));
+
          My_Name.Prepend ("V.Variant.");
       elsif not Is_Vector and Is_Optional (Self)
         and (Is_Message (Self) or Compiler.Context.Is_Proto_2)
@@ -448,17 +450,24 @@ package body Compiler.Field_Descriptors is
 
       if Fake.Contains (Unique_Id (Self, Pkg, Tipe)) then
          Result := F.New_List
-           (Result,
-            F.New_Statement
-              (F.New_Selected_Name (My_Name & ".Clear")));
+          (Result,
+           F.New_If
+            (Condition  => F.New_List
+              (F.New_Selected_Name (My_Name & ".Length"),
+               F.New_Infix (+"=", F.New_Literal (0))),
+             Then_Path  => F.New_Statement
+              (F.New_Apply
+                (F.New_Selected_Name (My_Name & ".Append"),
+                 F.New_Parentheses (F.New_Name (+"others => <>"))))));
+
+         My_Name.Append (" (1)");
       end if;
 
       Result := F.New_List
         (Result,
          F.New_Statement
            (F.New_Apply
-             (Prefix    => F.New_Selected_Name
-                  (Read_Name (Self, Pkg, Tipe, Fake)),
+             (Prefix    => F.New_Selected_Name (Read_Name (Self)),
               Arguments => F.New_List
                 ((F.New_Argument_Association (F.New_Name (+"Stream")),
                   F.New_Argument_Association
@@ -477,15 +486,14 @@ package body Compiler.Field_Descriptors is
    ---------------
 
    function Read_Name
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String;
-      Tipe : League.Strings.Universal_String;
-      Fake : Compiler.Context.String_Sets.Set)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return League.Strings.Universal_String
    is
       use all type Google.Protobuf.Descriptor.PB_Type;
       use type League.Strings.Universal_String;
       Result  : League.Strings.Universal_String := +"PB_Support.IO.Read";
+      Is_Vector : constant Boolean :=
+        Self.Label.Is_Set and then Self.Label.Value = LABEL_REPEATED;
    begin
       if Self.Type_Name.Is_Set
         and then Compiler.Context.Named_Types.Contains (Self.Type_Name.Value)
@@ -507,7 +515,7 @@ package body Compiler.Field_Descriptors is
          Result.Append ("_Zigzag");
       end if;
 
-      if Is_Repeated (Self, Pkg, Tipe, Fake) then
+      if Is_Vector then
          Result.Append ("_Vector");
       end if;
 

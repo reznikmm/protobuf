@@ -729,6 +729,23 @@ package body Compiler.Descriptors is
       Fake : Compiler.Context.String_Sets.Set)
       return Ada_Pretty.Node_Access
    is
+      function Oneof_Name
+        (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+         return League.Strings.Universal_String;
+
+      function Oneof_Name
+        (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+         return League.Strings.Universal_String is
+      begin
+         if Field.Oneof_Index.Is_Set then
+            return Compiler.Context.To_Ada_Name
+              (Self.Oneof_Decl.Get
+                 (Natural (Field.Oneof_Index.Value) + 1).Name.Value);
+         else
+            return League.Strings.Empty_Universal_String;
+         end if;
+      end Oneof_Name;
+
       My_Name : constant League.Strings.Universal_String := Type_Name (Self);
       Key : Ada_Pretty.Node_Access;
       Result : Ada_Pretty.Node_Access;
@@ -741,7 +758,11 @@ package body Compiler.Descriptors is
 
       for J in 1 .. Self.Field.Length loop
          Field := Compiler.Field_Descriptors.Read_Case
-           (Self.Field.Get (J), Pkg, My_Name, Fake);
+           (Self.Field.Get (J),
+            Pkg,
+            My_Name,
+            Fake,
+            Oneof_Name (Self.Field.Get (J)));
          Result := F.New_List (Result, Field);
       end loop;
 

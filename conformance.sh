@@ -36,4 +36,5 @@ gprbuild -p -P gnat/conformance.gpr
 export LD_LIBRARY_PATH=$PB_CACHE
 
 $PB_CACHE/conformance-test-runner \
-  .objs/conformance/conformance-run || true
+   --failure_list ada_failing_tests.txt \
+  .objs/conformance/conformance-run
