@@ -76,6 +76,22 @@ package body Conformance.Conformance is
       end if;
    end Finalize;
 
+   not overriding function Get_Failure_Set_Variable_Reference
+    (Self  : aliased in out Failure_Set_Vector;
+     Index : Positive)
+      return Failure_Set_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Failure_Set_Variable_Reference;
+
+   not overriding function Get_Failure_Set_Constant_Reference
+    (Self  : aliased Failure_Set_Vector;
+     Index : Positive)
+      return Failure_Set_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Failure_Set_Constant_Reference;
+
    procedure Read_Failure_Set
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Failure_Set) is
@@ -170,6 +186,22 @@ package body Conformance.Conformance is
       end if;
    end Finalize;
 
+   not overriding function Get_Conformance_Request_Variable_Reference
+    (Self  : aliased in out Conformance_Request_Vector;
+     Index : Positive)
+      return Conformance_Request_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Conformance_Request_Variable_Reference;
+
+   not overriding function Get_Conformance_Request_Constant_Reference
+    (Self  : aliased Conformance_Request_Vector;
+     Index : Positive)
+      return Conformance_Request_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Conformance_Request_Constant_Reference;
+
    procedure Read_Conformance_Request
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Conformance_Request) is
@@ -178,19 +210,27 @@ package body Conformance.Conformance is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               V.Variant := (Protobuf_Payload_Kind, others => <>);
+               if V.Variant.Payload /= Protobuf_Payload_Kind then
+                  V.Variant := (Protobuf_Payload_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Protobuf_Payload);
             when 2 =>
-               V.Variant := (Json_Payload_Kind, others => <>);
+               if V.Variant.Payload /= Json_Payload_Kind then
+                  V.Variant := (Json_Payload_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Json_Payload);
             when 7 =>
-               V.Variant := (Jspb_Payload_Kind, others => <>);
+               if V.Variant.Payload /= Jspb_Payload_Kind then
+                  V.Variant := (Jspb_Payload_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Jspb_Payload);
             when 8 =>
-               V.Variant := (Text_Payload_Kind, others => <>);
+               if V.Variant.Payload /= Text_Payload_Kind then
+                  V.Variant := (Text_Payload_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Text_Payload);
             when 3 =>
@@ -316,6 +356,22 @@ package body Conformance.Conformance is
       end if;
    end Finalize;
 
+   not overriding function Get_Conformance_Response_Variable_Reference
+    (Self  : aliased in out Conformance_Response_Vector;
+     Index : Positive)
+      return Conformance_Response_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Conformance_Response_Variable_Reference;
+
+   not overriding function Get_Conformance_Response_Constant_Reference
+    (Self  : aliased Conformance_Response_Vector;
+     Index : Positive)
+      return Conformance_Response_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Conformance_Response_Constant_Reference;
+
    procedure Read_Conformance_Response
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Conformance_Response) is
@@ -324,34 +380,50 @@ package body Conformance.Conformance is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               V.Variant := (Parse_Error_Kind, others => <>);
+               if V.Variant.Result /= Parse_Error_Kind then
+                  V.Variant := (Parse_Error_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Parse_Error);
             when 6 =>
-               V.Variant := (Serialize_Error_Kind, others => <>);
+               if V.Variant.Result /= Serialize_Error_Kind then
+                  V.Variant := (Serialize_Error_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Serialize_Error);
             when 2 =>
-               V.Variant := (Runtime_Error_Kind, others => <>);
+               if V.Variant.Result /= Runtime_Error_Kind then
+                  V.Variant := (Runtime_Error_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Runtime_Error);
             when 3 =>
-               V.Variant := (Protobuf_Payload_Kind, others => <>);
+               if V.Variant.Result /= Protobuf_Payload_Kind then
+                  V.Variant := (Protobuf_Payload_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Protobuf_Payload);
             when 4 =>
-               V.Variant := (Json_Payload_Kind, others => <>);
+               if V.Variant.Result /= Json_Payload_Kind then
+                  V.Variant := (Json_Payload_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Json_Payload);
             when 5 =>
-               V.Variant := (Skipped_Kind, others => <>);
+               if V.Variant.Result /= Skipped_Kind then
+                  V.Variant := (Skipped_Kind, others => <>);
+               end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Variant.Skipped);
             when 7 =>
-               V.Variant := (Jspb_Payload_Kind, others => <>);
+               if V.Variant.Result /= Jspb_Payload_Kind then
+                  V.Variant := (Jspb_Payload_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Jspb_Payload);
             when 8 =>
-               V.Variant := (Text_Payload_Kind, others => <>);
+               if V.Variant.Result /= Text_Payload_Kind then
+                  V.Variant := (Text_Payload_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Text_Payload);
             when others =>
@@ -457,6 +529,22 @@ package body Conformance.Conformance is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Jspb_Encoding_Config_Variable_Reference
+    (Self  : aliased in out Jspb_Encoding_Config_Vector;
+     Index : Positive)
+      return Jspb_Encoding_Config_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Jspb_Encoding_Config_Variable_Reference;
+
+   not overriding function Get_Jspb_Encoding_Config_Constant_Reference
+    (Self  : aliased Jspb_Encoding_Config_Vector;
+     Index : Positive)
+      return Jspb_Encoding_Config_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Jspb_Encoding_Config_Constant_Reference;
 
    procedure Read_Jspb_Encoding_Config
     (Stream : access Ada.Streams.Root_Stream_Type'Class;

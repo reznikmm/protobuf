@@ -55,6 +55,22 @@ package body Google.Protobuf.Wrappers is
       end if;
    end Finalize;
 
+   not overriding function Get_Double_Value_Variable_Reference
+    (Self  : aliased in out Double_Value_Vector;
+     Index : Positive)
+      return Double_Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Double_Value_Variable_Reference;
+
+   not overriding function Get_Double_Value_Constant_Reference
+    (Self  : aliased Double_Value_Vector;
+     Index : Positive)
+      return Double_Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Double_Value_Constant_Reference;
+
    procedure Read_Double_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Double_Value) is
@@ -144,6 +160,22 @@ package body Google.Protobuf.Wrappers is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Float_Value_Variable_Reference
+    (Self  : aliased in out Float_Value_Vector;
+     Index : Positive)
+      return Float_Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Float_Value_Variable_Reference;
+
+   not overriding function Get_Float_Value_Constant_Reference
+    (Self  : aliased Float_Value_Vector;
+     Index : Positive)
+      return Float_Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Float_Value_Constant_Reference;
 
    procedure Read_Float_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -235,6 +267,22 @@ package body Google.Protobuf.Wrappers is
       end if;
    end Finalize;
 
+   not overriding function Get_Int_64Value_Variable_Reference
+    (Self  : aliased in out Int_64Value_Vector;
+     Index : Positive)
+      return Int_64Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Int_64Value_Variable_Reference;
+
+   not overriding function Get_Int_64Value_Constant_Reference
+    (Self  : aliased Int_64Value_Vector;
+     Index : Positive)
+      return Int_64Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Int_64Value_Constant_Reference;
+
    procedure Read_Int_64Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Int_64Value) is
@@ -324,6 +372,22 @@ package body Google.Protobuf.Wrappers is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_UInt_64Value_Variable_Reference
+    (Self  : aliased in out UInt_64Value_Vector;
+     Index : Positive)
+      return UInt_64Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_UInt_64Value_Variable_Reference;
+
+   not overriding function Get_UInt_64Value_Constant_Reference
+    (Self  : aliased UInt_64Value_Vector;
+     Index : Positive)
+      return UInt_64Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_UInt_64Value_Constant_Reference;
 
    procedure Read_UInt_64Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -415,6 +479,22 @@ package body Google.Protobuf.Wrappers is
       end if;
    end Finalize;
 
+   not overriding function Get_Int_32Value_Variable_Reference
+    (Self  : aliased in out Int_32Value_Vector;
+     Index : Positive)
+      return Int_32Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Int_32Value_Variable_Reference;
+
+   not overriding function Get_Int_32Value_Constant_Reference
+    (Self  : aliased Int_32Value_Vector;
+     Index : Positive)
+      return Int_32Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Int_32Value_Constant_Reference;
+
    procedure Read_Int_32Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Int_32Value) is
@@ -504,6 +584,22 @@ package body Google.Protobuf.Wrappers is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_UInt_32Value_Variable_Reference
+    (Self  : aliased in out UInt_32Value_Vector;
+     Index : Positive)
+      return UInt_32Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_UInt_32Value_Variable_Reference;
+
+   not overriding function Get_UInt_32Value_Constant_Reference
+    (Self  : aliased UInt_32Value_Vector;
+     Index : Positive)
+      return UInt_32Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_UInt_32Value_Constant_Reference;
 
    procedure Read_UInt_32Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -595,6 +691,22 @@ package body Google.Protobuf.Wrappers is
       end if;
    end Finalize;
 
+   not overriding function Get_Bool_Value_Variable_Reference
+    (Self  : aliased in out Bool_Value_Vector;
+     Index : Positive)
+      return Bool_Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Bool_Value_Variable_Reference;
+
+   not overriding function Get_Bool_Value_Constant_Reference
+    (Self  : aliased Bool_Value_Vector;
+     Index : Positive)
+      return Bool_Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Bool_Value_Constant_Reference;
+
    procedure Read_Bool_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Bool_Value) is
@@ -685,6 +797,22 @@ package body Google.Protobuf.Wrappers is
       end if;
    end Finalize;
 
+   not overriding function Get_String_Value_Variable_Reference
+    (Self  : aliased in out String_Value_Vector;
+     Index : Positive)
+      return String_Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_String_Value_Variable_Reference;
+
+   not overriding function Get_String_Value_Constant_Reference
+    (Self  : aliased String_Value_Vector;
+     Index : Positive)
+      return String_Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_String_Value_Constant_Reference;
+
    procedure Read_String_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out String_Value) is
@@ -774,6 +902,22 @@ package body Google.Protobuf.Wrappers is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Bytes_Value_Variable_Reference
+    (Self  : aliased in out Bytes_Value_Vector;
+     Index : Positive)
+      return Bytes_Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Bytes_Value_Variable_Reference;
+
+   not overriding function Get_Bytes_Value_Constant_Reference
+    (Self  : aliased Bytes_Value_Vector;
+     Index : Positive)
+      return Bytes_Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Bytes_Value_Constant_Reference;
 
    procedure Read_Bytes_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;

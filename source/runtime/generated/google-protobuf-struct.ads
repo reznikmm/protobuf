@@ -12,20 +12,28 @@ package Google.Protobuf.Struct is
 
    package Null_Value_Vectors is new PB_Support.Vectors (Null_Value);
 
-   type Struct_Vector is tagged private;
+   type Struct_Vector is tagged private
+     with Variable_Indexing => Get_Struct_Variable_Reference,
+     Constant_Indexing => Get_Struct_Constant_Reference;
 
-   type Fields_Entry_Vector is tagged private;
+   type Fields_Entry_Vector is tagged private
+     with Variable_Indexing => Get_Fields_Entry_Variable_Reference,
+     Constant_Indexing => Get_Fields_Entry_Constant_Reference;
 
-   type Value_Vector is tagged private;
+   type Value_Vector is tagged private
+     with Variable_Indexing => Get_Value_Variable_Reference,
+     Constant_Indexing => Get_Value_Constant_Reference;
 
-   type List_Value_Vector is tagged private;
+   type List_Value_Vector is tagged private
+     with Variable_Indexing => Get_List_Value_Variable_Reference,
+     Constant_Indexing => Get_List_Value_Constant_Reference;
 
    type Struct is
      record
         Fields : Google.Protobuf.Struct.Fields_Entry_Vector;
      end record;
 
-   type Optional_Struct (Is_Set : Boolean := False) is
+   type Optional_Struct  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -43,12 +51,32 @@ package Google.Protobuf.Struct is
 
    procedure Append (Self : in out Struct_Vector; V    : Struct);
 
+   type Struct_Variable_Reference  (Element : not null access Struct) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Struct_Variable_Reference
+    (Self  : aliased in out Struct_Vector;
+     Index : Positive)
+      return Struct_Variable_Reference
+     with Inline;
+
+   type Struct_Constant_Reference
+     (Element : not null access constant Struct) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Struct_Constant_Reference
+    (Self  : aliased Struct_Vector;
+     Index : Positive)
+      return Struct_Constant_Reference
+     with Inline;
+
    type List_Value is
      record
         Values : Google.Protobuf.Struct.Value_Vector;
      end record;
 
-   type Optional_List_Value (Is_Set : Boolean := False) is
+   type Optional_List_Value  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -69,6 +97,26 @@ package Google.Protobuf.Struct is
 
    procedure Append (Self : in out List_Value_Vector; V    : List_Value);
 
+   type List_Value_Variable_Reference
+     (Element : not null access List_Value) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_List_Value_Variable_Reference
+    (Self  : aliased in out List_Value_Vector;
+     Index : Positive)
+      return List_Value_Variable_Reference
+     with Inline;
+
+   type List_Value_Constant_Reference
+     (Element : not null access constant List_Value) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_List_Value_Constant_Reference
+    (Self  : aliased List_Value_Vector;
+     Index : Positive)
+      return List_Value_Constant_Reference
+     with Inline;
+
    type Value_Variant_Kind is
      (Kind_Not_Set,
       Null_Value_Kind,
@@ -78,7 +126,7 @@ package Google.Protobuf.Struct is
       Struct_Value_Kind,
       List_Value_Kind);
 
-   type Value_Variant (Kind : Value_Variant_Kind := Kind_Not_Set) is
+   type Value_Variant  (Kind : Value_Variant_Kind := Kind_Not_Set) is
      record
         case Kind is
            when Kind_Not_Set =>
@@ -101,7 +149,7 @@ package Google.Protobuf.Struct is
 
    type Value is record Variant : Value_Variant; end record;
 
-   type Optional_Value (Is_Set : Boolean := False) is
+   type Optional_Value  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -119,13 +167,33 @@ package Google.Protobuf.Struct is
 
    procedure Append (Self : in out Value_Vector; V    : Value);
 
+   type Value_Variable_Reference  (Element : not null access Value) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Value_Variable_Reference
+    (Self  : aliased in out Value_Vector;
+     Index : Positive)
+      return Value_Variable_Reference
+     with Inline;
+
+   type Value_Constant_Reference  (Element : not null access constant Value) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Value_Constant_Reference
+    (Self  : aliased Value_Vector;
+     Index : Positive)
+      return Value_Constant_Reference
+     with Inline;
+
    type Fields_Entry is
      record
         Key   : League.Strings.Universal_String;
         Value : Google.Protobuf.Struct.Optional_Value;
      end record;
 
-   type Optional_Fields_Entry (Is_Set : Boolean := False) is
+   type Optional_Fields_Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -145,6 +213,26 @@ package Google.Protobuf.Struct is
    procedure Clear (Self : in out Fields_Entry_Vector);
 
    procedure Append (Self : in out Fields_Entry_Vector; V    : Fields_Entry);
+
+   type Fields_Entry_Variable_Reference
+     (Element : not null access Fields_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Fields_Entry_Variable_Reference
+    (Self  : aliased in out Fields_Entry_Vector;
+     Index : Positive)
+      return Fields_Entry_Variable_Reference
+     with Inline;
+
+   type Fields_Entry_Constant_Reference
+     (Element : not null access constant Fields_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Fields_Entry_Constant_Reference
+    (Self  : aliased Fields_Entry_Vector;
+     Index : Positive)
+      return Fields_Entry_Constant_Reference
+     with Inline;
 private
 
    procedure Read_Fields_Entry
@@ -159,7 +247,8 @@ private
 
    for Fields_Entry'Write use Write_Fields_Entry;
 
-   type Fields_Entry_Array is array (Positive range <>) of Fields_Entry;
+   type Fields_Entry_Array is
+     array (Positive range <>) of aliased Fields_Entry;
 
    type Fields_Entry_Array_Access is access Fields_Entry_Array;
 
@@ -186,7 +275,7 @@ private
 
    for Struct'Write use Write_Struct;
 
-   type Struct_Array is array (Positive range <>) of Struct;
+   type Struct_Array is array (Positive range <>) of aliased Struct;
 
    type Struct_Array_Access is access Struct_Array;
 
@@ -213,7 +302,7 @@ private
 
    for Value'Write use Write_Value;
 
-   type Value_Array is array (Positive range <>) of Value;
+   type Value_Array is array (Positive range <>) of aliased Value;
 
    type Value_Array_Access is access Value_Array;
 
@@ -240,7 +329,7 @@ private
 
    for List_Value'Write use Write_List_Value;
 
-   type List_Value_Array is array (Positive range <>) of List_Value;
+   type List_Value_Array is array (Positive range <>) of aliased List_Value;
 
    type List_Value_Array_Access is access List_Value_Array;
 

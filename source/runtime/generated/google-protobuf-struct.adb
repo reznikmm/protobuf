@@ -81,6 +81,22 @@ package body Google.Protobuf.Struct is
       end if;
    end Finalize;
 
+   not overriding function Get_Struct_Variable_Reference
+    (Self  : aliased in out Struct_Vector;
+     Index : Positive)
+      return Struct_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Struct_Variable_Reference;
+
+   not overriding function Get_Struct_Constant_Reference
+    (Self  : aliased Struct_Vector;
+     Index : Positive)
+      return Struct_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Struct_Constant_Reference;
+
    procedure Read_Struct
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Struct) is
@@ -174,6 +190,22 @@ package body Google.Protobuf.Struct is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Fields_Entry_Variable_Reference
+    (Self  : aliased in out Fields_Entry_Vector;
+     Index : Positive)
+      return Fields_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Fields_Entry_Variable_Reference;
+
+   not overriding function Get_Fields_Entry_Constant_Reference
+    (Self  : aliased Fields_Entry_Vector;
+     Index : Positive)
+      return Fields_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Fields_Entry_Constant_Reference;
 
    procedure Read_Fields_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -270,6 +302,22 @@ package body Google.Protobuf.Struct is
       end if;
    end Finalize;
 
+   not overriding function Get_Value_Variable_Reference
+    (Self  : aliased in out Value_Vector;
+     Index : Positive)
+      return Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Value_Variable_Reference;
+
+   not overriding function Get_Value_Constant_Reference
+    (Self  : aliased Value_Vector;
+     Index : Positive)
+      return Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Value_Constant_Reference;
+
    procedure Read_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Value) is
@@ -278,24 +326,36 @@ package body Google.Protobuf.Struct is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               V.Variant := (Null_Value_Kind, others => <>);
+               if V.Variant.Kind /= Null_Value_Kind then
+                  V.Variant := (Null_Value_Kind, others => <>);
+               end if;
                Null_Value_IO.Read (Stream, Key.Encoding, V.Variant.Null_Value);
             when 2 =>
-               V.Variant := (Number_Value_Kind, others => <>);
+               if V.Variant.Kind /= Number_Value_Kind then
+                  V.Variant := (Number_Value_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Number_Value);
             when 3 =>
-               V.Variant := (String_Value_Kind, others => <>);
+               if V.Variant.Kind /= String_Value_Kind then
+                  V.Variant := (String_Value_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.String_Value);
             when 4 =>
-               V.Variant := (Bool_Value_Kind, others => <>);
+               if V.Variant.Kind /= Bool_Value_Kind then
+                  V.Variant := (Bool_Value_Kind, others => <>);
+               end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Variant.Bool_Value);
             when 5 =>
-               V.Variant := (Struct_Value_Kind, others => <>);
+               if V.Variant.Kind /= Struct_Value_Kind then
+                  V.Variant := (Struct_Value_Kind, others => <>);
+               end if;
                Struct_IO.Read (Stream, Key.Encoding, V.Variant.Struct_Value);
             when 6 =>
-               V.Variant := (List_Value_Kind, others => <>);
+               if V.Variant.Kind /= List_Value_Kind then
+                  V.Variant := (List_Value_Kind, others => <>);
+               end if;
                List_Value_IO.Read (Stream, Key.Encoding, V.Variant.List_Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -396,6 +456,22 @@ package body Google.Protobuf.Struct is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_List_Value_Variable_Reference
+    (Self  : aliased in out List_Value_Vector;
+     Index : Positive)
+      return List_Value_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_List_Value_Variable_Reference;
+
+   not overriding function Get_List_Value_Constant_Reference
+    (Self  : aliased List_Value_Vector;
+     Index : Positive)
+      return List_Value_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_List_Value_Constant_Reference;
 
    procedure Read_List_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;

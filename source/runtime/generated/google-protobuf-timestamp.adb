@@ -55,6 +55,22 @@ package body Google.Protobuf.Timestamp is
       end if;
    end Finalize;
 
+   not overriding function Get_Timestamp_Variable_Reference
+    (Self  : aliased in out Timestamp_Vector;
+     Index : Positive)
+      return Timestamp_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Timestamp_Variable_Reference;
+
+   not overriding function Get_Timestamp_Constant_Reference
+    (Self  : aliased Timestamp_Vector;
+     Index : Positive)
+      return Timestamp_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Timestamp_Constant_Reference;
+
    procedure Read_Timestamp
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Timestamp) is

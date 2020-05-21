@@ -51,6 +51,22 @@ package body Google.Protobuf.Empty is
       end if;
    end Finalize;
 
+   not overriding function Get_Empty_Variable_Reference
+    (Self  : aliased in out Empty_Vector;
+     Index : Positive)
+      return Empty_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Empty_Variable_Reference;
+
+   not overriding function Get_Empty_Constant_Reference
+    (Self  : aliased Empty_Vector;
+     Index : Positive)
+      return Empty_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Empty_Constant_Reference;
+
    procedure Read_Empty
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Empty) is

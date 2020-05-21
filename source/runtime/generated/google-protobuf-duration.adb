@@ -51,6 +51,22 @@ package body Google.Protobuf.Duration is
       end if;
    end Finalize;
 
+   not overriding function Get_Duration_Variable_Reference
+    (Self  : aliased in out Duration_Vector;
+     Index : Positive)
+      return Duration_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Duration_Variable_Reference;
+
+   not overriding function Get_Duration_Constant_Reference
+    (Self  : aliased Duration_Vector;
+     Index : Positive)
+      return Duration_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Duration_Constant_Reference;
+
    procedure Read_Duration
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Duration) is

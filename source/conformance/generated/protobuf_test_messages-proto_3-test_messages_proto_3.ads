@@ -44,49 +44,103 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    package Aliased_Enum_Vectors is new PB_Support.Vectors (Aliased_Enum);
 
-   type Test_All_Types_Proto_3_Vector is tagged private;
+   type Test_All_Types_Proto_3_Vector is tagged private
+     with Variable_Indexing => Get_Test_All_Types_Proto_3_Variable_Reference,
+     Constant_Indexing => Get_Test_All_Types_Proto_3_Constant_Reference;
 
-   type Nested_Message_Vector is tagged private;
+   type Nested_Message_Vector is tagged private
+     with Variable_Indexing => Get_Nested_Message_Variable_Reference,
+     Constant_Indexing => Get_Nested_Message_Constant_Reference;
 
-   type Map_Int_32Int_32Entry_Vector is tagged private;
+   type Map_Int_32Int_32Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Int_32Int_32Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Int_32Int_32Entry_Constant_Reference;
 
-   type Map_Int_64Int_64Entry_Vector is tagged private;
+   type Map_Int_64Int_64Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Int_64Int_64Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Int_64Int_64Entry_Constant_Reference;
 
-   type Map_Uint_32Uint_32Entry_Vector is tagged private;
+   type Map_Uint_32Uint_32Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Uint_32Uint_32Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Uint_32Uint_32Entry_Constant_Reference;
 
-   type Map_Uint_64Uint_64Entry_Vector is tagged private;
+   type Map_Uint_64Uint_64Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Uint_64Uint_64Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Uint_64Uint_64Entry_Constant_Reference;
 
-   type Map_Sint_32Sint_32Entry_Vector is tagged private;
+   type Map_Sint_32Sint_32Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Sint_32Sint_32Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Sint_32Sint_32Entry_Constant_Reference;
 
-   type Map_Sint_64Sint_64Entry_Vector is tagged private;
+   type Map_Sint_64Sint_64Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Sint_64Sint_64Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Sint_64Sint_64Entry_Constant_Reference;
 
-   type Map_Fixed_32Fixed_32Entry_Vector is tagged private;
+   type Map_Fixed_32Fixed_32Entry_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Map_Fixed_32Fixed_32Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Fixed_32Fixed_32Entry_Constant_Reference;
 
-   type Map_Fixed_64Fixed_64Entry_Vector is tagged private;
+   type Map_Fixed_64Fixed_64Entry_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Map_Fixed_64Fixed_64Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Fixed_64Fixed_64Entry_Constant_Reference;
 
-   type Map_Sfixed_32Sfixed_32Entry_Vector is tagged private;
+   type Map_Sfixed_32Sfixed_32Entry_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Map_Sfixed_32Sfixed_32Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Sfixed_32Sfixed_32Entry_Constant_Reference;
 
-   type Map_Sfixed_64Sfixed_64Entry_Vector is tagged private;
+   type Map_Sfixed_64Sfixed_64Entry_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Map_Sfixed_64Sfixed_64Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Sfixed_64Sfixed_64Entry_Constant_Reference;
 
-   type Map_Int_32Float_Entry_Vector is tagged private;
+   type Map_Int_32Float_Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Int_32Float_Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Int_32Float_Entry_Constant_Reference;
 
-   type Map_Int_32Double_Entry_Vector is tagged private;
+   type Map_Int_32Double_Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Int_32Double_Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Int_32Double_Entry_Constant_Reference;
 
-   type Map_Bool_Bool_Entry_Vector is tagged private;
+   type Map_Bool_Bool_Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Bool_Bool_Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Bool_Bool_Entry_Constant_Reference;
 
-   type Map_String_String_Entry_Vector is tagged private;
+   type Map_String_String_Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_String_String_Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_String_String_Entry_Constant_Reference;
 
-   type Map_String_Bytes_Entry_Vector is tagged private;
+   type Map_String_Bytes_Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_String_Bytes_Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_String_Bytes_Entry_Constant_Reference;
 
-   type Map_String_Nested_Message_Entry_Vector is tagged private;
+   type Map_String_Nested_Message_Entry_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Map_String_Nested_Message_Entry_Variable_Reference,
+     Constant_Indexing =>
+       Get_Map_String_Nested_Message_Entry_Constant_Reference;
 
-   type Map_String_Foreign_Message_Entry_Vector is tagged private;
+   type Map_String_Foreign_Message_Entry_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Map_String_Foreign_Message_Entry_Variable_Reference,
+     Constant_Indexing =>
+       Get_Map_String_Foreign_Message_Entry_Constant_Reference;
 
-   type Map_String_Nested_Enum_Entry_Vector is tagged private;
+   type Map_String_Nested_Enum_Entry_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Map_String_Nested_Enum_Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_String_Nested_Enum_Entry_Constant_Reference;
 
-   type Map_String_Foreign_Enum_Entry_Vector is tagged private;
+   type Map_String_Foreign_Enum_Entry_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Map_String_Foreign_Enum_Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_String_Foreign_Enum_Entry_Constant_Reference;
 
-   type Foreign_Message_Vector is tagged private;
+   type Foreign_Message_Vector is tagged private
+     with Variable_Indexing => Get_Foreign_Message_Variable_Reference,
+     Constant_Indexing => Get_Foreign_Message_Constant_Reference;
 
    type Map_Int_32Int_32Entry is
      record
@@ -94,7 +148,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Value : Interfaces.Integer_32 := 0;
      end record;
 
-   type Optional_Map_Int_32Int_32Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Int_32Int_32Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -118,13 +172,33 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Int_32Int_32Entry_Vector;
      V    : Map_Int_32Int_32Entry);
 
+   type Map_Int_32Int_32Entry_Variable_Reference
+     (Element : not null access Map_Int_32Int_32Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Int_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_32Int_32Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Int_32Entry_Variable_Reference
+     with Inline;
+
+   type Map_Int_32Int_32Entry_Constant_Reference
+     (Element : not null access constant Map_Int_32Int_32Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Int_32Entry_Constant_Reference
+    (Self  : aliased Map_Int_32Int_32Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Int_32Entry_Constant_Reference
+     with Inline;
+
    type Map_Int_64Int_64Entry is
      record
         Key   : Interfaces.Integer_64 := 0;
         Value : Interfaces.Integer_64 := 0;
      end record;
 
-   type Optional_Map_Int_64Int_64Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Int_64Int_64Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -148,13 +222,33 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Int_64Int_64Entry_Vector;
      V    : Map_Int_64Int_64Entry);
 
+   type Map_Int_64Int_64Entry_Variable_Reference
+     (Element : not null access Map_Int_64Int_64Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_64Int_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_64Int_64Entry_Vector;
+     Index : Positive)
+      return Map_Int_64Int_64Entry_Variable_Reference
+     with Inline;
+
+   type Map_Int_64Int_64Entry_Constant_Reference
+     (Element : not null access constant Map_Int_64Int_64Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_64Int_64Entry_Constant_Reference
+    (Self  : aliased Map_Int_64Int_64Entry_Vector;
+     Index : Positive)
+      return Map_Int_64Int_64Entry_Constant_Reference
+     with Inline;
+
    type Map_Uint_32Uint_32Entry is
      record
         Key   : Interfaces.Unsigned_32 := 0;
         Value : Interfaces.Unsigned_32 := 0;
      end record;
 
-   type Optional_Map_Uint_32Uint_32Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Uint_32Uint_32Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -178,13 +272,34 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Uint_32Uint_32Entry_Vector;
      V    : Map_Uint_32Uint_32Entry);
 
+   type Map_Uint_32Uint_32Entry_Variable_Reference
+     (Element : not null access Map_Uint_32Uint_32Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Uint_32Uint_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Uint_32Uint_32Entry_Vector;
+     Index : Positive)
+      return Map_Uint_32Uint_32Entry_Variable_Reference
+     with Inline;
+
+   type Map_Uint_32Uint_32Entry_Constant_Reference
+     (Element : not null access constant Map_Uint_32Uint_32Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Uint_32Uint_32Entry_Constant_Reference
+    (Self  : aliased Map_Uint_32Uint_32Entry_Vector;
+     Index : Positive)
+      return Map_Uint_32Uint_32Entry_Constant_Reference
+     with Inline;
+
    type Map_Uint_64Uint_64Entry is
      record
         Key   : Interfaces.Unsigned_64 := 0;
         Value : Interfaces.Unsigned_64 := 0;
      end record;
 
-   type Optional_Map_Uint_64Uint_64Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Uint_64Uint_64Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -208,13 +323,34 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Uint_64Uint_64Entry_Vector;
      V    : Map_Uint_64Uint_64Entry);
 
+   type Map_Uint_64Uint_64Entry_Variable_Reference
+     (Element : not null access Map_Uint_64Uint_64Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Uint_64Uint_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Uint_64Uint_64Entry_Vector;
+     Index : Positive)
+      return Map_Uint_64Uint_64Entry_Variable_Reference
+     with Inline;
+
+   type Map_Uint_64Uint_64Entry_Constant_Reference
+     (Element : not null access constant Map_Uint_64Uint_64Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Uint_64Uint_64Entry_Constant_Reference
+    (Self  : aliased Map_Uint_64Uint_64Entry_Vector;
+     Index : Positive)
+      return Map_Uint_64Uint_64Entry_Constant_Reference
+     with Inline;
+
    type Map_Sint_32Sint_32Entry is
      record
         Key   : Interfaces.Integer_32 := 0;
         Value : Interfaces.Integer_32 := 0;
      end record;
 
-   type Optional_Map_Sint_32Sint_32Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Sint_32Sint_32Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -238,13 +374,34 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Sint_32Sint_32Entry_Vector;
      V    : Map_Sint_32Sint_32Entry);
 
+   type Map_Sint_32Sint_32Entry_Variable_Reference
+     (Element : not null access Map_Sint_32Sint_32Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Sint_32Sint_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Sint_32Sint_32Entry_Vector;
+     Index : Positive)
+      return Map_Sint_32Sint_32Entry_Variable_Reference
+     with Inline;
+
+   type Map_Sint_32Sint_32Entry_Constant_Reference
+     (Element : not null access constant Map_Sint_32Sint_32Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Sint_32Sint_32Entry_Constant_Reference
+    (Self  : aliased Map_Sint_32Sint_32Entry_Vector;
+     Index : Positive)
+      return Map_Sint_32Sint_32Entry_Constant_Reference
+     with Inline;
+
    type Map_Sint_64Sint_64Entry is
      record
         Key   : Interfaces.Integer_64 := 0;
         Value : Interfaces.Integer_64 := 0;
      end record;
 
-   type Optional_Map_Sint_64Sint_64Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Sint_64Sint_64Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -268,13 +425,34 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Sint_64Sint_64Entry_Vector;
      V    : Map_Sint_64Sint_64Entry);
 
+   type Map_Sint_64Sint_64Entry_Variable_Reference
+     (Element : not null access Map_Sint_64Sint_64Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Sint_64Sint_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Sint_64Sint_64Entry_Vector;
+     Index : Positive)
+      return Map_Sint_64Sint_64Entry_Variable_Reference
+     with Inline;
+
+   type Map_Sint_64Sint_64Entry_Constant_Reference
+     (Element : not null access constant Map_Sint_64Sint_64Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Sint_64Sint_64Entry_Constant_Reference
+    (Self  : aliased Map_Sint_64Sint_64Entry_Vector;
+     Index : Positive)
+      return Map_Sint_64Sint_64Entry_Constant_Reference
+     with Inline;
+
    type Map_Fixed_32Fixed_32Entry is
      record
         Key   : Interfaces.Unsigned_32 := 0;
         Value : Interfaces.Unsigned_32 := 0;
      end record;
 
-   type Optional_Map_Fixed_32Fixed_32Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Fixed_32Fixed_32Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -298,13 +476,34 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Fixed_32Fixed_32Entry_Vector;
      V    : Map_Fixed_32Fixed_32Entry);
 
+   type Map_Fixed_32Fixed_32Entry_Variable_Reference
+     (Element : not null access Map_Fixed_32Fixed_32Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Fixed_32Fixed_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Fixed_32Fixed_32Entry_Vector;
+     Index : Positive)
+      return Map_Fixed_32Fixed_32Entry_Variable_Reference
+     with Inline;
+
+   type Map_Fixed_32Fixed_32Entry_Constant_Reference
+     (Element : not null access constant Map_Fixed_32Fixed_32Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Fixed_32Fixed_32Entry_Constant_Reference
+    (Self  : aliased Map_Fixed_32Fixed_32Entry_Vector;
+     Index : Positive)
+      return Map_Fixed_32Fixed_32Entry_Constant_Reference
+     with Inline;
+
    type Map_Fixed_64Fixed_64Entry is
      record
         Key   : Interfaces.Unsigned_64 := 0;
         Value : Interfaces.Unsigned_64 := 0;
      end record;
 
-   type Optional_Map_Fixed_64Fixed_64Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Fixed_64Fixed_64Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -328,13 +527,34 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Fixed_64Fixed_64Entry_Vector;
      V    : Map_Fixed_64Fixed_64Entry);
 
+   type Map_Fixed_64Fixed_64Entry_Variable_Reference
+     (Element : not null access Map_Fixed_64Fixed_64Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Fixed_64Fixed_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Fixed_64Fixed_64Entry_Vector;
+     Index : Positive)
+      return Map_Fixed_64Fixed_64Entry_Variable_Reference
+     with Inline;
+
+   type Map_Fixed_64Fixed_64Entry_Constant_Reference
+     (Element : not null access constant Map_Fixed_64Fixed_64Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Fixed_64Fixed_64Entry_Constant_Reference
+    (Self  : aliased Map_Fixed_64Fixed_64Entry_Vector;
+     Index : Positive)
+      return Map_Fixed_64Fixed_64Entry_Constant_Reference
+     with Inline;
+
    type Map_Sfixed_32Sfixed_32Entry is
      record
         Key   : Interfaces.Integer_32 := 0;
         Value : Interfaces.Integer_32 := 0;
      end record;
 
-   type Optional_Map_Sfixed_32Sfixed_32Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Sfixed_32Sfixed_32Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -358,13 +578,34 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Sfixed_32Sfixed_32Entry_Vector;
      V    : Map_Sfixed_32Sfixed_32Entry);
 
+   type Map_Sfixed_32Sfixed_32Entry_Variable_Reference
+     (Element : not null access Map_Sfixed_32Sfixed_32Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Sfixed_32Sfixed_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Sfixed_32Sfixed_32Entry_Vector;
+     Index : Positive)
+      return Map_Sfixed_32Sfixed_32Entry_Variable_Reference
+     with Inline;
+
+   type Map_Sfixed_32Sfixed_32Entry_Constant_Reference
+     (Element : not null access constant Map_Sfixed_32Sfixed_32Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Sfixed_32Sfixed_32Entry_Constant_Reference
+    (Self  : aliased Map_Sfixed_32Sfixed_32Entry_Vector;
+     Index : Positive)
+      return Map_Sfixed_32Sfixed_32Entry_Constant_Reference
+     with Inline;
+
    type Map_Sfixed_64Sfixed_64Entry is
      record
         Key   : Interfaces.Integer_64 := 0;
         Value : Interfaces.Integer_64 := 0;
      end record;
 
-   type Optional_Map_Sfixed_64Sfixed_64Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Sfixed_64Sfixed_64Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -388,13 +629,34 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Sfixed_64Sfixed_64Entry_Vector;
      V    : Map_Sfixed_64Sfixed_64Entry);
 
+   type Map_Sfixed_64Sfixed_64Entry_Variable_Reference
+     (Element : not null access Map_Sfixed_64Sfixed_64Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Sfixed_64Sfixed_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Sfixed_64Sfixed_64Entry_Vector;
+     Index : Positive)
+      return Map_Sfixed_64Sfixed_64Entry_Variable_Reference
+     with Inline;
+
+   type Map_Sfixed_64Sfixed_64Entry_Constant_Reference
+     (Element : not null access constant Map_Sfixed_64Sfixed_64Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Sfixed_64Sfixed_64Entry_Constant_Reference
+    (Self  : aliased Map_Sfixed_64Sfixed_64Entry_Vector;
+     Index : Positive)
+      return Map_Sfixed_64Sfixed_64Entry_Constant_Reference
+     with Inline;
+
    type Map_Int_32Float_Entry is
      record
         Key   : Interfaces.Integer_32 := 0;
         Value : Interfaces.IEEE_Float_32 := 0.0;
      end record;
 
-   type Optional_Map_Int_32Float_Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Int_32Float_Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -418,13 +680,33 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Int_32Float_Entry_Vector;
      V    : Map_Int_32Float_Entry);
 
+   type Map_Int_32Float_Entry_Variable_Reference
+     (Element : not null access Map_Int_32Float_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Float_Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_32Float_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Float_Entry_Variable_Reference
+     with Inline;
+
+   type Map_Int_32Float_Entry_Constant_Reference
+     (Element : not null access constant Map_Int_32Float_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Float_Entry_Constant_Reference
+    (Self  : aliased Map_Int_32Float_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Float_Entry_Constant_Reference
+     with Inline;
+
    type Map_Int_32Double_Entry is
      record
         Key   : Interfaces.Integer_32 := 0;
         Value : Interfaces.IEEE_Float_64 := 0.0;
      end record;
 
-   type Optional_Map_Int_32Double_Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Int_32Double_Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -448,13 +730,33 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Int_32Double_Entry_Vector;
      V    : Map_Int_32Double_Entry);
 
+   type Map_Int_32Double_Entry_Variable_Reference
+     (Element : not null access Map_Int_32Double_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Double_Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_32Double_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Double_Entry_Variable_Reference
+     with Inline;
+
+   type Map_Int_32Double_Entry_Constant_Reference
+     (Element : not null access constant Map_Int_32Double_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Double_Entry_Constant_Reference
+    (Self  : aliased Map_Int_32Double_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Double_Entry_Constant_Reference
+     with Inline;
+
    type Map_Bool_Bool_Entry is
      record
         Key   : Boolean := False;
         Value : Boolean := False;
      end record;
 
-   type Optional_Map_Bool_Bool_Entry (Is_Set : Boolean := False) is
+   type Optional_Map_Bool_Bool_Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -478,13 +780,33 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_Bool_Bool_Entry_Vector;
      V    : Map_Bool_Bool_Entry);
 
+   type Map_Bool_Bool_Entry_Variable_Reference
+     (Element : not null access Map_Bool_Bool_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Bool_Bool_Entry_Variable_Reference
+    (Self  : aliased in out Map_Bool_Bool_Entry_Vector;
+     Index : Positive)
+      return Map_Bool_Bool_Entry_Variable_Reference
+     with Inline;
+
+   type Map_Bool_Bool_Entry_Constant_Reference
+     (Element : not null access constant Map_Bool_Bool_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Bool_Bool_Entry_Constant_Reference
+    (Self  : aliased Map_Bool_Bool_Entry_Vector;
+     Index : Positive)
+      return Map_Bool_Bool_Entry_Constant_Reference
+     with Inline;
+
    type Map_String_String_Entry is
      record
         Key   : League.Strings.Universal_String;
         Value : League.Strings.Universal_String;
      end record;
 
-   type Optional_Map_String_String_Entry (Is_Set : Boolean := False) is
+   type Optional_Map_String_String_Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -508,13 +830,34 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_String_String_Entry_Vector;
      V    : Map_String_String_Entry);
 
+   type Map_String_String_Entry_Variable_Reference
+     (Element : not null access Map_String_String_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_String_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_String_Entry_Vector;
+     Index : Positive)
+      return Map_String_String_Entry_Variable_Reference
+     with Inline;
+
+   type Map_String_String_Entry_Constant_Reference
+     (Element : not null access constant Map_String_String_Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_String_Entry_Constant_Reference
+    (Self  : aliased Map_String_String_Entry_Vector;
+     Index : Positive)
+      return Map_String_String_Entry_Constant_Reference
+     with Inline;
+
    type Map_String_Bytes_Entry is
      record
         Key   : League.Strings.Universal_String;
         Value : League.Stream_Element_Vectors.Stream_Element_Vector;
      end record;
 
-   type Optional_Map_String_Bytes_Entry (Is_Set : Boolean := False) is
+   type Optional_Map_String_Bytes_Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -538,6 +881,26 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_String_Bytes_Entry_Vector;
      V    : Map_String_Bytes_Entry);
 
+   type Map_String_Bytes_Entry_Variable_Reference
+     (Element : not null access Map_String_Bytes_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Bytes_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Bytes_Entry_Vector;
+     Index : Positive)
+      return Map_String_Bytes_Entry_Variable_Reference
+     with Inline;
+
+   type Map_String_Bytes_Entry_Constant_Reference
+     (Element : not null access constant Map_String_Bytes_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Bytes_Entry_Constant_Reference
+    (Self  : aliased Map_String_Bytes_Entry_Vector;
+     Index : Positive)
+      return Map_String_Bytes_Entry_Constant_Reference
+     with Inline;
+
    type Map_String_Nested_Enum_Entry is
      record
         Key   : League.Strings.Universal_String;
@@ -546,7 +909,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOO;
      end record;
 
-   type Optional_Map_String_Nested_Enum_Entry (Is_Set : Boolean := False) is
+   type Optional_Map_String_Nested_Enum_Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -570,6 +933,27 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_String_Nested_Enum_Entry_Vector;
      V    : Map_String_Nested_Enum_Entry);
 
+   type Map_String_Nested_Enum_Entry_Variable_Reference
+     (Element : not null access Map_String_Nested_Enum_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Nested_Enum_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Nested_Enum_Entry_Vector;
+     Index : Positive)
+      return Map_String_Nested_Enum_Entry_Variable_Reference
+     with Inline;
+
+   type Map_String_Nested_Enum_Entry_Constant_Reference
+     (Element : not null access constant Map_String_Nested_Enum_Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Nested_Enum_Entry_Constant_Reference
+    (Self  : aliased Map_String_Nested_Enum_Entry_Vector;
+     Index : Positive)
+      return Map_String_Nested_Enum_Entry_Constant_Reference
+     with Inline;
+
    type Map_String_Foreign_Enum_Entry is
      record
         Key   : League.Strings.Universal_String;
@@ -578,7 +962,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOREIGN_FOO;
      end record;
 
-   type Optional_Map_String_Foreign_Enum_Entry (Is_Set : Boolean := False) is
+   type Optional_Map_String_Foreign_Enum_Entry  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -604,9 +988,30 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_String_Foreign_Enum_Entry_Vector;
      V    : Map_String_Foreign_Enum_Entry);
 
+   type Map_String_Foreign_Enum_Entry_Variable_Reference
+     (Element : not null access Map_String_Foreign_Enum_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Foreign_Enum_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Foreign_Enum_Entry_Vector;
+     Index : Positive)
+      return Map_String_Foreign_Enum_Entry_Variable_Reference
+     with Inline;
+
+   type Map_String_Foreign_Enum_Entry_Constant_Reference
+     (Element : not null access constant Map_String_Foreign_Enum_Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Foreign_Enum_Entry_Constant_Reference
+    (Self  : aliased Map_String_Foreign_Enum_Entry_Vector;
+     Index : Positive)
+      return Map_String_Foreign_Enum_Entry_Constant_Reference
+     with Inline;
+
    type Foreign_Message is record C : Interfaces.Integer_32 := 0; end record;
 
-   type Optional_Foreign_Message (Is_Set : Boolean := False) is
+   type Optional_Foreign_Message  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -630,6 +1035,26 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Foreign_Message_Vector;
      V    : Foreign_Message);
 
+   type Foreign_Message_Variable_Reference
+     (Element : not null access Foreign_Message) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Foreign_Message_Variable_Reference
+    (Self  : aliased in out Foreign_Message_Vector;
+     Index : Positive)
+      return Foreign_Message_Variable_Reference
+     with Inline;
+
+   type Foreign_Message_Constant_Reference
+     (Element : not null access constant Foreign_Message) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Foreign_Message_Constant_Reference
+    (Self  : aliased Foreign_Message_Vector;
+     Index : Positive)
+      return Foreign_Message_Constant_Reference
+     with Inline;
+
    type Map_String_Foreign_Message_Entry is
      record
         Key   : League.Strings.Universal_String;
@@ -637,7 +1062,8 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Optional_Foreign_Message;
      end record;
 
-   type Optional_Map_String_Foreign_Message_Entry (Is_Set : Boolean := False) is
+   type Optional_Map_String_Foreign_Message_Entry
+     (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -663,6 +1089,28 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_String_Foreign_Message_Entry_Vector;
      V    : Map_String_Foreign_Message_Entry);
 
+   type Map_String_Foreign_Message_Entry_Variable_Reference
+     (Element : not null access Map_String_Foreign_Message_Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Foreign_Message_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Foreign_Message_Entry_Vector;
+     Index : Positive)
+      return Map_String_Foreign_Message_Entry_Variable_Reference
+     with Inline;
+
+   type Map_String_Foreign_Message_Entry_Constant_Reference
+     (Element : not null access constant Map_String_Foreign_Message_Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Foreign_Message_Entry_Constant_Reference
+    (Self  : aliased Map_String_Foreign_Message_Entry_Vector;
+     Index : Positive)
+      return Map_String_Foreign_Message_Entry_Constant_Reference
+     with Inline;
+
    type Nested_Message is
      record
         A           : Interfaces.Integer_32 := 0;
@@ -670,7 +1118,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Test_All_Types_Proto_3_Vector;
      end record;
 
-   type Optional_Nested_Message (Is_Set : Boolean := False) is
+   type Optional_Nested_Message  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -694,6 +1142,26 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Nested_Message_Vector;
      V    : Nested_Message);
 
+   type Nested_Message_Variable_Reference
+     (Element : not null access Nested_Message) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Nested_Message_Variable_Reference
+    (Self  : aliased in out Nested_Message_Vector;
+     Index : Positive)
+      return Nested_Message_Variable_Reference
+     with Inline;
+
+   type Nested_Message_Constant_Reference
+     (Element : not null access constant Nested_Message) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Nested_Message_Constant_Reference
+    (Self  : aliased Nested_Message_Vector;
+     Index : Positive)
+      return Nested_Message_Constant_Reference
+     with Inline;
+
    type Map_String_Nested_Message_Entry is
      record
         Key   : League.Strings.Universal_String;
@@ -701,7 +1169,8 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Optional_Nested_Message;
      end record;
 
-   type Optional_Map_String_Nested_Message_Entry (Is_Set : Boolean := False) is
+   type Optional_Map_String_Nested_Message_Entry
+     (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -727,6 +1196,27 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Self : in out Map_String_Nested_Message_Entry_Vector;
      V    : Map_String_Nested_Message_Entry);
 
+   type Map_String_Nested_Message_Entry_Variable_Reference
+     (Element : not null access Map_String_Nested_Message_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Nested_Message_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Nested_Message_Entry_Vector;
+     Index : Positive)
+      return Map_String_Nested_Message_Entry_Variable_Reference
+     with Inline;
+
+   type Map_String_Nested_Message_Entry_Constant_Reference
+     (Element : not null access constant Map_String_Nested_Message_Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_String_Nested_Message_Entry_Constant_Reference
+    (Self  : aliased Map_String_Nested_Message_Entry_Vector;
+     Index : Positive)
+      return Map_String_Nested_Message_Entry_Constant_Reference
+     with Inline;
+
    type Test_All_Types_Proto_3_Variant_Kind is
      (Oneof_Field_Not_Set,
       Oneof_Uint_32_Kind ,
@@ -739,7 +1229,8 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       Oneof_Double_Kind  ,
       Oneof_Enum_Kind    );
 
-   type Test_All_Types_Proto_3_Variant (Oneof_Field : Test_All_Types_Proto_3_Variant_Kind := Oneof_Field_Not_Set) is
+   type Test_All_Types_Proto_3_Variant
+     (Oneof_Field : Test_All_Types_Proto_3_Variant_Kind := Oneof_Field_Not_Set) is
      record
         case Oneof_Field is
            when Oneof_Field_Not_Set =>
@@ -976,7 +1467,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Variant                    : Test_All_Types_Proto_3_Variant;
      end record;
 
-   type Optional_Test_All_Types_Proto_3 (Is_Set : Boolean := False) is
+   type Optional_Test_All_Types_Proto_3  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -999,6 +1490,26 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Append
     (Self : in out Test_All_Types_Proto_3_Vector;
      V    : Test_All_Types_Proto_3);
+
+   type Test_All_Types_Proto_3_Variable_Reference
+     (Element : not null access Test_All_Types_Proto_3) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Types_Proto_3_Variable_Reference
+    (Self  : aliased in out Test_All_Types_Proto_3_Vector;
+     Index : Positive)
+      return Test_All_Types_Proto_3_Variable_Reference
+     with Inline;
+
+   type Test_All_Types_Proto_3_Constant_Reference
+     (Element : not null access constant Test_All_Types_Proto_3) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Types_Proto_3_Constant_Reference
+    (Self  : aliased Test_All_Types_Proto_3_Vector;
+     Index : Positive)
+      return Test_All_Types_Proto_3_Constant_Reference
+     with Inline;
 private
 
    procedure Read_Nested_Message
@@ -1013,7 +1524,8 @@ private
 
    for Nested_Message'Write use Write_Nested_Message;
 
-   type Nested_Message_Array is array (Positive range <>) of Nested_Message;
+   type Nested_Message_Array is
+     array (Positive range <>) of aliased Nested_Message;
 
    type Nested_Message_Array_Access is access Nested_Message_Array;
 
@@ -1041,7 +1553,7 @@ private
    for Map_Int_32Int_32Entry'Write use Write_Map_Int_32Int_32Entry;
 
    type Map_Int_32Int_32Entry_Array is
-     array (Positive range <>) of Map_Int_32Int_32Entry;
+     array (Positive range <>) of aliased Map_Int_32Int_32Entry;
 
    type Map_Int_32Int_32Entry_Array_Access is
      access Map_Int_32Int_32Entry_Array;
@@ -1070,7 +1582,7 @@ private
    for Map_Int_64Int_64Entry'Write use Write_Map_Int_64Int_64Entry;
 
    type Map_Int_64Int_64Entry_Array is
-     array (Positive range <>) of Map_Int_64Int_64Entry;
+     array (Positive range <>) of aliased Map_Int_64Int_64Entry;
 
    type Map_Int_64Int_64Entry_Array_Access is
      access Map_Int_64Int_64Entry_Array;
@@ -1099,7 +1611,7 @@ private
    for Map_Uint_32Uint_32Entry'Write use Write_Map_Uint_32Uint_32Entry;
 
    type Map_Uint_32Uint_32Entry_Array is
-     array (Positive range <>) of Map_Uint_32Uint_32Entry;
+     array (Positive range <>) of aliased Map_Uint_32Uint_32Entry;
 
    type Map_Uint_32Uint_32Entry_Array_Access is
      access Map_Uint_32Uint_32Entry_Array;
@@ -1129,7 +1641,7 @@ private
    for Map_Uint_64Uint_64Entry'Write use Write_Map_Uint_64Uint_64Entry;
 
    type Map_Uint_64Uint_64Entry_Array is
-     array (Positive range <>) of Map_Uint_64Uint_64Entry;
+     array (Positive range <>) of aliased Map_Uint_64Uint_64Entry;
 
    type Map_Uint_64Uint_64Entry_Array_Access is
      access Map_Uint_64Uint_64Entry_Array;
@@ -1159,7 +1671,7 @@ private
    for Map_Sint_32Sint_32Entry'Write use Write_Map_Sint_32Sint_32Entry;
 
    type Map_Sint_32Sint_32Entry_Array is
-     array (Positive range <>) of Map_Sint_32Sint_32Entry;
+     array (Positive range <>) of aliased Map_Sint_32Sint_32Entry;
 
    type Map_Sint_32Sint_32Entry_Array_Access is
      access Map_Sint_32Sint_32Entry_Array;
@@ -1189,7 +1701,7 @@ private
    for Map_Sint_64Sint_64Entry'Write use Write_Map_Sint_64Sint_64Entry;
 
    type Map_Sint_64Sint_64Entry_Array is
-     array (Positive range <>) of Map_Sint_64Sint_64Entry;
+     array (Positive range <>) of aliased Map_Sint_64Sint_64Entry;
 
    type Map_Sint_64Sint_64Entry_Array_Access is
      access Map_Sint_64Sint_64Entry_Array;
@@ -1219,7 +1731,7 @@ private
    for Map_Fixed_32Fixed_32Entry'Write use Write_Map_Fixed_32Fixed_32Entry;
 
    type Map_Fixed_32Fixed_32Entry_Array is
-     array (Positive range <>) of Map_Fixed_32Fixed_32Entry;
+     array (Positive range <>) of aliased Map_Fixed_32Fixed_32Entry;
 
    type Map_Fixed_32Fixed_32Entry_Array_Access is
      access Map_Fixed_32Fixed_32Entry_Array;
@@ -1250,7 +1762,7 @@ private
    for Map_Fixed_64Fixed_64Entry'Write use Write_Map_Fixed_64Fixed_64Entry;
 
    type Map_Fixed_64Fixed_64Entry_Array is
-     array (Positive range <>) of Map_Fixed_64Fixed_64Entry;
+     array (Positive range <>) of aliased Map_Fixed_64Fixed_64Entry;
 
    type Map_Fixed_64Fixed_64Entry_Array_Access is
      access Map_Fixed_64Fixed_64Entry_Array;
@@ -1281,7 +1793,7 @@ private
    for Map_Sfixed_32Sfixed_32Entry'Write use Write_Map_Sfixed_32Sfixed_32Entry;
 
    type Map_Sfixed_32Sfixed_32Entry_Array is
-     array (Positive range <>) of Map_Sfixed_32Sfixed_32Entry;
+     array (Positive range <>) of aliased Map_Sfixed_32Sfixed_32Entry;
 
    type Map_Sfixed_32Sfixed_32Entry_Array_Access is
      access Map_Sfixed_32Sfixed_32Entry_Array;
@@ -1312,7 +1824,7 @@ private
    for Map_Sfixed_64Sfixed_64Entry'Write use Write_Map_Sfixed_64Sfixed_64Entry;
 
    type Map_Sfixed_64Sfixed_64Entry_Array is
-     array (Positive range <>) of Map_Sfixed_64Sfixed_64Entry;
+     array (Positive range <>) of aliased Map_Sfixed_64Sfixed_64Entry;
 
    type Map_Sfixed_64Sfixed_64Entry_Array_Access is
      access Map_Sfixed_64Sfixed_64Entry_Array;
@@ -1343,7 +1855,7 @@ private
    for Map_Int_32Float_Entry'Write use Write_Map_Int_32Float_Entry;
 
    type Map_Int_32Float_Entry_Array is
-     array (Positive range <>) of Map_Int_32Float_Entry;
+     array (Positive range <>) of aliased Map_Int_32Float_Entry;
 
    type Map_Int_32Float_Entry_Array_Access is
      access Map_Int_32Float_Entry_Array;
@@ -1372,7 +1884,7 @@ private
    for Map_Int_32Double_Entry'Write use Write_Map_Int_32Double_Entry;
 
    type Map_Int_32Double_Entry_Array is
-     array (Positive range <>) of Map_Int_32Double_Entry;
+     array (Positive range <>) of aliased Map_Int_32Double_Entry;
 
    type Map_Int_32Double_Entry_Array_Access is
      access Map_Int_32Double_Entry_Array;
@@ -1401,7 +1913,7 @@ private
    for Map_Bool_Bool_Entry'Write use Write_Map_Bool_Bool_Entry;
 
    type Map_Bool_Bool_Entry_Array is
-     array (Positive range <>) of Map_Bool_Bool_Entry;
+     array (Positive range <>) of aliased Map_Bool_Bool_Entry;
 
    type Map_Bool_Bool_Entry_Array_Access is access Map_Bool_Bool_Entry_Array;
 
@@ -1429,7 +1941,7 @@ private
    for Map_String_String_Entry'Write use Write_Map_String_String_Entry;
 
    type Map_String_String_Entry_Array is
-     array (Positive range <>) of Map_String_String_Entry;
+     array (Positive range <>) of aliased Map_String_String_Entry;
 
    type Map_String_String_Entry_Array_Access is
      access Map_String_String_Entry_Array;
@@ -1459,7 +1971,7 @@ private
    for Map_String_Bytes_Entry'Write use Write_Map_String_Bytes_Entry;
 
    type Map_String_Bytes_Entry_Array is
-     array (Positive range <>) of Map_String_Bytes_Entry;
+     array (Positive range <>) of aliased Map_String_Bytes_Entry;
 
    type Map_String_Bytes_Entry_Array_Access is
      access Map_String_Bytes_Entry_Array;
@@ -1488,7 +2000,7 @@ private
    for Map_String_Nested_Message_Entry'Write use Write_Map_String_Nested_Message_Entry;
 
    type Map_String_Nested_Message_Entry_Array is
-     array (Positive range <>) of Map_String_Nested_Message_Entry;
+     array (Positive range <>) of aliased Map_String_Nested_Message_Entry;
 
    type Map_String_Nested_Message_Entry_Array_Access is
      access Map_String_Nested_Message_Entry_Array;
@@ -1519,7 +2031,7 @@ private
    for Map_String_Foreign_Message_Entry'Write use Write_Map_String_Foreign_Message_Entry;
 
    type Map_String_Foreign_Message_Entry_Array is
-     array (Positive range <>) of Map_String_Foreign_Message_Entry;
+     array (Positive range <>) of aliased Map_String_Foreign_Message_Entry;
 
    type Map_String_Foreign_Message_Entry_Array_Access is
      access Map_String_Foreign_Message_Entry_Array;
@@ -1550,7 +2062,7 @@ private
    for Map_String_Nested_Enum_Entry'Write use Write_Map_String_Nested_Enum_Entry;
 
    type Map_String_Nested_Enum_Entry_Array is
-     array (Positive range <>) of Map_String_Nested_Enum_Entry;
+     array (Positive range <>) of aliased Map_String_Nested_Enum_Entry;
 
    type Map_String_Nested_Enum_Entry_Array_Access is
      access Map_String_Nested_Enum_Entry_Array;
@@ -1581,7 +2093,7 @@ private
    for Map_String_Foreign_Enum_Entry'Write use Write_Map_String_Foreign_Enum_Entry;
 
    type Map_String_Foreign_Enum_Entry_Array is
-     array (Positive range <>) of Map_String_Foreign_Enum_Entry;
+     array (Positive range <>) of aliased Map_String_Foreign_Enum_Entry;
 
    type Map_String_Foreign_Enum_Entry_Array_Access is
      access Map_String_Foreign_Enum_Entry_Array;
@@ -1612,7 +2124,7 @@ private
    for Test_All_Types_Proto_3'Write use Write_Test_All_Types_Proto_3;
 
    type Test_All_Types_Proto_3_Array is
-     array (Positive range <>) of Test_All_Types_Proto_3;
+     array (Positive range <>) of aliased Test_All_Types_Proto_3;
 
    type Test_All_Types_Proto_3_Array_Access is
      access Test_All_Types_Proto_3_Array;
@@ -1640,7 +2152,8 @@ private
 
    for Foreign_Message'Write use Write_Foreign_Message;
 
-   type Foreign_Message_Array is array (Positive range <>) of Foreign_Message;
+   type Foreign_Message_Array is
+     array (Positive range <>) of aliased Foreign_Message;
 
    type Foreign_Message_Array_Access is access Foreign_Message_Array;
 

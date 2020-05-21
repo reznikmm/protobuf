@@ -55,6 +55,22 @@ package body Google.Protobuf.Field_Mask is
       end if;
    end Finalize;
 
+   not overriding function Get_Field_Mask_Variable_Reference
+    (Self  : aliased in out Field_Mask_Vector;
+     Index : Positive)
+      return Field_Mask_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Field_Mask_Variable_Reference;
+
+   not overriding function Get_Field_Mask_Constant_Reference
+    (Self  : aliased Field_Mask_Vector;
+     Index : Positive)
+      return Field_Mask_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Field_Mask_Constant_Reference;
+
    procedure Read_Field_Mask
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Field_Mask) is

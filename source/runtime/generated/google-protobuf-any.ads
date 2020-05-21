@@ -5,7 +5,9 @@ with League.Strings;
 
 package Google.Protobuf.Any is
 
-   type Any_Vector is tagged private;
+   type Any_Vector is tagged private
+     with Variable_Indexing => Get_Any_Variable_Reference,
+     Constant_Indexing => Get_Any_Constant_Reference;
 
    type Any is
      record
@@ -13,7 +15,7 @@ package Google.Protobuf.Any is
         Value    : League.Stream_Element_Vectors.Stream_Element_Vector;
      end record;
 
-   type Optional_Any (Is_Set : Boolean := False) is
+   type Optional_Any  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -30,6 +32,25 @@ package Google.Protobuf.Any is
    procedure Clear (Self : in out Any_Vector);
 
    procedure Append (Self : in out Any_Vector; V    : Any);
+
+   type Any_Variable_Reference  (Element : not null access Any) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Any_Variable_Reference
+    (Self  : aliased in out Any_Vector;
+     Index : Positive)
+      return Any_Variable_Reference
+     with Inline;
+
+   type Any_Constant_Reference  (Element : not null access constant Any) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Any_Constant_Reference
+    (Self  : aliased Any_Vector;
+     Index : Positive)
+      return Any_Constant_Reference
+     with Inline;
 private
 
    procedure Read_Any
@@ -44,7 +65,7 @@ private
 
    for Any'Write use Write_Any;
 
-   type Any_Array is array (Positive range <>) of Any;
+   type Any_Array is array (Positive range <>) of aliased Any;
 
    type Any_Array_Access is access Any_Array;
 

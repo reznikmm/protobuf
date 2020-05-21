@@ -50,6 +50,22 @@ package body Google.Protobuf.Any is
       end if;
    end Finalize;
 
+   not overriding function Get_Any_Variable_Reference
+    (Self  : aliased in out Any_Vector;
+     Index : Positive)
+      return Any_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Any_Variable_Reference;
+
+   not overriding function Get_Any_Constant_Reference
+    (Self  : aliased Any_Vector;
+     Index : Positive)
+      return Any_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Any_Constant_Reference;
+
    procedure Read_Any
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Any) is

@@ -271,6 +271,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Test_All_Types_Proto_2_Variable_Reference
+    (Self  : aliased in out Test_All_Types_Proto_2_Vector;
+     Index : Positive)
+      return Test_All_Types_Proto_2_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Test_All_Types_Proto_2_Variable_Reference;
+
+   not overriding function Get_Test_All_Types_Proto_2_Constant_Reference
+    (Self  : aliased Test_All_Types_Proto_2_Vector;
+     Index : Positive)
+      return Test_All_Types_Proto_2_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Test_All_Types_Proto_2_Constant_Reference;
+
    procedure Read_Test_All_Types_Proto_2
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Test_All_Types_Proto_2) is
@@ -405,9 +421,11 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Optional_Cord.Value);
             when 27 =>
-               V.Recursive_Message.Clear;
-               Test_All_Types_Proto_2_IO.Read_Vector
-                 (Stream, Key.Encoding, V.Recursive_Message);
+               if V.Recursive_Message.Length = 0 then
+                  V.Recursive_Message.Append ((others => <>));
+               end if;
+               Test_All_Types_Proto_2_IO.Read
+                 (Stream, Key.Encoding, V.Recursive_Message (1));
             when 31 =>
                PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Repeated_Int_32);
@@ -612,38 +630,56 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                Map_String_Foreign_Enum_Entry_IO.Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Foreign_Enum);
             when 111 =>
-               V.Variant := (Oneof_Uint_32_Kind, others => <>);
+               if V.Variant.Oneof_Field /= Oneof_Uint_32_Kind then
+                  V.Variant := (Oneof_Uint_32_Kind, others => <>);
+               end if;
                PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Variant.Oneof_Uint_32);
             when 112 =>
-               V.Variant := (Oneof_Nested_Message_Kind, others => <>);
+               if V.Variant.Oneof_Field /= Oneof_Nested_Message_Kind then
+                  V.Variant := (Oneof_Nested_Message_Kind, others => <>);
+               end if;
                Nested_Message_IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Nested_Message);
             when 113 =>
-               V.Variant := (Oneof_String_Kind, others => <>);
+               if V.Variant.Oneof_Field /= Oneof_String_Kind then
+                  V.Variant := (Oneof_String_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_String);
             when 114 =>
-               V.Variant := (Oneof_Bytes_Kind, others => <>);
+               if V.Variant.Oneof_Field /= Oneof_Bytes_Kind then
+                  V.Variant := (Oneof_Bytes_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Bytes);
             when 115 =>
-               V.Variant := (Oneof_Bool_Kind, others => <>);
+               if V.Variant.Oneof_Field /= Oneof_Bool_Kind then
+                  V.Variant := (Oneof_Bool_Kind, others => <>);
+               end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Variant.Oneof_Bool);
             when 116 =>
-               V.Variant := (Oneof_Uint_64_Kind, others => <>);
+               if V.Variant.Oneof_Field /= Oneof_Uint_64_Kind then
+                  V.Variant := (Oneof_Uint_64_Kind, others => <>);
+               end if;
                PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Variant.Oneof_Uint_64);
             when 117 =>
-               V.Variant := (Oneof_Float_Kind, others => <>);
+               if V.Variant.Oneof_Field /= Oneof_Float_Kind then
+                  V.Variant := (Oneof_Float_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Float);
             when 118 =>
-               V.Variant := (Oneof_Double_Kind, others => <>);
+               if V.Variant.Oneof_Field /= Oneof_Double_Kind then
+                  V.Variant := (Oneof_Double_Kind, others => <>);
+               end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Double);
             when 119 =>
-               V.Variant := (Oneof_Enum_Kind, others => <>);
+               if V.Variant.Oneof_Field /= Oneof_Enum_Kind then
+                  V.Variant := (Oneof_Enum_Kind, others => <>);
+               end if;
                Nested_Enum_IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Enum);
             when 201 =>
@@ -1174,6 +1210,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Nested_Message_Variable_Reference
+    (Self  : aliased in out Nested_Message_Vector;
+     Index : Positive)
+      return Nested_Message_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Nested_Message_Variable_Reference;
+
+   not overriding function Get_Nested_Message_Constant_Reference
+    (Self  : aliased Nested_Message_Vector;
+     Index : Positive)
+      return Nested_Message_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Nested_Message_Constant_Reference;
+
    procedure Read_Nested_Message
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Nested_Message) is
@@ -1187,9 +1239,11 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                end if;
                PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.A.Value);
             when 2 =>
-               V.Corecursive.Clear;
-               Test_All_Types_Proto_2_IO.Read_Vector
-                 (Stream, Key.Encoding, V.Corecursive);
+               if V.Corecursive.Length = 0 then
+                  V.Corecursive.Append ((others => <>));
+               end if;
+               Test_All_Types_Proto_2_IO.Read
+                 (Stream, Key.Encoding, V.Corecursive (1));
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1283,6 +1337,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Map_Int_32Int_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_32Int_32Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Int_32Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Int_32Int_32Entry_Variable_Reference;
+
+   not overriding function Get_Map_Int_32Int_32Entry_Constant_Reference
+    (Self  : aliased Map_Int_32Int_32Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Int_32Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Int_32Int_32Entry_Constant_Reference;
 
    procedure Read_Map_Int_32Int_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1391,6 +1461,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Map_Int_64Int_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_64Int_64Entry_Vector;
+     Index : Positive)
+      return Map_Int_64Int_64Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Int_64Int_64Entry_Variable_Reference;
+
+   not overriding function Get_Map_Int_64Int_64Entry_Constant_Reference
+    (Self  : aliased Map_Int_64Int_64Entry_Vector;
+     Index : Positive)
+      return Map_Int_64Int_64Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Int_64Int_64Entry_Constant_Reference;
 
    procedure Read_Map_Int_64Int_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1501,6 +1587,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_Uint_32Uint_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Uint_32Uint_32Entry_Vector;
+     Index : Positive)
+      return Map_Uint_32Uint_32Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Uint_32Uint_32Entry_Variable_Reference;
+
+   not overriding function Get_Map_Uint_32Uint_32Entry_Constant_Reference
+    (Self  : aliased Map_Uint_32Uint_32Entry_Vector;
+     Index : Positive)
+      return Map_Uint_32Uint_32Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Uint_32Uint_32Entry_Constant_Reference;
+
    procedure Read_Map_Uint_32Uint_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Uint_32Uint_32Entry) is
@@ -1609,6 +1711,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Map_Uint_64Uint_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Uint_64Uint_64Entry_Vector;
+     Index : Positive)
+      return Map_Uint_64Uint_64Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Uint_64Uint_64Entry_Variable_Reference;
+
+   not overriding function Get_Map_Uint_64Uint_64Entry_Constant_Reference
+    (Self  : aliased Map_Uint_64Uint_64Entry_Vector;
+     Index : Positive)
+      return Map_Uint_64Uint_64Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Uint_64Uint_64Entry_Constant_Reference;
 
    procedure Read_Map_Uint_64Uint_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1719,6 +1837,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_Sint_32Sint_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Sint_32Sint_32Entry_Vector;
+     Index : Positive)
+      return Map_Sint_32Sint_32Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Sint_32Sint_32Entry_Variable_Reference;
+
+   not overriding function Get_Map_Sint_32Sint_32Entry_Constant_Reference
+    (Self  : aliased Map_Sint_32Sint_32Entry_Vector;
+     Index : Positive)
+      return Map_Sint_32Sint_32Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Sint_32Sint_32Entry_Constant_Reference;
+
    procedure Read_Map_Sint_32Sint_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Sint_32Sint_32Entry) is
@@ -1827,6 +1961,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Map_Sint_64Sint_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Sint_64Sint_64Entry_Vector;
+     Index : Positive)
+      return Map_Sint_64Sint_64Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Sint_64Sint_64Entry_Variable_Reference;
+
+   not overriding function Get_Map_Sint_64Sint_64Entry_Constant_Reference
+    (Self  : aliased Map_Sint_64Sint_64Entry_Vector;
+     Index : Positive)
+      return Map_Sint_64Sint_64Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Sint_64Sint_64Entry_Constant_Reference;
 
    procedure Read_Map_Sint_64Sint_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1937,6 +2087,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_Fixed_32Fixed_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Fixed_32Fixed_32Entry_Vector;
+     Index : Positive)
+      return Map_Fixed_32Fixed_32Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Fixed_32Fixed_32Entry_Variable_Reference;
+
+   not overriding function Get_Map_Fixed_32Fixed_32Entry_Constant_Reference
+    (Self  : aliased Map_Fixed_32Fixed_32Entry_Vector;
+     Index : Positive)
+      return Map_Fixed_32Fixed_32Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Fixed_32Fixed_32Entry_Constant_Reference;
+
    procedure Read_Map_Fixed_32Fixed_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Fixed_32Fixed_32Entry) is
@@ -2045,6 +2211,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Map_Fixed_64Fixed_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Fixed_64Fixed_64Entry_Vector;
+     Index : Positive)
+      return Map_Fixed_64Fixed_64Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Fixed_64Fixed_64Entry_Variable_Reference;
+
+   not overriding function Get_Map_Fixed_64Fixed_64Entry_Constant_Reference
+    (Self  : aliased Map_Fixed_64Fixed_64Entry_Vector;
+     Index : Positive)
+      return Map_Fixed_64Fixed_64Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Fixed_64Fixed_64Entry_Constant_Reference;
 
    procedure Read_Map_Fixed_64Fixed_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2160,6 +2342,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_Sfixed_32Sfixed_32Entry_Variable_Reference
+    (Self  : aliased in out Map_Sfixed_32Sfixed_32Entry_Vector;
+     Index : Positive)
+      return Map_Sfixed_32Sfixed_32Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Sfixed_32Sfixed_32Entry_Variable_Reference;
+
+   not overriding function Get_Map_Sfixed_32Sfixed_32Entry_Constant_Reference
+    (Self  : aliased Map_Sfixed_32Sfixed_32Entry_Vector;
+     Index : Positive)
+      return Map_Sfixed_32Sfixed_32Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Sfixed_32Sfixed_32Entry_Constant_Reference;
+
    procedure Read_Map_Sfixed_32Sfixed_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Sfixed_32Sfixed_32Entry) is
@@ -2274,6 +2472,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_Sfixed_64Sfixed_64Entry_Variable_Reference
+    (Self  : aliased in out Map_Sfixed_64Sfixed_64Entry_Vector;
+     Index : Positive)
+      return Map_Sfixed_64Sfixed_64Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Sfixed_64Sfixed_64Entry_Variable_Reference;
+
+   not overriding function Get_Map_Sfixed_64Sfixed_64Entry_Constant_Reference
+    (Self  : aliased Map_Sfixed_64Sfixed_64Entry_Vector;
+     Index : Positive)
+      return Map_Sfixed_64Sfixed_64Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Sfixed_64Sfixed_64Entry_Constant_Reference;
+
    procedure Read_Map_Sfixed_64Sfixed_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Sfixed_64Sfixed_64Entry) is
@@ -2381,6 +2595,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Map_Int_32Float_Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_32Float_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Float_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Int_32Float_Entry_Variable_Reference;
+
+   not overriding function Get_Map_Int_32Float_Entry_Constant_Reference
+    (Self  : aliased Map_Int_32Float_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Float_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Int_32Float_Entry_Constant_Reference;
 
    procedure Read_Map_Int_32Float_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2490,6 +2720,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_Int_32Double_Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_32Double_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Double_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Int_32Double_Entry_Variable_Reference;
+
+   not overriding function Get_Map_Int_32Double_Entry_Constant_Reference
+    (Self  : aliased Map_Int_32Double_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Double_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Int_32Double_Entry_Constant_Reference;
+
    procedure Read_Map_Int_32Double_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Int_32Double_Entry) is
@@ -2596,6 +2842,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Map_Bool_Bool_Entry_Variable_Reference
+    (Self  : aliased in out Map_Bool_Bool_Entry_Vector;
+     Index : Positive)
+      return Map_Bool_Bool_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Bool_Bool_Entry_Variable_Reference;
+
+   not overriding function Get_Map_Bool_Bool_Entry_Constant_Reference
+    (Self  : aliased Map_Bool_Bool_Entry_Vector;
+     Index : Positive)
+      return Map_Bool_Bool_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_Bool_Bool_Entry_Constant_Reference;
 
    procedure Read_Map_Bool_Bool_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2706,6 +2968,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_String_String_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_String_Entry_Vector;
+     Index : Positive)
+      return Map_String_String_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_String_Entry_Variable_Reference;
+
+   not overriding function Get_Map_String_String_Entry_Constant_Reference
+    (Self  : aliased Map_String_String_Entry_Vector;
+     Index : Positive)
+      return Map_String_String_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_String_Entry_Constant_Reference;
+
    procedure Read_Map_String_String_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_String_Entry) is
@@ -2813,6 +3091,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Map_String_Bytes_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Bytes_Entry_Vector;
+     Index : Positive)
+      return Map_String_Bytes_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Bytes_Entry_Variable_Reference;
+
+   not overriding function Get_Map_String_Bytes_Entry_Constant_Reference
+    (Self  : aliased Map_String_Bytes_Entry_Vector;
+     Index : Positive)
+      return Map_String_Bytes_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Bytes_Entry_Constant_Reference;
 
    procedure Read_Map_String_Bytes_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2928,6 +3222,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Map_String_Nested_Message_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Nested_Message_Entry_Vector;
+     Index : Positive)
+      return Map_String_Nested_Message_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Nested_Message_Entry_Variable_Reference;
+
+   not overriding function Get_Map_String_Nested_Message_Entry_Constant_Reference
+    (Self  : aliased Map_String_Nested_Message_Entry_Vector;
+     Index : Positive)
+      return Map_String_Nested_Message_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Nested_Message_Entry_Constant_Reference;
 
    procedure Read_Map_String_Nested_Message_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -3047,6 +3357,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_String_Foreign_Message_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Foreign_Message_Entry_Vector;
+     Index : Positive)
+      return Map_String_Foreign_Message_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Foreign_Message_Entry_Variable_Reference;
+
+   not overriding function Get_Map_String_Foreign_Message_Entry_Constant_Reference
+    (Self  : aliased Map_String_Foreign_Message_Entry_Vector;
+     Index : Positive)
+      return Map_String_Foreign_Message_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Foreign_Message_Entry_Constant_Reference;
+
    procedure Read_Map_String_Foreign_Message_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_Foreign_Message_Entry) is
@@ -3165,6 +3491,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_String_Nested_Enum_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Nested_Enum_Entry_Vector;
+     Index : Positive)
+      return Map_String_Nested_Enum_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Nested_Enum_Entry_Variable_Reference;
+
+   not overriding function Get_Map_String_Nested_Enum_Entry_Constant_Reference
+    (Self  : aliased Map_String_Nested_Enum_Entry_Vector;
+     Index : Positive)
+      return Map_String_Nested_Enum_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Nested_Enum_Entry_Constant_Reference;
+
    procedure Read_Map_String_Nested_Enum_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_Nested_Enum_Entry) is
@@ -3280,6 +3622,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Map_String_Foreign_Enum_Entry_Variable_Reference
+    (Self  : aliased in out Map_String_Foreign_Enum_Entry_Vector;
+     Index : Positive)
+      return Map_String_Foreign_Enum_Entry_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Foreign_Enum_Entry_Variable_Reference;
+
+   not overriding function Get_Map_String_Foreign_Enum_Entry_Constant_Reference
+    (Self  : aliased Map_String_Foreign_Enum_Entry_Vector;
+     Index : Positive)
+      return Map_String_Foreign_Enum_Entry_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Map_String_Foreign_Enum_Entry_Constant_Reference;
+
    procedure Read_Map_String_Foreign_Enum_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_Foreign_Enum_Entry) is
@@ -3379,6 +3737,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Data_Variable_Reference
+    (Self  : aliased in out Data_Vector;
+     Index : Positive)
+      return Data_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Data_Variable_Reference;
+
+   not overriding function Get_Data_Constant_Reference
+    (Self  : aliased Data_Vector;
+     Index : Positive)
+      return Data_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Data_Constant_Reference;
 
    procedure Read_Data
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -3489,6 +3863,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Message_Set_Correct_Variable_Reference
+    (Self  : aliased in out Message_Set_Correct_Vector;
+     Index : Positive)
+      return Message_Set_Correct_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Message_Set_Correct_Variable_Reference;
+
+   not overriding function Get_Message_Set_Correct_Constant_Reference
+    (Self  : aliased Message_Set_Correct_Vector;
+     Index : Positive)
+      return Message_Set_Correct_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Message_Set_Correct_Constant_Reference;
+
    procedure Read_Message_Set_Correct
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Message_Set_Correct) is
@@ -3587,6 +3977,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Message_Set_Correct_Extension_1_Variable_Reference
+    (Self  : aliased in out Message_Set_Correct_Extension_1_Vector;
+     Index : Positive)
+      return Message_Set_Correct_Extension_1_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Message_Set_Correct_Extension_1_Variable_Reference;
+
+   not overriding function Get_Message_Set_Correct_Extension_1_Constant_Reference
+    (Self  : aliased Message_Set_Correct_Extension_1_Vector;
+     Index : Positive)
+      return Message_Set_Correct_Extension_1_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Message_Set_Correct_Extension_1_Constant_Reference;
 
    procedure Read_Message_Set_Correct_Extension_1
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -3695,6 +4101,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Message_Set_Correct_Extension_2_Variable_Reference
+    (Self  : aliased in out Message_Set_Correct_Extension_2_Vector;
+     Index : Positive)
+      return Message_Set_Correct_Extension_2_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Message_Set_Correct_Extension_2_Variable_Reference;
+
+   not overriding function Get_Message_Set_Correct_Extension_2_Constant_Reference
+    (Self  : aliased Message_Set_Correct_Extension_2_Vector;
+     Index : Positive)
+      return Message_Set_Correct_Extension_2_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Message_Set_Correct_Extension_2_Constant_Reference;
+
    procedure Read_Message_Set_Correct_Extension_2
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Message_Set_Correct_Extension_2) is
@@ -3796,6 +4218,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       end if;
    end Finalize;
 
+   not overriding function Get_Foreign_Message_Proto_2_Variable_Reference
+    (Self  : aliased in out Foreign_Message_Proto_2_Vector;
+     Index : Positive)
+      return Foreign_Message_Proto_2_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Foreign_Message_Proto_2_Variable_Reference;
+
+   not overriding function Get_Foreign_Message_Proto_2_Constant_Reference
+    (Self  : aliased Foreign_Message_Proto_2_Vector;
+     Index : Positive)
+      return Foreign_Message_Proto_2_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Foreign_Message_Proto_2_Constant_Reference;
+
    procedure Read_Foreign_Message_Proto_2
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Foreign_Message_Proto_2) is
@@ -3896,6 +4334,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Unknown_To_Test_All_Types_Variable_Reference
+    (Self  : aliased in out Unknown_To_Test_All_Types_Vector;
+     Index : Positive)
+      return Unknown_To_Test_All_Types_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Unknown_To_Test_All_Types_Variable_Reference;
+
+   not overriding function Get_Unknown_To_Test_All_Types_Constant_Reference
+    (Self  : aliased Unknown_To_Test_All_Types_Vector;
+     Index : Positive)
+      return Unknown_To_Test_All_Types_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Unknown_To_Test_All_Types_Constant_Reference;
 
    procedure Read_Unknown_To_Test_All_Types
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -4040,6 +4494,22 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          Free (Self.Data);
       end if;
    end Finalize;
+
+   not overriding function Get_Optional_Group_Variable_Reference
+    (Self  : aliased in out Optional_Group_Vector;
+     Index : Positive)
+      return Optional_Group_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Optional_Group_Variable_Reference;
+
+   not overriding function Get_Optional_Group_Constant_Reference
+    (Self  : aliased Optional_Group_Vector;
+     Index : Positive)
+      return Optional_Group_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Optional_Group_Constant_Reference;
 
    procedure Read_Optional_Group
     (Stream : access Ada.Streams.Root_Stream_Type'Class;

@@ -29,20 +29,28 @@ package Conformance.Conformance is
 
    package Test_Category_Vectors is new PB_Support.Vectors (Test_Category);
 
-   type Failure_Set_Vector is tagged private;
+   type Failure_Set_Vector is tagged private
+     with Variable_Indexing => Get_Failure_Set_Variable_Reference,
+     Constant_Indexing => Get_Failure_Set_Constant_Reference;
 
-   type Conformance_Request_Vector is tagged private;
+   type Conformance_Request_Vector is tagged private
+     with Variable_Indexing => Get_Conformance_Request_Variable_Reference,
+     Constant_Indexing => Get_Conformance_Request_Constant_Reference;
 
-   type Conformance_Response_Vector is tagged private;
+   type Conformance_Response_Vector is tagged private
+     with Variable_Indexing => Get_Conformance_Response_Variable_Reference,
+     Constant_Indexing => Get_Conformance_Response_Constant_Reference;
 
-   type Jspb_Encoding_Config_Vector is tagged private;
+   type Jspb_Encoding_Config_Vector is tagged private
+     with Variable_Indexing => Get_Jspb_Encoding_Config_Variable_Reference,
+     Constant_Indexing => Get_Jspb_Encoding_Config_Constant_Reference;
 
    type Failure_Set is
      record
         Failure : League.String_Vectors.Universal_String_Vector;
      end record;
 
-   type Optional_Failure_Set (Is_Set : Boolean := False) is
+   type Optional_Failure_Set  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -63,6 +71,26 @@ package Conformance.Conformance is
 
    procedure Append (Self : in out Failure_Set_Vector; V    : Failure_Set);
 
+   type Failure_Set_Variable_Reference
+     (Element : not null access Failure_Set) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Failure_Set_Variable_Reference
+    (Self  : aliased in out Failure_Set_Vector;
+     Index : Positive)
+      return Failure_Set_Variable_Reference
+     with Inline;
+
+   type Failure_Set_Constant_Reference
+     (Element : not null access constant Failure_Set) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Failure_Set_Constant_Reference
+    (Self  : aliased Failure_Set_Vector;
+     Index : Positive)
+      return Failure_Set_Constant_Reference
+     with Inline;
+
    type Conformance_Response_Variant_Kind is
      (Result_Not_Set,
       Parse_Error_Kind,
@@ -74,7 +102,8 @@ package Conformance.Conformance is
       Jspb_Payload_Kind,
       Text_Payload_Kind);
 
-   type Conformance_Response_Variant (Result : Conformance_Response_Variant_Kind := Result_Not_Set) is
+   type Conformance_Response_Variant
+     (Result : Conformance_Response_Variant_Kind := Result_Not_Set) is
      record
         case Result is
            when Result_Not_Set =>
@@ -104,7 +133,7 @@ package Conformance.Conformance is
         Variant : Conformance_Response_Variant;
      end record;
 
-   type Optional_Conformance_Response (Is_Set : Boolean := False) is
+   type Optional_Conformance_Response  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -127,12 +156,32 @@ package Conformance.Conformance is
     (Self : in out Conformance_Response_Vector;
      V    : Conformance_Response);
 
+   type Conformance_Response_Variable_Reference
+     (Element : not null access Conformance_Response) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Conformance_Response_Variable_Reference
+    (Self  : aliased in out Conformance_Response_Vector;
+     Index : Positive)
+      return Conformance_Response_Variable_Reference
+     with Inline;
+
+   type Conformance_Response_Constant_Reference
+     (Element : not null access constant Conformance_Response) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Conformance_Response_Constant_Reference
+    (Self  : aliased Conformance_Response_Vector;
+     Index : Positive)
+      return Conformance_Response_Constant_Reference
+     with Inline;
+
    type Jspb_Encoding_Config is
      record
         Use_Jspb_Array_Any_Format : Boolean := False;
      end record;
 
-   type Optional_Jspb_Encoding_Config (Is_Set : Boolean := False) is
+   type Optional_Jspb_Encoding_Config  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -155,6 +204,26 @@ package Conformance.Conformance is
     (Self : in out Jspb_Encoding_Config_Vector;
      V    : Jspb_Encoding_Config);
 
+   type Jspb_Encoding_Config_Variable_Reference
+     (Element : not null access Jspb_Encoding_Config) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Jspb_Encoding_Config_Variable_Reference
+    (Self  : aliased in out Jspb_Encoding_Config_Vector;
+     Index : Positive)
+      return Jspb_Encoding_Config_Variable_Reference
+     with Inline;
+
+   type Jspb_Encoding_Config_Constant_Reference
+     (Element : not null access constant Jspb_Encoding_Config) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Jspb_Encoding_Config_Constant_Reference
+    (Self  : aliased Jspb_Encoding_Config_Vector;
+     Index : Positive)
+      return Jspb_Encoding_Config_Constant_Reference
+     with Inline;
+
    type Conformance_Request_Variant_Kind is
      (Payload_Not_Set,
       Protobuf_Payload_Kind,
@@ -162,7 +231,8 @@ package Conformance.Conformance is
       Jspb_Payload_Kind,
       Text_Payload_Kind);
 
-   type Conformance_Request_Variant (Payload : Conformance_Request_Variant_Kind := Payload_Not_Set) is
+   type Conformance_Request_Variant
+     (Payload : Conformance_Request_Variant_Kind := Payload_Not_Set) is
      record
         case Payload is
            when Payload_Not_Set =>
@@ -191,7 +261,7 @@ package Conformance.Conformance is
         Variant                 : Conformance_Request_Variant;
      end record;
 
-   type Optional_Conformance_Request (Is_Set : Boolean := False) is
+   type Optional_Conformance_Request  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
@@ -213,6 +283,26 @@ package Conformance.Conformance is
    procedure Append
     (Self : in out Conformance_Request_Vector;
      V    : Conformance_Request);
+
+   type Conformance_Request_Variable_Reference
+     (Element : not null access Conformance_Request) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Conformance_Request_Variable_Reference
+    (Self  : aliased in out Conformance_Request_Vector;
+     Index : Positive)
+      return Conformance_Request_Variable_Reference
+     with Inline;
+
+   type Conformance_Request_Constant_Reference
+     (Element : not null access constant Conformance_Request) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Conformance_Request_Constant_Reference
+    (Self  : aliased Conformance_Request_Vector;
+     Index : Positive)
+      return Conformance_Request_Constant_Reference
+     with Inline;
 private
 
    procedure Read_Failure_Set
@@ -227,7 +317,7 @@ private
 
    for Failure_Set'Write use Write_Failure_Set;
 
-   type Failure_Set_Array is array (Positive range <>) of Failure_Set;
+   type Failure_Set_Array is array (Positive range <>) of aliased Failure_Set;
 
    type Failure_Set_Array_Access is access Failure_Set_Array;
 
@@ -255,7 +345,7 @@ private
    for Conformance_Request'Write use Write_Conformance_Request;
 
    type Conformance_Request_Array is
-     array (Positive range <>) of Conformance_Request;
+     array (Positive range <>) of aliased Conformance_Request;
 
    type Conformance_Request_Array_Access is access Conformance_Request_Array;
 
@@ -283,7 +373,7 @@ private
    for Conformance_Response'Write use Write_Conformance_Response;
 
    type Conformance_Response_Array is
-     array (Positive range <>) of Conformance_Response;
+     array (Positive range <>) of aliased Conformance_Response;
 
    type Conformance_Response_Array_Access is access Conformance_Response_Array;
 
@@ -311,7 +401,7 @@ private
    for Jspb_Encoding_Config'Write use Write_Jspb_Encoding_Config;
 
    type Jspb_Encoding_Config_Array is
-     array (Positive range <>) of Jspb_Encoding_Config;
+     array (Positive range <>) of aliased Jspb_Encoding_Config;
 
    type Jspb_Encoding_Config_Array_Access is access Jspb_Encoding_Config_Array;
 
