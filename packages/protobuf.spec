@@ -65,7 +65,7 @@ make %{?_smp_mflags} GPRBUILD_FLAGS="%Gnatmake_optflags" check
 
 %install
 rm -rf %{buildroot}
-sed -i -e /Artifacts/s@bin@%{buildroot}%{_bindir}@ gnat/compiler.gpr
+sed -i -e /Artifacts/s@bin@%{buildroot}%{_bindir}@ gnat/protoc_gen_ada.gpr
 make install DESTDIR=%{buildroot} LIBDIR=%{_libdir} PREFIX=%{_prefix} GPRDIR=%{_gprdir} BINDIR=%{_bindir}
 
 %post     -p /sbin/ldconfig
@@ -88,7 +88,7 @@ make install DESTDIR=%{buildroot} LIBDIR=%{_libdir} PREFIX=%{_prefix} GPRDIR=%{_
 %{_includedir}/%{name}
 %{_gprdir}/protobuf_runtime.gpr
 %{_gprdir}/manifests/protobuf_runtime
-%{_gprdir}/manifests/compiler
+%{_gprdir}/manifests/protoc_gen_ada
 
 
 %changelog

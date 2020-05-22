@@ -16,14 +16,14 @@ GPRINSTALL_FLAGS = --prefix=$(PREFIX) --sources-subdir=$(INSTALL_INCLUDE_DIR)\
 
 all:
 	gprbuild $(GPRBUILD_FLAGS) -P gnat/protobuf_runtime.gpr
-	gprbuild $(GPRBUILD_FLAGS) -P gnat/compiler.gpr
+	gprbuild $(GPRBUILD_FLAGS) -P gnat/protoc_gen_ada.gpr
 
 install:
 	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protobuf_runtime.gpr
-	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/compiler.gpr --mode=usage
+	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protoc_gen_ada.gpr --mode=usage
 
 clean:
-	gprclean -q -P gnat/compiler.gpr
+	gprclean -q -P gnat/protoc_gen_ada.gpr
 	gprclean -q -P gnat/protobuf_runtime.gpr
 
 check:
