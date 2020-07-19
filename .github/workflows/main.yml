@@ -16,7 +16,7 @@ jobs:
         with:
           path: google_cache
           key: ${{ runner.os }}-google-fc31
-      - uses: reznikmm/fedora-ada-action@v1
+      - uses: reznikmm/fedora-ada-action@v2
         with:
           spec: protobuf/packages/protobuf.spec
       - uses: reznikmm/upload-bintray-docker-action@v2
@@ -24,7 +24,7 @@ jobs:
           username: reznikmm
           repository: matreshka
           package: protobuf
-          version: head-fc31
+          version: head-fc32
           sourcePath: x86_64/*
           override: 1
           apiKey: ${{secrets.BINTRAY_API_KEY}}
