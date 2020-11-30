@@ -12,7 +12,7 @@ The prefered installation method is compiling from sources. Just checkout reposi
 make all install PREFIX=/path/to/install
 ```
 
-There are also (a precompiled RPM for Fedora Linux)[https://bintray.com/reznikmm/matreshka/protobuf/].
+There are also [a precompiled RPM for Fedora Linux](https://bintray.com/reznikmm/matreshka/protobuf/).
 
 ### Dependencies
 It depends on
