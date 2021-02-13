@@ -19,17 +19,6 @@ jobs:
         with:
           path: google_cache
           key: ${{ runner.os }}-google-fc33
-      - uses: reznikmm/fedora-ada-action@v3
+      - uses: reznikmm/fedora-ada-action@master
         with:
           spec: protobuf/packages/protobuf.spec
-      - name: Upload tar-ball to Bintray
-        uses: reznikmm/upload-bintray-action@v3
-        with:
-          subject: reznikmm
-          repository: matreshka
-          package: protobuf
-          version: head-fc33
-          sourcePath: x86_64/*
-          override: 1
-          username: reznikmm
-          apiKey: ${{secrets.BINTRAY_API_KEY}}

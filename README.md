@@ -1,7 +1,7 @@
 # protobuf
 
 [![Build Status](https://github.com/reznikmm/protobuf/workflows/Build/badge.svg)](https://github.com/reznikmm/protobuf/actions)
-[![Download](https://api.bintray.com/packages/reznikmm/matreshka/protobuf/images/download.svg) ](https://bintray.com/reznikmm/matreshka/protobuf/_latestVersion)
+[![Copr build status](https://copr.fedorainfracloud.org/coprs/reznik/ada/package/ada-protobuf/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/reznik/ada)
 
 > A Google Protocol Buffers implementation in Ada
 
