@@ -14,23 +14,23 @@ of the `.proto` file and a name from a `package` directive, if any.
 
 If a `.proto` file contains a package declaration, then it will be used as
 a prefix of the corresponding Ada package.
-For example, given the `package` declaration in `xxx.proto` file: 
+For example, given the `package` declaration in `xxx.proto` file:
 
 ```protobuf
 package foo.bar;
 ```
 
-All declarations in the file will reside in the `Foo.Bar.Xxx` package. 
+All declarations in the file will reside in the `Foo.Bar.Xxx` package.
 
 ## Messages
 
-Given a simple message declaration: 
+Given a simple message declaration:
 ```protobuf
 message Blah {}
 ```
 
 The protocol buffer compiler generates a record type called `Blah`
-and corresponding `'Read/'Write` aspects to serialization to/from
+and corresponding `'Read/'Write` aspects to serialize to/from
 `Ada.Streams.Root_Stream_Type`. For parsing from and serializing
 to a binary stream use corresponding Ada streaming:
 
@@ -46,7 +46,7 @@ end;
 ```
 
 Also, for each message declaration the compiler creates corresponding
-_vector_ and _optiional_ types. Optional type looks like this:
+_vector_ and _optional_ types. Optional type looks like this:
 
 ```ada
    type Optional_Blah (Is_Set : Boolean := False) is
@@ -59,35 +59,35 @@ _vector_ and _optiional_ types. Optional type looks like this:
         end case;
      end record;
 ```
-A user can check if optional field is present by checking its discriminant.
+A user can check if an optional field is present by checking its discriminant.
 
 ```ada
 procedure Process (V : in out Optional_Blah) is
 begin
-   if V.Is_Set then  --  Check if the field present
+   if V.Is_Set then  --  Check if the field is present
       Print (V.Value);  --  Access the field value
       V := (Is_Set => False);  --  Clear the field
    else
       V := (Is_Set => True, Value => 123);  --  Assign
-   end if; 
+   end if;
 end Process;
 ```
-Vector type a bit more complex. To allow indexing on the vector compiler
-generates Ada 2012 `Variable_Indexing`, `Constant_Indexing`
+Vector type a bit more complex. To allow indexing on the vector,
+the compiler generates Ada 2012 `Variable_Indexing`, `Constant_Indexing`
 aspects and all related constructs.
-These are mostly meaningless for the user, but makes Ada compiler happy.
-It aliso generate `Length`, `Clear` and `Append` routines.
+These are mostly meaningless for the user, but make the Ada compiler happy.
+It also generates `Length`, `Clear` and `Append` routines.
 
 ```ada
    type Blah_Vector is tagged private
      with
        Variable_Indexing => Get_Blah_Variable_Reference,
        Constant_Indexing => Get_Blah_Constant_Reference;
-   
+
    type Blah_Variable_Reference
      (Element : not null access Blah) is null record
        with Implicit_Dereference => Element;
-   
+
    function Get_Blah_Variable_Reference
     (Self  : aliased in out Blah_Vector;
      Index : Positive) return Blah_Variable_Reference
@@ -97,7 +97,7 @@ It aliso generate `Length`, `Clear` and `Append` routines.
      (Element : not null access constant Blah) is
        null record
          with Implicit_Dereference => Element;
-   
+
    function Get_Blah_Constant_Reference
     (Self  : aliased in out Blah_Vector;
      Index : Positive) return Blah_Constant_Reference
@@ -128,7 +128,7 @@ end Process;
 ## Nested Types
 A message can be declared inside another message. For example:
 `message Foo { message Bar { } }`. In this case, the compiler generates
-two types: `Foo` and `Bar`. Compiler can change declaration order to
+two types: `Foo` and `Bar`. The compiler can change declaration order to
 follow forward-declare restriction.
 
 ## Fields
@@ -195,7 +195,7 @@ For this field definitions:
 Bar foo = 1;
 ```
 
-The compiler will generate the following component: 
+The compiler will generate the following component:
 ```ada
 type Blah is record
    Foo : Bar := BAR_VALUE;
@@ -219,8 +219,8 @@ required Bar foo2 = 1;
 The compiler will generate the following accessor components:
 ```ada
 type Blah is record
-  Foo_1 : Bar;
-  Foo_2 : Optional_Bar;
+  Foo_1 : Optional_Bar;
+  Foo_2 : Bar;
 end record;
 ```
 
@@ -229,13 +229,13 @@ With such representation we can't have mutual dependent message declarations,
 because this is not allowed in Ada. But if the field is repeated then all
 works fine, because a vector type breaks circular dependency.
 To give at least a minimum support for such case the compiler tries to
-break a circle by replacing a singular message fiels with a repeated one.
-User should ensure that the vector contains required number of elements
-(exactly one for `required` field and zero-or-one for `optional` field).
+break a circle by replacing a singular message field with a repeated one.
+User should ensure that the vector contains the required number of elements
+(exactly one for a `required` field and zero-or-one for an `optional` field).
 
 ### Repeated Fields of Predefined Types
-For repeated fields of predefined types the compiler uses corresponding
-vector type from a package instantiation provided by support library,
+For repeated fields of predefined types the compiler uses the corresponding
+vector type from a package instantiation provided by the support library,
 like this:
 
 ```ada
@@ -259,9 +259,9 @@ a vector type declared with the message type.
 
 ### Oneof Fields
 For now we support only single `Oneof` construction per message.
-Compiler generates a component with name `Variant` of a corresponding type.
-This component has a discriminant with name of `Oneof`.
-There is a single component for each disciminant value.
+The compiler generates a component with name `Variant` of a corresponding type.
+This component has a discriminant with the name `Oneof`.
+There is a single component for each discriminant value.
 
 ### Map Fields
 There is no special support for map fields for now.
@@ -270,9 +270,9 @@ There is no special support for map fields for now.
 `Any` type isn't provided yet.
 
 ## Oneof
-Currently we support only single `Oneof` construction per message.
+Currently we support only a single `Oneof` construction per message.
 For a such construction the compiler generates an enumeration type and
-a descriminated record type. Inside a message it generates one component
+a discriminated record type. Inside a message it generates one component
 with name `Variant`. For example:
 ```protobuf
 message Value {
@@ -286,7 +286,7 @@ message Value {
 }
 ```
 
-Generated code looks like:
+The generated code looks like:
 ```ada
 type Value_Variant_Kind is
   (Kind_Not_Set,
@@ -311,7 +311,7 @@ end record;
 ```
 
 A dedicated enumeration literal `<oneof_name>_Not_Set` represents a case
-when none of filed is set.
+when none of the fields is set.
 
 ## Enumerations
 Given an enum definition like:
@@ -324,7 +324,7 @@ enum Foo {
 }
 ```
 
-The protocol buffer compiler will generate a Ada enumeration type
+The protocol buffer compiler will generate an Ada enumeration type
 called `Foo` with the same set of values. It also generates a
 corresponding vector instantiation:
 ```ada

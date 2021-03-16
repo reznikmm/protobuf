@@ -7,18 +7,18 @@
 
 ## Install
 
-The prefered installation method is compiling from sources. Just checkout repository and run:
+The preferred installation method is compiling from sources. Just checkout repository and run:
 ```
 make all install PREFIX=/path/to/install
 ```
 
-There are also [a precompiled RPM for Fedora Linux](https://bintray.com/reznikmm/matreshka/protobuf/).
+There is also [a precompiled RPM for Fedora Linux](https://bintray.com/reznikmm/matreshka/protobuf/).
 
 ### Dependencies
 It depends on
 * [matreshka](https://forge.ada-ru.org/matreshka) - the Matreshka framework.
 * [ada_pretty](https://github.com/reznikmm/ada-pretty) - an Ada pretty printing library.
-* [protoc](https://github.com/protocolbuffers/protobuf)` - the protobuf compiler.
+* [protoc](https://github.com/protocolbuffers/protobuf) - the protobuf compiler.
 
 ## Usage
 Launch `protoc` with `--ada_out=<dir>` option having `protoc-gen-ada` in
@@ -45,4 +45,3 @@ or submit PRs.
 ## License
 
 [MIT](LICENSE) © Maxim Reznik
-
