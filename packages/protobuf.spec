@@ -56,7 +56,8 @@ Requires:   fedora-gnat-project-common  >= 2
 %setup -q -n protobuf
 
 %build
-make  %{?_smp_mflags} GPRBUILD_FLAGS="%Gnatmake_optflags"
+# This package triggers a fault in the Ada compiler when -gnatn is enabled (gcc 11 fc34).
+make  %{?_smp_mflags} GPRBUILD_FLAGS="`echo %Gnatmake_optflags|sed -e s/-gnatn.//`"
 
 %check
 ## find libs without RPATH, Fedora specific
