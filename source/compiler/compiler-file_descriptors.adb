@@ -286,11 +286,16 @@ package body Compiler.File_Descriptors is
       return League.Strings.Universal_String
    is
       File_Name : constant String := Self.Name.Value.To_UTF_8_String;
-      Base_Name : constant String := Ada.Directories.Base_Name (File_Name);
+      Base_Name : constant League.Strings.Universal_String :=
+        League.Strings.From_UTF_8_String
+          (Ada.Directories.Base_Name (File_Name));
+      --  Replace every dash ('-') with underscore ('_') to make Base_Name
+      --  look like an identifier.
+      Fixed : constant League.Strings.Universal_String :=
+        Base_Name.Split ('-', League.Strings.Skip_Empty).Join ("_");
       PB_Pkg    : League.Strings.Universal_String;
       Result    : League.Strings.Universal_String :=
-        Compiler.Context.To_Ada_Name
-          (League.Strings.From_UTF_8_String (Base_Name));
+        Compiler.Context.To_Ada_Name (Fixed);
    begin
       if Self.PB_Package.Is_Set then
          PB_Pkg := Self.PB_Package.Value;
