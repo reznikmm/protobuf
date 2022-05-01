@@ -42,6 +42,11 @@ Feel free to dive in!
 [Open an issue](https://github.com/reznikmm/protobuf/issues/new)
 or submit PRs.
 
+## Support
+
+If you find this open source project useful, you may provide me a small support
+on [Patreon](https://www.patreon.com/ada_ru).
+
 ## License
 
 [MIT](LICENSE) © Maxim Reznik
