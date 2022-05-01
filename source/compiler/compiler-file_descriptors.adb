@@ -229,6 +229,10 @@ package body Compiler.File_Descriptors is
          Compiler.Descriptors.Dependency (Self.Message_Type (J), Set);
       end loop;
 
+      if Self.Enum_Type.Length > 0 then
+         Set.Include (+"PB_Support.Vectors");
+      end if;
+
       for J of Set loop
          if J /= My_Name then
             Unit_Name := F.New_Selected_Name (J);

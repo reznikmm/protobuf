@@ -63,15 +63,17 @@ begin
             Result.File.Append (Item);
          end;
 
-         declare
-            Item : Google.Protobuf.Compiler.Plugin.File;
-         begin
-            Item.Name := (True, Base & ".adb");
-            Item.Content :=
-              (Is_Set => True,
-               Value  => Compiler.File_Descriptors.Body_Text (File));
-            Result.File.Append (Item);
-         end;
+         if File.Message_Type.Length > 0 then
+            declare
+               Item : Google.Protobuf.Compiler.Plugin.File;
+            begin
+               Item.Name := (True, Base & ".adb");
+               Item.Content :=
+                 (Is_Set => True,
+                  Value  => Compiler.File_Descriptors.Body_Text (File));
+               Result.File.Append (Item);
+            end;
+         end if;
       end;
    end loop;
 
