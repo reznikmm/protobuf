@@ -33,5 +33,7 @@ check:
 	  protoc --ada_out=source/runtime/generated \
 	   /usr/include/google/protobuf/$$J.proto; done
 	gprbuild -P gnat/protobuf_runtime.gpr
+	@echo Run regression tests
+	./testsuite/run_all.sh
 	@echo Run conformance test if any
 	./conformance.sh $(PROTOBUF_DIR)

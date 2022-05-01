@@ -1,0 +1,10 @@
+//  Check proto without any message. See #11 issue
+syntax = "proto3";
+
+package Test2;
+
+enum Enum_T
+{
+  ENUM1 = 0;
+  ENUM2 = 1;
+}
