@@ -31,6 +31,8 @@ with League.Strings.Hash;
 with Google.Protobuf.Descriptor;
 with Google.Protobuf.Compiler.Plugin;
 
+with PB_Support.Universal_String_Vectors;
+
 package Compiler.Context is
 
    Is_Proto_2 : Boolean := True;
@@ -57,7 +59,7 @@ package Compiler.Context is
    --  Join package name (if any) and type name into selected name.
 
    function Relative_Name
-     (Full_Name : League.Strings.Universal_String;
+     (Full_Name       : League.Strings.Universal_String;
       Current_Package : League.Strings.Universal_String)
       return League.Strings.Universal_String;
    --  Try to avoid wrong interpretation of selected Full_Name when it's
@@ -111,5 +113,11 @@ package Compiler.Context is
      (Text : League.Strings.Universal_String)
       return League.Strings.Universal_String;
    --  Convert text to look like a selected Ada Name
+
+   function Join
+     (Prefix : League.Strings.Universal_String;
+      Name   : PB_Support.Universal_String_Vectors.Option)
+      return League.Strings.Universal_String;
+   --  Return "prefix . name"
 
 end Compiler.Context;

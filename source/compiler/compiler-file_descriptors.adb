@@ -54,6 +54,12 @@ package body Compiler.File_Descriptors is
      (Self   : Google.Protobuf.Descriptor.File_Descriptor_Proto;
       Result : out Compiler.Context.String_Sets.Set);
 
+   function Get_Prefix
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
+       return League.Strings.Universal_String;
+   --  Return protobuf prefix for given file: the dot appended with package.
+   --  Like ".google.protobuf"
+
    ---------------
    -- Body_Text --
    ---------------
@@ -65,6 +71,8 @@ package body Compiler.File_Descriptors is
 
       function Get_Subprograms return Ada_Pretty.Node_Access;
       function Get_Instances return Ada_Pretty.Node_Access;
+
+      Prefix : constant League.Strings.Universal_String := Get_Prefix (Self);
 
       Pkg : constant League.Strings.Universal_String := Package_Name (Self);
 
@@ -162,7 +170,7 @@ package body Compiler.File_Descriptors is
       begin
          for J in 1 .. Self.Message_Type.Length loop
             Next := Compiler.Descriptors.Subprograms
-              (Self.Message_Type (J), Pkg);
+              (Self.Message_Type (J), Pkg, Prefix);
             Result := F.New_List (Result, Next);
          end loop;
 
@@ -267,6 +275,23 @@ package body Compiler.File_Descriptors is
       return Result;
    end File_Name;
 
+   ----------------
+   -- Get_Prefix --
+   ----------------
+
+   function Get_Prefix
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
+       return League.Strings.Universal_String
+   is
+      Result : League.Strings.Universal_String := +".";
+   begin
+      if Self.PB_Package.Is_Set then
+         Result.Append (Self.PB_Package.Value);
+      end if;
+
+      return Result;
+   end Get_Prefix;
+
    --------------------
    -- Get_Used_Types --
    --------------------
@@ -319,29 +344,23 @@ package body Compiler.File_Descriptors is
      (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto;
       Map  : in out Compiler.Context.Named_Type_Maps.Map)
    is
-      use type League.Strings.Universal_String;
-
-      PB_Package : League.Strings.Universal_String := +".";
+      Prefix : constant League.Strings.Universal_String := Get_Prefix (Self);
 
       Ada_Package : constant League.Strings.Universal_String :=
         Package_Name (Self);
    begin
-      if Self.PB_Package.Is_Set then
-         PB_Package.Append (Self.PB_Package.Value);
-      end if;
-
       for J in 1 .. Self.Message_Type.Length loop
          Compiler.Descriptors.Populate_Named_Types
-           (Self   => Self.Message_Type (J),
-            PB_Prefix => PB_Package,
+           (Self        => Self.Message_Type (J),
+            Prefix      => Prefix,
             Ada_Package => Ada_Package,
-            Map    => Map);
+            Map         => Map);
       end loop;
 
       for J in 1 .. Self.Enum_Type.Length loop
          Compiler.Enum_Descriptors.Populate_Named_Types
            (Self        => Self.Enum_Type (J),
-            PB_Prefix   => PB_Package,
+            Prefix      => Prefix,
             Ada_Package => Ada_Package,
             Map         => Map);
       end loop;
@@ -361,13 +380,19 @@ package body Compiler.File_Descriptors is
       function Get_Private return Ada_Pretty.Node_Access;
       --  Generate private part declaration list
 
+      Prefix : constant League.Strings.Universal_String := Get_Prefix (Self);
+
+      -----------------
+      -- Get_Private --
+      -----------------
+
       function Get_Private return Ada_Pretty.Node_Access is
          Result : Ada_Pretty.Node_Access;
          Next   : Ada_Pretty.Node_Access;
       begin
          for J in 1 .. Self.Message_Type.Length loop
             Next := Compiler.Descriptors.Private_Spec
-              (Self.Message_Type (J));
+              (Self.Message_Type (J), Prefix);
             Result := F.New_List (Result, Next);
          end loop;
 
@@ -390,7 +415,8 @@ package body Compiler.File_Descriptors is
          Going  : Boolean;
       begin
          for J in 1 .. Self.Enum_Type.Length loop
-            Next := Compiler.Enum_Descriptors.Public_Spec (Self.Enum_Type (J));
+            Next := Compiler.Enum_Descriptors.Public_Spec
+              (Self.Enum_Type (J), Prefix);
 
             if Next /= null then
                Result := F.New_List (Result, Next);
@@ -398,14 +424,15 @@ package body Compiler.File_Descriptors is
          end loop;
 
          for J in 1 .. Self.Message_Type.Length loop
-            Next := Compiler.Descriptors.Enum_Types (Self.Message_Type (J));
+            Next := Compiler.Descriptors.Enum_Types
+              (Self.Message_Type (J), Prefix);
 
             if Next /= null then
                Result := F.New_List (Result, Next);
             end if;
 
             Next := Compiler.Descriptors.Vector_Declarations
-              (Self.Message_Type (J));
+              (Self.Message_Type (J), Prefix);
 
             Vector := F.New_List (Vector, Next);
          end loop;
@@ -420,7 +447,8 @@ package body Compiler.File_Descriptors is
 
             for J in 1 .. Self.Message_Type.Length loop
                Compiler.Descriptors.Public_Spec
-                 (Self.Message_Type (J), Pkg, Next, Again, Done, Force);
+                 (Self.Message_Type (J),
+                  Pkg, Prefix, Next, Again, Done, Force);
 
                if Next /= null then
                   Result := F.New_List (Result, Next);

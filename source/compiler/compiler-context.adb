@@ -73,6 +73,26 @@ package body Compiler.Context is
       raise Constraint_Error;
    end Get_File;
 
+   ----------
+   -- Join --
+   ----------
+
+   function Join
+     (Prefix : League.Strings.Universal_String;
+      Name   : PB_Support.Universal_String_Vectors.Option)
+      return League.Strings.Universal_String
+   is
+      Result : League.Strings.Universal_String := Prefix;
+   begin
+      Result.Append (".");
+
+      if Name.Is_Set then
+         Result.Append (Name.Value);
+      end if;
+
+      return Result;
+   end Join;
+
    --------------------------
    -- Populate_Named_Types --
    --------------------------

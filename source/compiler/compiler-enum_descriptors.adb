@@ -31,20 +31,23 @@ package body Compiler.Enum_Descriptors is
        renames League.Strings.To_Universal_String;
 
    function Type_Name
-     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
+     (Self   : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
+      Prefix : League.Strings.Universal_String)
       return League.Strings.Universal_String;
    --  Return Ada type (simple) name
 
    function Default
-     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
+     (Self   : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
+      Name   : League.Strings.Universal_String)
       return League.Strings.Universal_String;
-   --  Return default value for given enum type as string
+   --  Return default value for given enum type as string, Name is type name.
 
    function Literal_Name
      (Self  : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
-      Index : Positive)
+      Index : Positive;
+      Name  : League.Strings.Universal_String)
       return League.Strings.Universal_String;
-   --  Return default value for given enum type as string
+   --  Return default value for given enum type as string, Name is type name.
 
    function Max_Value
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer;
@@ -59,10 +62,11 @@ package body Compiler.Enum_Descriptors is
    -------------
 
    function Default
-     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
+      Name : League.Strings.Universal_String)
       return League.Strings.Universal_String is
    begin
-      return Literal_Name (Self, 1);
+      return Literal_Name (Self, 1, Name);
    end Default;
 
    -----------------
@@ -85,12 +89,12 @@ package body Compiler.Enum_Descriptors is
 
    function Literal_Name
      (Self  : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
-      Index : Positive)
+      Index : Positive;
+      Name  : League.Strings.Universal_String)
       return League.Strings.Universal_String
    is
       use type League.Strings.Universal_String;
 
-      Name  : constant League.Strings.Universal_String := Type_Name (Self);
       Literal : League.Strings.Universal_String :=
         Self.Value (Index).Name.Value;
    begin
@@ -143,13 +147,19 @@ package body Compiler.Enum_Descriptors is
    --------------------------
 
    procedure Populate_Named_Types
-     (Self        :        Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
-      PB_Prefix   :        League.Strings.Universal_String;
-      Ada_Package :        League.Strings.Universal_String;
+     (Self        : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
+      Prefix      : League.Strings.Universal_String;
+      Ada_Package : League.Strings.Universal_String;
       Map         : in out Compiler.Context.Named_Type_Maps.Map)
    is
-      Name  : constant League.Strings.Universal_String := Type_Name (Self);
-      Key   : League.Strings.Universal_String := PB_Prefix;
+      Name  : constant League.Strings.Universal_String :=
+        (if Self.Name.Is_Set
+         then Compiler.Context.To_Ada_Name (Self.Name.Value)
+         else +"Enum");
+
+      Key   : constant League.Strings.Universal_String :=
+        Compiler.Context.Join (Prefix, Self.Name);
+
       Value : constant Compiler.Context.Named_Type :=
         (Is_Enumeration => True,
          Ada_Type       =>
@@ -158,14 +168,8 @@ package body Compiler.Enum_Descriptors is
          Enum           =>
            (Min => Min_Value (Self),
             Max => Max_Value (Self),
-            Default => Default (Self)));
+            Default => Default (Self, Name)));
    begin
-      Key.Append (".");
-
-      if Self.Name.Is_Set then
-         Key.Append (Self.Name.Value);
-      end if;
-
       Map.Insert (Key, Value);
    end Populate_Named_Types;
 
@@ -174,7 +178,8 @@ package body Compiler.Enum_Descriptors is
    -----------------
 
    function Public_Spec
-     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
+     (Self   : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
+      Prefix : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access
    is
       use type League.Strings.Universal_String;
@@ -194,7 +199,9 @@ package body Compiler.Enum_Descriptors is
 
       package Enum_Sets is new Ada.Containers.Ordered_Sets (Enum, Less);
 
-      Name    : constant League.Strings.Universal_String := Type_Name (Self);
+      Name    : constant League.Strings.Universal_String :=
+       Type_Name (Self, Prefix);
+
       Result  : Ada_Pretty.Node_Access;
       Clause  : Ada_Pretty.Node_Access;
       Item    : Ada_Pretty.Node_Access;
@@ -207,7 +214,7 @@ package body Compiler.Enum_Descriptors is
       for J in 1 .. Self.Value.Length loop
          Enums.Include
            ((Value => Integer (Self.Value (J).Number.Value),
-             Name  => Literal_Name (Self, J)));
+             Name  => Literal_Name (Self, J, Name)));
       end loop;
 
       Prev := Enums.Last_Element;
@@ -269,14 +276,14 @@ package body Compiler.Enum_Descriptors is
    ---------------
 
    function Type_Name
-     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
-      return League.Strings.Universal_String is
+     (Self   : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
+      Prefix : League.Strings.Universal_String)
+      return League.Strings.Universal_String
+   is
+      Key : constant League.Strings.Universal_String :=
+        Compiler.Context.Join (Prefix, Self.Name);
    begin
-      if Self.Name.Is_Set then
-         return Compiler.Context.To_Ada_Name (Self.Name.Value);
-      else
-         return +"Enum";
-      end if;
+      return Compiler.Context.Named_Types (Key).Ada_Type.Type_Name;
    end Type_Name;
 
 end Compiler.Enum_Descriptors;
