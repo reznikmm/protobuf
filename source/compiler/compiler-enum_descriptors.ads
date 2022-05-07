@@ -31,12 +31,13 @@ package Compiler.Enum_Descriptors is
 
    procedure Populate_Named_Types
      (Self        : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
-      PB_Prefix   : League.Strings.Universal_String;
+      Prefix      : League.Strings.Universal_String;
       Ada_Package : League.Strings.Universal_String;
       Map         : in out Compiler.Context.Named_Type_Maps.Map);
 
    function Public_Spec
-     (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto)
+     (Self   : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
+      Prefix : League.Strings.Universal_String)
       return Ada_Pretty.Node_Access;
 
    function Get_Literal (Value : Integer) return Ada_Pretty.Node_Access;
