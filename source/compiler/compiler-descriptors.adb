@@ -432,12 +432,15 @@ package body Compiler.Descriptors is
      (Self        : Google.Protobuf.Descriptor.Descriptor_Proto;
       Prefix      : League.Strings.Universal_String;
       Ada_Package : League.Strings.Universal_String;
-      Map         : in out Compiler.Context.Named_Type_Maps.Map)
+      Map         : in out Compiler.Context.Named_Type_Maps.Map;
+      Used        : in out Compiler.Context.String_Sets.Set)
    is
       Name  : constant League.Strings.Universal_String :=
-        (if Self.Name.Is_Set
-         then Compiler.Context.To_Ada_Name (Self.Name.Value)
-         else +"Message");
+        Compiler.Context.New_Type_Name
+          (Name    => Self.Name,
+           Default => +"Message",
+           Prefix  => Prefix,
+           Used    => Used);
 
       Key   : constant League.Strings.Universal_String :=
         Compiler.Context.Join (Prefix, Self.Name);
@@ -447,25 +450,54 @@ package body Compiler.Descriptors is
          Ada_Type       =>
            (Package_Name => Ada_Package,
             Type_Name    => Name));
+
    begin
       Map.Insert (Key, Value);
+      Used.Insert (Name);
+   end Populate_Named_Types;
+
+   ---------------------------
+   -- Populate_Nested_Types --
+   ---------------------------
+
+   procedure Populate_Nested_Types
+     (Self        : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Prefix      : League.Strings.Universal_String;
+      Ada_Package : League.Strings.Universal_String;
+      Map         : in out Compiler.Context.Named_Type_Maps.Map;
+      Used        : in out Compiler.Context.String_Sets.Set)
+   is
+      Key   : constant League.Strings.Universal_String :=
+        Compiler.Context.Join (Prefix, Self.Name);
+
+   begin
+      for J in 1 .. Self.Enum_Type.Length loop
+         Compiler.Enum_Descriptors.Populate_Named_Types
+           (Self        => Self.Enum_Type (J),
+            Prefix      => Key,
+            Ada_Package => Ada_Package,
+            Map         => Map,
+            Used        => Used);
+      end loop;
 
       for J in 1 .. Self.Nested_Type.Length loop
          Populate_Named_Types
            (Self        => Self.Nested_Type (J),
             Prefix      => Key,
             Ada_Package => Ada_Package,
-            Map         => Map);
+            Map         => Map,
+            Used        => Used);
       end loop;
 
-      for J in 1 .. Self.Enum_Type.Length loop
-         Compiler.Enum_Descriptors.Populate_Named_Types
-           (Self        => Self.Enum_Type (J),
+      for J in 1 .. Self.Nested_Type.Length loop
+         Populate_Nested_Types
+           (Self        => Self.Nested_Type (J),
             Prefix      => Key,
             Ada_Package => Ada_Package,
-            Map         => Map);
+            Map         => Map,
+            Used        => Used);
       end loop;
-   end Populate_Named_Types;
+   end Populate_Nested_Types;
 
    ------------------
    -- Private_Spec --

@@ -33,8 +33,17 @@ package Compiler.Descriptors is
      (Self        : Google.Protobuf.Descriptor.Descriptor_Proto;
       Prefix      : League.Strings.Universal_String;
       Ada_Package : League.Strings.Universal_String;
-      Map         : in out Compiler.Context.Named_Type_Maps.Map);
+      Map         : in out Compiler.Context.Named_Type_Maps.Map;
+      Used        : in out Compiler.Context.String_Sets.Set);
    --  Fill Map with type information found in a message descriptor
+
+   procedure Populate_Nested_Types
+     (Self        : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Prefix      : League.Strings.Universal_String;
+      Ada_Package : League.Strings.Universal_String;
+      Map         : in out Compiler.Context.Named_Type_Maps.Map;
+      Used        : in out Compiler.Context.String_Sets.Set);
+   --  Fill Map with type information found in any nested type in a message
 
    procedure Dependency
      (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;

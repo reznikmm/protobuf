@@ -33,7 +33,8 @@ package Compiler.Enum_Descriptors is
      (Self        : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
       Prefix      : League.Strings.Universal_String;
       Ada_Package : League.Strings.Universal_String;
-      Map         : in out Compiler.Context.Named_Type_Maps.Map);
+      Map         : in out Compiler.Context.Named_Type_Maps.Map;
+      Used        : in out Compiler.Context.String_Sets.Set);
 
    function Public_Spec
      (Self   : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
