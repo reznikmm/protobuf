@@ -47,7 +47,7 @@ package body Compiler.Enum_Descriptors is
       Index : Positive;
       Name  : League.Strings.Universal_String)
       return League.Strings.Universal_String;
-   --  Return default value for given enum type as string, Name is type name.
+   --  Return literal for given enum type as string, Name is type name.
 
    function Max_Value
      (Self : Google.Protobuf.Descriptor.Enum_Descriptor_Proto) return Integer;
@@ -98,7 +98,9 @@ package body Compiler.Enum_Descriptors is
       Literal : League.Strings.Universal_String :=
         Self.Value (Index).Name.Value;
    begin
-      if Literal.To_Lowercase = Name.To_Lowercase then
+      if Literal.To_Lowercase = Name.To_Lowercase
+        or Compiler.Context.Is_Reserved_Word (Literal)
+      then
          Literal.Prepend ("PB_");
       end if;
 

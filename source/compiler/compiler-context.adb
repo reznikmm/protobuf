@@ -73,6 +73,16 @@ package body Compiler.Context is
       raise Constraint_Error;
    end Get_File;
 
+   ----------------------
+   -- Is_Reserved_Word --
+   ----------------------
+
+   function Is_Reserved_Word
+     (Name : League.Strings.Universal_String) return Boolean is
+   begin
+      return Reserved.Contains (Name.To_Lowercase);
+   end Is_Reserved_Word;
+
    ----------
    -- Join --
    ----------
@@ -248,8 +258,77 @@ package body Compiler.Context is
    end To_Selected_Ada_Name;
 
 begin
+   Reserved.Insert (+"abort");
+   Reserved.Insert (+"abs");
+   Reserved.Insert (+"abstract");
+   Reserved.Insert (+"accept");
+   Reserved.Insert (+"access");
+   Reserved.Insert (+"aliased");
+   Reserved.Insert (+"all");
+   Reserved.Insert (+"and");
+   Reserved.Insert (+"array");
+   Reserved.Insert (+"at");
    Reserved.Insert (+"begin");
+   Reserved.Insert (+"body");
+   Reserved.Insert (+"case");
+   Reserved.Insert (+"constant");
+   Reserved.Insert (+"declare");
+   Reserved.Insert (+"delay");
+   Reserved.Insert (+"delta");
+   Reserved.Insert (+"digits");
+   Reserved.Insert (+"do");
+   Reserved.Insert (+"else");
+   Reserved.Insert (+"elsif");
    Reserved.Insert (+"end");
+   Reserved.Insert (+"entry");
+   Reserved.Insert (+"exception");
+   Reserved.Insert (+"exit");
+   Reserved.Insert (+"for");
+   Reserved.Insert (+"function");
+   Reserved.Insert (+"generic");
+   Reserved.Insert (+"goto");
+   Reserved.Insert (+"if");
+   Reserved.Insert (+"in");
+   Reserved.Insert (+"interface");
+   Reserved.Insert (+"is");
+   Reserved.Insert (+"limited");
+   Reserved.Insert (+"loop");
+   Reserved.Insert (+"mod");
+   Reserved.Insert (+"new");
+   Reserved.Insert (+"not");
+   Reserved.Insert (+"null");
+   Reserved.Insert (+"of");
+   Reserved.Insert (+"or");
+   Reserved.Insert (+"others");
+   Reserved.Insert (+"out");
+   Reserved.Insert (+"overriding");
    Reserved.Insert (+"package");
+   Reserved.Insert (+"pragma");
+   Reserved.Insert (+"private");
+   Reserved.Insert (+"procedure");
+   Reserved.Insert (+"protected");
+   Reserved.Insert (+"raise");
+   Reserved.Insert (+"range");
+   Reserved.Insert (+"record");
+   Reserved.Insert (+"rem");
+   Reserved.Insert (+"renames");
+   Reserved.Insert (+"requeue");
+   Reserved.Insert (+"return");
+   Reserved.Insert (+"reverse");
+   Reserved.Insert (+"select");
+   Reserved.Insert (+"separate");
+   Reserved.Insert (+"some");
+   Reserved.Insert (+"subtype");
+   Reserved.Insert (+"synchronized");
+   Reserved.Insert (+"tagged");
+   Reserved.Insert (+"task");
+   Reserved.Insert (+"terminate");
+   Reserved.Insert (+"then");
    Reserved.Insert (+"type");
+   Reserved.Insert (+"until");
+   Reserved.Insert (+"use");
+   Reserved.Insert (+"when");
+   Reserved.Insert (+"while");
+   Reserved.Insert (+"with");
+   Reserved.Insert (+"xor");
 end Compiler.Context;

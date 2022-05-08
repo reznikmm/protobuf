@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package Test;
+
+enum Result {
+    NULL = 0;
+    OK = 1;
+    WARNING = 2;
+    ERROR = 3;
+}
+
+message T {
+  Result value = 1;
+}

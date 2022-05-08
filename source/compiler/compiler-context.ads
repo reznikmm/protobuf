@@ -130,4 +130,7 @@ package Compiler.Context is
       Used    : Compiler.Context.String_Sets.Set)
      return League.Strings.Universal_String;
 
+   function Is_Reserved_Word
+     (Name : League.Strings.Universal_String) return Boolean;
+
 end Compiler.Context;
