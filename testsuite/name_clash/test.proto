@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package Test_Package;
+
+message Parent {
+  message T  {
+     string value = 1;
+  }
+}
+
+message T {
+  int32 value = 1;
+}
