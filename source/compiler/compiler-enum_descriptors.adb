@@ -150,12 +150,15 @@ package body Compiler.Enum_Descriptors is
      (Self        : Google.Protobuf.Descriptor.Enum_Descriptor_Proto;
       Prefix      : League.Strings.Universal_String;
       Ada_Package : League.Strings.Universal_String;
-      Map         : in out Compiler.Context.Named_Type_Maps.Map)
+      Map         : in out Compiler.Context.Named_Type_Maps.Map;
+      Used        : in out Compiler.Context.String_Sets.Set)
    is
       Name  : constant League.Strings.Universal_String :=
-        (if Self.Name.Is_Set
-         then Compiler.Context.To_Ada_Name (Self.Name.Value)
-         else +"Enum");
+        Compiler.Context.New_Type_Name
+          (Name    => Self.Name,
+           Default => +"Enum",
+           Prefix  => Prefix,
+           Used    => Used);
 
       Key   : constant League.Strings.Universal_String :=
         Compiler.Context.Join (Prefix, Self.Name);
@@ -171,6 +174,7 @@ package body Compiler.Enum_Descriptors is
             Default => Default (Self, Name)));
    begin
       Map.Insert (Key, Value);
+      Used.Insert (Name);
    end Populate_Named_Types;
 
    -----------------

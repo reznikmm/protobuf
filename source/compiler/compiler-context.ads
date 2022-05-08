@@ -120,4 +120,11 @@ package Compiler.Context is
       return League.Strings.Universal_String;
    --  Return "prefix . name"
 
+   function New_Type_Name
+     (Name    : PB_Support.Universal_String_Vectors.Option;
+      Default : League.Strings.Universal_String;
+      Prefix  : League.Strings.Universal_String;
+      Used    : Compiler.Context.String_Sets.Set)
+     return League.Strings.Universal_String;
+
 end Compiler.Context;

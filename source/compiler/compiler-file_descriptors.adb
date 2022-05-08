@@ -346,23 +346,37 @@ package body Compiler.File_Descriptors is
    is
       Prefix : constant League.Strings.Universal_String := Get_Prefix (Self);
 
+      Used : Compiler.Context.String_Sets.Set;
+      --  Name clash protection
+
       Ada_Package : constant League.Strings.Universal_String :=
         Package_Name (Self);
    begin
-      for J in 1 .. Self.Message_Type.Length loop
-         Compiler.Descriptors.Populate_Named_Types
-           (Self        => Self.Message_Type (J),
-            Prefix      => Prefix,
-            Ada_Package => Ada_Package,
-            Map         => Map);
-      end loop;
-
       for J in 1 .. Self.Enum_Type.Length loop
          Compiler.Enum_Descriptors.Populate_Named_Types
            (Self        => Self.Enum_Type (J),
             Prefix      => Prefix,
             Ada_Package => Ada_Package,
-            Map         => Map);
+            Map         => Map,
+            Used        => Used);
+      end loop;
+
+      for J in 1 .. Self.Message_Type.Length loop
+         Compiler.Descriptors.Populate_Named_Types
+           (Self        => Self.Message_Type (J),
+            Prefix      => Prefix,
+            Ada_Package => Ada_Package,
+            Map         => Map,
+            Used        => Used);
+      end loop;
+
+      for J in 1 .. Self.Message_Type.Length loop
+         Compiler.Descriptors.Populate_Nested_Types
+           (Self        => Self.Message_Type (J),
+            Prefix      => Prefix,
+            Ada_Package => Ada_Package,
+            Map         => Map,
+            Used        => Used);
       end loop;
    end Populate_Named_Types;
 

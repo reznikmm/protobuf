@@ -93,6 +93,33 @@ package body Compiler.Context is
       return Result;
    end Join;
 
+   -------------------
+   -- New_Type_Name --
+   -------------------
+
+   function New_Type_Name
+     (Name    : PB_Support.Universal_String_Vectors.Option;
+      Default : League.Strings.Universal_String;
+      Prefix  : League.Strings.Universal_String;
+      Used    : Compiler.Context.String_Sets.Set)
+     return League.Strings.Universal_String
+   is
+      use type League.Strings.Universal_String;
+
+      Result : constant League.Strings.Universal_String :=
+        (if Name.Is_Set
+         then Compiler.Context.To_Ada_Name (Name.Value)
+         else Default);
+   begin
+      if not Used.Contains (Result) then
+         return Result;
+      elsif Named_Types.Contains (Prefix) then
+         return Named_Types (Prefix).Ada_Type.Type_Name & "_" & Result;
+      else
+         return Result;
+      end if;
+   end New_Type_Name;
+
    --------------------------
    -- Populate_Named_Types --
    --------------------------
