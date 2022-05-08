@@ -557,7 +557,7 @@ package body Compiler.Field_Descriptors is
                   elsif Is_Repeated then
                      Result.Type_Name.Append ("_Vector");
                   elsif Is_Option and not Self.Oneof_Index.Is_Set then
-                     Result.Type_Name.Prepend ("Optional_");
+                     Result.Type_Name := Element.Optional_Type;
                   end if;
                end;
             else

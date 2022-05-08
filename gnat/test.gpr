@@ -1,0 +1,7 @@
+with "protobuf_runtime.gpr";
+
+project Test is
+   Dir := external("DIR");
+   for Source_Dirs use (Dir);
+   for Object_Dir use Dir;
+end Test;

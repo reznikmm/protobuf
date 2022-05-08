@@ -344,7 +344,12 @@ package body Compiler.File_Descriptors is
      (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto;
       Map  : in out Compiler.Context.Named_Type_Maps.Map)
    is
+      use type League.Strings.Universal_String;
+
       Prefix : constant League.Strings.Universal_String := Get_Prefix (Self);
+
+      Local : Compiler.Context.Named_Type_Maps.Map;
+      --  Map for type local to current file
 
       Used : Compiler.Context.String_Sets.Set;
       --  Name clash protection
@@ -357,7 +362,7 @@ package body Compiler.File_Descriptors is
            (Self        => Self.Enum_Type (J),
             Prefix      => Prefix,
             Ada_Package => Ada_Package,
-            Map         => Map,
+            Map         => Local,
             Used        => Used);
       end loop;
 
@@ -366,7 +371,7 @@ package body Compiler.File_Descriptors is
            (Self        => Self.Message_Type (J),
             Prefix      => Prefix,
             Ada_Package => Ada_Package,
-            Map         => Map,
+            Map         => Local,
             Used        => Used);
       end loop;
 
@@ -375,8 +380,23 @@ package body Compiler.File_Descriptors is
            (Self        => Self.Message_Type (J),
             Prefix      => Prefix,
             Ada_Package => Ada_Package,
-            Map         => Map,
+            Map         => Local,
             Used        => Used);
+      end loop;
+
+      --  Find name clashes for Optional_ type and fallback these names
+      --  to Facultative_
+      for J of Local loop
+         if Used.Contains (J.Optional_Type) then
+            J.Optional_Type := "Facultative_" & J.Ada_Type.Type_Name;
+         end if;
+      end loop;
+
+      --  Merge Local into Map
+      for Cursor in Local.Iterate loop
+         Map.Insert
+           (Compiler.Context.Named_Type_Maps.Key (Cursor),
+            Compiler.Context.Named_Type_Maps.Element (Cursor));
       end loop;
    end Populate_Named_Types;
 

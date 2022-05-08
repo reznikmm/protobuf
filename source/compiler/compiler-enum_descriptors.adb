@@ -153,11 +153,14 @@ package body Compiler.Enum_Descriptors is
       Map         : in out Compiler.Context.Named_Type_Maps.Map;
       Used        : in out Compiler.Context.String_Sets.Set)
    is
+      use type League.Strings.Universal_String;
+
       Name  : constant League.Strings.Universal_String :=
         Compiler.Context.New_Type_Name
           (Name    => Self.Name,
            Default => +"Enum",
            Prefix  => Prefix,
+           Local   => Map,
            Used    => Used);
 
       Key   : constant League.Strings.Universal_String :=
@@ -165,6 +168,7 @@ package body Compiler.Enum_Descriptors is
 
       Value : constant Compiler.Context.Named_Type :=
         (Is_Enumeration => True,
+         Optional_Type  => "Optional_" & Name,
          Ada_Type       =>
            (Package_Name => Ada_Package,
             Type_Name    => Name),

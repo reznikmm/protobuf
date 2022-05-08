@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package Test3;
+
+enum Optional_Thing
+{
+  Undefined = 0;
+  Some_Value = 1;
+  Other_Value = 2;
+}
+
+message Thing
+{
+   Optional_Thing thing = 1;
+}

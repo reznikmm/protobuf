@@ -39,6 +39,11 @@ package body Compiler.Descriptors is
    function Type_Name
      (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
       Prefix : League.Strings.Universal_String)
+        return Compiler.Context.Named_Type;
+
+   function Type_Name
+     (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Prefix : League.Strings.Universal_String)
         return League.Strings.Universal_String;
    --  Return Ada type (simple) My_Name
 
@@ -440,6 +445,7 @@ package body Compiler.Descriptors is
           (Name    => Self.Name,
            Default => +"Message",
            Prefix  => Prefix,
+           Local   => Map,
            Used    => Used);
 
       Key   : constant League.Strings.Universal_String :=
@@ -447,6 +453,7 @@ package body Compiler.Descriptors is
 
       Value : constant Compiler.Context.Named_Type :=
         (Is_Enumeration => False,
+         Optional_Type  => "Optional_" & Name,
          Ada_Type       =>
            (Package_Name => Ada_Package,
             Type_Name    => Name));
@@ -626,8 +633,11 @@ package body Compiler.Descriptors is
       Prefix : League.Strings.Universal_String)
         return Ada_Pretty.Node_Access
    is
-      My_Name : constant League.Strings.Universal_String :=
+      Named_Type : constant Compiler.Context.Named_Type :=
        Type_Name (Self, Prefix);
+
+      My_Name : constant League.Strings.Universal_String :=
+       Named_Type.Ada_Type.Type_Name;
 
       Me     : constant Ada_Pretty.Node_Access := F.New_Name (My_Name);
       V_Name : Ada_Pretty.Node_Access;
@@ -665,7 +675,7 @@ package body Compiler.Descriptors is
       Is_Set := F.New_Name (+"Is_Set");
 
       Option := F.New_Type
-        (Name          => F.New_Name ("Optional_" & My_Name),
+        (Name          => F.New_Name (Named_Type.Optional_Type),
          Discriminants => F.New_Parameter
            (Name            => Is_Set,
             Type_Definition => F.New_Name (+"Boolean"),
@@ -1062,12 +1072,24 @@ package body Compiler.Descriptors is
    function Type_Name
      (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
       Prefix : League.Strings.Universal_String)
-      return League.Strings.Universal_String
+      return Compiler.Context.Named_Type
    is
       Key : constant League.Strings.Universal_String :=
         Compiler.Context.Join (Prefix, Self.Name);
    begin
-      return Compiler.Context.Named_Types (Key).Ada_Type.Type_Name;
+      return Compiler.Context.Named_Types (Key);
+   end Type_Name;
+
+   ---------------
+   -- Type_Name --
+   ---------------
+
+   function Type_Name
+     (Self   : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Prefix : League.Strings.Universal_String)
+      return League.Strings.Universal_String is
+   begin
+      return Type_Name (Self, Prefix).Ada_Type.Type_Name;
    end Type_Name;
 
    -------------------------

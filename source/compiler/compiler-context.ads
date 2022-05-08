@@ -75,6 +75,8 @@ package Compiler.Context is
 
    type Named_Type (Is_Enumeration : Boolean := False) is record
       Ada_Type : Ada_Type_Name;
+      Optional_Type : League.Strings.Universal_String;
+      --  Name of optional type, usually "Optional_" & Ada_Type.Type_Name
 
       case Is_Enumeration is
          when True =>
@@ -124,6 +126,7 @@ package Compiler.Context is
      (Name    : PB_Support.Universal_String_Vectors.Option;
       Default : League.Strings.Universal_String;
       Prefix  : League.Strings.Universal_String;
+      Local   : Compiler.Context.Named_Type_Maps.Map;
       Used    : Compiler.Context.String_Sets.Set)
      return League.Strings.Universal_String;
 

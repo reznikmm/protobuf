@@ -101,6 +101,7 @@ package body Compiler.Context is
      (Name    : PB_Support.Universal_String_Vectors.Option;
       Default : League.Strings.Universal_String;
       Prefix  : League.Strings.Universal_String;
+      Local   : Compiler.Context.Named_Type_Maps.Map;
       Used    : Compiler.Context.String_Sets.Set)
      return League.Strings.Universal_String
    is
@@ -115,6 +116,8 @@ package body Compiler.Context is
          return Result;
       elsif Named_Types.Contains (Prefix) then
          return Named_Types (Prefix).Ada_Type.Type_Name & "_" & Result;
+      elsif Local.Contains (Prefix) then
+         return Local (Prefix).Ada_Type.Type_Name & "_" & Result;
       else
          return Result;
       end if;

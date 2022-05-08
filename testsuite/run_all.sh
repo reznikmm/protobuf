@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 TESTS=`dirname $0`
 OUT="${1:-${TMPDIR:-/tmp}/proto}"
