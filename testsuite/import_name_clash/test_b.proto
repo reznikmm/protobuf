@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package Test_B;
+
+message T {
+  bool field_b = 1;
+}
