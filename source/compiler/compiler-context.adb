@@ -48,6 +48,23 @@ package body Compiler.Context is
       end if;
    end "+";
 
+
+   -------------------
+   -- Compound_Name --
+   -------------------
+
+   function Compound_Name
+     (Self            : Ada_Type_Name;
+      Current_Package : League.Strings.Universal_String)
+     return League.Strings.Universal_String
+   is
+      use type League.Strings.Universal_String;
+      Result : League.Strings.Universal_String := +Self;
+   begin
+      Result := Relative_Name (Result, Current_Package);
+      return Result.Split ('.', League.Strings.Skip_Empty).Join ("_");
+   end Compound_Name;
+
    --------------
    -- Get_File --
    --------------

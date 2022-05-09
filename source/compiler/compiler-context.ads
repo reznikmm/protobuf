@@ -58,6 +58,12 @@ package Compiler.Context is
    function "+" (Self : Ada_Type_Name) return League.Strings.Universal_String;
    --  Join package name (if any) and type name into selected name.
 
+   function Compound_Name
+     (Self            : Ada_Type_Name;
+      Current_Package : League.Strings.Universal_String)
+     return League.Strings.Universal_String;
+   --  Join package name (if any) and type name using "_" for new identifiers.
+
    function Relative_Name
      (Full_Name       : League.Strings.Universal_String;
       Current_Package : League.Strings.Universal_String)
