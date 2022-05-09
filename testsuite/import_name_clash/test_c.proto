@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "test_a.proto";
+import "test_b.proto";
+
+package Test_C;
+
+message T {
+  Test_A.T field_a = 1;
+  Test_B.T field_b = 2;
+}

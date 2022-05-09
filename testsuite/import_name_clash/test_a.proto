@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package Test_A;
+
+message T {
+  uint32 field_a = 1;
+}
