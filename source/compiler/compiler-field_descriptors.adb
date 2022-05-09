@@ -75,7 +75,8 @@ package body Compiler.Field_Descriptors is
        return Boolean;
 
    function Read_Name
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return League.Strings.Universal_String;
 
    function Write_Name
@@ -467,7 +468,7 @@ package body Compiler.Field_Descriptors is
         (Result,
          F.New_Statement
            (F.New_Apply
-             (Prefix    => F.New_Selected_Name (Read_Name (Self)),
+             (Prefix    => F.New_Selected_Name (Read_Name (Self, Pkg)),
               Arguments => F.New_List
                 ((F.New_Argument_Association (F.New_Name (+"Stream")),
                   F.New_Argument_Association
@@ -486,7 +487,8 @@ package body Compiler.Field_Descriptors is
    ---------------
 
    function Read_Name
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String)
       return League.Strings.Universal_String
    is
       use all type Google.Protobuf.Descriptor.PB_Type;
@@ -498,8 +500,9 @@ package body Compiler.Field_Descriptors is
       if Self.Type_Name.Is_Set
         and then Compiler.Context.Named_Types.Contains (Self.Type_Name.Value)
       then
-         Result := Compiler.Context.Named_Types
-           (Self.Type_Name.Value).Ada_Type.Type_Name;
+         Result := Compiler.Context.Compound_Name
+           (Compiler.Context.Named_Types (Self.Type_Name.Value).Ada_Type,
+            Pkg);
          Result.Append ("_IO.Read");
       elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
         TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 | TYPE_UINT32
@@ -671,8 +674,9 @@ package body Compiler.Field_Descriptors is
          end if;
       elsif Is_Enum then
 
-         Get := Compiler.Context.Named_Types
-           (Self.Type_Name.Value).Ada_Type.Type_Name;
+         Get := Compiler.Context.Compound_Name
+           (Compiler.Context.Named_Types (Self.Type_Name.Value).Ada_Type,
+            Pkg);
 
          Result := F.New_List
            ((F.New_Argument_Association (F.New_Name (+"WS")),

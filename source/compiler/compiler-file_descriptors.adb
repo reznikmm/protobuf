@@ -106,7 +106,8 @@ package body Compiler.File_Descriptors is
                     (Result,
                      F.New_Type
                        (Name          => F.New_Name
-                          ("Integer_" & Info.Ada_Type.Type_Name),
+                          ("Integer_" & Compiler.Context.Compound_Name
+                             (Info.Ada_Type, Pkg)),
                         Definition    => F.New_Infix
                           (+"range",
                            F.New_List
@@ -123,14 +124,16 @@ package body Compiler.File_Descriptors is
                     (Result,
                      F.New_Package_Instantiation
                        (Name        => F.New_Name
-                          (Info.Ada_Type.Type_Name & "_IO"),
+                          (Compiler.Context.Compound_Name
+                             (Info.Ada_Type, Pkg) & "_IO"),
                         Template    => F.New_Selected_Name
                           (+"PB_Support.IO.Enum_IO"),
                         Actual_Part => F.New_List
                           ((F.New_Argument_Association
                               (F.New_Selected_Name (Full)),
                             F.New_Name
-                              ("Integer_" & Info.Ada_Type.Type_Name),
+                              ("Integer_" &  Compiler.Context.Compound_Name
+                                 (Info.Ada_Type, Pkg)),
                             F.New_Argument_Association
                               (F.New_Selected_Name
                                 (Full & "_Vectors"))))));
@@ -143,7 +146,8 @@ package body Compiler.File_Descriptors is
                     (Result,
                      F.New_Package_Instantiation
                        (Name        => F.New_Name
-                          (Info.Ada_Type.Type_Name & "_IO"),
+                          (Compiler.Context.Compound_Name
+                             (Info.Ada_Type, Pkg) & "_IO"),
                         Template    => F.New_Selected_Name
                           (+"PB_Support.IO.Message_IO"),
                         Actual_Part => F.New_List
