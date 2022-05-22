@@ -31,6 +31,12 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    package Nested_Enum_Vectors is new PB_Support.Vectors (Nested_Enum);
 
+   type Bool is (kFalse, kTrue);
+
+   for Bool use (kFalse => 0, kTrue  => 1);
+
+   package Bool_Vectors is new PB_Support.Vectors (Bool);
+
    type Test_All_Types_Proto_2_Vector is tagged private
      with Variable_Indexing => Get_Test_All_Types_Proto_2_Variable_Reference,
      Constant_Indexing => Get_Test_All_Types_Proto_2_Constant_Reference;
@@ -157,6 +163,18 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
    type Optional_Group_Vector is tagged private
      with Variable_Indexing => Get_Optional_Group_Variable_Reference,
      Constant_Indexing => Get_Optional_Group_Constant_Reference;
+
+   type Null_Hypothesis_Proto_2_Vector is tagged private
+     with Variable_Indexing => Get_Null_Hypothesis_Proto_2_Variable_Reference,
+     Constant_Indexing => Get_Null_Hypothesis_Proto_2_Constant_Reference;
+
+   type Enum_Only_Proto_2_Vector is tagged private
+     with Variable_Indexing => Get_Enum_Only_Proto_2_Variable_Reference,
+     Constant_Indexing => Get_Enum_Only_Proto_2_Constant_Reference;
+
+   type One_String_Proto_2_Vector is tagged private
+     with Variable_Indexing => Get_One_String_Proto_2_Variable_Reference,
+     Constant_Indexing => Get_One_String_Proto_2_Constant_Reference;
 
    type Map_Int_32Int_32Entry is
      record
@@ -1259,6 +1277,133 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       return Unknown_To_Test_All_Types_Constant_Reference
      with Inline;
 
+   type Null_Hypothesis_Proto_2 is null record;
+
+   type Optional_Null_Hypothesis_Proto_2  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Null_Hypothesis_Proto_2;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Null_Hypothesis_Proto_2_Vector) return Natural;
+
+   procedure Clear (Self : in out Null_Hypothesis_Proto_2_Vector);
+
+   procedure Append
+    (Self : in out Null_Hypothesis_Proto_2_Vector;
+     V    : Null_Hypothesis_Proto_2);
+
+   type Null_Hypothesis_Proto_2_Variable_Reference
+     (Element : not null access Null_Hypothesis_Proto_2) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Null_Hypothesis_Proto_2_Variable_Reference
+    (Self  : aliased in out Null_Hypothesis_Proto_2_Vector;
+     Index : Positive)
+      return Null_Hypothesis_Proto_2_Variable_Reference
+     with Inline;
+
+   type Null_Hypothesis_Proto_2_Constant_Reference
+     (Element : not null access constant Null_Hypothesis_Proto_2) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Null_Hypothesis_Proto_2_Constant_Reference
+    (Self  : aliased Null_Hypothesis_Proto_2_Vector;
+     Index : Positive)
+      return Null_Hypothesis_Proto_2_Constant_Reference
+     with Inline;
+
+   type Enum_Only_Proto_2 is null record;
+
+   type Optional_Enum_Only_Proto_2  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Enum_Only_Proto_2;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Enum_Only_Proto_2_Vector) return Natural;
+
+   procedure Clear (Self : in out Enum_Only_Proto_2_Vector);
+
+   procedure Append
+    (Self : in out Enum_Only_Proto_2_Vector;
+     V    : Enum_Only_Proto_2);
+
+   type Enum_Only_Proto_2_Variable_Reference
+     (Element : not null access Enum_Only_Proto_2) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Only_Proto_2_Variable_Reference
+    (Self  : aliased in out Enum_Only_Proto_2_Vector;
+     Index : Positive)
+      return Enum_Only_Proto_2_Variable_Reference
+     with Inline;
+
+   type Enum_Only_Proto_2_Constant_Reference
+     (Element : not null access constant Enum_Only_Proto_2) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Only_Proto_2_Constant_Reference
+    (Self  : aliased Enum_Only_Proto_2_Vector;
+     Index : Positive)
+      return Enum_Only_Proto_2_Constant_Reference
+     with Inline;
+
+   type One_String_Proto_2 is
+     record
+        Data : PB_Support.Universal_String_Vectors.Option;
+     end record;
+
+   type Optional_One_String_Proto_2  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .One_String_Proto_2;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : One_String_Proto_2_Vector) return Natural;
+
+   procedure Clear (Self : in out One_String_Proto_2_Vector);
+
+   procedure Append
+    (Self : in out One_String_Proto_2_Vector;
+     V    : One_String_Proto_2);
+
+   type One_String_Proto_2_Variable_Reference
+     (Element : not null access One_String_Proto_2) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_One_String_Proto_2_Variable_Reference
+    (Self  : aliased in out One_String_Proto_2_Vector;
+     Index : Positive)
+      return One_String_Proto_2_Variable_Reference
+     with Inline;
+
+   type One_String_Proto_2_Constant_Reference
+     (Element : not null access constant One_String_Proto_2) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_One_String_Proto_2_Constant_Reference
+    (Self  : aliased One_String_Proto_2_Vector;
+     Index : Positive)
+      return One_String_Proto_2_Constant_Reference
+     with Inline;
+
    type Map_String_Foreign_Message_Entry is
      record
         Key   : PB_Support.Universal_String_Vectors.Option;
@@ -1581,6 +1726,23 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Test_Messages_Proto_2.Map_String_Foreign_Enum_Entry_Vector;
         Data                       : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Optional_Data;
+        Default_Int_32             : PB_Support.Integer_32_Vectors.Option;
+        Default_Int_64             : PB_Support.Integer_64_Vectors.Option;
+        Default_Uint_32            : PB_Support.Unsigned_32_Vectors.Option;
+        Default_Uint_64            : PB_Support.Unsigned_64_Vectors.Option;
+        Default_Sint_32            : PB_Support.Integer_32_Vectors.Option;
+        Default_Sint_64            : PB_Support.Integer_64_Vectors.Option;
+        Default_Fixed_32           : PB_Support.Unsigned_32_Vectors.Option;
+        Default_Fixed_64           : PB_Support.Unsigned_64_Vectors.Option;
+        Default_Sfixed_32          : PB_Support.Integer_32_Vectors.Option;
+        Default_Sfixed_64          : PB_Support.Integer_64_Vectors.Option;
+        Default_Float              : PB_Support.IEEE_Float_32_Vectors.Option;
+        Default_Double             : PB_Support.IEEE_Float_64_Vectors.Option;
+        Default_Bool               : PB_Support.Boolean_Vectors.Option;
+        Default_String             : PB_Support.Universal_String_Vectors
+          .Option;
+        Default_Bytes              : PB_Support.Stream_Element_Vector_Vectors
+          .Option;
         Fieldname_1                : PB_Support.Integer_32_Vectors.Option;
         Field_Name_2               : PB_Support.Integer_32_Vectors.Option;
         Field_Name_3               : PB_Support.Integer_32_Vectors.Option;
@@ -2475,5 +2637,91 @@ private
 
    overriding procedure Finalize
     (Self : in out Unknown_To_Test_All_Types_Vector);
+
+   procedure Read_Null_Hypothesis_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Null_Hypothesis_Proto_2);
+
+   procedure Write_Null_Hypothesis_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Null_Hypothesis_Proto_2);
+
+   for Null_Hypothesis_Proto_2'Read use Read_Null_Hypothesis_Proto_2;
+
+   for Null_Hypothesis_Proto_2'Write use Write_Null_Hypothesis_Proto_2;
+
+   type Null_Hypothesis_Proto_2_Array is
+     array (Positive range <>) of aliased Null_Hypothesis_Proto_2;
+
+   type Null_Hypothesis_Proto_2_Array_Access is
+     access Null_Hypothesis_Proto_2_Array;
+
+   type Null_Hypothesis_Proto_2_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Null_Hypothesis_Proto_2_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Null_Hypothesis_Proto_2_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Null_Hypothesis_Proto_2_Vector);
+
+   procedure Read_Enum_Only_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Enum_Only_Proto_2);
+
+   procedure Write_Enum_Only_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Enum_Only_Proto_2);
+
+   for Enum_Only_Proto_2'Read use Read_Enum_Only_Proto_2;
+
+   for Enum_Only_Proto_2'Write use Write_Enum_Only_Proto_2;
+
+   type Enum_Only_Proto_2_Array is
+     array (Positive range <>) of aliased Enum_Only_Proto_2;
+
+   type Enum_Only_Proto_2_Array_Access is access Enum_Only_Proto_2_Array;
+
+   type Enum_Only_Proto_2_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Enum_Only_Proto_2_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Enum_Only_Proto_2_Vector);
+
+   overriding procedure Finalize (Self : in out Enum_Only_Proto_2_Vector);
+
+   procedure Read_One_String_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out One_String_Proto_2);
+
+   procedure Write_One_String_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : One_String_Proto_2);
+
+   for One_String_Proto_2'Read use Read_One_String_Proto_2;
+
+   for One_String_Proto_2'Write use Write_One_String_Proto_2;
+
+   type One_String_Proto_2_Array is
+     array (Positive range <>) of aliased One_String_Proto_2;
+
+   type One_String_Proto_2_Array_Access is access One_String_Proto_2_Array;
+
+   type One_String_Proto_2_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : One_String_Proto_2_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out One_String_Proto_2_Vector);
+
+   overriding procedure Finalize (Self : in out One_String_Proto_2_Vector);
 
 end Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2;

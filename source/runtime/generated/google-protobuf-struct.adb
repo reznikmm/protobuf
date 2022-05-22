@@ -4,32 +4,33 @@ with PB_Support.Internal;
 
 package body Google.Protobuf.Struct is
 
-   package List_Value_IO is
+   package Google_Protobuf_Struct_List_Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Struct.List_Value,
         Google.Protobuf.Struct.List_Value_Vector,
         Google.Protobuf.Struct.Append);
 
-   type Integer_Null_Value is  range 0 .. 0
+   type Integer_Google_Protobuf_Struct_Null_Value is  range 0 .. 0
      with Size => Google.Protobuf.Struct.Null_Value'Size;
 
-   package Null_Value_IO is
+   package Google_Protobuf_Struct_Null_Value_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.Struct.Null_Value, Integer_Null_Value,
+       (Google.Protobuf.Struct.Null_Value,
+        Integer_Google_Protobuf_Struct_Null_Value,
         Google.Protobuf.Struct.Null_Value_Vectors);
 
-   package Struct_IO is
+   package Google_Protobuf_Struct_Struct_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Struct.Struct, Google.Protobuf.Struct.Struct_Vector,
         Google.Protobuf.Struct.Append);
 
-   package Fields_Entry_IO is
+   package Google_Protobuf_Struct_Fields_Entry_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Struct.Fields_Entry,
         Google.Protobuf.Struct.Fields_Entry_Vector,
         Google.Protobuf.Struct.Append);
 
-   package Value_IO is
+   package Google_Protobuf_Struct_Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Struct.Value, Google.Protobuf.Struct.Value_Vector,
         Google.Protobuf.Struct.Append);
@@ -100,7 +101,8 @@ package body Google.Protobuf.Struct is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               Fields_Entry_IO.Read_Vector (Stream, Key.Encoding, V.Fields);
+               Google_Protobuf_Struct_Fields_Entry_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Fields);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -206,7 +208,8 @@ package body Google.Protobuf.Struct is
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
                end if;
-               Value_IO.Read (Stream, Key.Encoding, V.Value.Value);
+               Google_Protobuf_Struct_Value_IO.Read
+                 (Stream, Key.Encoding, V.Value.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -310,7 +313,8 @@ package body Google.Protobuf.Struct is
                if V.Variant.Kind /= Null_Value_Kind then
                   V.Variant := (Null_Value_Kind, others => <>);
                end if;
-               Null_Value_IO.Read (Stream, Key.Encoding, V.Variant.Null_Value);
+               Google_Protobuf_Struct_Null_Value_IO.Read
+                 (Stream, Key.Encoding, V.Variant.Null_Value);
             when 2 =>
                if V.Variant.Kind /= Number_Value_Kind then
                   V.Variant := (Number_Value_Kind, others => <>);
@@ -332,12 +336,14 @@ package body Google.Protobuf.Struct is
                if V.Variant.Kind /= Struct_Value_Kind then
                   V.Variant := (Struct_Value_Kind, others => <>);
                end if;
-               Struct_IO.Read (Stream, Key.Encoding, V.Variant.Struct_Value);
+               Google_Protobuf_Struct_Struct_IO.Read
+                 (Stream, Key.Encoding, V.Variant.Struct_Value);
             when 6 =>
                if V.Variant.Kind /= List_Value_Kind then
                   V.Variant := (List_Value_Kind, others => <>);
                end if;
-               List_Value_IO.Read (Stream, Key.Encoding, V.Variant.List_Value);
+               Google_Protobuf_Struct_List_Value_IO.Read
+                 (Stream, Key.Encoding, V.Variant.List_Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -363,7 +369,8 @@ package body Google.Protobuf.Struct is
          WS.Start_Message;
          case V.Variant.Kind is
             when Null_Value_Kind =>
-               Null_Value_IO.Write (WS, 1, V.Variant.Null_Value);
+               Google_Protobuf_Struct_Null_Value_IO.Write
+                 (WS, 1, V.Variant.Null_Value);
             when Number_Value_Kind =>
                WS.Write (2, V.Variant.Number_Value);
             when String_Value_Kind =>
@@ -454,7 +461,8 @@ package body Google.Protobuf.Struct is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               Value_IO.Read_Vector (Stream, Key.Encoding, V.Values);
+               Google_Protobuf_Struct_Value_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Values);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;

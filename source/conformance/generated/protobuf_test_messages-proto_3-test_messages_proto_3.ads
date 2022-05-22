@@ -38,11 +38,17 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    for Aliased_Enum use (ALIAS_FOO => 0, ALIAS_BAR => 1, ALIAS_BAZ => 2);
 
-   function QUX return Aliased_Enum is (ALIAS_BAZ);
+   function MOO return Aliased_Enum is (ALIAS_BAZ);
 
-   function bAz return Aliased_Enum is (QUX);
+   function bAz return Aliased_Enum is (MOO);
 
    package Aliased_Enum_Vectors is new PB_Support.Vectors (Aliased_Enum);
+
+   type Bool is (kFalse, kTrue);
+
+   for Bool use (kFalse => 0, kTrue  => 1);
+
+   package Bool_Vectors is new PB_Support.Vectors (Bool);
 
    type Test_All_Types_Proto_3_Vector is tagged private
      with Variable_Indexing => Get_Test_All_Types_Proto_3_Variable_Reference,
@@ -141,6 +147,14 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    type Foreign_Message_Vector is tagged private
      with Variable_Indexing => Get_Foreign_Message_Variable_Reference,
      Constant_Indexing => Get_Foreign_Message_Constant_Reference;
+
+   type Null_Hypothesis_Proto_3_Vector is tagged private
+     with Variable_Indexing => Get_Null_Hypothesis_Proto_3_Variable_Reference,
+     Constant_Indexing => Get_Null_Hypothesis_Proto_3_Constant_Reference;
+
+   type Enum_Only_Proto_3_Vector is tagged private
+     with Variable_Indexing => Get_Enum_Only_Proto_3_Variable_Reference,
+     Constant_Indexing => Get_Enum_Only_Proto_3_Constant_Reference;
 
    type Map_Int_32Int_32Entry is
      record
@@ -965,6 +979,89 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       return Foreign_Message_Constant_Reference
      with Inline;
 
+   type Null_Hypothesis_Proto_3 is null record;
+
+   type Optional_Null_Hypothesis_Proto_3  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
+                .Null_Hypothesis_Proto_3;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Null_Hypothesis_Proto_3_Vector) return Natural;
+
+   procedure Clear (Self : in out Null_Hypothesis_Proto_3_Vector);
+
+   procedure Append
+    (Self : in out Null_Hypothesis_Proto_3_Vector;
+     V    : Null_Hypothesis_Proto_3);
+
+   type Null_Hypothesis_Proto_3_Variable_Reference
+     (Element : not null access Null_Hypothesis_Proto_3) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Null_Hypothesis_Proto_3_Variable_Reference
+    (Self  : aliased in out Null_Hypothesis_Proto_3_Vector;
+     Index : Positive)
+      return Null_Hypothesis_Proto_3_Variable_Reference
+     with Inline;
+
+   type Null_Hypothesis_Proto_3_Constant_Reference
+     (Element : not null access constant Null_Hypothesis_Proto_3) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Null_Hypothesis_Proto_3_Constant_Reference
+    (Self  : aliased Null_Hypothesis_Proto_3_Vector;
+     Index : Positive)
+      return Null_Hypothesis_Proto_3_Constant_Reference
+     with Inline;
+
+   type Enum_Only_Proto_3 is null record;
+
+   type Optional_Enum_Only_Proto_3  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
+                .Enum_Only_Proto_3;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Enum_Only_Proto_3_Vector) return Natural;
+
+   procedure Clear (Self : in out Enum_Only_Proto_3_Vector);
+
+   procedure Append
+    (Self : in out Enum_Only_Proto_3_Vector;
+     V    : Enum_Only_Proto_3);
+
+   type Enum_Only_Proto_3_Variable_Reference
+     (Element : not null access Enum_Only_Proto_3) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Only_Proto_3_Variable_Reference
+    (Self  : aliased in out Enum_Only_Proto_3_Vector;
+     Index : Positive)
+      return Enum_Only_Proto_3_Variable_Reference
+     with Inline;
+
+   type Enum_Only_Proto_3_Constant_Reference
+     (Element : not null access constant Enum_Only_Proto_3) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Only_Proto_3_Constant_Reference
+    (Self  : aliased Enum_Only_Proto_3_Vector;
+     Index : Positive)
+      return Enum_Only_Proto_3_Constant_Reference
+     with Inline;
+
    type Map_String_Foreign_Message_Entry is
      record
         Key   : League.Strings.Universal_String;
@@ -1122,7 +1219,8 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       Oneof_Uint_64_Kind ,
       Oneof_Float_Kind   ,
       Oneof_Double_Kind  ,
-      Oneof_Enum_Kind    );
+      Oneof_Enum_Kind    ,
+      Oneof_Null_Value_Kind);
 
    type Test_All_Types_Proto_3_Variant
      (Oneof_Field : Test_All_Types_Proto_3_Variant_Kind := Oneof_Field_Not_Set) is
@@ -1152,6 +1250,9 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
               Oneof_Enum : Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
                 .Nested_Enum :=
                 Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOO;
+           when Oneof_Null_Value_Kind =>
+              Oneof_Null_Value : Google.Protobuf.Struct.Null_Value :=
+                Google.Protobuf.Struct.PB_NULL_VALUE;
         end case;
      end record;
 
@@ -1332,6 +1433,8 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Optional_Struct            : Google.Protobuf.Struct.Optional_Struct;
         Optional_Any               : Google.Protobuf.Any.Optional_Any;
         Optional_Value             : Google.Protobuf.Struct.Optional_Value;
+        Optional_Null_Value        : Google.Protobuf.Struct.Null_Value :=
+          Google.Protobuf.Struct.PB_NULL_VALUE;
         Repeated_Duration          : Google.Protobuf.Duration.Duration_Vector;
         Repeated_Timestamp         : Google.Protobuf.Timestamp
           .Timestamp_Vector;
@@ -2057,5 +2160,63 @@ private
    overriding procedure Adjust (Self : in out Foreign_Message_Vector);
 
    overriding procedure Finalize (Self : in out Foreign_Message_Vector);
+
+   procedure Read_Null_Hypothesis_Proto_3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Null_Hypothesis_Proto_3);
+
+   procedure Write_Null_Hypothesis_Proto_3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Null_Hypothesis_Proto_3);
+
+   for Null_Hypothesis_Proto_3'Read use Read_Null_Hypothesis_Proto_3;
+
+   for Null_Hypothesis_Proto_3'Write use Write_Null_Hypothesis_Proto_3;
+
+   type Null_Hypothesis_Proto_3_Array is
+     array (Positive range <>) of aliased Null_Hypothesis_Proto_3;
+
+   type Null_Hypothesis_Proto_3_Array_Access is
+     access Null_Hypothesis_Proto_3_Array;
+
+   type Null_Hypothesis_Proto_3_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Null_Hypothesis_Proto_3_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Null_Hypothesis_Proto_3_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Null_Hypothesis_Proto_3_Vector);
+
+   procedure Read_Enum_Only_Proto_3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Enum_Only_Proto_3);
+
+   procedure Write_Enum_Only_Proto_3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Enum_Only_Proto_3);
+
+   for Enum_Only_Proto_3'Read use Read_Enum_Only_Proto_3;
+
+   for Enum_Only_Proto_3'Write use Write_Enum_Only_Proto_3;
+
+   type Enum_Only_Proto_3_Array is
+     array (Positive range <>) of aliased Enum_Only_Proto_3;
+
+   type Enum_Only_Proto_3_Array_Access is access Enum_Only_Proto_3_Array;
+
+   type Enum_Only_Proto_3_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Enum_Only_Proto_3_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Enum_Only_Proto_3_Vector);
+
+   overriding procedure Finalize (Self : in out Enum_Only_Proto_3_Vector);
 
 end Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3;

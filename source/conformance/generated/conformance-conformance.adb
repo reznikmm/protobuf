@@ -4,25 +4,25 @@ with PB_Support.Internal;
 
 package body Conformance.Conformance is
 
-   package Jspb_Encoding_Config_IO is
+   package Conformance_Jspb_Encoding_Config_IO is
      new PB_Support.IO.Message_IO
        (Conformance.Jspb_Encoding_Config,
         Conformance.Jspb_Encoding_Config_Vector, Conformance.Append);
 
-   type Integer_Test_Category is  range 0 .. 5
+   type Integer_Conformance_Test_Category is  range 0 .. 5
      with Size => Conformance.Test_Category'Size;
 
-   package Test_Category_IO is
+   package Conformance_Test_Category_IO is
      new PB_Support.IO.Enum_IO
-       (Conformance.Test_Category, Integer_Test_Category,
+       (Conformance.Test_Category, Integer_Conformance_Test_Category,
         Conformance.Test_Category_Vectors);
 
-   type Integer_Wire_Format is  range 0 .. 4
+   type Integer_Conformance_Wire_Format is  range 0 .. 4
      with Size => Conformance.Wire_Format'Size;
 
-   package Wire_Format_IO is
+   package Conformance_Wire_Format_IO is
      new PB_Support.IO.Enum_IO
-       (Conformance.Wire_Format, Integer_Wire_Format,
+       (Conformance.Wire_Format, Integer_Conformance_Wire_Format,
         Conformance.Wire_Format_Vectors);
 
    function Length (Self : Failure_Set_Vector) return Natural is
@@ -218,17 +218,18 @@ package body Conformance.Conformance is
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Text_Payload);
             when 3 =>
-               Wire_Format_IO.Read
+               Conformance_Wire_Format_IO.Read
                  (Stream, Key.Encoding, V.Requested_Output_Format);
             when 4 =>
                PB_Support.IO.Read (Stream, Key.Encoding, V.Message_Type);
             when 5 =>
-               Test_Category_IO.Read (Stream, Key.Encoding, V.Test_Category);
+               Conformance_Test_Category_IO.Read
+                 (Stream, Key.Encoding, V.Test_Category);
             when 6 =>
                if  not V.Jspb_Encoding_Options.Is_Set then
                   V.Jspb_Encoding_Options := (True, others => <>);
                end if;
-               Jspb_Encoding_Config_IO.Read
+               Conformance_Jspb_Encoding_Config_IO.Read
                  (Stream, Key.Encoding, V.Jspb_Encoding_Options.Value);
             when 9 =>
                PB_Support.IO.Read
@@ -256,10 +257,10 @@ package body Conformance.Conformance is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         Wire_Format_IO.Write_Option
+         Conformance_Wire_Format_IO.Write_Option
            (WS, 3, V.Requested_Output_Format, Conformance.UNSPECIFIED);
          WS.Write_Option (4, V.Message_Type);
-         Test_Category_IO.Write_Option
+         Conformance_Test_Category_IO.Write_Option
            (WS, 5, V.Test_Category, Conformance.UNSPECIFIED_TEST);
          if V.Jspb_Encoding_Options.Is_Set then
             WS.Write_Key ((6, PB_Support.Length_Delimited));

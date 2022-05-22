@@ -4,19 +4,21 @@ with PB_Support.Internal;
 
 package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
-   type Integer_Foreign_Enum_Proto_2 is  range 0 .. 2
+   type Integer_Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Enum_Proto_2 is
+      range 0 .. 2
      with Size =>
        Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
          .Foreign_Enum_Proto_2'Size;
 
-   package Foreign_Enum_Proto_2_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Enum_Proto_2_IO is
      new PB_Support.IO.Enum_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
-          .Foreign_Enum_Proto_2, Integer_Foreign_Enum_Proto_2,
+          .Foreign_Enum_Proto_2,
+        Integer_Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Enum_Proto_2,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Foreign_Enum_Proto_2_Vectors);
 
-   package Foreign_Message_Proto_2_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Message_Proto_2_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Foreign_Message_Proto_2,
@@ -24,7 +26,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Foreign_Message_Proto_2_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Test_All_Types_Proto_2_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Test_All_Types_Proto_2_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Test_All_Types_Proto_2,
@@ -32,13 +34,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Test_All_Types_Proto_2_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Data_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Data_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Data,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Data_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Bool_Bool_Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Bool_Bool_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Bool_Bool_Entry,
@@ -46,7 +48,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Bool_Bool_Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Fixed_32Fixed_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Fixed_32Fixed_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Fixed_32Fixed_32Entry,
@@ -54,7 +56,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Fixed_32Fixed_32Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Fixed_64Fixed_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Fixed_64Fixed_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Fixed_64Fixed_64Entry,
@@ -62,7 +64,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Fixed_64Fixed_64Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Int_32Double_Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Int_32Double_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Int_32Double_Entry,
@@ -70,7 +72,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Int_32Double_Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Int_32Float_Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Int_32Float_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Int_32Float_Entry,
@@ -78,7 +80,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Int_32Float_Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Int_32Int_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Int_32Int_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Int_32Int_32Entry,
@@ -86,7 +88,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Int_32Int_32Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Int_64Int_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Int_64Int_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Int_64Int_64Entry,
@@ -94,7 +96,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Int_64Int_64Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Sfixed_32Sfixed_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Sfixed_32Sfixed_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Sfixed_32Sfixed_32Entry,
@@ -102,7 +104,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Sfixed_32Sfixed_32Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Sfixed_64Sfixed_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Sfixed_64Sfixed_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Sfixed_64Sfixed_64Entry,
@@ -110,7 +112,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Sfixed_64Sfixed_64Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Sint_32Sint_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Sint_32Sint_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Sint_32Sint_32Entry,
@@ -118,7 +120,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Sint_32Sint_32Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Sint_64Sint_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Sint_64Sint_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Sint_64Sint_64Entry,
@@ -126,7 +128,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Sint_64Sint_64Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_String_Bytes_Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Bytes_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_String_Bytes_Entry,
@@ -134,7 +136,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_String_Bytes_Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_String_Foreign_Enum_Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Foreign_Enum_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_String_Foreign_Enum_Entry,
@@ -142,7 +144,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_String_Foreign_Enum_Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_String_Foreign_Message_Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Foreign_Message_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_String_Foreign_Message_Entry,
@@ -150,7 +152,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_String_Foreign_Message_Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_String_Nested_Enum_Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Nested_Enum_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_String_Nested_Enum_Entry,
@@ -158,7 +160,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_String_Nested_Enum_Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_String_Nested_Message_Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Nested_Message_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_String_Nested_Message_Entry,
@@ -166,7 +168,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_String_Nested_Message_Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_String_String_Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_String_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_String_String_Entry,
@@ -174,7 +176,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_String_String_Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Uint_32Uint_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Uint_32Uint_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Uint_32Uint_32Entry,
@@ -182,7 +184,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Uint_32Uint_32Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Map_Uint_64Uint_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Uint_64Uint_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Map_Uint_64Uint_64Entry,
@@ -190,25 +192,26 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Map_Uint_64Uint_64Entry_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   type Integer_Nested_Enum is  range  - 1 .. 2
+   type Integer_Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum is
+      range  - 1 .. 2
      with Size =>
        Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Nested_Enum'Size;
 
-   package Nested_Enum_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO is
      new PB_Support.IO.Enum_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Nested_Enum,
-        Integer_Nested_Enum,
+        Integer_Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Nested_Enum_Vectors);
 
-   package Nested_Message_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Message_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Nested_Message,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Nested_Message_Vector,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Append);
 
-   package Optional_Group_IO is
+   package Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Optional_Group_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Optional_Group,
         Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
@@ -380,25 +383,29 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if  not V.Optional_Nested_Message.Is_Set then
                   V.Optional_Nested_Message := (True, others => <>);
                end if;
-               Nested_Message_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Message_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optional_Nested_Message.Value);
             when 19 =>
                if  not V.Optional_Foreign_Message.Is_Set then
                   V.Optional_Foreign_Message := (True, others => <>);
                end if;
-               Foreign_Message_Proto_2_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Message_Proto_2_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optional_Foreign_Message.Value);
             when 21 =>
                if  not V.Optional_Nested_Enum.Is_Set then
                   V.Optional_Nested_Enum := (True, others => <>);
                end if;
-               Nested_Enum_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optional_Nested_Enum.Value);
             when 22 =>
                if  not V.Optional_Foreign_Enum.Is_Set then
                   V.Optional_Foreign_Enum := (True, others => <>);
                end if;
-               Foreign_Enum_Proto_2_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Enum_Proto_2_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optional_Foreign_Enum.Value);
             when 24 =>
                if  not V.Optional_String_Piece.Is_Set then
@@ -416,7 +423,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if V.Recursive_Message.Length = 0 then
                   V.Recursive_Message.Append ((others => <>));
                end if;
-               Test_All_Types_Proto_2_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Test_All_Types_Proto_2_IO
+                 .Read
                  (Stream, Key.Encoding, V.Recursive_Message (1));
             when 31 =>
                PB_Support.IO.Read_Varint_Vector
@@ -464,16 +472,20 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Bytes);
             when 48 =>
-               Nested_Message_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Message_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Nested_Message);
             when 49 =>
-               Foreign_Message_Proto_2_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Message_Proto_2_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Foreign_Message);
             when 51 =>
-               Nested_Enum_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Nested_Enum);
             when 52 =>
-               Foreign_Enum_Proto_2_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Enum_Proto_2_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Foreign_Enum);
             when 54 =>
                PB_Support.IO.Read_Vector
@@ -520,7 +532,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
             when 87 =>
                PB_Support.IO.Read_Vector (Stream, Key.Encoding, V.Packed_Bool);
             when 88 =>
-               Nested_Enum_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Packed_Nested_Enum);
             when 89 =>
                PB_Support.IO.Read_Varint_Vector
@@ -562,64 +575,84 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Bool);
             when 102 =>
-               Nested_Enum_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Nested_Enum);
             when 56 =>
-               Map_Int_32Int_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Int_32Int_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Int_32_Int_32);
             when 57 =>
-               Map_Int_64Int_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Int_64Int_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Int_64_Int_64);
             when 58 =>
-               Map_Uint_32Uint_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Uint_32Uint_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Uint_32_Uint_32);
             when 59 =>
-               Map_Uint_64Uint_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Uint_64Uint_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Uint_64_Uint_64);
             when 60 =>
-               Map_Sint_32Sint_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Sint_32Sint_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Sint_32_Sint_32);
             when 61 =>
-               Map_Sint_64Sint_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Sint_64Sint_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Sint_64_Sint_64);
             when 62 =>
-               Map_Fixed_32Fixed_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Fixed_32Fixed_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Fixed_32_Fixed_32);
             when 63 =>
-               Map_Fixed_64Fixed_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Fixed_64Fixed_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Fixed_64_Fixed_64);
             when 64 =>
-               Map_Sfixed_32Sfixed_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Sfixed_32Sfixed_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Sfixed_32_Sfixed_32);
             when 65 =>
-               Map_Sfixed_64Sfixed_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Sfixed_64Sfixed_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Sfixed_64_Sfixed_64);
             when 66 =>
-               Map_Int_32Float_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Int_32Float_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Int_32_Float);
             when 67 =>
-               Map_Int_32Double_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Int_32Double_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Int_32_Double);
             when 68 =>
-               Map_Bool_Bool_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_Bool_Bool_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Bool_Bool);
             when 69 =>
-               Map_String_String_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_String_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_String);
             when 70 =>
-               Map_String_Bytes_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Bytes_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Bytes);
             when 71 =>
-               Map_String_Nested_Message_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Nested_Message_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Nested_Message);
             when 72 =>
-               Map_String_Foreign_Message_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Foreign_Message_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Foreign_Message);
             when 73 =>
-               Map_String_Nested_Enum_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Nested_Enum_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Nested_Enum);
             when 74 =>
-               Map_String_Foreign_Enum_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Map_String_Foreign_Enum_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Foreign_Enum);
             when 111 =>
                if V.Variant.Oneof_Field /= Oneof_Uint_32_Kind then
@@ -631,7 +664,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if V.Variant.Oneof_Field /= Oneof_Nested_Message_Kind then
                   V.Variant := (Oneof_Nested_Message_Kind, others => <>);
                end if;
-               Nested_Message_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Message_IO
+                 .Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Nested_Message);
             when 113 =>
                if V.Variant.Oneof_Field /= Oneof_String_Kind then
@@ -672,13 +706,105 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if V.Variant.Oneof_Field /= Oneof_Enum_Kind then
                   V.Variant := (Oneof_Enum_Kind, others => <>);
                end if;
-               Nested_Enum_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+                 .Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Enum);
             when 201 =>
                if  not V.Data.Is_Set then
                   V.Data := (True, others => <>);
                end if;
-               Data_IO.Read (Stream, Key.Encoding, V.Data.Value);
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Data_IO
+                 .Read
+                 (Stream, Key.Encoding, V.Data.Value);
+            when 241 =>
+               if  not V.Default_Int_32.Is_Set then
+                  V.Default_Int_32 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Default_Int_32.Value);
+            when 242 =>
+               if  not V.Default_Int_64.Is_Set then
+                  V.Default_Int_64 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Default_Int_64.Value);
+            when 243 =>
+               if  not V.Default_Uint_32.Is_Set then
+                  V.Default_Uint_32 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Default_Uint_32.Value);
+            when 244 =>
+               if  not V.Default_Uint_64.Is_Set then
+                  V.Default_Uint_64 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Default_Uint_64.Value);
+            when 245 =>
+               if  not V.Default_Sint_32.Is_Set then
+                  V.Default_Sint_32 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Zigzag
+                 (Stream, Key.Encoding, V.Default_Sint_32.Value);
+            when 246 =>
+               if  not V.Default_Sint_64.Is_Set then
+                  V.Default_Sint_64 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Zigzag
+                 (Stream, Key.Encoding, V.Default_Sint_64.Value);
+            when 247 =>
+               if  not V.Default_Fixed_32.Is_Set then
+                  V.Default_Fixed_32 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Fixed
+                 (Stream, Key.Encoding, V.Default_Fixed_32.Value);
+            when 248 =>
+               if  not V.Default_Fixed_64.Is_Set then
+                  V.Default_Fixed_64 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Fixed
+                 (Stream, Key.Encoding, V.Default_Fixed_64.Value);
+            when 249 =>
+               if  not V.Default_Sfixed_32.Is_Set then
+                  V.Default_Sfixed_32 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Fixed
+                 (Stream, Key.Encoding, V.Default_Sfixed_32.Value);
+            when 250 =>
+               if  not V.Default_Sfixed_64.Is_Set then
+                  V.Default_Sfixed_64 := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Fixed
+                 (Stream, Key.Encoding, V.Default_Sfixed_64.Value);
+            when 251 =>
+               if  not V.Default_Float.Is_Set then
+                  V.Default_Float := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Default_Float.Value);
+            when 252 =>
+               if  not V.Default_Double.Is_Set then
+                  V.Default_Double := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Default_Double.Value);
+            when 253 =>
+               if  not V.Default_Bool.Is_Set then
+                  V.Default_Bool := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Default_Bool.Value);
+            when 254 =>
+               if  not V.Default_String.Is_Set then
+                  V.Default_String := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Default_String.Value);
+            when 255 =>
+               if  not V.Default_Bytes.Is_Set then
+                  V.Default_Bytes := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Default_Bytes.Value);
             when 401 =>
                if  not V.Fieldname_1.Is_Set then
                   V.Fieldname_1 := (True, others => <>);
@@ -868,10 +994,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
               (Stream, V.Optional_Foreign_Message.Value);
          end if;
          if V.Optional_Nested_Enum.Is_Set then
-            Nested_Enum_IO.Write (WS, 21, V.Optional_Nested_Enum.Value);
+            Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+              .Write
+              (WS, 21, V.Optional_Nested_Enum.Value);
          end if;
          if V.Optional_Foreign_Enum.Is_Set then
-            Foreign_Enum_Proto_2_IO.Write
+            Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Enum_Proto_2_IO
+              .Write
               (WS, 22, V.Optional_Foreign_Enum.Value);
          end if;
          if V.Optional_String_Piece.Is_Set then
@@ -913,8 +1042,12 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
               .Foreign_Message_Proto_2'Write
               (Stream, V.Repeated_Foreign_Message (J));
          end loop;
-         Nested_Enum_IO.Write (WS, 51, V.Repeated_Nested_Enum);
-         Foreign_Enum_Proto_2_IO.Write (WS, 52, V.Repeated_Foreign_Enum);
+         Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+           .Write
+           (WS, 51, V.Repeated_Nested_Enum);
+         Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Enum_Proto_2_IO
+           .Write
+           (WS, 52, V.Repeated_Foreign_Enum);
          WS.Write (54, V.Repeated_String_Piece);
          WS.Write (55, V.Repeated_Cord);
          WS.Write_Varint_Packed (75, V.Packed_Int_32);
@@ -930,7 +1063,9 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          WS.Write_Packed (85, V.Packed_Float);
          WS.Write_Packed (86, V.Packed_Double);
          WS.Write_Packed (87, V.Packed_Bool);
-         Nested_Enum_IO.Write_Packed (WS, 88, V.Packed_Nested_Enum);
+         Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+           .Write_Packed
+           (WS, 88, V.Packed_Nested_Enum);
          WS.Write_Varint (89, V.Unpacked_Int_32);
          WS.Write_Varint (90, V.Unpacked_Int_64);
          WS.Write_Varint (91, V.Unpacked_Uint_32);
@@ -944,7 +1079,9 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          WS.Write (99, V.Unpacked_Float);
          WS.Write (100, V.Unpacked_Double);
          WS.Write (101, V.Unpacked_Bool);
-         Nested_Enum_IO.Write (WS, 102, V.Unpacked_Nested_Enum);
+         Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+           .Write
+           (WS, 102, V.Unpacked_Nested_Enum);
          for J in 1 .. V.Map_Int_32_Int_32.Length loop
             WS.Write_Key ((56, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
@@ -1064,6 +1201,51 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
             Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Data'Write
               (Stream, V.Data.Value);
          end if;
+         if V.Default_Int_32.Is_Set then
+            WS.Write_Varint (241, V.Default_Int_32.Value);
+         end if;
+         if V.Default_Int_64.Is_Set then
+            WS.Write_Varint (242, V.Default_Int_64.Value);
+         end if;
+         if V.Default_Uint_32.Is_Set then
+            WS.Write_Varint (243, V.Default_Uint_32.Value);
+         end if;
+         if V.Default_Uint_64.Is_Set then
+            WS.Write_Varint (244, V.Default_Uint_64.Value);
+         end if;
+         if V.Default_Sint_32.Is_Set then
+            WS.Write_Zigzag (245, V.Default_Sint_32.Value);
+         end if;
+         if V.Default_Sint_64.Is_Set then
+            WS.Write_Zigzag (246, V.Default_Sint_64.Value);
+         end if;
+         if V.Default_Fixed_32.Is_Set then
+            WS.Write_Fixed (247, V.Default_Fixed_32.Value);
+         end if;
+         if V.Default_Fixed_64.Is_Set then
+            WS.Write_Fixed (248, V.Default_Fixed_64.Value);
+         end if;
+         if V.Default_Sfixed_32.Is_Set then
+            WS.Write_Fixed (249, V.Default_Sfixed_32.Value);
+         end if;
+         if V.Default_Sfixed_64.Is_Set then
+            WS.Write_Fixed (250, V.Default_Sfixed_64.Value);
+         end if;
+         if V.Default_Float.Is_Set then
+            WS.Write (251, V.Default_Float.Value);
+         end if;
+         if V.Default_Double.Is_Set then
+            WS.Write (252, V.Default_Double.Value);
+         end if;
+         if V.Default_Bool.Is_Set then
+            WS.Write (253, V.Default_Bool.Value);
+         end if;
+         if V.Default_String.Is_Set then
+            WS.Write (254, V.Default_String.Value);
+         end if;
+         if V.Default_Bytes.Is_Set then
+            WS.Write (255, V.Default_Bytes.Value);
+         end if;
          if V.Fieldname_1.Is_Set then
             WS.Write_Varint (401, V.Fieldname_1.Value);
          end if;
@@ -1139,7 +1321,9 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
             when Oneof_Double_Kind =>
                WS.Write (118, V.Variant.Oneof_Double);
             when Oneof_Enum_Kind =>
-               Nested_Enum_IO.Write (WS, 119, V.Variant.Oneof_Enum);
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+                 .Write
+                 (WS, 119, V.Variant.Oneof_Enum);
             when Oneof_Field_Not_Set =>
                null;
          end case;
@@ -1226,7 +1410,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if V.Corecursive.Length = 0 then
                   V.Corecursive.Append ((others => <>));
                end if;
-               Test_All_Types_Proto_2_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Test_All_Types_Proto_2_IO
+                 .Read
                  (Stream, Key.Encoding, V.Corecursive (1));
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -3111,7 +3296,9 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
                end if;
-               Nested_Message_IO.Read (Stream, Key.Encoding, V.Value.Value);
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Message_IO
+                 .Read
+                 (Stream, Key.Encoding, V.Value.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3237,7 +3424,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
                end if;
-               Foreign_Message_Proto_2_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Message_Proto_2_IO
+                 .Read
                  (Stream, Key.Encoding, V.Value.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -3363,7 +3551,9 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
                end if;
-               Nested_Enum_IO.Read (Stream, Key.Encoding, V.Value.Value);
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+                 .Read
+                 (Stream, Key.Encoding, V.Value.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3391,7 +3581,9 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
             WS.Write (1, V.Key.Value);
          end if;
          if V.Value.Is_Set then
-            Nested_Enum_IO.Write (WS, 2, V.Value.Value);
+            Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Nested_Enum_IO
+              .Write
+              (WS, 2, V.Value.Value);
          end if;
          if WS.End_Message then
             Write_Map_String_Nested_Enum_Entry (WS'Access, V);
@@ -3486,7 +3678,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
                end if;
-               Foreign_Enum_Proto_2_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Enum_Proto_2_IO
+                 .Read
                  (Stream, Key.Encoding, V.Value.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -3515,7 +3708,9 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
             WS.Write (1, V.Key.Value);
          end if;
          if V.Value.Is_Set then
-            Foreign_Enum_Proto_2_IO.Write (WS, 2, V.Value.Value);
+            Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Enum_Proto_2_IO
+              .Write
+              (WS, 2, V.Value.Value);
          end if;
          if WS.End_Message then
             Write_Map_String_Foreign_Enum_Entry (WS'Access, V);
@@ -4161,13 +4356,15 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
                if  not V.Nested_Message.Is_Set then
                   V.Nested_Message := (True, others => <>);
                end if;
-               Foreign_Message_Proto_2_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Foreign_Message_Proto_2_IO
+                 .Read
                  (Stream, Key.Encoding, V.Nested_Message.Value);
             when 1004 =>
                if  not V.Optionalgroup.Is_Set then
                   V.Optionalgroup := (True, others => <>);
                end if;
-               Optional_Group_IO.Read
+               Protobuf_Test_Messages_Proto_2_Test_Messages_Proto_2_Optional_Group_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optionalgroup.Value);
             when 1006 =>
                if  not V.Optional_Bool.Is_Set then
@@ -4333,5 +4530,312 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
          end if;
       end;
    end Write_Optional_Group;
+
+   function Length (Self : Null_Hypothesis_Proto_2_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Null_Hypothesis_Proto_2_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Null_Hypothesis_Proto_2_Array, Null_Hypothesis_Proto_2_Array_Access);
+
+   procedure Append
+    (Self : in out Null_Hypothesis_Proto_2_Vector;
+     V    : Null_Hypothesis_Proto_2) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Null_Hypothesis_Proto_2'Size);
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Null_Hypothesis_Proto_2_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Self.Data :=
+           new Null_Hypothesis_Proto_2_Array'
+             (Self.Data.all
+                & Null_Hypothesis_Proto_2_Array'(1 .. Self.Length => <>));
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust
+    (Self : in out Null_Hypothesis_Proto_2_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new Null_Hypothesis_Proto_2_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize
+    (Self : in out Null_Hypothesis_Proto_2_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Null_Hypothesis_Proto_2_Variable_Reference
+    (Self  : aliased in out Null_Hypothesis_Proto_2_Vector;
+     Index : Positive)
+      return Null_Hypothesis_Proto_2_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Null_Hypothesis_Proto_2_Variable_Reference;
+
+   not overriding function Get_Null_Hypothesis_Proto_2_Constant_Reference
+    (Self  : aliased Null_Hypothesis_Proto_2_Vector;
+     Index : Positive)
+      return Null_Hypothesis_Proto_2_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Null_Hypothesis_Proto_2_Constant_Reference;
+
+   procedure Read_Null_Hypothesis_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Null_Hypothesis_Proto_2) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Null_Hypothesis_Proto_2;
+
+   procedure Write_Null_Hypothesis_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Null_Hypothesis_Proto_2) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Null_Hypothesis_Proto_2 (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if WS.End_Message then
+            Write_Null_Hypothesis_Proto_2 (WS'Access, V);
+         end if;
+      end;
+   end Write_Null_Hypothesis_Proto_2;
+
+   function Length (Self : Enum_Only_Proto_2_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Enum_Only_Proto_2_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Enum_Only_Proto_2_Array, Enum_Only_Proto_2_Array_Access);
+
+   procedure Append
+    (Self : in out Enum_Only_Proto_2_Vector;
+     V    : Enum_Only_Proto_2) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Enum_Only_Proto_2'Size);
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Enum_Only_Proto_2_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Self.Data :=
+           new Enum_Only_Proto_2_Array'
+             (Self.Data.all
+                & Enum_Only_Proto_2_Array'(1 .. Self.Length => <>));
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Enum_Only_Proto_2_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new Enum_Only_Proto_2_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Enum_Only_Proto_2_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Enum_Only_Proto_2_Variable_Reference
+    (Self  : aliased in out Enum_Only_Proto_2_Vector;
+     Index : Positive)
+      return Enum_Only_Proto_2_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Only_Proto_2_Variable_Reference;
+
+   not overriding function Get_Enum_Only_Proto_2_Constant_Reference
+    (Self  : aliased Enum_Only_Proto_2_Vector;
+     Index : Positive)
+      return Enum_Only_Proto_2_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Only_Proto_2_Constant_Reference;
+
+   procedure Read_Enum_Only_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Enum_Only_Proto_2) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Enum_Only_Proto_2;
+
+   procedure Write_Enum_Only_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Enum_Only_Proto_2) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Enum_Only_Proto_2 (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if WS.End_Message then
+            Write_Enum_Only_Proto_2 (WS'Access, V);
+         end if;
+      end;
+   end Write_Enum_Only_Proto_2;
+
+   function Length (Self : One_String_Proto_2_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out One_String_Proto_2_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (One_String_Proto_2_Array, One_String_Proto_2_Array_Access);
+
+   procedure Append
+    (Self : in out One_String_Proto_2_Vector;
+     V    : One_String_Proto_2) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / One_String_Proto_2'Size);
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new One_String_Proto_2_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Self.Data :=
+           new One_String_Proto_2_Array'
+             (Self.Data.all
+                & One_String_Proto_2_Array'(1 .. Self.Length => <>));
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out One_String_Proto_2_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new One_String_Proto_2_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out One_String_Proto_2_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_One_String_Proto_2_Variable_Reference
+    (Self  : aliased in out One_String_Proto_2_Vector;
+     Index : Positive)
+      return One_String_Proto_2_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_One_String_Proto_2_Variable_Reference;
+
+   not overriding function Get_One_String_Proto_2_Constant_Reference
+    (Self  : aliased One_String_Proto_2_Vector;
+     Index : Positive)
+      return One_String_Proto_2_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_One_String_Proto_2_Constant_Reference;
+
+   procedure Read_One_String_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out One_String_Proto_2) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 1 =>
+               if  not V.Data.Is_Set then
+                  V.Data := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Data.Value);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_One_String_Proto_2;
+
+   procedure Write_One_String_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : One_String_Proto_2) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_One_String_Proto_2 (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if V.Data.Is_Set then
+            WS.Write (1, V.Data.Value);
+         end if;
+         if WS.End_Message then
+            Write_One_String_Proto_2 (WS'Access, V);
+         end if;
+      end;
+   end Write_One_String_Proto_2;
 
 end Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2;

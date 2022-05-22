@@ -4,118 +4,128 @@ with PB_Support.Internal;
 
 package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
-   package Any_IO is
+   package Google_Protobuf_Any_Any_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Any.Any, Google.Protobuf.Any.Any_Vector,
         Google.Protobuf.Any.Append);
 
-   package Bool_Value_IO is
+   package Google_Protobuf_Wrappers_Bool_Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Bool_Value,
         Google.Protobuf.Wrappers.Bool_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
-   package Bytes_Value_IO is
+   package Google_Protobuf_Wrappers_Bytes_Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Bytes_Value,
         Google.Protobuf.Wrappers.Bytes_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
-   package Double_Value_IO is
+   package Google_Protobuf_Wrappers_Double_Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Double_Value,
         Google.Protobuf.Wrappers.Double_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
-   package Duration_IO is
+   package Google_Protobuf_Duration_Duration_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Duration.Duration,
         Google.Protobuf.Duration.Duration_Vector,
         Google.Protobuf.Duration.Append);
 
-   package Field_Mask_IO is
+   package Google_Protobuf_Field_Mask_Field_Mask_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Field_Mask.Field_Mask,
         Google.Protobuf.Field_Mask.Field_Mask_Vector,
         Google.Protobuf.Field_Mask.Append);
 
-   package Float_Value_IO is
+   package Google_Protobuf_Wrappers_Float_Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Float_Value,
         Google.Protobuf.Wrappers.Float_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
-   package Int_32Value_IO is
+   package Google_Protobuf_Wrappers_Int_32Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Int_32Value,
         Google.Protobuf.Wrappers.Int_32Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
-   package Int_64Value_IO is
+   package Google_Protobuf_Wrappers_Int_64Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Int_64Value,
         Google.Protobuf.Wrappers.Int_64Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
-   package List_Value_IO is
+   package Google_Protobuf_Struct_List_Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Struct.List_Value,
         Google.Protobuf.Struct.List_Value_Vector,
         Google.Protobuf.Struct.Append);
 
-   package String_Value_IO is
+   type Integer_Google_Protobuf_Struct_Null_Value is  range 0 .. 0
+     with Size => Google.Protobuf.Struct.Null_Value'Size;
+
+   package Google_Protobuf_Struct_Null_Value_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Struct.Null_Value,
+        Integer_Google_Protobuf_Struct_Null_Value,
+        Google.Protobuf.Struct.Null_Value_Vectors);
+
+   package Google_Protobuf_Wrappers_String_Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.String_Value,
         Google.Protobuf.Wrappers.String_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
-   package Struct_IO is
+   package Google_Protobuf_Struct_Struct_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Struct.Struct, Google.Protobuf.Struct.Struct_Vector,
         Google.Protobuf.Struct.Append);
 
-   package Timestamp_IO is
+   package Google_Protobuf_Timestamp_Timestamp_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Timestamp.Timestamp,
         Google.Protobuf.Timestamp.Timestamp_Vector,
         Google.Protobuf.Timestamp.Append);
 
-   package UInt_32Value_IO is
+   package Google_Protobuf_Wrappers_UInt_32Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.UInt_32Value,
         Google.Protobuf.Wrappers.UInt_32Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
-   package UInt_64Value_IO is
+   package Google_Protobuf_Wrappers_UInt_64Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.UInt_64Value,
         Google.Protobuf.Wrappers.UInt_64Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
-   package Value_IO is
+   package Google_Protobuf_Struct_Value_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Struct.Value, Google.Protobuf.Struct.Value_Vector,
         Google.Protobuf.Struct.Append);
 
-   type Integer_Foreign_Enum is  range 0 .. 2
+   type Integer_Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum is
+      range 0 .. 2
      with Size =>
        Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Foreign_Enum'Size;
 
-   package Foreign_Enum_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum_IO is
      new PB_Support.IO.Enum_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Foreign_Enum,
-        Integer_Foreign_Enum,
+        Integer_Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Foreign_Enum_Vectors);
 
-   package Foreign_Message_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Message_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Foreign_Message,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Foreign_Message_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Test_All_Types_Proto_3_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Test_All_Types_Proto_3_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Test_All_Types_Proto_3,
@@ -123,18 +133,19 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Test_All_Types_Proto_3_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   type Integer_Aliased_Enum is  range 0 .. 2
+   type Integer_Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Aliased_Enum is
+      range 0 .. 2
      with Size =>
        Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Aliased_Enum'Size;
 
-   package Aliased_Enum_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Aliased_Enum_IO is
      new PB_Support.IO.Enum_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Aliased_Enum,
-        Integer_Aliased_Enum,
+        Integer_Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Aliased_Enum,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Aliased_Enum_Vectors);
 
-   package Map_Bool_Bool_Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Bool_Bool_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Bool_Bool_Entry,
@@ -142,7 +153,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Bool_Bool_Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Fixed_32Fixed_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Fixed_32Fixed_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Fixed_32Fixed_32Entry,
@@ -150,7 +161,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Fixed_32Fixed_32Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Fixed_64Fixed_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Fixed_64Fixed_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Fixed_64Fixed_64Entry,
@@ -158,7 +169,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Fixed_64Fixed_64Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Int_32Double_Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_32Double_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Int_32Double_Entry,
@@ -166,7 +177,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Int_32Double_Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Int_32Float_Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_32Float_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Int_32Float_Entry,
@@ -174,7 +185,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Int_32Float_Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Int_32Int_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_32Int_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Int_32Int_32Entry,
@@ -182,7 +193,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Int_32Int_32Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Int_64Int_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_64Int_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Int_64Int_64Entry,
@@ -190,7 +201,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Int_64Int_64Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Sfixed_32Sfixed_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sfixed_32Sfixed_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Sfixed_32Sfixed_32Entry,
@@ -198,7 +209,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Sfixed_32Sfixed_32Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Sfixed_64Sfixed_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sfixed_64Sfixed_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Sfixed_64Sfixed_64Entry,
@@ -206,7 +217,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Sfixed_64Sfixed_64Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Sint_32Sint_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sint_32Sint_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Sint_32Sint_32Entry,
@@ -214,7 +225,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Sint_32Sint_32Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Sint_64Sint_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sint_64Sint_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Sint_64Sint_64Entry,
@@ -222,7 +233,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Sint_64Sint_64Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_String_Bytes_Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Bytes_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Bytes_Entry,
@@ -230,7 +241,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_String_Bytes_Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_String_Foreign_Enum_Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Foreign_Enum_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Foreign_Enum_Entry,
@@ -238,7 +249,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_String_Foreign_Enum_Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_String_Foreign_Message_Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Foreign_Message_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Foreign_Message_Entry,
@@ -246,7 +257,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_String_Foreign_Message_Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_String_Nested_Enum_Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Nested_Enum_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Nested_Enum_Entry,
@@ -254,7 +265,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_String_Nested_Enum_Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_String_Nested_Message_Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Nested_Message_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Nested_Message_Entry,
@@ -262,7 +273,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_String_Nested_Message_Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_String_String_Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_String_Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_String_Entry,
@@ -270,7 +281,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_String_String_Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Uint_32Uint_32Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Uint_32Uint_32Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Uint_32Uint_32Entry,
@@ -278,7 +289,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Uint_32Uint_32Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   package Map_Uint_64Uint_64Entry_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Uint_64Uint_64Entry_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Uint_64Uint_64Entry,
@@ -286,18 +297,19 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Map_Uint_64Uint_64Entry_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
-   type Integer_Nested_Enum is  range  - 1 .. 2
+   type Integer_Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum is
+      range  - 1 .. 2
      with Size =>
        Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Nested_Enum'Size;
 
-   package Nested_Enum_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO is
      new PB_Support.IO.Enum_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Nested_Enum,
-        Integer_Nested_Enum,
+        Integer_Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Nested_Enum_Vectors);
 
-   package Nested_Message_IO is
+   package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Message_IO is
      new PB_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Nested_Message,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -419,22 +431,27 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                if  not V.Optional_Nested_Message.Is_Set then
                   V.Optional_Nested_Message := (True, others => <>);
                end if;
-               Nested_Message_IO.Read
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Message_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optional_Nested_Message.Value);
             when 19 =>
                if  not V.Optional_Foreign_Message.Is_Set then
                   V.Optional_Foreign_Message := (True, others => <>);
                end if;
-               Foreign_Message_IO.Read
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Message_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optional_Foreign_Message.Value);
             when 21 =>
-               Nested_Enum_IO.Read
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optional_Nested_Enum);
             when 22 =>
-               Foreign_Enum_IO.Read
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optional_Foreign_Enum);
             when 23 =>
-               Aliased_Enum_IO.Read
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Aliased_Enum_IO
+                 .Read
                  (Stream, Key.Encoding, V.Optional_Aliased_Enum);
             when 24 =>
                PB_Support.IO.Read
@@ -445,7 +462,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                if V.Recursive_Message.Length = 0 then
                   V.Recursive_Message.Append ((others => <>));
                end if;
-               Test_All_Types_Proto_3_IO.Read
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Test_All_Types_Proto_3_IO
+                 .Read
                  (Stream, Key.Encoding, V.Recursive_Message (1));
             when 31 =>
                PB_Support.IO.Read_Varint_Vector
@@ -493,16 +511,20 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Bytes);
             when 48 =>
-               Nested_Message_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Message_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Nested_Message);
             when 49 =>
-               Foreign_Message_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Message_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Foreign_Message);
             when 51 =>
-               Nested_Enum_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Nested_Enum);
             when 52 =>
-               Foreign_Enum_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Foreign_Enum);
             when 54 =>
                PB_Support.IO.Read_Vector
@@ -549,7 +571,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             when 87 =>
                PB_Support.IO.Read_Vector (Stream, Key.Encoding, V.Packed_Bool);
             when 88 =>
-               Nested_Enum_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Packed_Nested_Enum);
             when 89 =>
                PB_Support.IO.Read_Varint_Vector
@@ -591,64 +614,84 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Bool);
             when 102 =>
-               Nested_Enum_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Nested_Enum);
             when 56 =>
-               Map_Int_32Int_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_32Int_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Int_32_Int_32);
             when 57 =>
-               Map_Int_64Int_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_64Int_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Int_64_Int_64);
             when 58 =>
-               Map_Uint_32Uint_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Uint_32Uint_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Uint_32_Uint_32);
             when 59 =>
-               Map_Uint_64Uint_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Uint_64Uint_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Uint_64_Uint_64);
             when 60 =>
-               Map_Sint_32Sint_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sint_32Sint_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Sint_32_Sint_32);
             when 61 =>
-               Map_Sint_64Sint_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sint_64Sint_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Sint_64_Sint_64);
             when 62 =>
-               Map_Fixed_32Fixed_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Fixed_32Fixed_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Fixed_32_Fixed_32);
             when 63 =>
-               Map_Fixed_64Fixed_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Fixed_64Fixed_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Fixed_64_Fixed_64);
             when 64 =>
-               Map_Sfixed_32Sfixed_32Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sfixed_32Sfixed_32Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Sfixed_32_Sfixed_32);
             when 65 =>
-               Map_Sfixed_64Sfixed_64Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sfixed_64Sfixed_64Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Sfixed_64_Sfixed_64);
             when 66 =>
-               Map_Int_32Float_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_32Float_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Int_32_Float);
             when 67 =>
-               Map_Int_32Double_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_32Double_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Int_32_Double);
             when 68 =>
-               Map_Bool_Bool_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Bool_Bool_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_Bool_Bool);
             when 69 =>
-               Map_String_String_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_String_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_String);
             when 70 =>
-               Map_String_Bytes_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Bytes_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Bytes);
             when 71 =>
-               Map_String_Nested_Message_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Nested_Message_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Nested_Message);
             when 72 =>
-               Map_String_Foreign_Message_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Foreign_Message_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Foreign_Message);
             when 73 =>
-               Map_String_Nested_Enum_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Nested_Enum_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Nested_Enum);
             when 74 =>
-               Map_String_Foreign_Enum_Entry_IO.Read_Vector
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Foreign_Enum_Entry_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Map_String_Foreign_Enum);
             when 111 =>
                if V.Variant.Oneof_Field /= Oneof_Uint_32_Kind then
@@ -660,7 +703,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                if V.Variant.Oneof_Field /= Oneof_Nested_Message_Kind then
                   V.Variant := (Oneof_Nested_Message_Kind, others => <>);
                end if;
-               Nested_Message_IO.Read
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Message_IO
+                 .Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Nested_Message);
             when 113 =>
                if V.Variant.Oneof_Field /= Oneof_String_Kind then
@@ -701,139 +745,155 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                if V.Variant.Oneof_Field /= Oneof_Enum_Kind then
                   V.Variant := (Oneof_Enum_Kind, others => <>);
                end if;
-               Nested_Enum_IO.Read
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+                 .Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Enum);
+            when 120 =>
+               if V.Variant.Oneof_Field /= Oneof_Null_Value_Kind then
+                  V.Variant := (Oneof_Null_Value_Kind, others => <>);
+               end if;
+               Google_Protobuf_Struct_Null_Value_IO.Read
+                 (Stream, Key.Encoding, V.Variant.Oneof_Null_Value);
             when 201 =>
                if  not V.Optional_Bool_Wrapper.Is_Set then
                   V.Optional_Bool_Wrapper := (True, others => <>);
                end if;
-               Bool_Value_IO.Read
+               Google_Protobuf_Wrappers_Bool_Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_Bool_Wrapper.Value);
             when 202 =>
                if  not V.Optional_Int_32_Wrapper.Is_Set then
                   V.Optional_Int_32_Wrapper := (True, others => <>);
                end if;
-               Int_32Value_IO.Read
+               Google_Protobuf_Wrappers_Int_32Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_Int_32_Wrapper.Value);
             when 203 =>
                if  not V.Optional_Int_64_Wrapper.Is_Set then
                   V.Optional_Int_64_Wrapper := (True, others => <>);
                end if;
-               Int_64Value_IO.Read
+               Google_Protobuf_Wrappers_Int_64Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_Int_64_Wrapper.Value);
             when 204 =>
                if  not V.Optional_Uint_32_Wrapper.Is_Set then
                   V.Optional_Uint_32_Wrapper := (True, others => <>);
                end if;
-               UInt_32Value_IO.Read
+               Google_Protobuf_Wrappers_UInt_32Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_Uint_32_Wrapper.Value);
             when 205 =>
                if  not V.Optional_Uint_64_Wrapper.Is_Set then
                   V.Optional_Uint_64_Wrapper := (True, others => <>);
                end if;
-               UInt_64Value_IO.Read
+               Google_Protobuf_Wrappers_UInt_64Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_Uint_64_Wrapper.Value);
             when 206 =>
                if  not V.Optional_Float_Wrapper.Is_Set then
                   V.Optional_Float_Wrapper := (True, others => <>);
                end if;
-               Float_Value_IO.Read
+               Google_Protobuf_Wrappers_Float_Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_Float_Wrapper.Value);
             when 207 =>
                if  not V.Optional_Double_Wrapper.Is_Set then
                   V.Optional_Double_Wrapper := (True, others => <>);
                end if;
-               Double_Value_IO.Read
+               Google_Protobuf_Wrappers_Double_Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_Double_Wrapper.Value);
             when 208 =>
                if  not V.Optional_String_Wrapper.Is_Set then
                   V.Optional_String_Wrapper := (True, others => <>);
                end if;
-               String_Value_IO.Read
+               Google_Protobuf_Wrappers_String_Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_String_Wrapper.Value);
             when 209 =>
                if  not V.Optional_Bytes_Wrapper.Is_Set then
                   V.Optional_Bytes_Wrapper := (True, others => <>);
                end if;
-               Bytes_Value_IO.Read
+               Google_Protobuf_Wrappers_Bytes_Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_Bytes_Wrapper.Value);
             when 211 =>
-               Bool_Value_IO.Read_Vector
+               Google_Protobuf_Wrappers_Bool_Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Bool_Wrapper);
             when 212 =>
-               Int_32Value_IO.Read_Vector
+               Google_Protobuf_Wrappers_Int_32Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Int_32_Wrapper);
             when 213 =>
-               Int_64Value_IO.Read_Vector
+               Google_Protobuf_Wrappers_Int_64Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Int_64_Wrapper);
             when 214 =>
-               UInt_32Value_IO.Read_Vector
+               Google_Protobuf_Wrappers_UInt_32Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Uint_32_Wrapper);
             when 215 =>
-               UInt_64Value_IO.Read_Vector
+               Google_Protobuf_Wrappers_UInt_64Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Uint_64_Wrapper);
             when 216 =>
-               Float_Value_IO.Read_Vector
+               Google_Protobuf_Wrappers_Float_Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Float_Wrapper);
             when 217 =>
-               Double_Value_IO.Read_Vector
+               Google_Protobuf_Wrappers_Double_Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Double_Wrapper);
             when 218 =>
-               String_Value_IO.Read_Vector
+               Google_Protobuf_Wrappers_String_Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_String_Wrapper);
             when 219 =>
-               Bytes_Value_IO.Read_Vector
+               Google_Protobuf_Wrappers_Bytes_Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Bytes_Wrapper);
             when 301 =>
                if  not V.Optional_Duration.Is_Set then
                   V.Optional_Duration := (True, others => <>);
                end if;
-               Duration_IO.Read
+               Google_Protobuf_Duration_Duration_IO.Read
                  (Stream, Key.Encoding, V.Optional_Duration.Value);
             when 302 =>
                if  not V.Optional_Timestamp.Is_Set then
                   V.Optional_Timestamp := (True, others => <>);
                end if;
-               Timestamp_IO.Read
+               Google_Protobuf_Timestamp_Timestamp_IO.Read
                  (Stream, Key.Encoding, V.Optional_Timestamp.Value);
             when 303 =>
                if  not V.Optional_Field_Mask.Is_Set then
                   V.Optional_Field_Mask := (True, others => <>);
                end if;
-               Field_Mask_IO.Read
+               Google_Protobuf_Field_Mask_Field_Mask_IO.Read
                  (Stream, Key.Encoding, V.Optional_Field_Mask.Value);
             when 304 =>
                if  not V.Optional_Struct.Is_Set then
                   V.Optional_Struct := (True, others => <>);
                end if;
-               Struct_IO.Read (Stream, Key.Encoding, V.Optional_Struct.Value);
+               Google_Protobuf_Struct_Struct_IO.Read
+                 (Stream, Key.Encoding, V.Optional_Struct.Value);
             when 305 =>
                if  not V.Optional_Any.Is_Set then
                   V.Optional_Any := (True, others => <>);
                end if;
-               Any_IO.Read (Stream, Key.Encoding, V.Optional_Any.Value);
+               Google_Protobuf_Any_Any_IO.Read
+                 (Stream, Key.Encoding, V.Optional_Any.Value);
             when 306 =>
                if  not V.Optional_Value.Is_Set then
                   V.Optional_Value := (True, others => <>);
                end if;
-               Value_IO.Read (Stream, Key.Encoding, V.Optional_Value.Value);
+               Google_Protobuf_Struct_Value_IO.Read
+                 (Stream, Key.Encoding, V.Optional_Value.Value);
+            when 307 =>
+               Google_Protobuf_Struct_Null_Value_IO.Read
+                 (Stream, Key.Encoding, V.Optional_Null_Value);
             when 311 =>
-               Duration_IO.Read_Vector
+               Google_Protobuf_Duration_Duration_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Duration);
             when 312 =>
-               Timestamp_IO.Read_Vector
+               Google_Protobuf_Timestamp_Timestamp_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Timestamp);
             when 313 =>
-               Field_Mask_IO.Read_Vector
+               Google_Protobuf_Field_Mask_Field_Mask_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Fieldmask);
             when 324 =>
-               Struct_IO.Read_Vector (Stream, Key.Encoding, V.Repeated_Struct);
+               Google_Protobuf_Struct_Struct_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Repeated_Struct);
             when 315 =>
-               Any_IO.Read_Vector (Stream, Key.Encoding, V.Repeated_Any);
+               Google_Protobuf_Any_Any_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Repeated_Any);
             when 316 =>
-               Value_IO.Read_Vector (Stream, Key.Encoding, V.Repeated_Value);
+               Google_Protobuf_Struct_Value_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Repeated_Value);
             when 317 =>
-               List_Value_IO.Read_Vector
+               Google_Protobuf_Struct_List_Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_List_Value);
             when 401 =>
                PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Fieldname_1);
@@ -938,13 +998,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
               .Foreign_Message'Write
               (Stream, V.Optional_Foreign_Message.Value);
          end if;
-         Nested_Enum_IO.Write_Option
+         Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+           .Write_Option
            (WS, 21, V.Optional_Nested_Enum,
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOO);
-         Foreign_Enum_IO.Write_Option
+         Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum_IO
+           .Write_Option
            (WS, 22, V.Optional_Foreign_Enum,
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOREIGN_FOO);
-         Aliased_Enum_IO.Write_Option
+         Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Aliased_Enum_IO
+           .Write_Option
            (WS, 23, V.Optional_Aliased_Enum,
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.ALIAS_FOO);
          WS.Write_Option (24, V.Optional_String_Piece);
@@ -982,8 +1045,12 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
               .Foreign_Message'Write
               (Stream, V.Repeated_Foreign_Message (J));
          end loop;
-         Nested_Enum_IO.Write_Packed (WS, 51, V.Repeated_Nested_Enum);
-         Foreign_Enum_IO.Write_Packed (WS, 52, V.Repeated_Foreign_Enum);
+         Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+           .Write_Packed
+           (WS, 51, V.Repeated_Nested_Enum);
+         Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum_IO
+           .Write_Packed
+           (WS, 52, V.Repeated_Foreign_Enum);
          WS.Write (54, V.Repeated_String_Piece);
          WS.Write (55, V.Repeated_Cord);
          WS.Write_Varint_Packed (75, V.Packed_Int_32);
@@ -999,7 +1066,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
          WS.Write_Packed (85, V.Packed_Float);
          WS.Write_Packed (86, V.Packed_Double);
          WS.Write_Packed (87, V.Packed_Bool);
-         Nested_Enum_IO.Write_Packed (WS, 88, V.Packed_Nested_Enum);
+         Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+           .Write_Packed
+           (WS, 88, V.Packed_Nested_Enum);
          WS.Write_Varint (89, V.Unpacked_Int_32);
          WS.Write_Varint (90, V.Unpacked_Int_64);
          WS.Write_Varint (91, V.Unpacked_Uint_32);
@@ -1013,7 +1082,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
          WS.Write (99, V.Unpacked_Float);
          WS.Write (100, V.Unpacked_Double);
          WS.Write (101, V.Unpacked_Bool);
-         Nested_Enum_IO.Write (WS, 102, V.Unpacked_Nested_Enum);
+         Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+           .Write
+           (WS, 102, V.Unpacked_Nested_Enum);
          for J in 1 .. V.Map_Int_32_Int_32.Length loop
             WS.Write_Key ((56, PB_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -1247,6 +1318,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             Google.Protobuf.Struct.Value'Write
               (Stream, V.Optional_Value.Value);
          end if;
+         Google_Protobuf_Struct_Null_Value_IO.Write_Option
+           (WS, 307, V.Optional_Null_Value,
+            Google.Protobuf.Struct.PB_NULL_VALUE);
          for J in 1 .. V.Repeated_Duration.Length loop
             WS.Write_Key ((311, PB_Support.Length_Delimited));
             Google.Protobuf.Duration.Duration'Write
@@ -1319,7 +1393,12 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             when Oneof_Double_Kind =>
                WS.Write (118, V.Variant.Oneof_Double);
             when Oneof_Enum_Kind =>
-               Nested_Enum_IO.Write (WS, 119, V.Variant.Oneof_Enum);
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+                 .Write
+                 (WS, 119, V.Variant.Oneof_Enum);
+            when Oneof_Null_Value_Kind =>
+               Google_Protobuf_Struct_Null_Value_IO.Write
+                 (WS, 120, V.Variant.Oneof_Null_Value);
             when Oneof_Field_Not_Set =>
                null;
          end case;
@@ -1403,7 +1482,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                if V.Corecursive.Length = 0 then
                   V.Corecursive.Append ((others => <>));
                end if;
-               Test_All_Types_Proto_3_IO.Read
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Test_All_Types_Proto_3_IO
+                 .Read
                  (Stream, Key.Encoding, V.Corecursive (1));
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -3133,7 +3213,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
                end if;
-               Nested_Message_IO.Read (Stream, Key.Encoding, V.Value.Value);
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Message_IO
+                 .Read
+                 (Stream, Key.Encoding, V.Value.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3254,7 +3336,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
                end if;
-               Foreign_Message_IO.Read (Stream, Key.Encoding, V.Value.Value);
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Message_IO
+                 .Read
+                 (Stream, Key.Encoding, V.Value.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3371,7 +3455,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             when 1 =>
                PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
-               Nested_Enum_IO.Read (Stream, Key.Encoding, V.Value);
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+                 .Read
+                 (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3396,7 +3482,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Key);
-         Nested_Enum_IO.Write_Option
+         Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
+           .Write_Option
            (WS, 2, V.Value,
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOO);
          if WS.End_Message then
@@ -3486,7 +3573,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             when 1 =>
                PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
-               Foreign_Enum_IO.Read (Stream, Key.Encoding, V.Value);
+               Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum_IO
+                 .Read
+                 (Stream, Key.Encoding, V.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3511,7 +3600,8 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Key);
-         Foreign_Enum_IO.Write_Option
+         Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum_IO
+           .Write_Option
            (WS, 2, V.Value,
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOREIGN_FOO);
          if WS.End_Message then
@@ -3619,5 +3709,205 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
          end if;
       end;
    end Write_Foreign_Message;
+
+   function Length (Self : Null_Hypothesis_Proto_3_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Null_Hypothesis_Proto_3_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Null_Hypothesis_Proto_3_Array, Null_Hypothesis_Proto_3_Array_Access);
+
+   procedure Append
+    (Self : in out Null_Hypothesis_Proto_3_Vector;
+     V    : Null_Hypothesis_Proto_3) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Null_Hypothesis_Proto_3'Size);
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Null_Hypothesis_Proto_3_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Self.Data :=
+           new Null_Hypothesis_Proto_3_Array'
+             (Self.Data.all
+                & Null_Hypothesis_Proto_3_Array'(1 .. Self.Length => <>));
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust
+    (Self : in out Null_Hypothesis_Proto_3_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new Null_Hypothesis_Proto_3_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize
+    (Self : in out Null_Hypothesis_Proto_3_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Null_Hypothesis_Proto_3_Variable_Reference
+    (Self  : aliased in out Null_Hypothesis_Proto_3_Vector;
+     Index : Positive)
+      return Null_Hypothesis_Proto_3_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Null_Hypothesis_Proto_3_Variable_Reference;
+
+   not overriding function Get_Null_Hypothesis_Proto_3_Constant_Reference
+    (Self  : aliased Null_Hypothesis_Proto_3_Vector;
+     Index : Positive)
+      return Null_Hypothesis_Proto_3_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Null_Hypothesis_Proto_3_Constant_Reference;
+
+   procedure Read_Null_Hypothesis_Proto_3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Null_Hypothesis_Proto_3) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Null_Hypothesis_Proto_3;
+
+   procedure Write_Null_Hypothesis_Proto_3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Null_Hypothesis_Proto_3) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Null_Hypothesis_Proto_3 (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if WS.End_Message then
+            Write_Null_Hypothesis_Proto_3 (WS'Access, V);
+         end if;
+      end;
+   end Write_Null_Hypothesis_Proto_3;
+
+   function Length (Self : Enum_Only_Proto_3_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Enum_Only_Proto_3_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Enum_Only_Proto_3_Array, Enum_Only_Proto_3_Array_Access);
+
+   procedure Append
+    (Self : in out Enum_Only_Proto_3_Vector;
+     V    : Enum_Only_Proto_3) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Enum_Only_Proto_3'Size);
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Enum_Only_Proto_3_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Self.Data :=
+           new Enum_Only_Proto_3_Array'
+             (Self.Data.all
+                & Enum_Only_Proto_3_Array'(1 .. Self.Length => <>));
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Enum_Only_Proto_3_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new Enum_Only_Proto_3_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Enum_Only_Proto_3_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Enum_Only_Proto_3_Variable_Reference
+    (Self  : aliased in out Enum_Only_Proto_3_Vector;
+     Index : Positive)
+      return Enum_Only_Proto_3_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Only_Proto_3_Variable_Reference;
+
+   not overriding function Get_Enum_Only_Proto_3_Constant_Reference
+    (Self  : aliased Enum_Only_Proto_3_Vector;
+     Index : Positive)
+      return Enum_Only_Proto_3_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Only_Proto_3_Constant_Reference;
+
+   procedure Read_Enum_Only_Proto_3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Enum_Only_Proto_3) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Enum_Only_Proto_3;
+
+   procedure Write_Enum_Only_Proto_3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Enum_Only_Proto_3) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Enum_Only_Proto_3 (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if WS.End_Message then
+            Write_Enum_Only_Proto_3 (WS'Access, V);
+         end if;
+      end;
+   end Write_Enum_Only_Proto_3;
 
 end Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3;
