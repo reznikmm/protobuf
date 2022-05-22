@@ -134,20 +134,35 @@ package body Compiler.Context is
    is
       use type League.Strings.Universal_String;
 
-      Result : constant League.Strings.Universal_String :=
+      Result : League.Strings.Universal_String :=
         (if Name.Is_Set
          then Compiler.Context.To_Ada_Name (Name.Value)
          else Default);
+
+      Fallback : constant League.Strings.Universal_String :=
+        (if Named_Types.Contains (Prefix) then
+           Named_Types (Prefix).Ada_Type.Type_Name & "_" & Result
+         elsif Local.Contains (Prefix) then
+           Local (Prefix).Ada_Type.Type_Name & "_" & Result
+         else Result);
+
+      Count : Positive := 1;
    begin
-      if not Used.Contains (Result) then
-         return Result;
-      elsif Named_Types.Contains (Prefix) then
-         return Named_Types (Prefix).Ada_Type.Type_Name & "_" & Result;
-      elsif Local.Contains (Prefix) then
-         return Local (Prefix).Ada_Type.Type_Name & "_" & Result;
-      else
-         return Result;
+      if Used.Contains (Result) then
+         Result := Fallback;
       end if;
+
+      while Used.Contains (Result) loop
+         declare
+            Image : Wide_Wide_String := Count'Wide_Wide_Image;
+         begin
+            Image (1) := '_';
+            Result := Fallback & Image;
+            Count := Count + 1;
+         end;
+      end loop;
+
+      return Result;
    end New_Type_Name;
 
    --------------------------

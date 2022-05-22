@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package test_already_in_set;
+
+message M {
+  message T {
+    string field = 1;
+  }
+}
+
+message M_T {
+   M.T value = 1;
+}
+
+message T {
+  string field = 1;
+}
