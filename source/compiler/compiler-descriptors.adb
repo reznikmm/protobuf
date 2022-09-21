@@ -953,20 +953,25 @@ package body Compiler.Descriptors is
                   Is_Out          => True),
                F.New_Parameter
                  (F.New_Name (+"V"), Me))),
-         Declarations => F.New_Variable
-           (Name            => F.New_Name (+"Init_Length"),
-            Type_Definition => F.New_Name (+"Positive"),
-            Is_Constant     => True,
-            Initialization  => F.New_Apply
-              (Prefix    => F.New_Selected_Name (+"Positive'Max"),
-               Arguments => F.New_List
-                 (F.New_Argument_Association (F.New_Literal (1)),
-                  F.New_Argument_Association
-                    (F.New_List
-                       (F.New_Literal (256),
-                        F.New_Infix
-                          (+"/",
-                           F.New_Selected_Name (My_Name & "'Size"))))))),
+         Declarations => F.New_List
+              (F.New_Variable
+                  (Name            => F.New_Name (+"Init_Length"),
+                   Type_Definition => F.New_Name (+"Positive"),
+                   Is_Constant     => True,
+                   Initialization  => F.New_Apply
+                     (Prefix    => F.New_Selected_Name (+"Positive'Max"),
+                      Arguments => F.New_List
+                        (F.New_Argument_Association (F.New_Literal (1)),
+                         F.New_Argument_Association
+                           (F.New_List
+                              (F.New_Literal (256),
+                               F.New_Infix
+                                 (+"/",
+                                  F.New_Selected_Name (My_Name & "'Size"))))))),
+               F.New_Variable
+                  (Name            => F.New_Name (+"Aux_Data"),
+                   Type_Definition => F.New_Name (My_Name & "_Array_Access"),
+                   Is_Constant     => False)),
          Statements => F.New_List
            ((F.New_If
              (Condition  => F.New_Selected_Name (+"Self.Length = 0"),
@@ -983,19 +988,26 @@ package body Compiler.Descriptors is
                     F.New_Infix
                       (+"=",
                        F.New_Selected_Name (+"Self.Data'Last"))),
-                 List      => F.New_Assignment
-                   (F.New_Selected_Name (+"Self.Data"),
-                    F.New_Qualified_Expession
-                      (F.New_Selected_Name ("new " & My_Name & "_Array"),
-                       F.New_List
-                         (F.New_Selected_Name (+"Self.Data.all"),
-                          F.New_Infix
-                            (+"&",
-                             F.New_Qualified_Expession
-                               (F.New_Selected_Name (My_Name & "_Array"),
-                                F.New_Selected_Name
-                                  (+"1 .. Self.Length => <>"))
-                            )))))),
+                 List      => F.New_List
+                   (List =>
+                      (1 => F.New_Assignment
+                         (Left  => F.New_Selected_Name (+"Aux_Data"),
+                          Right => F.New_Selected_Name (+"Self.Data")),
+                       2 => F.New_Assignment
+                         (F.New_Selected_Name (+"Self.Data"),
+                          F.New_Qualified_Expession
+                            (F.New_Selected_Name ("new " & My_Name & "_Array"),
+                             F.New_List
+                               (F.New_Selected_Name (+"Self.Data.all"),
+                                F.New_Infix
+                                  (+"&",
+                                   F.New_Qualified_Expession
+                                     (F.New_Selected_Name (My_Name & "_Array"),
+                                      F.New_Selected_Name
+                                        (+"1 .. Self.Length => <>"))
+                                  )))),
+                       3 => F.New_Statement
+                         (F.New_Name (+"Free (Aux_Data)")))))),
             F.New_Assignment
               (F.New_Selected_Name (+"Self.Length"),
                F.New_List
