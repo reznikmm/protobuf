@@ -20,14 +20,17 @@ package body Google.Protobuf.Wrappers is
    procedure Append (Self : in out Double_Value_Vector; V    : Double_Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Double_Value'Size);
+      Aux_Data    : Double_Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Double_Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Double_Value_Array'
              (Self.Data.all & Double_Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -118,14 +121,17 @@ package body Google.Protobuf.Wrappers is
    procedure Append (Self : in out Float_Value_Vector; V    : Float_Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Float_Value'Size);
+      Aux_Data    : Float_Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Float_Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Float_Value_Array'
              (Self.Data.all & Float_Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -216,14 +222,17 @@ package body Google.Protobuf.Wrappers is
    procedure Append (Self : in out Int_64Value_Vector; V    : Int_64Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Int_64Value'Size);
+      Aux_Data    : Int_64Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Int_64Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Int_64Value_Array'
              (Self.Data.all & Int_64Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -314,14 +323,17 @@ package body Google.Protobuf.Wrappers is
    procedure Append (Self : in out UInt_64Value_Vector; V    : UInt_64Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / UInt_64Value'Size);
+      Aux_Data    : UInt_64Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new UInt_64Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new UInt_64Value_Array'
              (Self.Data.all & UInt_64Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -412,14 +424,17 @@ package body Google.Protobuf.Wrappers is
    procedure Append (Self : in out Int_32Value_Vector; V    : Int_32Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Int_32Value'Size);
+      Aux_Data    : Int_32Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Int_32Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Int_32Value_Array'
              (Self.Data.all & Int_32Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -510,14 +525,17 @@ package body Google.Protobuf.Wrappers is
    procedure Append (Self : in out UInt_32Value_Vector; V    : UInt_32Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / UInt_32Value'Size);
+      Aux_Data    : UInt_32Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new UInt_32Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new UInt_32Value_Array'
              (Self.Data.all & UInt_32Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -608,14 +626,17 @@ package body Google.Protobuf.Wrappers is
    procedure Append (Self : in out Bool_Value_Vector; V    : Bool_Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Bool_Value'Size);
+      Aux_Data    : Bool_Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Bool_Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Bool_Value_Array'
              (Self.Data.all & Bool_Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -706,14 +727,17 @@ package body Google.Protobuf.Wrappers is
    procedure Append (Self : in out String_Value_Vector; V    : String_Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / String_Value'Size);
+      Aux_Data    : String_Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new String_Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new String_Value_Array'
              (Self.Data.all & String_Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -804,14 +828,17 @@ package body Google.Protobuf.Wrappers is
    procedure Append (Self : in out Bytes_Value_Vector; V    : Bytes_Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Bytes_Value'Size);
+      Aux_Data    : Bytes_Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Bytes_Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Bytes_Value_Array'
              (Self.Data.all & Bytes_Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;

@@ -19,14 +19,17 @@ package body Google.Protobuf.Empty is
 
    procedure Append (Self : in out Empty_Vector; V    : Empty) is
       Init_Length : constant Positive := Positive'Max (1, 256 / Empty'Size);
+      Aux_Data    : Empty_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Empty_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Empty_Array'
              (Self.Data.all & Empty_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;

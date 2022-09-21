@@ -19,13 +19,16 @@ package body Google.Protobuf.Any is
 
    procedure Append (Self : in out Any_Vector; V    : Any) is
       Init_Length : constant Positive := Positive'Max (1, 256 / Any'Size);
+      Aux_Data    : Any_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Any_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Any_Array'(Self.Data.all & Any_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;

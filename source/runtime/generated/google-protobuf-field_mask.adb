@@ -20,14 +20,17 @@ package body Google.Protobuf.Field_Mask is
    procedure Append (Self : in out Field_Mask_Vector; V    : Field_Mask) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Field_Mask'Size);
+      Aux_Data    : Field_Mask_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Field_Mask_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Field_Mask_Array'
              (Self.Data.all & Field_Mask_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;

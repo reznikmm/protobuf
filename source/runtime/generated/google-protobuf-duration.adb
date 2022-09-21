@@ -19,14 +19,17 @@ package body Google.Protobuf.Duration is
 
    procedure Append (Self : in out Duration_Vector; V    : Duration) is
       Init_Length : constant Positive := Positive'Max (1, 256 / Duration'Size);
+      Aux_Data    : Duration_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Duration_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Duration_Array'
              (Self.Data.all & Duration_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;

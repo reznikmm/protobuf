@@ -50,14 +50,17 @@ package body Google.Protobuf.Struct is
 
    procedure Append (Self : in out Struct_Vector; V    : Struct) is
       Init_Length : constant Positive := Positive'Max (1, 256 / Struct'Size);
+      Aux_Data    : Struct_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Struct_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Struct_Array'
              (Self.Data.all & Struct_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -152,14 +155,17 @@ package body Google.Protobuf.Struct is
    procedure Append (Self : in out Fields_Entry_Vector; V    : Fields_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Fields_Entry'Size);
+      Aux_Data    : Fields_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Fields_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Fields_Entry_Array'
              (Self.Data.all & Fields_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -259,14 +265,17 @@ package body Google.Protobuf.Struct is
 
    procedure Append (Self : in out Value_Vector; V    : Value) is
       Init_Length : constant Positive := Positive'Max (1, 256 / Value'Size);
+      Aux_Data    : Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Value_Array'
              (Self.Data.all & Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -410,14 +419,17 @@ package body Google.Protobuf.Struct is
    procedure Append (Self : in out List_Value_Vector; V    : List_Value) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / List_Value'Size);
+      Aux_Data    : List_Value_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new List_Value_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new List_Value_Array'
              (Self.Data.all & List_Value_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
