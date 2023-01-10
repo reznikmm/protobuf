@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2020-2023 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -23,12 +23,14 @@
 --  This is internal unit, don't use it in an application.
 
 with Ada.Streams;
+with Ada.Containers.Indefinite_Holders;
 with Ada.Containers.Vectors;
 with Interfaces;
 
 with League.Stream_Element_Vectors;
 with League.String_Vectors;
 with League.Strings;
+with League.Text_Codecs;
 
 with PB_Support.Boolean_Vectors;
 with PB_Support.IEEE_Float_32_Vectors;
@@ -476,5 +478,10 @@ private
    overriding procedure Write
      (Stream : in out Internal.Stream;
       Item   : Ada.Streams.Stream_Element_Array);
+
+   package Text_Codec_Holders is new Ada.Containers.Indefinite_Holders
+     (League.Text_Codecs.Text_Codec, League.Text_Codecs."=");
+
+   Codec : Text_Codec_Holders.Holder;
 
 end PB_Support.Internal;
