@@ -16,7 +16,7 @@ There is also [a precompiled RPM for Fedora Linux](https://copr.fedorainfracloud
 
 ### Dependencies
 It depends on
-* [matreshka](https://forge.ada-ru.org/matreshka) - the Matreshka framework.
+* [matreshka](https://github.com/godunko/matreshka) - the Matreshka framework.
 * [ada_pretty](https://github.com/reznikmm/ada-pretty) - an Ada pretty printing library.
 * [protoc](https://github.com/protocolbuffers/protobuf) - the protobuf compiler.
 
