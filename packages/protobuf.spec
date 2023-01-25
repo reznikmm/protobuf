@@ -63,6 +63,8 @@ make  %{?_smp_mflags} GPRBUILD_FLAGS="`echo %Gnatmake_optflags|sed -e s/-gnatn./
 ## find libs without RPATH, Fedora specific
 export LD_LIBRARY_PATH="%{buildroot}/%{_libdir}/:$LD_LIBRARY_PATH"
 make %{?_smp_mflags} GPRBUILD_FLAGS="%Gnatmake_optflags" check
+## Delete compiled python files 
+rm -f %{buildroot}/%{_datadir}/gdb/python/protobuf/protobuf.py?
 
 %install
 rm -rf %{buildroot}
@@ -87,6 +89,7 @@ make install DESTDIR=%{buildroot} LIBDIR=%{_libdir} PREFIX=%{_prefix} GPRDIR=%{_
 %{_libdir}/libadapbrt.so
 %{_libdir}/%{name}/*.ali
 %{_includedir}/%{name}
+%{_datadir}/gdb/python/%{name}
 %{_gprdir}/protobuf_runtime.gpr
 %{_gprdir}/manifests/protobuf_runtime
 %{_gprdir}/manifests/protoc_gen_ada
