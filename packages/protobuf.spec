@@ -64,7 +64,7 @@ make  %{?_smp_mflags} GPRBUILD_FLAGS="`echo %Gnatmake_optflags|sed -e s/-gnatn./
 export LD_LIBRARY_PATH="%{buildroot}/%{_libdir}/:$LD_LIBRARY_PATH"
 make %{?_smp_mflags} GPRBUILD_FLAGS="%Gnatmake_optflags" check
 ## Delete compiled python files 
-rm -f %{buildroot}/%{_datadir}/gdb/python/protobuf/protobuf.py?
+rm -f %{buildroot}/%{_datadir}/gdb/python/%{name}/protobuf.py?
 
 %install
 rm -rf %{buildroot}
