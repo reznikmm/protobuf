@@ -1,8 +1,7 @@
 """
-Pretty-printers for vectors in PB_Support.Vectors.
+Pretty-printers for vectors in Protobuf. It depends on https://github.com/AdaCore/gnat-gdb-scripts
+Source this file in ~/.gdbinit to activate the pretty-printers.
 """
-
-from __future__ import annotations
 
 from typing import Iterable, Optional, Tuple, Union
 
@@ -11,23 +10,19 @@ import gdb
 from gnatdbg.generics import Match
 from gnatdbg.printers import PrettyPrinter
 from gnatdbg.utils import pretty_typename
+from gnatdbg.printers import GDBPrettyPrinters
 
 
-class VectorPrinter(PrettyPrinter):
-    """Pretty-print PB_Support.Vectors.Vector values."""
+class PbVectorPrinter(PrettyPrinter):
+    """Pretty-print Protobuf vector values."""
 
     name = "Vector"
 
     type_pattern = Match.TypeName(
-        suffix=".vector",
+        suffix="vector",
         pattern=Match.Struct(
-            Match.Field("_parent"),
-            Match.Field(
-                "data",
-                Match.Pointer(
-                    Match.Array(),
-                    )
-                ),
+            Match.Field("_parent", Match.Struct()),
+            Match.Field("data", Match.Typedef()),
             Match.Field("length", Match.Integer()),
         ),
     )
@@ -37,14 +32,10 @@ class VectorPrinter(PrettyPrinter):
 
     @property
     def array_bounds(self) -> Tuple[int, int]:
-        elements = self.value["data"]
-        if not elements:
-            return (1, 0)
-        array_type = elements["data"].type
-        first_index, _ = array_type.range()
-        # First is 1 so last_index is actually Length
         last_index = int(self.value["length"])
-        return (first_index, last_index)
+        if last_index < 1:
+            return (1, 0)
+        return (1, last_index)
 
     @property
     def length(self) -> int:
@@ -58,7 +49,7 @@ class VectorPrinter(PrettyPrinter):
     def array_elements(self) -> Optional[gdb.Value]:
         first, last = self.array_bounds
         if first <= last:
-            base_value = self.value["data"]
+            base_value = self.value["data"]["P_ARRAY"].dereference()
             return base_value.cast(base_value.type.target().array(first, last))
         else:
             return None
@@ -90,3 +81,8 @@ class VectorPrinter(PrettyPrinter):
         return "{} of length {}".format(
             pretty_typename(self.value.type), self.length
         )
+
+_printers = GDBPrettyPrinters("protobuf")
+_printers.append(PbVectorPrinter)
+
+gdb.printing.register_pretty_printer(gdb.current_objfile(), _printers)
