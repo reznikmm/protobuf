@@ -4,11 +4,14 @@ PREFIX                 ?= /usr
 GPRDIR                 ?= $(PREFIX)/share/gpr
 LIBDIR                 ?= $(PREFIX)/lib
 BINDIR                 ?= $(PREFIX)/bin
+DATAROOTDIR            ?= $(PREFIX)/share
 INSTALL_PROJECT_DIR    ?= $(DESTDIR)$(GPRDIR)
 INSTALL_INCLUDE_DIR    ?= $(DESTDIR)$(PREFIX)/include/ada-protobuf
 INSTALL_LIBRARY_DIR    ?= $(DESTDIR)$(LIBDIR)
 INSTALL_BIN_DIR        ?= $(DESTDIR)$(BINDIR)
 INSTALL_ALI_DIR        ?= ${INSTALL_LIBRARY_DIR}/ada-protobuf
+INSTALL_GDB_PLUGIN_DIR ?= $(DESTDIR)$(DATAROOTDIR)/gdb/python/ada-protobuf
+INSTALL                ?= install
 
 GPRINSTALL_FLAGS = --prefix=$(PREFIX) --sources-subdir=$(INSTALL_INCLUDE_DIR)\
  --lib-subdir=$(INSTALL_ALI_DIR) --project-subdir=$(INSTALL_PROJECT_DIR)\
@@ -21,6 +24,7 @@ all:
 install:
 	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protobuf_runtime.gpr
 	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protoc_gen_ada.gpr --mode=usage
+	$(INSTALL) -D gdb/python/protobuf.py $(INSTALL_GDB_PLUGIN_DIR)/protobuf.py
 
 clean:
 	gprclean -q -P gnat/protoc_gen_ada.gpr
