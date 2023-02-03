@@ -13,5 +13,9 @@ tags = ["serialization", "marshalling", "protocol", "buffers", "rpc", "generator
 [[depends-on]]
 ada_pretty = "any"
 matreshka_league = "any"
+
 [environment.PATH]
 prepend = "${CRATE_ROOT}/.objs/compiler"
+
+[build-switches]
+"*".ada_version = "Ada12"
