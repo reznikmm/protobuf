@@ -12,6 +12,10 @@ The preferred installation method is compiling from sources. Just checkout repos
 make all install PREFIX=/path/to/install
 ```
 
+You can also build with [Alire](https://alire.ada.dev/):
+
+    alr build
+
 There is also [a precompiled RPM for Fedora Linux](https://copr.fedorainfracloud.org/coprs/reznik/ada/).
 
 ### Dependencies

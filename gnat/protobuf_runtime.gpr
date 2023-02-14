@@ -22,10 +22,10 @@
 
 with "../config/protobuf_config.gpr";
 
-project Protobuf_Runtime is
+library project Protobuf_Runtime is
 
    for Source_Dirs use ("../source/runtime", "../source/runtime/generated");
-   for Object_Dir use "../.objs/runtime";
+   for Object_Dir use "../.objs/runtime/" & Protobuf_Config.Build_Profile;
    for Library_Kind use "dynamic";
    for Library_Name use "adapbrt";
    for Library_Dir use "../.libs";
