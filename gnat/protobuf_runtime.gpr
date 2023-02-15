@@ -26,7 +26,7 @@ library project Protobuf_Runtime is
 
    for Source_Dirs use ("../source/runtime", "../source/runtime/generated");
    for Object_Dir use "../.objs/runtime/" & Protobuf_Config.Build_Profile;
-   for Library_Kind use "dynamic";
+
    for Library_Name use "adapbrt";
    for Library_Dir use "../.libs";
    for Library_ALI_Dir use "../.libs/adapbrt";
@@ -38,7 +38,7 @@ library project Protobuf_Runtime is
 
    type Library_Type_Type is ("relocatable", "static", "static-pic");
    Library_Type : Library_Type_Type :=
-     external ("PROTOBUF_LIBRARY_TYPE", external ("LIBRARY_TYPE", "static"));
+     external ("PROTOBUF_LIBRARY_TYPE", external ("LIBRARY_TYPE", "relocatable"));
    for Library_Kind use Library_Type;
 
    package Compiler is
