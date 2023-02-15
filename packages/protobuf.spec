@@ -2,7 +2,7 @@
 %define _gprdir %_GNAT_project_dir
 
 Name:       ada-protobuf
-Version:    0.1.0
+Version:    1.1.0-dev
 Release:    git%{?dist}
 Summary:    An Ada Google Buffers implementation
 Group:      Development/Libraries
