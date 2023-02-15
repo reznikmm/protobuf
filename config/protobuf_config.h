@@ -2,7 +2,7 @@
 #ifndef PROTOBUF_CONFIG_H
 #define PROTOBUF_CONFIG_H
 
-#define CRATE_VERSION "1.1.0-dev"
+#define CRATE_VERSION "1.1.0-git"
 #define CRATE_NAME "protobuf"
 
 #define ALIRE_HOST_OS "linux"

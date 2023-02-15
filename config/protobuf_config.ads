@@ -5,7 +5,7 @@ pragma Style_Checks (Off);
 package Protobuf_Config is
    pragma Pure;
 
-   Crate_Version : constant String := "1.1.0-dev";
+   Crate_Version : constant String := "1.1.0-git";
    Crate_Name : constant String := "protobuf";
 
    Alire_Host_OS : constant String := "linux";

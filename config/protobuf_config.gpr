@@ -2,7 +2,7 @@
 with "ada_pretty.gpr";
 with "matreshka_league.gpr";
 abstract project Protobuf_Config is
-   Crate_Version := "1.1.0-dev";
+   Crate_Version := "1.1.0-git";
    Crate_Name := "protobuf";
 
    Alire_Host_OS := "linux";
