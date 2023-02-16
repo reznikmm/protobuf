@@ -2,13 +2,13 @@
 %define _gprdir %_GNAT_project_dir
 
 Name:       ada-protobuf
-Version:    0.1.0
+Version:    1.1.0
 Release:    git%{?dist}
 Summary:    An Ada Google Buffers implementation
 Group:      Development/Libraries
 License:    MIT
 URL:        https://github.com/reznikmm/protobuf
-### Direct download is not availeble
+### Direct download is not available
 Source0:    protobuf.tar.gz
 BuildRequires:   gcc-gnat
 BuildRequires:   fedora-gnat-project-common  >= 3 
@@ -80,8 +80,8 @@ make install DESTDIR=%{buildroot} LIBDIR=%{_libdir} PREFIX=%{_prefix} GPRDIR=%{_
 
 %files %{name}-runtime
 %dir %{_libdir}/%{name}
-%{_libdir}/%{name}/libadapbrt.so.%{version}
-%{_libdir}/libadapbrt.so.%{version}
+%{_libdir}/%{name}/libadapbrt.so.%{version}-git
+%{_libdir}/libadapbrt.so.%{version}-git
 
 %files %{name}-runtime-devel
 %doc README.md
@@ -96,5 +96,7 @@ make install DESTDIR=%{buildroot} LIBDIR=%{_libdir} PREFIX=%{_prefix} GPRDIR=%{_
 
 
 %changelog
+* Wed Feb 15 2023 Manuel Gomez <mgrojo@gmail.com> - 1.1.0-git
+- Align to version and library filename used by the Alire crate
 * Thu May  7 2020 Maxim Reznik <reznikmm@gmail.com> - 0.1.0-git
 - Initial package

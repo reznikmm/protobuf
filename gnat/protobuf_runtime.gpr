@@ -20,91 +20,40 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with "matreshka_league.gpr";
+with "../config/protobuf_config.gpr";
 
 library project Protobuf_Runtime is
-   Version := "0.1.0";
 
    for Source_Dirs use ("../source/runtime", "../source/runtime/generated");
-   for Object_Dir use "../.objs/runtime";
-   for Library_Kind use "dynamic";
+   for Object_Dir use "../.objs/runtime/" & Protobuf_Config.Build_Profile;
+
    for Library_Name use "adapbrt";
    for Library_Dir use "../.libs";
    for Library_ALI_Dir use "../.libs/adapbrt";
-   for Library_Version use "libadapbrt.so." & Version;
-
+   for Library_Version use "libadapbrt.so." & Protobuf_Config.Crate_Version;
 
    for Languages use ("Ada");
 
    for Create_Missing_Dirs use "True";
 
-   type Enabled_Kind is ("enabled", "disabled");
-   Compile_Checks : Enabled_Kind := External ("PROTOBUF_COMPILE_CHECKS", "enabled");
-   Runtime_Checks : Enabled_Kind := External ("PROTOBUF_RUNTIME_CHECKS", "enabled");
-   Style_Checks : Enabled_Kind := External ("PROTOBUF_STYLE_CHECKS", "enabled");
-   Contracts_Checks : Enabled_Kind := External ("PROTOBUF_CONTRACTS", "enabled");
-
-   type Build_Kind is ("debug", "optimize");
-   Build_Mode : Build_Kind := External ("PROTOBUF_BUILD_MODE", "optimize");
-
-   Compile_Checks_Switches := ();
-   case Compile_Checks is
-      when "enabled" =>
-         Compile_Checks_Switches :=
-           ("-gnatwa");  -- All warnings
-      when others => null;
-   end case;
-
-   Runtime_Checks_Switches := ();
-   case Runtime_Checks is
-      when "enabled" => null;
-      when others =>
-         Runtime_Checks_Switches :=
-           ("-gnatp"); -- Supress checks
-   end case;
-
-   Style_Checks_Switches := ();
-   case Style_Checks is
-      when "enabled" =>
-         Style_Checks_Switches :=
-           ("-gnatyg",   -- GNAT Style checks
-            "-gnatyd",   -- No DOS line terminators
-            "-gnatyM80", -- Maximum line length
-            "-gnatyO");  -- Overriding subprograms explicitly marked as such
-      when others => null;
-   end case;
-
-   Contracts_Switches := ();
-   case Contracts_Checks is
-      when "enabled" =>
-         Contracts_Switches :=
-           ("-gnata"); --  Enable assertions and contracts
-      when others => null;
-   end case;
-
-   Build_Switches := ();
-   case Build_Mode is
-      when "optimize" =>
-         Build_Switches := ("-O3",     -- Optimization
-                            "-gnatn"); -- Enable inlining
-      when "debug" =>
-         Build_Switches := ("-g",       -- Debug info
-                            "-Og",      -- No optimization
-                            "-gnatVa"); -- All validity checks
-   end case;
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("PROTOBUF_LIBRARY_TYPE", external ("LIBRARY_TYPE", "relocatable"));
+   for Library_Kind use Library_Type;
 
    package Compiler is
       for Default_Switches ("Ada") use
-        Compile_Checks_Switches &
-        Build_Switches &
-        Runtime_Checks_Switches &
-        Contracts_Switches &
+        Protobuf_Config.Ada_Compiler_Switches &
         ("-gnatQ",  -- Don't quit. Generate ALI and tree files even if illegalities
-         "-gnat12", "-gnatW8");
+         "-gnatW8");
    end Compiler;
 
    package Binder is
       for Switches ("Ada") use ("-Es"); --  Symbolic traceback
    end Binder;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
 
 end Protobuf_Runtime;

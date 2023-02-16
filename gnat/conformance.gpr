@@ -20,19 +20,20 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with "matreshka_league.gpr";
 with "protobuf_runtime.gpr";
+
+with "../config/protobuf_config.gpr";
 
 project Conformance is
 
    for Source_Dirs use
      ("../source/conformance", "../source/conformance/generated");
-   for Object_Dir use "../.objs/conformance";
+   for Object_Dir use "../.objs/conformance/" & Protobuf_Config.Build_Profile;
    for Main use ("conformance-run.adb");
 
    package Compiler is
-      for Default_Switches ("ada") use
-        ("-gnat12", "-gnatW8", "-g", "-gnatVa", "-gnatwa", "-gnaty", "-gnata");
+      for Default_Switches ("Ada") use
+        Protobuf_Config.Ada_Compiler_Switches & ("-gnatW8");
    end Compiler;
 
    package Binder is

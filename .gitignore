@@ -4,4 +4,9 @@
 
 # Ada Library Information
 *.ali
-.libs
+.libs/
+
+# Alire
+/lib/
+/alire/
+/config/
