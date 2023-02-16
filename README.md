@@ -16,6 +16,10 @@ You can also build with [Alire](https://alire.ada.dev/):
 
     alr build
 
+If you distribute a crate that doesn't require Protobuf compiler then
+you may depend just on `protobuf_runtime`. The corresponding `alire.toml`
+is located in `packages/protobuf_runtime` directory.
+
 There is also [a precompiled RPM for Fedora Linux](https://copr.fedorainfracloud.org/coprs/reznik/ada/).
 
 ### Dependencies

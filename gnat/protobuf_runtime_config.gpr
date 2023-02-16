@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2020-2023 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -20,31 +20,17 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-
-with "protobuf_runtime.gpr";
+--  This file will be overwritten by `alire build` for protobuf_runtime
 
 with "protobuf_config.gpr";
 
-project Protoc_Gen_Ada is
-   for Source_Dirs use
-     ("../source/compiler",
-      "../source/compiler/generated");
+abstract project Protobuf_Runtime_Config is
 
-   for Exec_Dir   use "../.objs/compiler";
-   for Object_Dir use "../.objs/compiler/" & Protobuf_Config.Build_Profile;
-   for Main use ("compiler-run.adb");
+   Crate_Version := Protobuf_Config.Crate_Version;
 
-   package Compiler is
-      for Default_Switches ("Ada") use
-        Protobuf_Config.Ada_Compiler_Switches & ("-gnatW8");
-   end Compiler;
+   Ada_Compiler_Switches := Protobuf_Config.Ada_Compiler_Switches;
 
-   package Builder is
-      for Executable ("compiler-run.adb") use "protoc-gen-ada";
-   end Builder;
+   Build_Profile : Protobuf_Config.Build_Profile_Kind :=
+     Protobuf_Config.Build_Profile;
 
-   package Install is
-      for Artifacts ("bin") use ("../protoc-gen-ada");
-   end Install;
-
-end Protoc_Gen_Ada;
+end Protobuf_Runtime_Config;

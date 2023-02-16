@@ -57,12 +57,12 @@ Requires:   fedora-gnat-project-common  >= 2
 
 %build
 # This package triggers a fault in the Ada compiler when -gnatn is enabled (gcc 11 fc34).
-make  %{?_smp_mflags} GPRBUILD_FLAGS="`echo %Gnatmake_optflags|sed -e s/-gnatn.//`"
+make  %{?_smp_mflags} ADAFLAGS=-g GPRBUILD_FLAGS="`echo %Gnatmake_optflags|sed -e s/-gnatn.//`"
 
 %check
 ## find libs without RPATH, Fedora specific
 export LD_LIBRARY_PATH="%{buildroot}/%{_libdir}/:$LD_LIBRARY_PATH"
-make %{?_smp_mflags} GPRBUILD_FLAGS="%Gnatmake_optflags" check
+make %{?_smp_mflags} ADAFLAGS=-g GPRBUILD_FLAGS="%Gnatmake_optflags" check
 ## Delete compiled python files 
 rm -f %{buildroot}/%{_datadir}/gdb/python/%{name}/protobuf.py?
 
