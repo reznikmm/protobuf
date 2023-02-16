@@ -7,8 +7,13 @@ executables = ["protoc-gen-ada"]
 licenses = "MIT"
 maintainers = ["Maxim Reznik <reznikmm@gmail.com>"]
 maintainers-logins = ["reznikmm"]
-project-files = ["gnat/conformance.gpr", "gnat/protobuf_runtime.gpr", "gnat/protoc_gen_ada.gpr"]
+project-files = ["gnat/protoc_gen_ada.gpr"]
 tags = ["serialization", "marshalling", "protocol", "buffers", "rpc", "generator"]
+
+provides = ["protobuf_runtime=1.1.0-git"]
+
+[[forbids]]
+protobuf_runtime="*"
 
 [[depends-on]]
 ada_pretty = "any"
@@ -19,3 +24,12 @@ prepend = "${CRATE_ROOT}/.objs/compiler"
 
 [build-switches]
 "*".ada_version = "Ada12"
+development.optimization = ["-O0"]
+development.style_checks = ["-gnaty"]
+development.contracts = "Yes"
+
+[configuration]
+output_dir = "gnat"
+generate_ada = false
+generate_c = false
+
