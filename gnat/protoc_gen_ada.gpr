@@ -36,8 +36,13 @@ project Protoc_Gen_Ada is
 
    package Compiler is
       for Default_Switches ("Ada") use
-        Protobuf_Config.Ada_Compiler_Switches & ("-gnatW8");
+        Protobuf_Config.Ada_Compiler_Switches & ("-gnatW8", "-g");
    end Compiler;
+
+   package Binder is
+      --  -Es: Store tracebacks in exception occurrences, and enable symbolic tracebacks
+      for Default_Switches ("ada") use ("-Es");
+   end Binder;
 
    package Builder is
       for Executable ("compiler-run.adb") use "protoc-gen-ada";
