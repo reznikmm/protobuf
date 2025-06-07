@@ -5,20 +5,18 @@ set -e -x
 PB_DIR=$1
 PB_CACHE=${1}_cache
 
-if [ ! -f $PB_DIR/autogen.sh ] ; then
+if [ ! -f $PB_DIR/conformance/conformance.proto ] ; then
   echo Can not find the protobuf repo
   exit 0
 fi
 
 if [ ! -f $PB_CACHE/conformance-test-runner ] ; then
-  (cd $PB_DIR;./autogen.sh;./configure)
-  make -C $PB_DIR
-  make -C $PB_DIR/conformance
+  (cd $PB_DIR; cmake . -Dprotobuf_BUILD_CONFORMANCE=ON && cmake --build .)
 
   mkdir -p $PB_CACHE
   cp -v --no-dereference \
-    $PB_DIR/conformance/.libs/conformance-test-runner \
-    $PB_DIR/src/.libs/libprotobuf.so.* \
+    $PB_DIR/_deps/jsoncpp-build/src/lib_json/libjsoncpp.so.26 \
+    $PB_DIR/conformance_test_runner \
     $PB_CACHE
 fi
 
@@ -35,6 +33,6 @@ gprbuild -p -P gnat/conformance.gpr
 
 export LD_LIBRARY_PATH=$PB_CACHE
 
-$PB_CACHE/conformance-test-runner \
+$PB_CACHE/conformance_test_runner \
    --failure_list ada_failing_tests.txt \
-  .objs/conformance/conformance-run
+  .objs/conformance/development/conformance-run

@@ -22,7 +22,7 @@
 
 with "protobuf_runtime.gpr";
 
-with "../config/protobuf_config.gpr";
+with "protobuf_config.gpr";
 
 project Conformance is
 
