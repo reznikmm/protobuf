@@ -16,7 +16,7 @@ jobs:
         with:
           repository: protocolbuffers/protobuf
           path: google
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: google_cache
           key: ${{ runner.os }}-google-fc33
