@@ -2,13 +2,15 @@ on:
   push:
     branches:
       - master
+      - topic/fix_ci
   pull_request:
 name: Build
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build and deploy RPM
+    name: Build and test
     steps:
+      - run: sudo apt install -y protobuf-compiler
       - uses: actions/checkout@v2
         with:
           path: protobuf
@@ -16,10 +18,12 @@ jobs:
         with:
           repository: protocolbuffers/protobuf
           path: google
-      - uses: actions/cache@v1
+      - uses: alire-project/setup-alire@v5
+      - uses: actions/cache@v4
         with:
           path: google_cache
-          key: ${{ runner.os }}-google-fc33
-      - uses: reznikmm/fedora-ada-action@master
-        with:
-          spec: protobuf/packages/protobuf.spec
+          key: ${{ runner.os }}-v1
+      - name: Build project
+        run: alr -C protobuf build
+      - name: Run tests
+        run: alr -C protobuf exec make check
