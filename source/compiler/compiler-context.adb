@@ -87,7 +87,8 @@ package body Compiler.Context is
          end;
       end loop;
 
-      raise Constraint_Error;
+      raise Constraint_Error with
+         "Request.Proto_File.Length = " & Request.Proto_File.Length'Image;
    end Get_File;
 
    ----------------------
