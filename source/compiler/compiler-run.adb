@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2020-2025 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -34,6 +34,8 @@ procedure Compiler.Run is
    Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
    Result  : Google.Protobuf.Compiler.Plugin.Code_Generator_Response;
 begin
+   Stream.Initialize;
+
    Google.Protobuf.Compiler.Plugin.Code_Generator_Request'Read
      (Stream'Unchecked_Access, Request);
 
