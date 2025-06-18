@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2020-2025 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -141,6 +141,7 @@ procedure Conformance.Run is
    Stream : aliased PB_Support.Stdio_Streams.Stdio_Stream;
 
 begin
+   Stream.Initialize;
 
    loop
       declare

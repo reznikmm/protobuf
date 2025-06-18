@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2020-2025 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -41,6 +41,12 @@ package body PB_Support.Stdio_Streams is
       stdin  : Interfaces.C_Streams.FILEs := Interfaces.C_Streams.stdin;
       stdout : Interfaces.C_Streams.FILEs := Interfaces.C_Streams.stdout) is
    begin
+      Interfaces.C_Streams.set_mode
+        (Interfaces.C_Streams.fileno (stdin), Interfaces.C_Streams.None);
+
+      Interfaces.C_Streams.set_mode
+        (Interfaces.C_Streams.fileno (stdout), Interfaces.C_Streams.None);
+
       Self.stdin := stdin;
       Self.stdout := stdout;
    end Initialize;
