@@ -4,179 +4,364 @@ with PB_Support.Internal;
 
 package body Google.Protobuf.Descriptor is
 
-   package Descriptor_Proto_IO is
+   package Google_Protobuf_Descriptor_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Descriptor_Proto,
         Google.Protobuf.Descriptor.Descriptor_Proto_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Extension_Range_IO is
+   package Google_Protobuf_Descriptor_Extension_Range_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Extension_Range,
         Google.Protobuf.Descriptor.Extension_Range_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Reserved_Range_IO is
+   package Google_Protobuf_Descriptor_Reserved_Range_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Reserved_Range,
         Google.Protobuf.Descriptor.Reserved_Range_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Enum_Descriptor_Proto_IO is
+   type Integer_Google_Protobuf_Descriptor_Edition is  range 0 .. 2147483647
+     with Size => Google.Protobuf.Descriptor.Edition'Size;
+
+   package Google_Protobuf_Descriptor_Edition_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Edition,
+        Integer_Google_Protobuf_Descriptor_Edition,
+        Google.Protobuf.Descriptor.Edition_Vectors);
+
+   package Google_Protobuf_Descriptor_Enum_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Enum_Descriptor_Proto,
         Google.Protobuf.Descriptor.Enum_Descriptor_Proto_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Enum_Options_IO is
+   package Google_Protobuf_Descriptor_Enum_Reserved_Range_IO is
+     new PB_Support.IO.Message_IO
+       (Google.Protobuf.Descriptor.Enum_Reserved_Range,
+        Google.Protobuf.Descriptor.Enum_Reserved_Range_Vector,
+        Google.Protobuf.Descriptor.Append);
+
+   package Google_Protobuf_Descriptor_Enum_Options_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Enum_Options,
         Google.Protobuf.Descriptor.Enum_Options_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Enum_Value_Descriptor_Proto_IO is
+   package Google_Protobuf_Descriptor_Enum_Value_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto,
         Google.Protobuf.Descriptor.Enum_Value_Descriptor_Proto_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Enum_Value_Options_IO is
+   package Google_Protobuf_Descriptor_Enum_Value_Options_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Enum_Value_Options,
         Google.Protobuf.Descriptor.Enum_Value_Options_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Field_Descriptor_Proto_IO is
+   package Google_Protobuf_Descriptor_Extension_Range_Options_IO is
+     new PB_Support.IO.Message_IO
+       (Google.Protobuf.Descriptor.Extension_Range_Options,
+        Google.Protobuf.Descriptor.Extension_Range_Options_Vector,
+        Google.Protobuf.Descriptor.Append);
+
+   package Google_Protobuf_Descriptor_Declaration_IO is
+     new PB_Support.IO.Message_IO
+       (Google.Protobuf.Descriptor.Declaration,
+        Google.Protobuf.Descriptor.Declaration_Vector,
+        Google.Protobuf.Descriptor.Append);
+
+   type Integer_Google_Protobuf_Descriptor_Verification_State is  range 0 .. 1
+     with Size => Google.Protobuf.Descriptor.Verification_State'Size;
+
+   package Google_Protobuf_Descriptor_Verification_State_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Verification_State,
+        Integer_Google_Protobuf_Descriptor_Verification_State,
+        Google.Protobuf.Descriptor.Verification_State_Vectors);
+
+   package Google_Protobuf_Descriptor_Feature_Set_IO is
+     new PB_Support.IO.Message_IO
+       (Google.Protobuf.Descriptor.Feature_Set,
+        Google.Protobuf.Descriptor.Feature_Set_Vector,
+        Google.Protobuf.Descriptor.Append);
+
+   type Integer_Google_Protobuf_Descriptor_Enforce_Naming_Style is
+      range 0 .. 2
+     with Size => Google.Protobuf.Descriptor.Enforce_Naming_Style'Size;
+
+   package Google_Protobuf_Descriptor_Enforce_Naming_Style_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Enforce_Naming_Style,
+        Integer_Google_Protobuf_Descriptor_Enforce_Naming_Style,
+        Google.Protobuf.Descriptor.Enforce_Naming_Style_Vectors);
+
+   type Integer_Google_Protobuf_Descriptor_Enum_Type is  range 0 .. 2
+     with Size => Google.Protobuf.Descriptor.Enum_Type'Size;
+
+   package Google_Protobuf_Descriptor_Enum_Type_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Enum_Type,
+        Integer_Google_Protobuf_Descriptor_Enum_Type,
+        Google.Protobuf.Descriptor.Enum_Type_Vectors);
+
+   type Integer_Google_Protobuf_Descriptor_Field_Presence is  range 0 .. 3
+     with Size => Google.Protobuf.Descriptor.Field_Presence'Size;
+
+   package Google_Protobuf_Descriptor_Field_Presence_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Field_Presence,
+        Integer_Google_Protobuf_Descriptor_Field_Presence,
+        Google.Protobuf.Descriptor.Field_Presence_Vectors);
+
+   type Integer_Google_Protobuf_Descriptor_Json_Format is  range 0 .. 2
+     with Size => Google.Protobuf.Descriptor.Json_Format'Size;
+
+   package Google_Protobuf_Descriptor_Json_Format_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Json_Format,
+        Integer_Google_Protobuf_Descriptor_Json_Format,
+        Google.Protobuf.Descriptor.Json_Format_Vectors);
+
+   type Integer_Google_Protobuf_Descriptor_Message_Encoding is  range 0 .. 2
+     with Size => Google.Protobuf.Descriptor.Message_Encoding'Size;
+
+   package Google_Protobuf_Descriptor_Message_Encoding_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Message_Encoding,
+        Integer_Google_Protobuf_Descriptor_Message_Encoding,
+        Google.Protobuf.Descriptor.Message_Encoding_Vectors);
+
+   type Integer_Google_Protobuf_Descriptor_Repeated_Field_Encoding is
+      range 0 .. 2
+     with Size => Google.Protobuf.Descriptor.Repeated_Field_Encoding'Size;
+
+   package Google_Protobuf_Descriptor_Repeated_Field_Encoding_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Repeated_Field_Encoding,
+        Integer_Google_Protobuf_Descriptor_Repeated_Field_Encoding,
+        Google.Protobuf.Descriptor.Repeated_Field_Encoding_Vectors);
+
+   type Integer_Google_Protobuf_Descriptor_Utf_8Validation is  range 0 .. 3
+     with Size => Google.Protobuf.Descriptor.Utf_8Validation'Size;
+
+   package Google_Protobuf_Descriptor_Utf_8Validation_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Utf_8Validation,
+        Integer_Google_Protobuf_Descriptor_Utf_8Validation,
+        Google.Protobuf.Descriptor.Utf_8Validation_Vectors);
+
+   type Integer_Google_Protobuf_Descriptor_Default_Symbol_Visibility is
+      range 0 .. 4
+     with Size => Google.Protobuf.Descriptor.Default_Symbol_Visibility'Size;
+
+   package Google_Protobuf_Descriptor_Default_Symbol_Visibility_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Default_Symbol_Visibility,
+        Integer_Google_Protobuf_Descriptor_Default_Symbol_Visibility,
+        Google.Protobuf.Descriptor.Default_Symbol_Visibility_Vectors);
+
+   package Google_Protobuf_Descriptor_Feature_Set_Edition_Default_IO is
+     new PB_Support.IO.Message_IO
+       (Google.Protobuf.Descriptor.Feature_Set_Edition_Default,
+        Google.Protobuf.Descriptor.Feature_Set_Edition_Default_Vector,
+        Google.Protobuf.Descriptor.Append);
+
+   package Google_Protobuf_Descriptor_Field_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Field_Descriptor_Proto,
         Google.Protobuf.Descriptor.Field_Descriptor_Proto_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   type Integer_Label is  range 1 .. 3
+   type Integer_Google_Protobuf_Descriptor_Label is  range 1 .. 3
      with Size => Google.Protobuf.Descriptor.Label'Size;
 
-   package Label_IO is
+   package Google_Protobuf_Descriptor_Label_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.Descriptor.Label, Integer_Label,
+       (Google.Protobuf.Descriptor.Label,
+        Integer_Google_Protobuf_Descriptor_Label,
         Google.Protobuf.Descriptor.Label_Vectors);
 
-   type Integer_PB_Type is  range 1 .. 18
+   type Integer_Google_Protobuf_Descriptor_PB_Type is  range 1 .. 18
      with Size => Google.Protobuf.Descriptor.PB_Type'Size;
 
-   package PB_Type_IO is
+   package Google_Protobuf_Descriptor_PB_Type_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.Descriptor.PB_Type, Integer_PB_Type,
+       (Google.Protobuf.Descriptor.PB_Type,
+        Integer_Google_Protobuf_Descriptor_PB_Type,
         Google.Protobuf.Descriptor.PB_Type_Vectors);
 
-   package Field_Options_IO is
+   package Google_Protobuf_Descriptor_Field_Options_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Field_Options,
         Google.Protobuf.Descriptor.Field_Options_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   type Integer_CType is  range 0 .. 2
+   type Integer_Google_Protobuf_Descriptor_CType is  range 0 .. 2
      with Size => Google.Protobuf.Descriptor.CType'Size;
 
-   package CType_IO is
+   package Google_Protobuf_Descriptor_CType_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.Descriptor.CType, Integer_CType,
+       (Google.Protobuf.Descriptor.CType,
+        Integer_Google_Protobuf_Descriptor_CType,
         Google.Protobuf.Descriptor.CType_Vectors);
 
-   type Integer_JSType is  range 0 .. 2
+   package Google_Protobuf_Descriptor_Edition_Default_IO is
+     new PB_Support.IO.Message_IO
+       (Google.Protobuf.Descriptor.Edition_Default,
+        Google.Protobuf.Descriptor.Edition_Default_Vector,
+        Google.Protobuf.Descriptor.Append);
+
+   package Google_Protobuf_Descriptor_Feature_Support_IO is
+     new PB_Support.IO.Message_IO
+       (Google.Protobuf.Descriptor.Feature_Support,
+        Google.Protobuf.Descriptor.Feature_Support_Vector,
+        Google.Protobuf.Descriptor.Append);
+
+   type Integer_Google_Protobuf_Descriptor_JSType is  range 0 .. 2
      with Size => Google.Protobuf.Descriptor.JSType'Size;
 
-   package JSType_IO is
+   package Google_Protobuf_Descriptor_JSType_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.Descriptor.JSType, Integer_JSType,
+       (Google.Protobuf.Descriptor.JSType,
+        Integer_Google_Protobuf_Descriptor_JSType,
         Google.Protobuf.Descriptor.JSType_Vectors);
 
-   package File_Descriptor_Proto_IO is
+   type Integer_Google_Protobuf_Descriptor_Option_Retention is  range 0 .. 2
+     with Size => Google.Protobuf.Descriptor.Option_Retention'Size;
+
+   package Google_Protobuf_Descriptor_Option_Retention_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Option_Retention,
+        Integer_Google_Protobuf_Descriptor_Option_Retention,
+        Google.Protobuf.Descriptor.Option_Retention_Vectors);
+
+   type Integer_Google_Protobuf_Descriptor_Option_Target_Type is  range 0 .. 9
+     with Size => Google.Protobuf.Descriptor.Option_Target_Type'Size;
+
+   package Google_Protobuf_Descriptor_Option_Target_Type_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Option_Target_Type,
+        Integer_Google_Protobuf_Descriptor_Option_Target_Type,
+        Google.Protobuf.Descriptor.Option_Target_Type_Vectors);
+
+   package Google_Protobuf_Descriptor_File_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.File_Descriptor_Proto,
         Google.Protobuf.Descriptor.File_Descriptor_Proto_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package File_Options_IO is
+   package Google_Protobuf_Descriptor_File_Options_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.File_Options,
         Google.Protobuf.Descriptor.File_Options_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   type Integer_Optimize_Mode is  range 1 .. 3
+   type Integer_Google_Protobuf_Descriptor_Optimize_Mode is  range 1 .. 3
      with Size => Google.Protobuf.Descriptor.Optimize_Mode'Size;
 
-   package Optimize_Mode_IO is
+   package Google_Protobuf_Descriptor_Optimize_Mode_IO is
      new PB_Support.IO.Enum_IO
-       (Google.Protobuf.Descriptor.Optimize_Mode, Integer_Optimize_Mode,
+       (Google.Protobuf.Descriptor.Optimize_Mode,
+        Integer_Google_Protobuf_Descriptor_Optimize_Mode,
         Google.Protobuf.Descriptor.Optimize_Mode_Vectors);
 
-   package Annotation_IO is
+   package Google_Protobuf_Descriptor_Annotation_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Annotation,
         Google.Protobuf.Descriptor.Annotation_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Message_Options_IO is
+   type Integer_Google_Protobuf_Descriptor_Semantic is  range 0 .. 2
+     with Size => Google.Protobuf.Descriptor.Semantic'Size;
+
+   package Google_Protobuf_Descriptor_Semantic_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Semantic,
+        Integer_Google_Protobuf_Descriptor_Semantic,
+        Google.Protobuf.Descriptor.Semantic_Vectors);
+
+   package Google_Protobuf_Descriptor_Message_Options_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Message_Options,
         Google.Protobuf.Descriptor.Message_Options_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Method_Descriptor_Proto_IO is
+   package Google_Protobuf_Descriptor_Method_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Method_Descriptor_Proto,
         Google.Protobuf.Descriptor.Method_Descriptor_Proto_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Method_Options_IO is
+   package Google_Protobuf_Descriptor_Method_Options_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Method_Options,
         Google.Protobuf.Descriptor.Method_Options_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Oneof_Descriptor_Proto_IO is
+   type Integer_Google_Protobuf_Descriptor_Idempotency_Level is  range 0 .. 2
+     with Size => Google.Protobuf.Descriptor.Idempotency_Level'Size;
+
+   package Google_Protobuf_Descriptor_Idempotency_Level_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Idempotency_Level,
+        Integer_Google_Protobuf_Descriptor_Idempotency_Level,
+        Google.Protobuf.Descriptor.Idempotency_Level_Vectors);
+
+   package Google_Protobuf_Descriptor_Oneof_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Oneof_Descriptor_Proto,
         Google.Protobuf.Descriptor.Oneof_Descriptor_Proto_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Oneof_Options_IO is
+   package Google_Protobuf_Descriptor_Oneof_Options_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Oneof_Options,
         Google.Protobuf.Descriptor.Oneof_Options_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Service_Descriptor_Proto_IO is
+   package Google_Protobuf_Descriptor_Service_Descriptor_Proto_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Service_Descriptor_Proto,
         Google.Protobuf.Descriptor.Service_Descriptor_Proto_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Service_Options_IO is
+   package Google_Protobuf_Descriptor_Service_Options_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Service_Options,
         Google.Protobuf.Descriptor.Service_Options_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Source_Code_Info_IO is
+   package Google_Protobuf_Descriptor_Source_Code_Info_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Source_Code_Info,
         Google.Protobuf.Descriptor.Source_Code_Info_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Location_IO is
+   package Google_Protobuf_Descriptor_Location_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Location,
         Google.Protobuf.Descriptor.Location_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Uninterpreted_Option_IO is
+   type Integer_Google_Protobuf_Descriptor_Symbol_Visibility is  range 0 .. 2
+     with Size => Google.Protobuf.Descriptor.Symbol_Visibility'Size;
+
+   package Google_Protobuf_Descriptor_Symbol_Visibility_IO is
+     new PB_Support.IO.Enum_IO
+       (Google.Protobuf.Descriptor.Symbol_Visibility,
+        Integer_Google_Protobuf_Descriptor_Symbol_Visibility,
+        Google.Protobuf.Descriptor.Symbol_Visibility_Vectors);
+
+   package Google_Protobuf_Descriptor_Uninterpreted_Option_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Uninterpreted_Option,
         Google.Protobuf.Descriptor.Uninterpreted_Option_Vector,
         Google.Protobuf.Descriptor.Append);
 
-   package Name_Part_IO is
+   package Google_Protobuf_Descriptor_Name_Part_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Name_Part,
         Google.Protobuf.Descriptor.Name_Part_Vector,
@@ -200,15 +385,18 @@ package body Google.Protobuf.Descriptor is
      V    : File_Descriptor_Set) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / File_Descriptor_Set'Size);
+      Aux_Data    : File_Descriptor_Set_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new File_Descriptor_Set_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new File_Descriptor_Set_Array'
              (Self.Data.all
                 & File_Descriptor_Set_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -253,7 +441,7 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               File_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_File_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.File);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -307,15 +495,18 @@ package body Google.Protobuf.Descriptor is
      V    : File_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / File_Descriptor_Proto'Size);
+      Aux_Data    : File_Descriptor_Proto_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new File_Descriptor_Proto_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new File_Descriptor_Proto_Array'
              (Self.Data.all
                 & File_Descriptor_Proto_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -378,34 +569,45 @@ package body Google.Protobuf.Descriptor is
             when 11 =>
                PB_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Weak_Dependency);
+            when 15 =>
+               PB_Support.IO.Read_Vector
+                 (Stream, Key.Encoding, V.Option_Dependency);
             when 4 =>
-               Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Message_Type);
             when 5 =>
-               Enum_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Enum_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Enum_Type);
             when 6 =>
-               Service_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Service_Descriptor_Proto_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Service);
             when 7 =>
-               Field_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Field_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Extension);
             when 8 =>
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
                end if;
-               File_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
+               Google_Protobuf_Descriptor_File_Options_IO.Read
+                 (Stream, Key.Encoding, V.Options.Value);
             when 9 =>
                if  not V.Source_Code_Info.Is_Set then
                   V.Source_Code_Info := (True, others => <>);
                end if;
-               Source_Code_Info_IO.Read
+               Google_Protobuf_Descriptor_Source_Code_Info_IO.Read
                  (Stream, Key.Encoding, V.Source_Code_Info.Value);
             when 12 =>
                if  not V.Syntax.Is_Set then
                   V.Syntax := (True, others => <>);
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Syntax.Value);
+            when 14 =>
+               if  not V.Edition.Is_Set then
+                  V.Edition := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Edition_IO.Read
+                 (Stream, Key.Encoding, V.Edition.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -438,6 +640,7 @@ package body Google.Protobuf.Descriptor is
          WS.Write (3, V.Dependency);
          WS.Write_Varint (10, V.Public_Dependency);
          WS.Write_Varint (11, V.Weak_Dependency);
+         WS.Write (15, V.Option_Dependency);
          for J in 1 .. V.Message_Type.Length loop
             WS.Write_Key ((4, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Descriptor_Proto'Write
@@ -471,6 +674,10 @@ package body Google.Protobuf.Descriptor is
          if V.Syntax.Is_Set then
             WS.Write (12, V.Syntax.Value);
          end if;
+         if V.Edition.Is_Set then
+            Google_Protobuf_Descriptor_Edition_IO.Write
+              (WS, 14, V.Edition.Value);
+         end if;
          if WS.End_Message then
             Write_File_Descriptor_Proto (WS'Access, V);
          end if;
@@ -495,14 +702,17 @@ package body Google.Protobuf.Descriptor is
      V    : Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Descriptor_Proto'Size);
+      Aux_Data    : Descriptor_Proto_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Descriptor_Proto_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Descriptor_Proto_Array'
              (Self.Data.all & Descriptor_Proto_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -552,34 +762,41 @@ package body Google.Protobuf.Descriptor is
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
-               Field_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Field_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Field);
             when 6 =>
-               Field_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Field_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Extension);
             when 3 =>
-               Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Nested_Type);
             when 4 =>
-               Enum_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Enum_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Enum_Type);
             when 5 =>
-               Extension_Range_IO.Read_Vector
+               Google_Protobuf_Descriptor_Extension_Range_IO.Read_Vector
                  (Stream, Key.Encoding, V.Extension_Range);
             when 8 =>
-               Oneof_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Oneof_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Oneof_Decl);
             when 7 =>
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
                end if;
-               Message_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
+               Google_Protobuf_Descriptor_Message_Options_IO.Read
+                 (Stream, Key.Encoding, V.Options.Value);
             when 9 =>
-               Reserved_Range_IO.Read_Vector
+               Google_Protobuf_Descriptor_Reserved_Range_IO.Read_Vector
                  (Stream, Key.Encoding, V.Reserved_Range);
             when 10 =>
                PB_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Reserved_Name);
+            when 11 =>
+               if  not V.Visibility.Is_Set then
+                  V.Visibility := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Symbol_Visibility_IO.Read
+                 (Stream, Key.Encoding, V.Visibility.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -647,6 +864,10 @@ package body Google.Protobuf.Descriptor is
               (Stream, V.Reserved_Range (J));
          end loop;
          WS.Write (10, V.Reserved_Name);
+         if V.Visibility.Is_Set then
+            Google_Protobuf_Descriptor_Symbol_Visibility_IO.Write
+              (WS, 11, V.Visibility.Value);
+         end if;
          if WS.End_Message then
             Write_Descriptor_Proto (WS'Access, V);
          end if;
@@ -671,14 +892,17 @@ package body Google.Protobuf.Descriptor is
      V    : Extension_Range) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Extension_Range'Size);
+      Aux_Data    : Extension_Range_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Extension_Range_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Extension_Range_Array'
              (Self.Data.all & Extension_Range_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -732,6 +956,12 @@ package body Google.Protobuf.Descriptor is
                end if;
                PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.PB_End.Value);
+            when 3 =>
+               if  not V.Options.Is_Set then
+                  V.Options := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Extension_Range_Options_IO.Read
+                 (Stream, Key.Encoding, V.Options.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -761,6 +991,11 @@ package body Google.Protobuf.Descriptor is
          if V.PB_End.Is_Set then
             WS.Write_Varint (2, V.PB_End.Value);
          end if;
+         if V.Options.Is_Set then
+            WS.Write_Key ((3, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Extension_Range_Options'Write
+              (Stream, V.Options.Value);
+         end if;
          if WS.End_Message then
             Write_Extension_Range (WS'Access, V);
          end if;
@@ -785,14 +1020,17 @@ package body Google.Protobuf.Descriptor is
      V    : Reserved_Range) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Reserved_Range'Size);
+      Aux_Data    : Reserved_Range_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Reserved_Range_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Reserved_Range_Array'
              (Self.Data.all & Reserved_Range_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -881,6 +1119,286 @@ package body Google.Protobuf.Descriptor is
       end;
    end Write_Reserved_Range;
 
+   function Length (Self : Extension_Range_Options_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Extension_Range_Options_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Extension_Range_Options_Array, Extension_Range_Options_Array_Access);
+
+   procedure Append
+    (Self : in out Extension_Range_Options_Vector;
+     V    : Extension_Range_Options) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Extension_Range_Options'Size);
+      Aux_Data    : Extension_Range_Options_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Extension_Range_Options_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Extension_Range_Options_Array'
+             (Self.Data.all
+                & Extension_Range_Options_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust
+    (Self : in out Extension_Range_Options_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new Extension_Range_Options_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize
+    (Self : in out Extension_Range_Options_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Extension_Range_Options_Variable_Reference
+    (Self  : aliased in out Extension_Range_Options_Vector;
+     Index : Positive)
+      return Extension_Range_Options_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Extension_Range_Options_Variable_Reference;
+
+   not overriding function Get_Extension_Range_Options_Constant_Reference
+    (Self  : aliased Extension_Range_Options_Vector;
+     Index : Positive)
+      return Extension_Range_Options_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Extension_Range_Options_Constant_Reference;
+
+   procedure Read_Extension_Range_Options
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Extension_Range_Options) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 999 =>
+               Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Uninterpreted_Option);
+            when 2 =>
+               Google_Protobuf_Descriptor_Declaration_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Declaration);
+            when 50 =>
+               if  not V.Features.Is_Set then
+                  V.Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Features.Value);
+            when 3 =>
+               if  not V.Verification.Is_Set then
+                  V.Verification := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Verification_State_IO.Read
+                 (Stream, Key.Encoding, V.Verification.Value);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Extension_Range_Options;
+
+   procedure Write_Extension_Range_Options
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Extension_Range_Options) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Extension_Range_Options (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         for J in 1 .. V.Uninterpreted_Option.Length loop
+            WS.Write_Key ((999, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Uninterpreted_Option'Write
+              (Stream, V.Uninterpreted_Option (J));
+         end loop;
+         for J in 1 .. V.Declaration.Length loop
+            WS.Write_Key ((2, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Declaration'Write
+              (Stream, V.Declaration (J));
+         end loop;
+         if V.Features.Is_Set then
+            WS.Write_Key ((50, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Features.Value);
+         end if;
+         if V.Verification.Is_Set then
+            Google_Protobuf_Descriptor_Verification_State_IO.Write
+              (WS, 3, V.Verification.Value);
+         end if;
+         if WS.End_Message then
+            Write_Extension_Range_Options (WS'Access, V);
+         end if;
+      end;
+   end Write_Extension_Range_Options;
+
+   function Length (Self : Declaration_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Declaration_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Declaration_Array, Declaration_Array_Access);
+
+   procedure Append (Self : in out Declaration_Vector; V    : Declaration) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Declaration'Size);
+      Aux_Data    : Declaration_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Declaration_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Declaration_Array'
+             (Self.Data.all & Declaration_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Declaration_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data := new Declaration_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Declaration_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Declaration_Variable_Reference
+    (Self  : aliased in out Declaration_Vector;
+     Index : Positive)
+      return Declaration_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Declaration_Variable_Reference;
+
+   not overriding function Get_Declaration_Constant_Reference
+    (Self  : aliased Declaration_Vector;
+     Index : Positive)
+      return Declaration_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Declaration_Constant_Reference;
+
+   procedure Read_Declaration
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Declaration) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 1 =>
+               if  not V.Number.Is_Set then
+                  V.Number := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Number.Value);
+            when 2 =>
+               if  not V.Full_Name.Is_Set then
+                  V.Full_Name := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Full_Name.Value);
+            when 3 =>
+               if  not V.PB_Type.Is_Set then
+                  V.PB_Type := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.PB_Type.Value);
+            when 5 =>
+               if  not V.Reserved.Is_Set then
+                  V.Reserved := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Reserved.Value);
+            when 6 =>
+               if  not V.Repeated.Is_Set then
+                  V.Repeated := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Repeated.Value);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Declaration;
+
+   procedure Write_Declaration
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Declaration) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Declaration (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if V.Number.Is_Set then
+            WS.Write_Varint (1, V.Number.Value);
+         end if;
+         if V.Full_Name.Is_Set then
+            WS.Write (2, V.Full_Name.Value);
+         end if;
+         if V.PB_Type.Is_Set then
+            WS.Write (3, V.PB_Type.Value);
+         end if;
+         if V.Reserved.Is_Set then
+            WS.Write (5, V.Reserved.Value);
+         end if;
+         if V.Repeated.Is_Set then
+            WS.Write (6, V.Repeated.Value);
+         end if;
+         if WS.End_Message then
+            Write_Declaration (WS'Access, V);
+         end if;
+      end;
+   end Write_Declaration;
+
    function Length (Self : Field_Descriptor_Proto_Vector) return Natural is
    begin
       return Self.Length;
@@ -899,15 +1417,18 @@ package body Google.Protobuf.Descriptor is
      V    : Field_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Field_Descriptor_Proto'Size);
+      Aux_Data    : Field_Descriptor_Proto_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Field_Descriptor_Proto_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Field_Descriptor_Proto_Array'
              (Self.Data.all
                 & Field_Descriptor_Proto_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -967,12 +1488,14 @@ package body Google.Protobuf.Descriptor is
                if  not V.Label.Is_Set then
                   V.Label := (True, others => <>);
                end if;
-               Label_IO.Read (Stream, Key.Encoding, V.Label.Value);
+               Google_Protobuf_Descriptor_Label_IO.Read
+                 (Stream, Key.Encoding, V.Label.Value);
             when 5 =>
                if  not V.PB_Type.Is_Set then
                   V.PB_Type := (True, others => <>);
                end if;
-               PB_Type_IO.Read (Stream, Key.Encoding, V.PB_Type.Value);
+               Google_Protobuf_Descriptor_PB_Type_IO.Read
+                 (Stream, Key.Encoding, V.PB_Type.Value);
             when 6 =>
                if  not V.Type_Name.Is_Set then
                   V.Type_Name := (True, others => <>);
@@ -1004,7 +1527,14 @@ package body Google.Protobuf.Descriptor is
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
                end if;
-               Field_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
+               Google_Protobuf_Descriptor_Field_Options_IO.Read
+                 (Stream, Key.Encoding, V.Options.Value);
+            when 17 =>
+               if  not V.Proto_3_Optional.Is_Set then
+                  V.Proto_3_Optional := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Proto_3_Optional.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1035,10 +1565,11 @@ package body Google.Protobuf.Descriptor is
             WS.Write_Varint (3, V.Number.Value);
          end if;
          if V.Label.Is_Set then
-            Label_IO.Write (WS, 4, V.Label.Value);
+            Google_Protobuf_Descriptor_Label_IO.Write (WS, 4, V.Label.Value);
          end if;
          if V.PB_Type.Is_Set then
-            PB_Type_IO.Write (WS, 5, V.PB_Type.Value);
+            Google_Protobuf_Descriptor_PB_Type_IO.Write
+              (WS, 5, V.PB_Type.Value);
          end if;
          if V.Type_Name.Is_Set then
             WS.Write (6, V.Type_Name.Value);
@@ -1059,6 +1590,9 @@ package body Google.Protobuf.Descriptor is
             WS.Write_Key ((8, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Field_Options'Write
               (Stream, V.Options.Value);
+         end if;
+         if V.Proto_3_Optional.Is_Set then
+            WS.Write (17, V.Proto_3_Optional.Value);
          end if;
          if WS.End_Message then
             Write_Field_Descriptor_Proto (WS'Access, V);
@@ -1084,15 +1618,18 @@ package body Google.Protobuf.Descriptor is
      V    : Oneof_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Oneof_Descriptor_Proto'Size);
+      Aux_Data    : Oneof_Descriptor_Proto_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Oneof_Descriptor_Proto_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Oneof_Descriptor_Proto_Array'
              (Self.Data.all
                 & Oneof_Descriptor_Proto_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1146,7 +1683,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
                end if;
-               Oneof_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
+               Google_Protobuf_Descriptor_Oneof_Options_IO.Read
+                 (Stream, Key.Encoding, V.Options.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1202,15 +1740,18 @@ package body Google.Protobuf.Descriptor is
      V    : Enum_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Descriptor_Proto'Size);
+      Aux_Data    : Enum_Descriptor_Proto_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Enum_Descriptor_Proto_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Enum_Descriptor_Proto_Array'
              (Self.Data.all
                 & Enum_Descriptor_Proto_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1261,13 +1802,27 @@ package body Google.Protobuf.Descriptor is
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
-               Enum_Value_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Enum_Value_Descriptor_Proto_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Value);
             when 3 =>
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
                end if;
-               Enum_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
+               Google_Protobuf_Descriptor_Enum_Options_IO.Read
+                 (Stream, Key.Encoding, V.Options.Value);
+            when 4 =>
+               Google_Protobuf_Descriptor_Enum_Reserved_Range_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Reserved_Range);
+            when 5 =>
+               PB_Support.IO.Read_Vector
+                 (Stream, Key.Encoding, V.Reserved_Name);
+            when 6 =>
+               if  not V.Visibility.Is_Set then
+                  V.Visibility := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Symbol_Visibility_IO.Read
+                 (Stream, Key.Encoding, V.Visibility.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1304,11 +1859,140 @@ package body Google.Protobuf.Descriptor is
             Google.Protobuf.Descriptor.Enum_Options'Write
               (Stream, V.Options.Value);
          end if;
+         for J in 1 .. V.Reserved_Range.Length loop
+            WS.Write_Key ((4, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Enum_Reserved_Range'Write
+              (Stream, V.Reserved_Range (J));
+         end loop;
+         WS.Write (5, V.Reserved_Name);
+         if V.Visibility.Is_Set then
+            Google_Protobuf_Descriptor_Symbol_Visibility_IO.Write
+              (WS, 6, V.Visibility.Value);
+         end if;
          if WS.End_Message then
             Write_Enum_Descriptor_Proto (WS'Access, V);
          end if;
       end;
    end Write_Enum_Descriptor_Proto;
+
+   function Length (Self : Enum_Reserved_Range_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Enum_Reserved_Range_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Enum_Reserved_Range_Array, Enum_Reserved_Range_Array_Access);
+
+   procedure Append
+    (Self : in out Enum_Reserved_Range_Vector;
+     V    : Enum_Reserved_Range) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Enum_Reserved_Range'Size);
+      Aux_Data    : Enum_Reserved_Range_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Enum_Reserved_Range_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Enum_Reserved_Range_Array'
+             (Self.Data.all
+                & Enum_Reserved_Range_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Enum_Reserved_Range_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new Enum_Reserved_Range_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Enum_Reserved_Range_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Enum_Reserved_Range_Variable_Reference
+    (Self  : aliased in out Enum_Reserved_Range_Vector;
+     Index : Positive)
+      return Enum_Reserved_Range_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Reserved_Range_Variable_Reference;
+
+   not overriding function Get_Enum_Reserved_Range_Constant_Reference
+    (Self  : aliased Enum_Reserved_Range_Vector;
+     Index : Positive)
+      return Enum_Reserved_Range_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Enum_Reserved_Range_Constant_Reference;
+
+   procedure Read_Enum_Reserved_Range
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Enum_Reserved_Range) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 1 =>
+               if  not V.Start.Is_Set then
+                  V.Start := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Start.Value);
+            when 2 =>
+               if  not V.PB_End.Is_Set then
+                  V.PB_End := (True, others => <>);
+               end if;
+               PB_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.PB_End.Value);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Enum_Reserved_Range;
+
+   procedure Write_Enum_Reserved_Range
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Enum_Reserved_Range) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Enum_Reserved_Range (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if V.Start.Is_Set then
+            WS.Write_Varint (1, V.Start.Value);
+         end if;
+         if V.PB_End.Is_Set then
+            WS.Write_Varint (2, V.PB_End.Value);
+         end if;
+         if WS.End_Message then
+            Write_Enum_Reserved_Range (WS'Access, V);
+         end if;
+      end;
+   end Write_Enum_Reserved_Range;
 
    function Length
     (Self : Enum_Value_Descriptor_Proto_Vector)
@@ -1331,16 +2015,19 @@ package body Google.Protobuf.Descriptor is
      V    : Enum_Value_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Value_Descriptor_Proto'Size);
+      Aux_Data    : Enum_Value_Descriptor_Proto_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Enum_Value_Descriptor_Proto_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Enum_Value_Descriptor_Proto_Array'
              (Self.Data.all
                 & Enum_Value_Descriptor_Proto_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1402,7 +2089,7 @@ package body Google.Protobuf.Descriptor is
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
                end if;
-               Enum_Value_Options_IO.Read
+               Google_Protobuf_Descriptor_Enum_Value_Options_IO.Read
                  (Stream, Key.Encoding, V.Options.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -1462,15 +2149,18 @@ package body Google.Protobuf.Descriptor is
      V    : Service_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Service_Descriptor_Proto'Size);
+      Aux_Data    : Service_Descriptor_Proto_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Service_Descriptor_Proto_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Service_Descriptor_Proto_Array'
              (Self.Data.all
                 & Service_Descriptor_Proto_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1522,13 +2212,15 @@ package body Google.Protobuf.Descriptor is
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
-               Method_Descriptor_Proto_IO.Read_Vector
+               Google_Protobuf_Descriptor_Method_Descriptor_Proto_IO
+                 .Read_Vector
                  (Stream, Key.Encoding, V.Method);
             when 3 =>
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
                end if;
-               Service_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
+               Google_Protobuf_Descriptor_Service_Options_IO.Read
+                 (Stream, Key.Encoding, V.Options.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -1589,15 +2281,18 @@ package body Google.Protobuf.Descriptor is
      V    : Method_Descriptor_Proto) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Method_Descriptor_Proto'Size);
+      Aux_Data    : Method_Descriptor_Proto_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Method_Descriptor_Proto_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Method_Descriptor_Proto_Array'
              (Self.Data.all
                 & Method_Descriptor_Proto_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1662,7 +2357,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
                end if;
-               Method_Options_IO.Read (Stream, Key.Encoding, V.Options.Value);
+               Google_Protobuf_Descriptor_Method_Options_IO.Read
+                 (Stream, Key.Encoding, V.Options.Value);
             when 5 =>
                if  not V.Client_Streaming.Is_Set then
                   V.Client_Streaming := (True, others => <>);
@@ -1740,14 +2436,17 @@ package body Google.Protobuf.Descriptor is
    procedure Append (Self : in out File_Options_Vector; V    : File_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / File_Options'Size);
+      Aux_Data    : File_Options_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new File_Options_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new File_Options_Array'
              (Self.Data.all & File_Options_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1823,7 +2522,7 @@ package body Google.Protobuf.Descriptor is
                if  not V.Optimize_For.Is_Set then
                   V.Optimize_For := (True, others => <>);
                end if;
-               Optimize_Mode_IO.Read
+               Google_Protobuf_Descriptor_Optimize_Mode_IO.Read
                  (Stream, Key.Encoding, V.Optimize_For.Value);
             when 11 =>
                if  not V.Go_Package.Is_Set then
@@ -1871,8 +2570,42 @@ package body Google.Protobuf.Descriptor is
                end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Csharp_Namespace.Value);
+            when 39 =>
+               if  not V.Swift_Prefix.Is_Set then
+                  V.Swift_Prefix := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Swift_Prefix.Value);
+            when 40 =>
+               if  not V.Php_Class_Prefix.Is_Set then
+                  V.Php_Class_Prefix := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Php_Class_Prefix.Value);
+            when 41 =>
+               if  not V.Php_Namespace.Is_Set then
+                  V.Php_Namespace := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Php_Namespace.Value);
+            when 44 =>
+               if  not V.Php_Metadata_Namespace.Is_Set then
+                  V.Php_Metadata_Namespace := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Php_Metadata_Namespace.Value);
+            when 45 =>
+               if  not V.Ruby_Package.Is_Set then
+                  V.Ruby_Package := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Ruby_Package.Value);
+            when 50 =>
+               if  not V.Features.Is_Set then
+                  V.Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Features.Value);
             when 999 =>
-               Uninterpreted_Option_IO.Read_Vector
+               Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -1913,7 +2646,8 @@ package body Google.Protobuf.Descriptor is
             WS.Write (27, V.Java_String_Check_Utf_8.Value);
          end if;
          if V.Optimize_For.Is_Set then
-            Optimize_Mode_IO.Write (WS, 9, V.Optimize_For.Value);
+            Google_Protobuf_Descriptor_Optimize_Mode_IO.Write
+              (WS, 9, V.Optimize_For.Value);
          end if;
          if V.Go_Package.Is_Set then
             WS.Write (11, V.Go_Package.Value);
@@ -1938,6 +2672,26 @@ package body Google.Protobuf.Descriptor is
          end if;
          if V.Csharp_Namespace.Is_Set then
             WS.Write (37, V.Csharp_Namespace.Value);
+         end if;
+         if V.Swift_Prefix.Is_Set then
+            WS.Write (39, V.Swift_Prefix.Value);
+         end if;
+         if V.Php_Class_Prefix.Is_Set then
+            WS.Write (40, V.Php_Class_Prefix.Value);
+         end if;
+         if V.Php_Namespace.Is_Set then
+            WS.Write (41, V.Php_Namespace.Value);
+         end if;
+         if V.Php_Metadata_Namespace.Is_Set then
+            WS.Write (44, V.Php_Metadata_Namespace.Value);
+         end if;
+         if V.Ruby_Package.Is_Set then
+            WS.Write (45, V.Ruby_Package.Value);
+         end if;
+         if V.Features.Is_Set then
+            WS.Write_Key ((50, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Features.Value);
          end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
@@ -1968,14 +2722,17 @@ package body Google.Protobuf.Descriptor is
      V    : Message_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Message_Options'Size);
+      Aux_Data    : Message_Options_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Message_Options_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Message_Options_Array'
              (Self.Data.all & Message_Options_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2041,8 +2798,22 @@ package body Google.Protobuf.Descriptor is
                   V.Map_Entry := (True, others => <>);
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Map_Entry.Value);
+            when 11 =>
+               if  not V.Deprecated_Legacy_Json_Field_Conflicts.Is_Set then
+                  V.Deprecated_Legacy_Json_Field_Conflicts :=
+                    (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding,
+                  V.Deprecated_Legacy_Json_Field_Conflicts.Value);
+            when 12 =>
+               if  not V.Features.Is_Set then
+                  V.Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Features.Value);
             when 999 =>
-               Uninterpreted_Option_IO.Read_Vector
+               Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -2079,6 +2850,14 @@ package body Google.Protobuf.Descriptor is
          if V.Map_Entry.Is_Set then
             WS.Write (7, V.Map_Entry.Value);
          end if;
+         if V.Deprecated_Legacy_Json_Field_Conflicts.Is_Set then
+            WS.Write (11, V.Deprecated_Legacy_Json_Field_Conflicts.Value);
+         end if;
+         if V.Features.Is_Set then
+            WS.Write_Key ((12, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Features.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -2108,14 +2887,17 @@ package body Google.Protobuf.Descriptor is
      V    : Field_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Field_Options'Size);
+      Aux_Data    : Field_Options_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Field_Options_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Field_Options_Array'
              (Self.Data.all & Field_Options_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2162,7 +2944,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Ctype.Is_Set then
                   V.Ctype := (True, others => <>);
                end if;
-               CType_IO.Read (Stream, Key.Encoding, V.Ctype.Value);
+               Google_Protobuf_Descriptor_CType_IO.Read
+                 (Stream, Key.Encoding, V.Ctype.Value);
             when 2 =>
                if  not V.Packed.Is_Set then
                   V.Packed := (True, others => <>);
@@ -2172,12 +2955,19 @@ package body Google.Protobuf.Descriptor is
                if  not V.Jstype.Is_Set then
                   V.Jstype := (True, others => <>);
                end if;
-               JSType_IO.Read (Stream, Key.Encoding, V.Jstype.Value);
+               Google_Protobuf_Descriptor_JSType_IO.Read
+                 (Stream, Key.Encoding, V.Jstype.Value);
             when 5 =>
                if  not V.Lazy.Is_Set then
                   V.Lazy := (True, others => <>);
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Lazy.Value);
+            when 15 =>
+               if  not V.Unverified_Lazy.Is_Set then
+                  V.Unverified_Lazy := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Unverified_Lazy.Value);
             when 3 =>
                if  not V.Deprecated.Is_Set then
                   V.Deprecated := (True, others => <>);
@@ -2188,8 +2978,37 @@ package body Google.Protobuf.Descriptor is
                   V.Weak := (True, others => <>);
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Weak.Value);
+            when 16 =>
+               if  not V.Debug_Redact.Is_Set then
+                  V.Debug_Redact := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Debug_Redact.Value);
+            when 17 =>
+               if  not V.Retention.Is_Set then
+                  V.Retention := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Option_Retention_IO.Read
+                 (Stream, Key.Encoding, V.Retention.Value);
+            when 19 =>
+               Google_Protobuf_Descriptor_Option_Target_Type_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Targets);
+            when 20 =>
+               Google_Protobuf_Descriptor_Edition_Default_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Edition_Defaults);
+            when 21 =>
+               if  not V.Features.Is_Set then
+                  V.Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Features.Value);
+            when 22 =>
+               if  not V.Feature_Support.Is_Set then
+                  V.Feature_Support := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Support_IO.Read
+                 (Stream, Key.Encoding, V.Feature_Support.Value);
             when 999 =>
-               Uninterpreted_Option_IO.Read_Vector
+               Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -2215,22 +3034,49 @@ package body Google.Protobuf.Descriptor is
       begin
          WS.Start_Message;
          if V.Ctype.Is_Set then
-            CType_IO.Write (WS, 1, V.Ctype.Value);
+            Google_Protobuf_Descriptor_CType_IO.Write (WS, 1, V.Ctype.Value);
          end if;
          if V.Packed.Is_Set then
             WS.Write (2, V.Packed.Value);
          end if;
          if V.Jstype.Is_Set then
-            JSType_IO.Write (WS, 6, V.Jstype.Value);
+            Google_Protobuf_Descriptor_JSType_IO.Write (WS, 6, V.Jstype.Value);
          end if;
          if V.Lazy.Is_Set then
             WS.Write (5, V.Lazy.Value);
+         end if;
+         if V.Unverified_Lazy.Is_Set then
+            WS.Write (15, V.Unverified_Lazy.Value);
          end if;
          if V.Deprecated.Is_Set then
             WS.Write (3, V.Deprecated.Value);
          end if;
          if V.Weak.Is_Set then
             WS.Write (10, V.Weak.Value);
+         end if;
+         if V.Debug_Redact.Is_Set then
+            WS.Write (16, V.Debug_Redact.Value);
+         end if;
+         if V.Retention.Is_Set then
+            Google_Protobuf_Descriptor_Option_Retention_IO.Write
+              (WS, 17, V.Retention.Value);
+         end if;
+         Google_Protobuf_Descriptor_Option_Target_Type_IO.Write
+           (WS, 19, V.Targets);
+         for J in 1 .. V.Edition_Defaults.Length loop
+            WS.Write_Key ((20, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Edition_Default'Write
+              (Stream, V.Edition_Defaults (J));
+         end loop;
+         if V.Features.Is_Set then
+            WS.Write_Key ((21, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Features.Value);
+         end if;
+         if V.Feature_Support.Is_Set then
+            WS.Write_Key ((22, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Support'Write
+              (Stream, V.Feature_Support.Value);
          end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
@@ -2242,6 +3088,263 @@ package body Google.Protobuf.Descriptor is
          end if;
       end;
    end Write_Field_Options;
+
+   function Length (Self : Edition_Default_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Edition_Default_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Edition_Default_Array, Edition_Default_Array_Access);
+
+   procedure Append
+    (Self : in out Edition_Default_Vector;
+     V    : Edition_Default) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Edition_Default'Size);
+      Aux_Data    : Edition_Default_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Edition_Default_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Edition_Default_Array'
+             (Self.Data.all & Edition_Default_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Edition_Default_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data := new Edition_Default_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Edition_Default_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Edition_Default_Variable_Reference
+    (Self  : aliased in out Edition_Default_Vector;
+     Index : Positive)
+      return Edition_Default_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Edition_Default_Variable_Reference;
+
+   not overriding function Get_Edition_Default_Constant_Reference
+    (Self  : aliased Edition_Default_Vector;
+     Index : Positive)
+      return Edition_Default_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Edition_Default_Constant_Reference;
+
+   procedure Read_Edition_Default
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Edition_Default) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 3 =>
+               if  not V.Edition.Is_Set then
+                  V.Edition := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Edition_IO.Read
+                 (Stream, Key.Encoding, V.Edition.Value);
+            when 2 =>
+               if  not V.Value.Is_Set then
+                  V.Value := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Value.Value);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Edition_Default;
+
+   procedure Write_Edition_Default
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Edition_Default) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Edition_Default (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if V.Edition.Is_Set then
+            Google_Protobuf_Descriptor_Edition_IO.Write
+              (WS, 3, V.Edition.Value);
+         end if;
+         if V.Value.Is_Set then
+            WS.Write (2, V.Value.Value);
+         end if;
+         if WS.End_Message then
+            Write_Edition_Default (WS'Access, V);
+         end if;
+      end;
+   end Write_Edition_Default;
+
+   function Length (Self : Feature_Support_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Feature_Support_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Feature_Support_Array, Feature_Support_Array_Access);
+
+   procedure Append
+    (Self : in out Feature_Support_Vector;
+     V    : Feature_Support) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Feature_Support'Size);
+      Aux_Data    : Feature_Support_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Feature_Support_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Feature_Support_Array'
+             (Self.Data.all & Feature_Support_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Feature_Support_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data := new Feature_Support_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Feature_Support_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Feature_Support_Variable_Reference
+    (Self  : aliased in out Feature_Support_Vector;
+     Index : Positive)
+      return Feature_Support_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Feature_Support_Variable_Reference;
+
+   not overriding function Get_Feature_Support_Constant_Reference
+    (Self  : aliased Feature_Support_Vector;
+     Index : Positive)
+      return Feature_Support_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Feature_Support_Constant_Reference;
+
+   procedure Read_Feature_Support
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Feature_Support) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 1 =>
+               if  not V.Edition_Introduced.Is_Set then
+                  V.Edition_Introduced := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Edition_IO.Read
+                 (Stream, Key.Encoding, V.Edition_Introduced.Value);
+            when 2 =>
+               if  not V.Edition_Deprecated.Is_Set then
+                  V.Edition_Deprecated := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Edition_IO.Read
+                 (Stream, Key.Encoding, V.Edition_Deprecated.Value);
+            when 3 =>
+               if  not V.Deprecation_Warning.Is_Set then
+                  V.Deprecation_Warning := (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Deprecation_Warning.Value);
+            when 4 =>
+               if  not V.Edition_Removed.Is_Set then
+                  V.Edition_Removed := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Edition_IO.Read
+                 (Stream, Key.Encoding, V.Edition_Removed.Value);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Feature_Support;
+
+   procedure Write_Feature_Support
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Feature_Support) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Feature_Support (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if V.Edition_Introduced.Is_Set then
+            Google_Protobuf_Descriptor_Edition_IO.Write
+              (WS, 1, V.Edition_Introduced.Value);
+         end if;
+         if V.Edition_Deprecated.Is_Set then
+            Google_Protobuf_Descriptor_Edition_IO.Write
+              (WS, 2, V.Edition_Deprecated.Value);
+         end if;
+         if V.Deprecation_Warning.Is_Set then
+            WS.Write (3, V.Deprecation_Warning.Value);
+         end if;
+         if V.Edition_Removed.Is_Set then
+            Google_Protobuf_Descriptor_Edition_IO.Write
+              (WS, 4, V.Edition_Removed.Value);
+         end if;
+         if WS.End_Message then
+            Write_Feature_Support (WS'Access, V);
+         end if;
+      end;
+   end Write_Feature_Support;
 
    function Length (Self : Oneof_Options_Vector) return Natural is
    begin
@@ -2261,14 +3364,17 @@ package body Google.Protobuf.Descriptor is
      V    : Oneof_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Oneof_Options'Size);
+      Aux_Data    : Oneof_Options_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Oneof_Options_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Oneof_Options_Array'
              (Self.Data.all & Oneof_Options_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2311,8 +3417,14 @@ package body Google.Protobuf.Descriptor is
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
+            when 1 =>
+               if  not V.Features.Is_Set then
+                  V.Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Features.Value);
             when 999 =>
-               Uninterpreted_Option_IO.Read_Vector
+               Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -2337,6 +3449,11 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
+         if V.Features.Is_Set then
+            WS.Write_Key ((1, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Features.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -2364,14 +3481,17 @@ package body Google.Protobuf.Descriptor is
    procedure Append (Self : in out Enum_Options_Vector; V    : Enum_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Options'Size);
+      Aux_Data    : Enum_Options_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Enum_Options_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Enum_Options_Array'
              (Self.Data.all & Enum_Options_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2424,8 +3544,22 @@ package body Google.Protobuf.Descriptor is
                   V.Deprecated := (True, others => <>);
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+            when 6 =>
+               if  not V.Deprecated_Legacy_Json_Field_Conflicts.Is_Set then
+                  V.Deprecated_Legacy_Json_Field_Conflicts :=
+                    (True, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding,
+                  V.Deprecated_Legacy_Json_Field_Conflicts.Value);
+            when 7 =>
+               if  not V.Features.Is_Set then
+                  V.Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Features.Value);
             when 999 =>
-               Uninterpreted_Option_IO.Read_Vector
+               Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -2456,6 +3590,14 @@ package body Google.Protobuf.Descriptor is
          if V.Deprecated.Is_Set then
             WS.Write (3, V.Deprecated.Value);
          end if;
+         if V.Deprecated_Legacy_Json_Field_Conflicts.Is_Set then
+            WS.Write (6, V.Deprecated_Legacy_Json_Field_Conflicts.Value);
+         end if;
+         if V.Features.Is_Set then
+            WS.Write_Key ((7, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Features.Value);
+         end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Uninterpreted_Option'Write
@@ -2485,15 +3627,18 @@ package body Google.Protobuf.Descriptor is
      V    : Enum_Value_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Value_Options'Size);
+      Aux_Data    : Enum_Value_Options_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Enum_Value_Options_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Enum_Value_Options_Array'
              (Self.Data.all
                 & Enum_Value_Options_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2542,8 +3687,25 @@ package body Google.Protobuf.Descriptor is
                   V.Deprecated := (True, others => <>);
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+            when 2 =>
+               if  not V.Features.Is_Set then
+                  V.Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Features.Value);
+            when 3 =>
+               if  not V.Debug_Redact.Is_Set then
+                  V.Debug_Redact := (True, others => <>);
+               end if;
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Debug_Redact.Value);
+            when 4 =>
+               if  not V.Feature_Support.Is_Set then
+                  V.Feature_Support := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Support_IO.Read
+                 (Stream, Key.Encoding, V.Feature_Support.Value);
             when 999 =>
-               Uninterpreted_Option_IO.Read_Vector
+               Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -2570,6 +3732,19 @@ package body Google.Protobuf.Descriptor is
          WS.Start_Message;
          if V.Deprecated.Is_Set then
             WS.Write (1, V.Deprecated.Value);
+         end if;
+         if V.Features.Is_Set then
+            WS.Write_Key ((2, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Features.Value);
+         end if;
+         if V.Debug_Redact.Is_Set then
+            WS.Write (3, V.Debug_Redact.Value);
+         end if;
+         if V.Feature_Support.Is_Set then
+            WS.Write_Key ((4, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Support'Write
+              (Stream, V.Feature_Support.Value);
          end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
@@ -2600,14 +3775,17 @@ package body Google.Protobuf.Descriptor is
      V    : Service_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Service_Options'Size);
+      Aux_Data    : Service_Options_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Service_Options_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Service_Options_Array'
              (Self.Data.all & Service_Options_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2650,13 +3828,19 @@ package body Google.Protobuf.Descriptor is
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
+            when 34 =>
+               if  not V.Features.Is_Set then
+                  V.Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Features.Value);
             when 33 =>
                if  not V.Deprecated.Is_Set then
                   V.Deprecated := (True, others => <>);
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
             when 999 =>
-               Uninterpreted_Option_IO.Read_Vector
+               Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -2681,6 +3865,11 @@ package body Google.Protobuf.Descriptor is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
+         if V.Features.Is_Set then
+            WS.Write_Key ((34, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Features.Value);
+         end if;
          if V.Deprecated.Is_Set then
             WS.Write (33, V.Deprecated.Value);
          end if;
@@ -2713,14 +3902,17 @@ package body Google.Protobuf.Descriptor is
      V    : Method_Options) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Method_Options'Size);
+      Aux_Data    : Method_Options_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Method_Options_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Method_Options_Array'
              (Self.Data.all & Method_Options_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2768,8 +3960,20 @@ package body Google.Protobuf.Descriptor is
                   V.Deprecated := (True, others => <>);
                end if;
                PB_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+            when 34 =>
+               if  not V.Idempotency_Level.Is_Set then
+                  V.Idempotency_Level := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Idempotency_Level_IO.Read
+                 (Stream, Key.Encoding, V.Idempotency_Level.Value);
+            when 35 =>
+               if  not V.Features.Is_Set then
+                  V.Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Features.Value);
             when 999 =>
-               Uninterpreted_Option_IO.Read_Vector
+               Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
@@ -2796,6 +4000,15 @@ package body Google.Protobuf.Descriptor is
          WS.Start_Message;
          if V.Deprecated.Is_Set then
             WS.Write (33, V.Deprecated.Value);
+         end if;
+         if V.Idempotency_Level.Is_Set then
+            Google_Protobuf_Descriptor_Idempotency_Level_IO.Write
+              (WS, 34, V.Idempotency_Level.Value);
+         end if;
+         if V.Features.Is_Set then
+            WS.Write_Key ((35, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Features.Value);
          end if;
          for J in 1 .. V.Uninterpreted_Option.Length loop
             WS.Write_Key ((999, PB_Support.Length_Delimited));
@@ -2826,15 +4039,18 @@ package body Google.Protobuf.Descriptor is
      V    : Uninterpreted_Option) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Uninterpreted_Option'Size);
+      Aux_Data    : Uninterpreted_Option_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Uninterpreted_Option_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Uninterpreted_Option_Array'
              (Self.Data.all
                 & Uninterpreted_Option_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2879,7 +4095,8 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 2 =>
-               Name_Part_IO.Read_Vector (Stream, Key.Encoding, V.Name);
+               Google_Protobuf_Descriptor_Name_Part_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Name);
             when 3 =>
                if  not V.Identifier_Value.Is_Set then
                   V.Identifier_Value := (True, others => <>);
@@ -2981,14 +4198,17 @@ package body Google.Protobuf.Descriptor is
    procedure Append (Self : in out Name_Part_Vector; V    : Name_Part) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Name_Part'Size);
+      Aux_Data    : Name_Part_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Name_Part_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Name_Part_Array'
              (Self.Data.all & Name_Part_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3066,6 +4286,558 @@ package body Google.Protobuf.Descriptor is
       end;
    end Write_Name_Part;
 
+   function Length (Self : Feature_Set_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Feature_Set_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Feature_Set_Array, Feature_Set_Array_Access);
+
+   procedure Append (Self : in out Feature_Set_Vector; V    : Feature_Set) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Feature_Set'Size);
+      Aux_Data    : Feature_Set_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Feature_Set_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Feature_Set_Array'
+             (Self.Data.all & Feature_Set_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Feature_Set_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data := new Feature_Set_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Feature_Set_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Feature_Set_Variable_Reference
+    (Self  : aliased in out Feature_Set_Vector;
+     Index : Positive)
+      return Feature_Set_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Feature_Set_Variable_Reference;
+
+   not overriding function Get_Feature_Set_Constant_Reference
+    (Self  : aliased Feature_Set_Vector;
+     Index : Positive)
+      return Feature_Set_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Feature_Set_Constant_Reference;
+
+   procedure Read_Feature_Set
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Feature_Set) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 1 =>
+               if  not V.Field_Presence.Is_Set then
+                  V.Field_Presence := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Field_Presence_IO.Read
+                 (Stream, Key.Encoding, V.Field_Presence.Value);
+            when 2 =>
+               if  not V.Enum_Type.Is_Set then
+                  V.Enum_Type := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Enum_Type_IO.Read
+                 (Stream, Key.Encoding, V.Enum_Type.Value);
+            when 3 =>
+               if  not V.Repeated_Field_Encoding.Is_Set then
+                  V.Repeated_Field_Encoding := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Repeated_Field_Encoding_IO.Read
+                 (Stream, Key.Encoding, V.Repeated_Field_Encoding.Value);
+            when 4 =>
+               if  not V.Utf_8_Validation.Is_Set then
+                  V.Utf_8_Validation := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Utf_8Validation_IO.Read
+                 (Stream, Key.Encoding, V.Utf_8_Validation.Value);
+            when 5 =>
+               if  not V.Message_Encoding.Is_Set then
+                  V.Message_Encoding := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Message_Encoding_IO.Read
+                 (Stream, Key.Encoding, V.Message_Encoding.Value);
+            when 6 =>
+               if  not V.Json_Format.Is_Set then
+                  V.Json_Format := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Json_Format_IO.Read
+                 (Stream, Key.Encoding, V.Json_Format.Value);
+            when 7 =>
+               if  not V.Enforce_Naming_Style.Is_Set then
+                  V.Enforce_Naming_Style := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Enforce_Naming_Style_IO.Read
+                 (Stream, Key.Encoding, V.Enforce_Naming_Style.Value);
+            when 8 =>
+               if  not V.Default_Symbol_Visibility.Is_Set then
+                  V.Default_Symbol_Visibility := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Default_Symbol_Visibility_IO.Read
+                 (Stream, Key.Encoding, V.Default_Symbol_Visibility.Value);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Feature_Set;
+
+   procedure Write_Feature_Set
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Feature_Set) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Feature_Set (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if V.Field_Presence.Is_Set then
+            Google_Protobuf_Descriptor_Field_Presence_IO.Write
+              (WS, 1, V.Field_Presence.Value);
+         end if;
+         if V.Enum_Type.Is_Set then
+            Google_Protobuf_Descriptor_Enum_Type_IO.Write
+              (WS, 2, V.Enum_Type.Value);
+         end if;
+         if V.Repeated_Field_Encoding.Is_Set then
+            Google_Protobuf_Descriptor_Repeated_Field_Encoding_IO.Write
+              (WS, 3, V.Repeated_Field_Encoding.Value);
+         end if;
+         if V.Utf_8_Validation.Is_Set then
+            Google_Protobuf_Descriptor_Utf_8Validation_IO.Write
+              (WS, 4, V.Utf_8_Validation.Value);
+         end if;
+         if V.Message_Encoding.Is_Set then
+            Google_Protobuf_Descriptor_Message_Encoding_IO.Write
+              (WS, 5, V.Message_Encoding.Value);
+         end if;
+         if V.Json_Format.Is_Set then
+            Google_Protobuf_Descriptor_Json_Format_IO.Write
+              (WS, 6, V.Json_Format.Value);
+         end if;
+         if V.Enforce_Naming_Style.Is_Set then
+            Google_Protobuf_Descriptor_Enforce_Naming_Style_IO.Write
+              (WS, 7, V.Enforce_Naming_Style.Value);
+         end if;
+         if V.Default_Symbol_Visibility.Is_Set then
+            Google_Protobuf_Descriptor_Default_Symbol_Visibility_IO.Write
+              (WS, 8, V.Default_Symbol_Visibility.Value);
+         end if;
+         if WS.End_Message then
+            Write_Feature_Set (WS'Access, V);
+         end if;
+      end;
+   end Write_Feature_Set;
+
+   function Length (Self : Visibility_Feature_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Visibility_Feature_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Visibility_Feature_Array, Visibility_Feature_Array_Access);
+
+   procedure Append
+    (Self : in out Visibility_Feature_Vector;
+     V    : Visibility_Feature) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Visibility_Feature'Size);
+      Aux_Data    : Visibility_Feature_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Visibility_Feature_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Visibility_Feature_Array'
+             (Self.Data.all
+                & Visibility_Feature_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Visibility_Feature_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new Visibility_Feature_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Visibility_Feature_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Visibility_Feature_Variable_Reference
+    (Self  : aliased in out Visibility_Feature_Vector;
+     Index : Positive)
+      return Visibility_Feature_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Visibility_Feature_Variable_Reference;
+
+   not overriding function Get_Visibility_Feature_Constant_Reference
+    (Self  : aliased Visibility_Feature_Vector;
+     Index : Positive)
+      return Visibility_Feature_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Visibility_Feature_Constant_Reference;
+
+   procedure Read_Visibility_Feature
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Visibility_Feature) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Visibility_Feature;
+
+   procedure Write_Visibility_Feature
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Visibility_Feature) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Visibility_Feature (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if WS.End_Message then
+            Write_Visibility_Feature (WS'Access, V);
+         end if;
+      end;
+   end Write_Visibility_Feature;
+
+   function Length (Self : Feature_Set_Defaults_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Feature_Set_Defaults_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Feature_Set_Defaults_Array, Feature_Set_Defaults_Array_Access);
+
+   procedure Append
+    (Self : in out Feature_Set_Defaults_Vector;
+     V    : Feature_Set_Defaults) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Feature_Set_Defaults'Size);
+      Aux_Data    : Feature_Set_Defaults_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Feature_Set_Defaults_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Feature_Set_Defaults_Array'
+             (Self.Data.all
+                & Feature_Set_Defaults_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Feature_Set_Defaults_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new Feature_Set_Defaults_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Feature_Set_Defaults_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Feature_Set_Defaults_Variable_Reference
+    (Self  : aliased in out Feature_Set_Defaults_Vector;
+     Index : Positive)
+      return Feature_Set_Defaults_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Feature_Set_Defaults_Variable_Reference;
+
+   not overriding function Get_Feature_Set_Defaults_Constant_Reference
+    (Self  : aliased Feature_Set_Defaults_Vector;
+     Index : Positive)
+      return Feature_Set_Defaults_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Feature_Set_Defaults_Constant_Reference;
+
+   procedure Read_Feature_Set_Defaults
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Feature_Set_Defaults) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 1 =>
+               Google_Protobuf_Descriptor_Feature_Set_Edition_Default_IO
+                 .Read_Vector
+                 (Stream, Key.Encoding, V.Defaults);
+            when 4 =>
+               if  not V.Minimum_Edition.Is_Set then
+                  V.Minimum_Edition := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Edition_IO.Read
+                 (Stream, Key.Encoding, V.Minimum_Edition.Value);
+            when 5 =>
+               if  not V.Maximum_Edition.Is_Set then
+                  V.Maximum_Edition := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Edition_IO.Read
+                 (Stream, Key.Encoding, V.Maximum_Edition.Value);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Feature_Set_Defaults;
+
+   procedure Write_Feature_Set_Defaults
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Feature_Set_Defaults) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Feature_Set_Defaults (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         for J in 1 .. V.Defaults.Length loop
+            WS.Write_Key ((1, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set_Edition_Default'Write
+              (Stream, V.Defaults (J));
+         end loop;
+         if V.Minimum_Edition.Is_Set then
+            Google_Protobuf_Descriptor_Edition_IO.Write
+              (WS, 4, V.Minimum_Edition.Value);
+         end if;
+         if V.Maximum_Edition.Is_Set then
+            Google_Protobuf_Descriptor_Edition_IO.Write
+              (WS, 5, V.Maximum_Edition.Value);
+         end if;
+         if WS.End_Message then
+            Write_Feature_Set_Defaults (WS'Access, V);
+         end if;
+      end;
+   end Write_Feature_Set_Defaults;
+
+   function Length
+    (Self : Feature_Set_Edition_Default_Vector)
+      return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Feature_Set_Edition_Default_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Feature_Set_Edition_Default_Array,
+      Feature_Set_Edition_Default_Array_Access);
+
+   procedure Append
+    (Self : in out Feature_Set_Edition_Default_Vector;
+     V    : Feature_Set_Edition_Default) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Feature_Set_Edition_Default'Size);
+      Aux_Data    : Feature_Set_Edition_Default_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=
+            new Feature_Set_Edition_Default_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Feature_Set_Edition_Default_Array'
+             (Self.Data.all
+                & Feature_Set_Edition_Default_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust
+    (Self : in out Feature_Set_Edition_Default_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data :=
+           new Feature_Set_Edition_Default_Array'
+             (Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize
+    (Self : in out Feature_Set_Edition_Default_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Feature_Set_Edition_Default_Variable_Reference
+    (Self  : aliased in out Feature_Set_Edition_Default_Vector;
+     Index : Positive)
+      return Feature_Set_Edition_Default_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Feature_Set_Edition_Default_Variable_Reference;
+
+   not overriding function Get_Feature_Set_Edition_Default_Constant_Reference
+    (Self  : aliased Feature_Set_Edition_Default_Vector;
+     Index : Positive)
+      return Feature_Set_Edition_Default_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Feature_Set_Edition_Default_Constant_Reference;
+
+   procedure Read_Feature_Set_Edition_Default
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Feature_Set_Edition_Default) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 3 =>
+               if  not V.Edition.Is_Set then
+                  V.Edition := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Edition_IO.Read
+                 (Stream, Key.Encoding, V.Edition.Value);
+            when 4 =>
+               if  not V.Overridable_Features.Is_Set then
+                  V.Overridable_Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Overridable_Features.Value);
+            when 5 =>
+               if  not V.Fixed_Features.Is_Set then
+                  V.Fixed_Features := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Feature_Set_IO.Read
+                 (Stream, Key.Encoding, V.Fixed_Features.Value);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Feature_Set_Edition_Default;
+
+   procedure Write_Feature_Set_Edition_Default
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Feature_Set_Edition_Default) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Feature_Set_Edition_Default (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         if V.Edition.Is_Set then
+            Google_Protobuf_Descriptor_Edition_IO.Write
+              (WS, 3, V.Edition.Value);
+         end if;
+         if V.Overridable_Features.Is_Set then
+            WS.Write_Key ((4, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Overridable_Features.Value);
+         end if;
+         if V.Fixed_Features.Is_Set then
+            WS.Write_Key ((5, PB_Support.Length_Delimited));
+            Google.Protobuf.Descriptor.Feature_Set'Write
+              (Stream, V.Fixed_Features.Value);
+         end if;
+         if WS.End_Message then
+            Write_Feature_Set_Edition_Default (WS'Access, V);
+         end if;
+      end;
+   end Write_Feature_Set_Edition_Default;
+
    function Length (Self : Source_Code_Info_Vector) return Natural is
    begin
       return Self.Length;
@@ -3084,14 +4856,17 @@ package body Google.Protobuf.Descriptor is
      V    : Source_Code_Info) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Source_Code_Info'Size);
+      Aux_Data    : Source_Code_Info_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Source_Code_Info_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Source_Code_Info_Array'
              (Self.Data.all & Source_Code_Info_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3136,7 +4911,8 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               Location_IO.Read_Vector (Stream, Key.Encoding, V.Location);
+               Google_Protobuf_Descriptor_Location_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Location);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3185,14 +4961,17 @@ package body Google.Protobuf.Descriptor is
 
    procedure Append (Self : in out Location_Vector; V    : Location) is
       Init_Length : constant Positive := Positive'Max (1, 256 / Location'Size);
+      Aux_Data    : Location_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Location_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Location_Array'
              (Self.Data.all & Location_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3310,15 +5089,18 @@ package body Google.Protobuf.Descriptor is
      V    : Generated_Code_Info) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Generated_Code_Info'Size);
+      Aux_Data    : Generated_Code_Info_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Generated_Code_Info_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Generated_Code_Info_Array'
              (Self.Data.all
                 & Generated_Code_Info_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3363,7 +5145,8 @@ package body Google.Protobuf.Descriptor is
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               Annotation_IO.Read_Vector (Stream, Key.Encoding, V.Annotation);
+               Google_Protobuf_Descriptor_Annotation_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Annotation);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3414,14 +5197,17 @@ package body Google.Protobuf.Descriptor is
    procedure Append (Self : in out Annotation_Vector; V    : Annotation) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Annotation'Size);
+      Aux_Data    : Annotation_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Annotation_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Annotation_Array'
              (Self.Data.all & Annotation_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3483,6 +5269,12 @@ package body Google.Protobuf.Descriptor is
                end if;
                PB_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.PB_End.Value);
+            when 5 =>
+               if  not V.Semantic.Is_Set then
+                  V.Semantic := (True, others => <>);
+               end if;
+               Google_Protobuf_Descriptor_Semantic_IO.Read
+                 (Stream, Key.Encoding, V.Semantic.Value);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3515,6 +5307,10 @@ package body Google.Protobuf.Descriptor is
          end if;
          if V.PB_End.Is_Set then
             WS.Write_Varint (4, V.PB_End.Value);
+         end if;
+         if V.Semantic.Is_Set then
+            Google_Protobuf_Descriptor_Semantic_IO.Write
+              (WS, 5, V.Semantic.Value);
          end if;
          if WS.End_Message then
             Write_Annotation (WS'Access, V);

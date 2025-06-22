@@ -2,9 +2,25 @@ with Ada.Finalization;
 with Ada.Streams;
 with Google.Protobuf.Descriptor;
 with League.String_Vectors;
+with PB_Support.Integer_32_Vectors;
 with PB_Support.Universal_String_Vectors;
+with PB_Support.Unsigned_64_Vectors;
+with PB_Support.Vectors;
 
 package Google.Protobuf.Compiler.Plugin is
+
+   type Feature is
+     (FEATURE_NONE, FEATURE_PROTO3_OPTIONAL, FEATURE_SUPPORTS_EDITIONS);
+
+   for Feature use
+     (FEATURE_NONE              => 0, FEATURE_PROTO3_OPTIONAL   => 1,
+      FEATURE_SUPPORTS_EDITIONS => 2);
+
+   package Feature_Vectors is new PB_Support.Vectors (Feature);
+
+   type Version_Vector is tagged private
+     with Variable_Indexing => Get_Version_Variable_Reference,
+     Constant_Indexing => Get_Version_Constant_Reference;
 
    type Code_Generator_Request_Vector is tagged private
      with Variable_Indexing => Get_Code_Generator_Request_Variable_Reference,
@@ -18,12 +34,61 @@ package Google.Protobuf.Compiler.Plugin is
      with Variable_Indexing => Get_File_Variable_Reference,
      Constant_Indexing => Get_File_Constant_Reference;
 
+   type Version is
+     record
+        Major  : PB_Support.Integer_32_Vectors.Option;
+        Minor  : PB_Support.Integer_32_Vectors.Option;
+        Patch  : PB_Support.Integer_32_Vectors.Option;
+        Suffix : PB_Support.Universal_String_Vectors.Option;
+     end record;
+
+   type Optional_Version  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Compiler.Plugin.Version;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Version_Vector) return Natural;
+
+   procedure Clear (Self : in out Version_Vector);
+
+   procedure Append (Self : in out Version_Vector; V    : Version);
+
+   type Version_Variable_Reference  (Element : not null access Version) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Version_Variable_Reference
+    (Self  : aliased in out Version_Vector;
+     Index : Positive)
+      return Version_Variable_Reference
+     with Inline;
+
+   type Version_Constant_Reference
+     (Element : not null access constant Version) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Version_Constant_Reference
+    (Self  : aliased Version_Vector;
+     Index : Positive)
+      return Version_Constant_Reference
+     with Inline;
+
    type Code_Generator_Request is
      record
-        File_To_Generate : League.String_Vectors.Universal_String_Vector;
-        Parameter        : PB_Support.Universal_String_Vectors.Option;
-        Proto_File       : Google.Protobuf.Descriptor
+        File_To_Generate        : League.String_Vectors
+          .Universal_String_Vector;
+        Parameter               : PB_Support.Universal_String_Vectors.Option;
+        Proto_File              : Google.Protobuf.Descriptor
           .File_Descriptor_Proto_Vector;
+        Source_File_Descriptors : Google.Protobuf.Descriptor
+          .File_Descriptor_Proto_Vector;
+        Compiler_Version        : Google.Protobuf.Compiler.Plugin
+          .Optional_Version;
      end record;
 
    type Optional_Code_Generator_Request  (Is_Set : Boolean := False) is
@@ -66,9 +131,11 @@ package Google.Protobuf.Compiler.Plugin is
 
    type File is
      record
-        Name            : PB_Support.Universal_String_Vectors.Option;
-        Insertion_Point : PB_Support.Universal_String_Vectors.Option;
-        Content         : PB_Support.Universal_String_Vectors.Option;
+        Name                : PB_Support.Universal_String_Vectors.Option;
+        Insertion_Point     : PB_Support.Universal_String_Vectors.Option;
+        Content             : PB_Support.Universal_String_Vectors.Option;
+        Generated_Code_Info : Google.Protobuf.Descriptor
+          .Optional_Generated_Code_Info;
      end record;
 
    type Optional_File  (Is_Set : Boolean := False) is
@@ -109,8 +176,11 @@ package Google.Protobuf.Compiler.Plugin is
 
    type Code_Generator_Response is
      record
-        Error : PB_Support.Universal_String_Vectors.Option;
-        File  : Google.Protobuf.Compiler.Plugin.File_Vector;
+        Error              : PB_Support.Universal_String_Vectors.Option;
+        Supported_Features : PB_Support.Unsigned_64_Vectors.Option;
+        Minimum_Edition    : PB_Support.Integer_32_Vectors.Option;
+        Maximum_Edition    : PB_Support.Integer_32_Vectors.Option;
+        File               : Google.Protobuf.Compiler.Plugin.File_Vector;
      end record;
 
    type Optional_Code_Generator_Response  (Is_Set : Boolean := False) is
@@ -152,6 +222,33 @@ package Google.Protobuf.Compiler.Plugin is
       return Code_Generator_Response_Constant_Reference
      with Inline;
 private
+
+   procedure Read_Version
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Version);
+
+   procedure Write_Version
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Version);
+
+   for Version'Read use Read_Version;
+
+   for Version'Write use Write_Version;
+
+   type Version_Array is array (Positive range <>) of aliased Version;
+
+   type Version_Array_Access is access Version_Array;
+
+   type Version_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Version_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Version_Vector);
+
+   overriding procedure Finalize (Self : in out Version_Vector);
 
    procedure Read_Code_Generator_Request
     (Stream : access Ada.Streams.Root_Stream_Type'Class;

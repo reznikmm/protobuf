@@ -13,6 +13,39 @@ with PB_Support.Vectors;
 
 package Google.Protobuf.Descriptor is
 
+   type Edition is
+     (EDITION_UNKNOWN, EDITION_1_TEST_ONLY, EDITION_2_TEST_ONLY,
+      EDITION_LEGACY, EDITION_PROTO2, EDITION_PROTO3, EDITION_2023,
+      EDITION_2024, EDITION_99997_TEST_ONLY, EDITION_99998_TEST_ONLY,
+      EDITION_99999_TEST_ONLY, EDITION_MAX);
+
+   for Edition use
+     (EDITION_UNKNOWN         => 0, EDITION_1_TEST_ONLY     => 1,
+      EDITION_2_TEST_ONLY     => 2, EDITION_LEGACY          => 900,
+      EDITION_PROTO2          => 998, EDITION_PROTO3          => 999,
+      EDITION_2023            => 1000, EDITION_2024            => 1001,
+      EDITION_99997_TEST_ONLY => 99997, EDITION_99998_TEST_ONLY => 99998,
+      EDITION_99999_TEST_ONLY => 99999, EDITION_MAX             => 2147483647);
+
+   package Edition_Vectors is new PB_Support.Vectors (Edition);
+
+   type Symbol_Visibility is
+     (VISIBILITY_UNSET, VISIBILITY_LOCAL, VISIBILITY_EXPORT);
+
+   for Symbol_Visibility use
+     (VISIBILITY_UNSET  => 0, VISIBILITY_LOCAL  => 1, VISIBILITY_EXPORT => 2);
+
+   package Symbol_Visibility_Vectors is
+     new PB_Support.Vectors (Symbol_Visibility);
+
+   type Verification_State is (EXTENSION_DECLARATION, UNVERIFIED);
+
+   for Verification_State use
+     (EXTENSION_DECLARATION => 0, UNVERIFIED            => 1);
+
+   package Verification_State_Vectors is
+     new PB_Support.Vectors (Verification_State);
+
    type PB_Type is
      (TYPE_DOUBLE, TYPE_FLOAT, TYPE_INT64, TYPE_UINT64, TYPE_INT32,
       TYPE_FIXED64, TYPE_FIXED32, TYPE_BOOL, TYPE_STRING, TYPE_GROUP,
@@ -55,6 +88,124 @@ package Google.Protobuf.Descriptor is
 
    package JSType_Vectors is new PB_Support.Vectors (JSType);
 
+   type Option_Retention is
+     (RETENTION_UNKNOWN, RETENTION_RUNTIME, RETENTION_SOURCE);
+
+   for Option_Retention use
+     (RETENTION_UNKNOWN => 0, RETENTION_RUNTIME => 1, RETENTION_SOURCE  => 2);
+
+   package Option_Retention_Vectors is
+     new PB_Support.Vectors (Option_Retention);
+
+   type Option_Target_Type is
+     (TARGET_TYPE_UNKNOWN, TARGET_TYPE_FILE, TARGET_TYPE_EXTENSION_RANGE,
+      TARGET_TYPE_MESSAGE, TARGET_TYPE_FIELD, TARGET_TYPE_ONEOF,
+      TARGET_TYPE_ENUM, TARGET_TYPE_ENUM_ENTRY, TARGET_TYPE_SERVICE,
+      TARGET_TYPE_METHOD);
+
+   for Option_Target_Type use
+     (TARGET_TYPE_UNKNOWN         => 0, TARGET_TYPE_FILE            => 1,
+      TARGET_TYPE_EXTENSION_RANGE => 2, TARGET_TYPE_MESSAGE         => 3,
+      TARGET_TYPE_FIELD           => 4, TARGET_TYPE_ONEOF           => 5,
+      TARGET_TYPE_ENUM            => 6, TARGET_TYPE_ENUM_ENTRY      => 7,
+      TARGET_TYPE_SERVICE         => 8, TARGET_TYPE_METHOD          => 9);
+
+   package Option_Target_Type_Vectors is
+     new PB_Support.Vectors (Option_Target_Type);
+
+   type Idempotency_Level is
+     (IDEMPOTENCY_UNKNOWN, NO_SIDE_EFFECTS, IDEMPOTENT);
+
+   for Idempotency_Level use
+     (IDEMPOTENCY_UNKNOWN => 0, NO_SIDE_EFFECTS     => 1,
+      IDEMPOTENT          => 2);
+
+   package Idempotency_Level_Vectors is
+     new PB_Support.Vectors (Idempotency_Level);
+
+   type Field_Presence is
+     (FIELD_PRESENCE_UNKNOWN, EXPLICIT, IMPLICIT, LEGACY_REQUIRED);
+
+   for Field_Presence use
+     (FIELD_PRESENCE_UNKNOWN => 0, EXPLICIT               => 1,
+      IMPLICIT               => 2, LEGACY_REQUIRED        => 3);
+
+   package Field_Presence_Vectors is new PB_Support.Vectors (Field_Presence);
+
+   type Enum_Type is (ENUM_TYPE_UNKNOWN, OPEN, CLOSED);
+
+   for Enum_Type use
+     (ENUM_TYPE_UNKNOWN => 0, OPEN              => 1, CLOSED            => 2);
+
+   package Enum_Type_Vectors is new PB_Support.Vectors (Enum_Type);
+
+   type Repeated_Field_Encoding is
+     (REPEATED_FIELD_ENCODING_UNKNOWN, PACKED, EXPANDED);
+
+   for Repeated_Field_Encoding use
+     (REPEATED_FIELD_ENCODING_UNKNOWN => 0,
+      PACKED                          => 1,
+      EXPANDED                        => 2);
+
+   package Repeated_Field_Encoding_Vectors is
+     new PB_Support.Vectors (Repeated_Field_Encoding);
+
+   type Utf_8Validation is (UTF8_VALIDATION_UNKNOWN, VERIFY, NONE);
+
+   for Utf_8Validation use
+     (UTF8_VALIDATION_UNKNOWN => 0, VERIFY                  => 2,
+      NONE                    => 3);
+
+   package Utf_8Validation_Vectors is new PB_Support.Vectors (Utf_8Validation);
+
+   type Message_Encoding is
+     (MESSAGE_ENCODING_UNKNOWN, LENGTH_PREFIXED, DELIMITED);
+
+   for Message_Encoding use
+     (MESSAGE_ENCODING_UNKNOWN => 0, LENGTH_PREFIXED          => 1,
+      DELIMITED                => 2);
+
+   package Message_Encoding_Vectors is
+     new PB_Support.Vectors (Message_Encoding);
+
+   type Json_Format is (JSON_FORMAT_UNKNOWN, ALLOW, LEGACY_BEST_EFFORT);
+
+   for Json_Format use
+     (JSON_FORMAT_UNKNOWN => 0, ALLOW               => 1,
+      LEGACY_BEST_EFFORT  => 2);
+
+   package Json_Format_Vectors is new PB_Support.Vectors (Json_Format);
+
+   type Enforce_Naming_Style is
+     (ENFORCE_NAMING_STYLE_UNKNOWN, STYLE2024, STYLE_LEGACY);
+
+   for Enforce_Naming_Style use
+     (ENFORCE_NAMING_STYLE_UNKNOWN => 0, STYLE2024                    => 1,
+      STYLE_LEGACY                 => 2);
+
+   package Enforce_Naming_Style_Vectors is
+     new PB_Support.Vectors (Enforce_Naming_Style);
+
+   type Default_Symbol_Visibility is
+     (DEFAULT_SYMBOL_VISIBILITY_UNKNOWN, EXPORT_ALL, EXPORT_TOP_LEVEL,
+      LOCAL_ALL, STRICT);
+
+   for Default_Symbol_Visibility use
+     (DEFAULT_SYMBOL_VISIBILITY_UNKNOWN => 0,
+      EXPORT_ALL                        => 1,
+      EXPORT_TOP_LEVEL                  => 2,
+      LOCAL_ALL                         => 3,
+      STRICT                            => 4);
+
+   package Default_Symbol_Visibility_Vectors is
+     new PB_Support.Vectors (Default_Symbol_Visibility);
+
+   type Semantic is (NONE, SET, ALIAS);
+
+   for Semantic use (NONE  => 0, SET   => 1, ALIAS => 2);
+
+   package Semantic_Vectors is new PB_Support.Vectors (Semantic);
+
    type File_Descriptor_Set_Vector is tagged private
      with Variable_Indexing => Get_File_Descriptor_Set_Variable_Reference,
      Constant_Indexing => Get_File_Descriptor_Set_Constant_Reference;
@@ -75,6 +226,14 @@ package Google.Protobuf.Descriptor is
      with Variable_Indexing => Get_Reserved_Range_Variable_Reference,
      Constant_Indexing => Get_Reserved_Range_Constant_Reference;
 
+   type Extension_Range_Options_Vector is tagged private
+     with Variable_Indexing => Get_Extension_Range_Options_Variable_Reference,
+     Constant_Indexing => Get_Extension_Range_Options_Constant_Reference;
+
+   type Declaration_Vector is tagged private
+     with Variable_Indexing => Get_Declaration_Variable_Reference,
+     Constant_Indexing => Get_Declaration_Constant_Reference;
+
    type Field_Descriptor_Proto_Vector is tagged private
      with Variable_Indexing => Get_Field_Descriptor_Proto_Variable_Reference,
      Constant_Indexing => Get_Field_Descriptor_Proto_Constant_Reference;
@@ -86,6 +245,10 @@ package Google.Protobuf.Descriptor is
    type Enum_Descriptor_Proto_Vector is tagged private
      with Variable_Indexing => Get_Enum_Descriptor_Proto_Variable_Reference,
      Constant_Indexing => Get_Enum_Descriptor_Proto_Constant_Reference;
+
+   type Enum_Reserved_Range_Vector is tagged private
+     with Variable_Indexing => Get_Enum_Reserved_Range_Variable_Reference,
+     Constant_Indexing => Get_Enum_Reserved_Range_Constant_Reference;
 
    type Enum_Value_Descriptor_Proto_Vector is tagged private
      with Variable_Indexing =>
@@ -111,6 +274,14 @@ package Google.Protobuf.Descriptor is
    type Field_Options_Vector is tagged private
      with Variable_Indexing => Get_Field_Options_Variable_Reference,
      Constant_Indexing => Get_Field_Options_Constant_Reference;
+
+   type Edition_Default_Vector is tagged private
+     with Variable_Indexing => Get_Edition_Default_Variable_Reference,
+     Constant_Indexing => Get_Edition_Default_Constant_Reference;
+
+   type Feature_Support_Vector is tagged private
+     with Variable_Indexing => Get_Feature_Support_Variable_Reference,
+     Constant_Indexing => Get_Feature_Support_Constant_Reference;
 
    type Oneof_Options_Vector is tagged private
      with Variable_Indexing => Get_Oneof_Options_Variable_Reference,
@@ -139,6 +310,23 @@ package Google.Protobuf.Descriptor is
    type Name_Part_Vector is tagged private
      with Variable_Indexing => Get_Name_Part_Variable_Reference,
      Constant_Indexing => Get_Name_Part_Constant_Reference;
+
+   type Feature_Set_Vector is tagged private
+     with Variable_Indexing => Get_Feature_Set_Variable_Reference,
+     Constant_Indexing => Get_Feature_Set_Constant_Reference;
+
+   type Visibility_Feature_Vector is tagged private
+     with Variable_Indexing => Get_Visibility_Feature_Variable_Reference,
+     Constant_Indexing => Get_Visibility_Feature_Constant_Reference;
+
+   type Feature_Set_Defaults_Vector is tagged private
+     with Variable_Indexing => Get_Feature_Set_Defaults_Variable_Reference,
+     Constant_Indexing => Get_Feature_Set_Defaults_Constant_Reference;
+
+   type Feature_Set_Edition_Default_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Feature_Set_Edition_Default_Variable_Reference,
+     Constant_Indexing => Get_Feature_Set_Edition_Default_Constant_Reference;
 
    type Source_Code_Info_Vector is tagged private
      with Variable_Indexing => Get_Source_Code_Info_Variable_Reference,
@@ -199,50 +387,6 @@ package Google.Protobuf.Descriptor is
       return File_Descriptor_Set_Constant_Reference
      with Inline;
 
-   type Extension_Range is
-     record
-        Start  : PB_Support.Integer_32_Vectors.Option;
-        PB_End : PB_Support.Integer_32_Vectors.Option;
-     end record;
-
-   type Optional_Extension_Range  (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Google.Protobuf.Descriptor.Extension_Range;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Extension_Range_Vector) return Natural;
-
-   procedure Clear (Self : in out Extension_Range_Vector);
-
-   procedure Append
-    (Self : in out Extension_Range_Vector;
-     V    : Extension_Range);
-
-   type Extension_Range_Variable_Reference
-     (Element : not null access Extension_Range) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Extension_Range_Variable_Reference
-    (Self  : aliased in out Extension_Range_Vector;
-     Index : Positive)
-      return Extension_Range_Variable_Reference
-     with Inline;
-
-   type Extension_Range_Constant_Reference
-     (Element : not null access constant Extension_Range) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Extension_Range_Constant_Reference
-    (Self  : aliased Extension_Range_Vector;
-     Index : Positive)
-      return Extension_Range_Constant_Reference
-     with Inline;
-
    type Reserved_Range is
      record
         Start  : PB_Support.Integer_32_Vectors.Option;
@@ -287,384 +431,186 @@ package Google.Protobuf.Descriptor is
       return Reserved_Range_Constant_Reference
      with Inline;
 
-   type File_Options is
+   type Declaration is
      record
-        Java_Package                  : PB_Support.Universal_String_Vectors
-          .Option;
-        Java_Outer_Classname          : PB_Support.Universal_String_Vectors
-          .Option;
-        Java_Multiple_Files           : PB_Support.Boolean_Vectors.Option;
-        Java_Generate_Equals_And_Hash : PB_Support.Boolean_Vectors.Option;
-        Java_String_Check_Utf_8       : PB_Support.Boolean_Vectors.Option;
-        Optimize_For                  : Google.Protobuf.Descriptor
-          .Optimize_Mode_Vectors.Option;
-        Go_Package                    : PB_Support.Universal_String_Vectors
-          .Option;
-        Cc_Generic_Services           : PB_Support.Boolean_Vectors.Option;
-        Java_Generic_Services         : PB_Support.Boolean_Vectors.Option;
-        Py_Generic_Services           : PB_Support.Boolean_Vectors.Option;
-        Deprecated                    : PB_Support.Boolean_Vectors.Option;
-        Cc_Enable_Arenas              : PB_Support.Boolean_Vectors.Option;
-        Objc_Class_Prefix             : PB_Support.Universal_String_Vectors
-          .Option;
-        Csharp_Namespace              : PB_Support.Universal_String_Vectors
-          .Option;
-        Uninterpreted_Option          : Google.Protobuf.Descriptor
-          .Uninterpreted_Option_Vector;
+        Number    : PB_Support.Integer_32_Vectors.Option;
+        Full_Name : PB_Support.Universal_String_Vectors.Option;
+        PB_Type   : PB_Support.Universal_String_Vectors.Option;
+        Reserved  : PB_Support.Boolean_Vectors.Option;
+        Repeated  : PB_Support.Boolean_Vectors.Option;
      end record;
 
-   type Optional_File_Options  (Is_Set : Boolean := False) is
+   type Optional_Declaration  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
-              Value : Google.Protobuf.Descriptor.File_Options;
+              Value : Google.Protobuf.Descriptor.Declaration;
            when False =>
               null;
         end case;
      end record;
 
-   function Length (Self : File_Options_Vector) return Natural;
+   function Length (Self : Declaration_Vector) return Natural;
 
-   procedure Clear (Self : in out File_Options_Vector);
+   procedure Clear (Self : in out Declaration_Vector);
 
-   procedure Append (Self : in out File_Options_Vector; V    : File_Options);
+   procedure Append (Self : in out Declaration_Vector; V    : Declaration);
 
-   type File_Options_Variable_Reference
-     (Element : not null access File_Options) is null record
+   type Declaration_Variable_Reference
+     (Element : not null access Declaration) is null record
      with Implicit_Dereference => Element;
 
-   not overriding function Get_File_Options_Variable_Reference
-    (Self  : aliased in out File_Options_Vector;
+   not overriding function Get_Declaration_Variable_Reference
+    (Self  : aliased in out Declaration_Vector;
      Index : Positive)
-      return File_Options_Variable_Reference
+      return Declaration_Variable_Reference
      with Inline;
 
-   type File_Options_Constant_Reference
-     (Element : not null access constant File_Options) is null record
+   type Declaration_Constant_Reference
+     (Element : not null access constant Declaration) is null record
      with Implicit_Dereference => Element;
 
-   not overriding function Get_File_Options_Constant_Reference
-    (Self  : aliased File_Options_Vector;
+   not overriding function Get_Declaration_Constant_Reference
+    (Self  : aliased Declaration_Vector;
      Index : Positive)
-      return File_Options_Constant_Reference
+      return Declaration_Constant_Reference
      with Inline;
 
-   type Message_Options is
+   type Enum_Reserved_Range is
      record
-        Message_Set_Wire_Format         : PB_Support.Boolean_Vectors.Option;
-        No_Standard_Descriptor_Accessor : PB_Support.Boolean_Vectors.Option;
-        Deprecated                      : PB_Support.Boolean_Vectors.Option;
-        Map_Entry                       : PB_Support.Boolean_Vectors.Option;
-        Uninterpreted_Option            : Google.Protobuf.Descriptor
-          .Uninterpreted_Option_Vector;
+        Start  : PB_Support.Integer_32_Vectors.Option;
+        PB_End : PB_Support.Integer_32_Vectors.Option;
      end record;
 
-   type Optional_Message_Options  (Is_Set : Boolean := False) is
+   type Optional_Enum_Reserved_Range  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
-              Value : Google.Protobuf.Descriptor.Message_Options;
+              Value : Google.Protobuf.Descriptor.Enum_Reserved_Range;
            when False =>
               null;
         end case;
      end record;
 
-   function Length (Self : Message_Options_Vector) return Natural;
+   function Length (Self : Enum_Reserved_Range_Vector) return Natural;
 
-   procedure Clear (Self : in out Message_Options_Vector);
+   procedure Clear (Self : in out Enum_Reserved_Range_Vector);
 
    procedure Append
-    (Self : in out Message_Options_Vector;
-     V    : Message_Options);
+    (Self : in out Enum_Reserved_Range_Vector;
+     V    : Enum_Reserved_Range);
 
-   type Message_Options_Variable_Reference
-     (Element : not null access Message_Options) is null record
+   type Enum_Reserved_Range_Variable_Reference
+     (Element : not null access Enum_Reserved_Range) is null record
      with Implicit_Dereference => Element;
 
-   not overriding function Get_Message_Options_Variable_Reference
-    (Self  : aliased in out Message_Options_Vector;
+   not overriding function Get_Enum_Reserved_Range_Variable_Reference
+    (Self  : aliased in out Enum_Reserved_Range_Vector;
      Index : Positive)
-      return Message_Options_Variable_Reference
+      return Enum_Reserved_Range_Variable_Reference
      with Inline;
 
-   type Message_Options_Constant_Reference
-     (Element : not null access constant Message_Options) is null record
+   type Enum_Reserved_Range_Constant_Reference
+     (Element : not null access constant Enum_Reserved_Range) is null record
      with Implicit_Dereference => Element;
 
-   not overriding function Get_Message_Options_Constant_Reference
-    (Self  : aliased Message_Options_Vector;
+   not overriding function Get_Enum_Reserved_Range_Constant_Reference
+    (Self  : aliased Enum_Reserved_Range_Vector;
      Index : Positive)
-      return Message_Options_Constant_Reference
+      return Enum_Reserved_Range_Constant_Reference
      with Inline;
 
-   type Field_Options is
+   type Edition_Default is
      record
-        Ctype                : Google.Protobuf.Descriptor.CType_Vectors.Option;
-        Packed               : PB_Support.Boolean_Vectors.Option;
-        Jstype               : Google.Protobuf.Descriptor.JSType_Vectors
+        Edition : Google.Protobuf.Descriptor.Edition_Vectors.Option;
+        Value   : PB_Support.Universal_String_Vectors.Option;
+     end record;
+
+   type Optional_Edition_Default  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Edition_Default;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Edition_Default_Vector) return Natural;
+
+   procedure Clear (Self : in out Edition_Default_Vector);
+
+   procedure Append
+    (Self : in out Edition_Default_Vector;
+     V    : Edition_Default);
+
+   type Edition_Default_Variable_Reference
+     (Element : not null access Edition_Default) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Edition_Default_Variable_Reference
+    (Self  : aliased in out Edition_Default_Vector;
+     Index : Positive)
+      return Edition_Default_Variable_Reference
+     with Inline;
+
+   type Edition_Default_Constant_Reference
+     (Element : not null access constant Edition_Default) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Edition_Default_Constant_Reference
+    (Self  : aliased Edition_Default_Vector;
+     Index : Positive)
+      return Edition_Default_Constant_Reference
+     with Inline;
+
+   type Feature_Support is
+     record
+        Edition_Introduced  : Google.Protobuf.Descriptor.Edition_Vectors
           .Option;
-        Lazy                 : PB_Support.Boolean_Vectors.Option;
-        Deprecated           : PB_Support.Boolean_Vectors.Option;
-        Weak                 : PB_Support.Boolean_Vectors.Option;
-        Uninterpreted_Option : Google.Protobuf.Descriptor
-          .Uninterpreted_Option_Vector;
+        Edition_Deprecated  : Google.Protobuf.Descriptor.Edition_Vectors
+          .Option;
+        Deprecation_Warning : PB_Support.Universal_String_Vectors.Option;
+        Edition_Removed     : Google.Protobuf.Descriptor.Edition_Vectors
+          .Option;
      end record;
 
-   type Optional_Field_Options  (Is_Set : Boolean := False) is
+   type Optional_Feature_Support  (Is_Set : Boolean := False) is
      record
         case Is_Set is
            when True =>
-              Value : Google.Protobuf.Descriptor.Field_Options;
+              Value : Google.Protobuf.Descriptor.Feature_Support;
            when False =>
               null;
         end case;
      end record;
 
-   function Length (Self : Field_Options_Vector) return Natural;
+   function Length (Self : Feature_Support_Vector) return Natural;
 
-   procedure Clear (Self : in out Field_Options_Vector);
-
-   procedure Append (Self : in out Field_Options_Vector; V    : Field_Options);
-
-   type Field_Options_Variable_Reference
-     (Element : not null access Field_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Field_Options_Variable_Reference
-    (Self  : aliased in out Field_Options_Vector;
-     Index : Positive)
-      return Field_Options_Variable_Reference
-     with Inline;
-
-   type Field_Options_Constant_Reference
-     (Element : not null access constant Field_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Field_Options_Constant_Reference
-    (Self  : aliased Field_Options_Vector;
-     Index : Positive)
-      return Field_Options_Constant_Reference
-     with Inline;
-
-   type Oneof_Options is
-     record
-        Uninterpreted_Option : Google.Protobuf.Descriptor
-          .Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Oneof_Options  (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Google.Protobuf.Descriptor.Oneof_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Oneof_Options_Vector) return Natural;
-
-   procedure Clear (Self : in out Oneof_Options_Vector);
-
-   procedure Append (Self : in out Oneof_Options_Vector; V    : Oneof_Options);
-
-   type Oneof_Options_Variable_Reference
-     (Element : not null access Oneof_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Oneof_Options_Variable_Reference
-    (Self  : aliased in out Oneof_Options_Vector;
-     Index : Positive)
-      return Oneof_Options_Variable_Reference
-     with Inline;
-
-   type Oneof_Options_Constant_Reference
-     (Element : not null access constant Oneof_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Oneof_Options_Constant_Reference
-    (Self  : aliased Oneof_Options_Vector;
-     Index : Positive)
-      return Oneof_Options_Constant_Reference
-     with Inline;
-
-   type Enum_Options is
-     record
-        Allow_Alias          : PB_Support.Boolean_Vectors.Option;
-        Deprecated           : PB_Support.Boolean_Vectors.Option;
-        Uninterpreted_Option : Google.Protobuf.Descriptor
-          .Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Enum_Options  (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Google.Protobuf.Descriptor.Enum_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Enum_Options_Vector) return Natural;
-
-   procedure Clear (Self : in out Enum_Options_Vector);
-
-   procedure Append (Self : in out Enum_Options_Vector; V    : Enum_Options);
-
-   type Enum_Options_Variable_Reference
-     (Element : not null access Enum_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Enum_Options_Variable_Reference
-    (Self  : aliased in out Enum_Options_Vector;
-     Index : Positive)
-      return Enum_Options_Variable_Reference
-     with Inline;
-
-   type Enum_Options_Constant_Reference
-     (Element : not null access constant Enum_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Enum_Options_Constant_Reference
-    (Self  : aliased Enum_Options_Vector;
-     Index : Positive)
-      return Enum_Options_Constant_Reference
-     with Inline;
-
-   type Enum_Value_Options is
-     record
-        Deprecated           : PB_Support.Boolean_Vectors.Option;
-        Uninterpreted_Option : Google.Protobuf.Descriptor
-          .Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Enum_Value_Options  (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Google.Protobuf.Descriptor.Enum_Value_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Enum_Value_Options_Vector) return Natural;
-
-   procedure Clear (Self : in out Enum_Value_Options_Vector);
+   procedure Clear (Self : in out Feature_Support_Vector);
 
    procedure Append
-    (Self : in out Enum_Value_Options_Vector;
-     V    : Enum_Value_Options);
+    (Self : in out Feature_Support_Vector;
+     V    : Feature_Support);
 
-   type Enum_Value_Options_Variable_Reference
-     (Element : not null access Enum_Value_Options) is null record
+   type Feature_Support_Variable_Reference
+     (Element : not null access Feature_Support) is null record
      with Implicit_Dereference => Element;
 
-   not overriding function Get_Enum_Value_Options_Variable_Reference
-    (Self  : aliased in out Enum_Value_Options_Vector;
+   not overriding function Get_Feature_Support_Variable_Reference
+    (Self  : aliased in out Feature_Support_Vector;
      Index : Positive)
-      return Enum_Value_Options_Variable_Reference
+      return Feature_Support_Variable_Reference
      with Inline;
 
-   type Enum_Value_Options_Constant_Reference
-     (Element : not null access constant Enum_Value_Options) is null record
+   type Feature_Support_Constant_Reference
+     (Element : not null access constant Feature_Support) is null record
      with Implicit_Dereference => Element;
 
-   not overriding function Get_Enum_Value_Options_Constant_Reference
-    (Self  : aliased Enum_Value_Options_Vector;
+   not overriding function Get_Feature_Support_Constant_Reference
+    (Self  : aliased Feature_Support_Vector;
      Index : Positive)
-      return Enum_Value_Options_Constant_Reference
-     with Inline;
-
-   type Service_Options is
-     record
-        Deprecated           : PB_Support.Boolean_Vectors.Option;
-        Uninterpreted_Option : Google.Protobuf.Descriptor
-          .Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Service_Options  (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Google.Protobuf.Descriptor.Service_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Service_Options_Vector) return Natural;
-
-   procedure Clear (Self : in out Service_Options_Vector);
-
-   procedure Append
-    (Self : in out Service_Options_Vector;
-     V    : Service_Options);
-
-   type Service_Options_Variable_Reference
-     (Element : not null access Service_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Service_Options_Variable_Reference
-    (Self  : aliased in out Service_Options_Vector;
-     Index : Positive)
-      return Service_Options_Variable_Reference
-     with Inline;
-
-   type Service_Options_Constant_Reference
-     (Element : not null access constant Service_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Service_Options_Constant_Reference
-    (Self  : aliased Service_Options_Vector;
-     Index : Positive)
-      return Service_Options_Constant_Reference
-     with Inline;
-
-   type Method_Options is
-     record
-        Deprecated           : PB_Support.Boolean_Vectors.Option;
-        Uninterpreted_Option : Google.Protobuf.Descriptor
-          .Uninterpreted_Option_Vector;
-     end record;
-
-   type Optional_Method_Options  (Is_Set : Boolean := False) is
-     record
-        case Is_Set is
-           when True =>
-              Value : Google.Protobuf.Descriptor.Method_Options;
-           when False =>
-              null;
-        end case;
-     end record;
-
-   function Length (Self : Method_Options_Vector) return Natural;
-
-   procedure Clear (Self : in out Method_Options_Vector);
-
-   procedure Append
-    (Self : in out Method_Options_Vector;
-     V    : Method_Options);
-
-   type Method_Options_Variable_Reference
-     (Element : not null access Method_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Method_Options_Variable_Reference
-    (Self  : aliased in out Method_Options_Vector;
-     Index : Positive)
-      return Method_Options_Variable_Reference
-     with Inline;
-
-   type Method_Options_Constant_Reference
-     (Element : not null access constant Method_Options) is null record
-     with Implicit_Dereference => Element;
-
-   not overriding function Get_Method_Options_Constant_Reference
-    (Self  : aliased Method_Options_Vector;
-     Index : Positive)
-      return Method_Options_Constant_Reference
+      return Feature_Support_Constant_Reference
      with Inline;
 
    type Name_Part is
@@ -756,6 +702,195 @@ package Google.Protobuf.Descriptor is
     (Self  : aliased Uninterpreted_Option_Vector;
      Index : Positive)
       return Uninterpreted_Option_Constant_Reference
+     with Inline;
+
+   type Visibility_Feature is null record;
+
+   type Optional_Visibility_Feature  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Visibility_Feature;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Visibility_Feature_Vector) return Natural;
+
+   procedure Clear (Self : in out Visibility_Feature_Vector);
+
+   procedure Append
+    (Self : in out Visibility_Feature_Vector;
+     V    : Visibility_Feature);
+
+   type Visibility_Feature_Variable_Reference
+     (Element : not null access Visibility_Feature) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Visibility_Feature_Variable_Reference
+    (Self  : aliased in out Visibility_Feature_Vector;
+     Index : Positive)
+      return Visibility_Feature_Variable_Reference
+     with Inline;
+
+   type Visibility_Feature_Constant_Reference
+     (Element : not null access constant Visibility_Feature) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Visibility_Feature_Constant_Reference
+    (Self  : aliased Visibility_Feature_Vector;
+     Index : Positive)
+      return Visibility_Feature_Constant_Reference
+     with Inline;
+
+   type Feature_Set is
+     record
+        Field_Presence            : Google.Protobuf.Descriptor
+          .Field_Presence_Vectors.Option;
+        Enum_Type                 : Google.Protobuf.Descriptor
+          .Enum_Type_Vectors.Option;
+        Repeated_Field_Encoding   : Google.Protobuf.Descriptor
+          .Repeated_Field_Encoding_Vectors.Option;
+        Utf_8_Validation          : Google.Protobuf.Descriptor
+          .Utf_8Validation_Vectors.Option;
+        Message_Encoding          : Google.Protobuf.Descriptor
+          .Message_Encoding_Vectors.Option;
+        Json_Format               : Google.Protobuf.Descriptor
+          .Json_Format_Vectors.Option;
+        Enforce_Naming_Style      : Google.Protobuf.Descriptor
+          .Enforce_Naming_Style_Vectors.Option;
+        Default_Symbol_Visibility : Google.Protobuf.Descriptor
+          .Default_Symbol_Visibility_Vectors.Option;
+     end record;
+
+   type Optional_Feature_Set  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Feature_Set;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Feature_Set_Vector) return Natural;
+
+   procedure Clear (Self : in out Feature_Set_Vector);
+
+   procedure Append (Self : in out Feature_Set_Vector; V    : Feature_Set);
+
+   type Feature_Set_Variable_Reference
+     (Element : not null access Feature_Set) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Feature_Set_Variable_Reference
+    (Self  : aliased in out Feature_Set_Vector;
+     Index : Positive)
+      return Feature_Set_Variable_Reference
+     with Inline;
+
+   type Feature_Set_Constant_Reference
+     (Element : not null access constant Feature_Set) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Feature_Set_Constant_Reference
+    (Self  : aliased Feature_Set_Vector;
+     Index : Positive)
+      return Feature_Set_Constant_Reference
+     with Inline;
+
+   type Feature_Set_Edition_Default is
+     record
+        Edition              : Google.Protobuf.Descriptor.Edition_Vectors
+          .Option;
+        Overridable_Features : Google.Protobuf.Descriptor.Optional_Feature_Set;
+        Fixed_Features       : Google.Protobuf.Descriptor.Optional_Feature_Set;
+     end record;
+
+   type Optional_Feature_Set_Edition_Default  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Feature_Set_Edition_Default;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Feature_Set_Edition_Default_Vector) return Natural;
+
+   procedure Clear (Self : in out Feature_Set_Edition_Default_Vector);
+
+   procedure Append
+    (Self : in out Feature_Set_Edition_Default_Vector;
+     V    : Feature_Set_Edition_Default);
+
+   type Feature_Set_Edition_Default_Variable_Reference
+     (Element : not null access Feature_Set_Edition_Default) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Feature_Set_Edition_Default_Variable_Reference
+    (Self  : aliased in out Feature_Set_Edition_Default_Vector;
+     Index : Positive)
+      return Feature_Set_Edition_Default_Variable_Reference
+     with Inline;
+
+   type Feature_Set_Edition_Default_Constant_Reference
+     (Element : not null access constant Feature_Set_Edition_Default) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Feature_Set_Edition_Default_Constant_Reference
+    (Self  : aliased Feature_Set_Edition_Default_Vector;
+     Index : Positive)
+      return Feature_Set_Edition_Default_Constant_Reference
+     with Inline;
+
+   type Feature_Set_Defaults is
+     record
+        Defaults        : Google.Protobuf.Descriptor
+          .Feature_Set_Edition_Default_Vector;
+        Minimum_Edition : Google.Protobuf.Descriptor.Edition_Vectors.Option;
+        Maximum_Edition : Google.Protobuf.Descriptor.Edition_Vectors.Option;
+     end record;
+
+   type Optional_Feature_Set_Defaults  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Feature_Set_Defaults;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Feature_Set_Defaults_Vector) return Natural;
+
+   procedure Clear (Self : in out Feature_Set_Defaults_Vector);
+
+   procedure Append
+    (Self : in out Feature_Set_Defaults_Vector;
+     V    : Feature_Set_Defaults);
+
+   type Feature_Set_Defaults_Variable_Reference
+     (Element : not null access Feature_Set_Defaults) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Feature_Set_Defaults_Variable_Reference
+    (Self  : aliased in out Feature_Set_Defaults_Vector;
+     Index : Positive)
+      return Feature_Set_Defaults_Variable_Reference
+     with Inline;
+
+   type Feature_Set_Defaults_Constant_Reference
+     (Element : not null access constant Feature_Set_Defaults) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Feature_Set_Defaults_Constant_Reference
+    (Self  : aliased Feature_Set_Defaults_Vector;
+     Index : Positive)
+      return Feature_Set_Defaults_Constant_Reference
      with Inline;
 
    type Location is
@@ -853,6 +988,7 @@ package Google.Protobuf.Descriptor is
         Source_File : PB_Support.Universal_String_Vectors.Option;
         PB_Begin    : PB_Support.Integer_32_Vectors.Option;
         PB_End      : PB_Support.Integer_32_Vectors.Option;
+        Semantic    : Google.Protobuf.Descriptor.Semantic_Vectors.Option;
      end record;
 
    type Optional_Annotation  (Is_Set : Boolean := False) is
@@ -934,6 +1070,481 @@ package Google.Protobuf.Descriptor is
       return Generated_Code_Info_Constant_Reference
      with Inline;
 
+   type Extension_Range_Options is
+     record
+        Uninterpreted_Option : Google.Protobuf.Descriptor
+          .Uninterpreted_Option_Vector;
+        Declaration          : Google.Protobuf.Descriptor.Declaration_Vector;
+        Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
+        Verification         : Google.Protobuf.Descriptor
+          .Verification_State_Vectors.Option;
+     end record;
+
+   type Optional_Extension_Range_Options  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Extension_Range_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Extension_Range_Options_Vector) return Natural;
+
+   procedure Clear (Self : in out Extension_Range_Options_Vector);
+
+   procedure Append
+    (Self : in out Extension_Range_Options_Vector;
+     V    : Extension_Range_Options);
+
+   type Extension_Range_Options_Variable_Reference
+     (Element : not null access Extension_Range_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Extension_Range_Options_Variable_Reference
+    (Self  : aliased in out Extension_Range_Options_Vector;
+     Index : Positive)
+      return Extension_Range_Options_Variable_Reference
+     with Inline;
+
+   type Extension_Range_Options_Constant_Reference
+     (Element : not null access constant Extension_Range_Options) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Extension_Range_Options_Constant_Reference
+    (Self  : aliased Extension_Range_Options_Vector;
+     Index : Positive)
+      return Extension_Range_Options_Constant_Reference
+     with Inline;
+
+   type File_Options is
+     record
+        Java_Package                  : PB_Support.Universal_String_Vectors
+          .Option;
+        Java_Outer_Classname          : PB_Support.Universal_String_Vectors
+          .Option;
+        Java_Multiple_Files           : PB_Support.Boolean_Vectors.Option;
+        Java_Generate_Equals_And_Hash : PB_Support.Boolean_Vectors.Option;
+        Java_String_Check_Utf_8       : PB_Support.Boolean_Vectors.Option;
+        Optimize_For                  : Google.Protobuf.Descriptor
+          .Optimize_Mode_Vectors.Option;
+        Go_Package                    : PB_Support.Universal_String_Vectors
+          .Option;
+        Cc_Generic_Services           : PB_Support.Boolean_Vectors.Option;
+        Java_Generic_Services         : PB_Support.Boolean_Vectors.Option;
+        Py_Generic_Services           : PB_Support.Boolean_Vectors.Option;
+        Deprecated                    : PB_Support.Boolean_Vectors.Option;
+        Cc_Enable_Arenas              : PB_Support.Boolean_Vectors.Option;
+        Objc_Class_Prefix             : PB_Support.Universal_String_Vectors
+          .Option;
+        Csharp_Namespace              : PB_Support.Universal_String_Vectors
+          .Option;
+        Swift_Prefix                  : PB_Support.Universal_String_Vectors
+          .Option;
+        Php_Class_Prefix              : PB_Support.Universal_String_Vectors
+          .Option;
+        Php_Namespace                 : PB_Support.Universal_String_Vectors
+          .Option;
+        Php_Metadata_Namespace        : PB_Support.Universal_String_Vectors
+          .Option;
+        Ruby_Package                  : PB_Support.Universal_String_Vectors
+          .Option;
+        Features                      : Google.Protobuf.Descriptor
+          .Optional_Feature_Set;
+        Uninterpreted_Option          : Google.Protobuf.Descriptor
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_File_Options  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.File_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : File_Options_Vector) return Natural;
+
+   procedure Clear (Self : in out File_Options_Vector);
+
+   procedure Append (Self : in out File_Options_Vector; V    : File_Options);
+
+   type File_Options_Variable_Reference
+     (Element : not null access File_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Options_Variable_Reference
+    (Self  : aliased in out File_Options_Vector;
+     Index : Positive)
+      return File_Options_Variable_Reference
+     with Inline;
+
+   type File_Options_Constant_Reference
+     (Element : not null access constant File_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_File_Options_Constant_Reference
+    (Self  : aliased File_Options_Vector;
+     Index : Positive)
+      return File_Options_Constant_Reference
+     with Inline;
+
+   type Message_Options is
+     record
+        Message_Set_Wire_Format                : PB_Support.Boolean_Vectors
+          .Option;
+        No_Standard_Descriptor_Accessor        : PB_Support.Boolean_Vectors
+          .Option;
+        Deprecated                             : PB_Support.Boolean_Vectors
+          .Option;
+        Map_Entry                              : PB_Support.Boolean_Vectors
+          .Option;
+        Deprecated_Legacy_Json_Field_Conflicts : PB_Support.Boolean_Vectors
+          .Option;
+        Features                               : Google.Protobuf.Descriptor
+          .Optional_Feature_Set;
+        Uninterpreted_Option                   : Google.Protobuf.Descriptor
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Message_Options  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Message_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Message_Options_Vector) return Natural;
+
+   procedure Clear (Self : in out Message_Options_Vector);
+
+   procedure Append
+    (Self : in out Message_Options_Vector;
+     V    : Message_Options);
+
+   type Message_Options_Variable_Reference
+     (Element : not null access Message_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Message_Options_Variable_Reference
+    (Self  : aliased in out Message_Options_Vector;
+     Index : Positive)
+      return Message_Options_Variable_Reference
+     with Inline;
+
+   type Message_Options_Constant_Reference
+     (Element : not null access constant Message_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Message_Options_Constant_Reference
+    (Self  : aliased Message_Options_Vector;
+     Index : Positive)
+      return Message_Options_Constant_Reference
+     with Inline;
+
+   type Field_Options is
+     record
+        Ctype                : Google.Protobuf.Descriptor.CType_Vectors.Option;
+        Packed               : PB_Support.Boolean_Vectors.Option;
+        Jstype               : Google.Protobuf.Descriptor.JSType_Vectors
+          .Option;
+        Lazy                 : PB_Support.Boolean_Vectors.Option;
+        Unverified_Lazy      : PB_Support.Boolean_Vectors.Option;
+        Deprecated           : PB_Support.Boolean_Vectors.Option;
+        Weak                 : PB_Support.Boolean_Vectors.Option;
+        Debug_Redact         : PB_Support.Boolean_Vectors.Option;
+        Retention            : Google.Protobuf.Descriptor
+          .Option_Retention_Vectors.Option;
+        Targets              : Google.Protobuf.Descriptor
+          .Option_Target_Type_Vectors.Vector;
+        Edition_Defaults     : Google.Protobuf.Descriptor
+          .Edition_Default_Vector;
+        Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
+        Feature_Support      : Google.Protobuf.Descriptor
+          .Optional_Feature_Support;
+        Uninterpreted_Option : Google.Protobuf.Descriptor
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Field_Options  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Field_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Field_Options_Vector) return Natural;
+
+   procedure Clear (Self : in out Field_Options_Vector);
+
+   procedure Append (Self : in out Field_Options_Vector; V    : Field_Options);
+
+   type Field_Options_Variable_Reference
+     (Element : not null access Field_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Field_Options_Variable_Reference
+    (Self  : aliased in out Field_Options_Vector;
+     Index : Positive)
+      return Field_Options_Variable_Reference
+     with Inline;
+
+   type Field_Options_Constant_Reference
+     (Element : not null access constant Field_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Field_Options_Constant_Reference
+    (Self  : aliased Field_Options_Vector;
+     Index : Positive)
+      return Field_Options_Constant_Reference
+     with Inline;
+
+   type Oneof_Options is
+     record
+        Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
+        Uninterpreted_Option : Google.Protobuf.Descriptor
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Oneof_Options  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Oneof_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Oneof_Options_Vector) return Natural;
+
+   procedure Clear (Self : in out Oneof_Options_Vector);
+
+   procedure Append (Self : in out Oneof_Options_Vector; V    : Oneof_Options);
+
+   type Oneof_Options_Variable_Reference
+     (Element : not null access Oneof_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Oneof_Options_Variable_Reference
+    (Self  : aliased in out Oneof_Options_Vector;
+     Index : Positive)
+      return Oneof_Options_Variable_Reference
+     with Inline;
+
+   type Oneof_Options_Constant_Reference
+     (Element : not null access constant Oneof_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Oneof_Options_Constant_Reference
+    (Self  : aliased Oneof_Options_Vector;
+     Index : Positive)
+      return Oneof_Options_Constant_Reference
+     with Inline;
+
+   type Enum_Options is
+     record
+        Allow_Alias                            : PB_Support.Boolean_Vectors
+          .Option;
+        Deprecated                             : PB_Support.Boolean_Vectors
+          .Option;
+        Deprecated_Legacy_Json_Field_Conflicts : PB_Support.Boolean_Vectors
+          .Option;
+        Features                               : Google.Protobuf.Descriptor
+          .Optional_Feature_Set;
+        Uninterpreted_Option                   : Google.Protobuf.Descriptor
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Enum_Options  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Enum_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Enum_Options_Vector) return Natural;
+
+   procedure Clear (Self : in out Enum_Options_Vector);
+
+   procedure Append (Self : in out Enum_Options_Vector; V    : Enum_Options);
+
+   type Enum_Options_Variable_Reference
+     (Element : not null access Enum_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Options_Variable_Reference
+    (Self  : aliased in out Enum_Options_Vector;
+     Index : Positive)
+      return Enum_Options_Variable_Reference
+     with Inline;
+
+   type Enum_Options_Constant_Reference
+     (Element : not null access constant Enum_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Options_Constant_Reference
+    (Self  : aliased Enum_Options_Vector;
+     Index : Positive)
+      return Enum_Options_Constant_Reference
+     with Inline;
+
+   type Enum_Value_Options is
+     record
+        Deprecated           : PB_Support.Boolean_Vectors.Option;
+        Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
+        Debug_Redact         : PB_Support.Boolean_Vectors.Option;
+        Feature_Support      : Google.Protobuf.Descriptor
+          .Optional_Feature_Support;
+        Uninterpreted_Option : Google.Protobuf.Descriptor
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Enum_Value_Options  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Enum_Value_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Enum_Value_Options_Vector) return Natural;
+
+   procedure Clear (Self : in out Enum_Value_Options_Vector);
+
+   procedure Append
+    (Self : in out Enum_Value_Options_Vector;
+     V    : Enum_Value_Options);
+
+   type Enum_Value_Options_Variable_Reference
+     (Element : not null access Enum_Value_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Value_Options_Variable_Reference
+    (Self  : aliased in out Enum_Value_Options_Vector;
+     Index : Positive)
+      return Enum_Value_Options_Variable_Reference
+     with Inline;
+
+   type Enum_Value_Options_Constant_Reference
+     (Element : not null access constant Enum_Value_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Enum_Value_Options_Constant_Reference
+    (Self  : aliased Enum_Value_Options_Vector;
+     Index : Positive)
+      return Enum_Value_Options_Constant_Reference
+     with Inline;
+
+   type Service_Options is
+     record
+        Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
+        Deprecated           : PB_Support.Boolean_Vectors.Option;
+        Uninterpreted_Option : Google.Protobuf.Descriptor
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Service_Options  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Service_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Service_Options_Vector) return Natural;
+
+   procedure Clear (Self : in out Service_Options_Vector);
+
+   procedure Append
+    (Self : in out Service_Options_Vector;
+     V    : Service_Options);
+
+   type Service_Options_Variable_Reference
+     (Element : not null access Service_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Service_Options_Variable_Reference
+    (Self  : aliased in out Service_Options_Vector;
+     Index : Positive)
+      return Service_Options_Variable_Reference
+     with Inline;
+
+   type Service_Options_Constant_Reference
+     (Element : not null access constant Service_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Service_Options_Constant_Reference
+    (Self  : aliased Service_Options_Vector;
+     Index : Positive)
+      return Service_Options_Constant_Reference
+     with Inline;
+
+   type Method_Options is
+     record
+        Deprecated           : PB_Support.Boolean_Vectors.Option;
+        Idempotency_Level    : Google.Protobuf.Descriptor
+          .Idempotency_Level_Vectors.Option;
+        Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
+        Uninterpreted_Option : Google.Protobuf.Descriptor
+          .Uninterpreted_Option_Vector;
+     end record;
+
+   type Optional_Method_Options  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Method_Options;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Method_Options_Vector) return Natural;
+
+   procedure Clear (Self : in out Method_Options_Vector);
+
+   procedure Append
+    (Self : in out Method_Options_Vector;
+     V    : Method_Options);
+
+   type Method_Options_Variable_Reference
+     (Element : not null access Method_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Method_Options_Variable_Reference
+    (Self  : aliased in out Method_Options_Vector;
+     Index : Positive)
+      return Method_Options_Variable_Reference
+     with Inline;
+
+   type Method_Options_Constant_Reference
+     (Element : not null access constant Method_Options) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Method_Options_Constant_Reference
+    (Self  : aliased Method_Options_Vector;
+     Index : Positive)
+      return Method_Options_Constant_Reference
+     with Inline;
+
    type File_Descriptor_Proto is
      record
         Name              : PB_Support.Universal_String_Vectors.Option;
@@ -941,6 +1552,7 @@ package Google.Protobuf.Descriptor is
         Dependency        : League.String_Vectors.Universal_String_Vector;
         Public_Dependency : PB_Support.Integer_32_Vectors.Vector;
         Weak_Dependency   : PB_Support.Integer_32_Vectors.Vector;
+        Option_Dependency : League.String_Vectors.Universal_String_Vector;
         Message_Type      : Google.Protobuf.Descriptor.Descriptor_Proto_Vector;
         Enum_Type         : Google.Protobuf.Descriptor
           .Enum_Descriptor_Proto_Vector;
@@ -952,6 +1564,7 @@ package Google.Protobuf.Descriptor is
         Source_Code_Info  : Google.Protobuf.Descriptor
           .Optional_Source_Code_Info;
         Syntax            : PB_Support.Universal_String_Vectors.Option;
+        Edition           : Google.Protobuf.Descriptor.Edition_Vectors.Option;
      end record;
 
    type Optional_File_Descriptor_Proto  (Is_Set : Boolean := False) is
@@ -992,6 +1605,51 @@ package Google.Protobuf.Descriptor is
       return File_Descriptor_Proto_Constant_Reference
      with Inline;
 
+   type Extension_Range is
+     record
+        Start   : PB_Support.Integer_32_Vectors.Option;
+        PB_End  : PB_Support.Integer_32_Vectors.Option;
+        Options : Google.Protobuf.Descriptor.Optional_Extension_Range_Options;
+     end record;
+
+   type Optional_Extension_Range  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Google.Protobuf.Descriptor.Extension_Range;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Extension_Range_Vector) return Natural;
+
+   procedure Clear (Self : in out Extension_Range_Vector);
+
+   procedure Append
+    (Self : in out Extension_Range_Vector;
+     V    : Extension_Range);
+
+   type Extension_Range_Variable_Reference
+     (Element : not null access Extension_Range) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Extension_Range_Variable_Reference
+    (Self  : aliased in out Extension_Range_Vector;
+     Index : Positive)
+      return Extension_Range_Variable_Reference
+     with Inline;
+
+   type Extension_Range_Constant_Reference
+     (Element : not null access constant Extension_Range) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Extension_Range_Constant_Reference
+    (Self  : aliased Extension_Range_Vector;
+     Index : Positive)
+      return Extension_Range_Constant_Reference
+     with Inline;
+
    type Descriptor_Proto is
      record
         Name            : PB_Support.Universal_String_Vectors.Option;
@@ -1008,6 +1666,8 @@ package Google.Protobuf.Descriptor is
         Options         : Google.Protobuf.Descriptor.Optional_Message_Options;
         Reserved_Range  : Google.Protobuf.Descriptor.Reserved_Range_Vector;
         Reserved_Name   : League.String_Vectors.Universal_String_Vector;
+        Visibility      : Google.Protobuf.Descriptor.Symbol_Visibility_Vectors
+          .Option;
      end record;
 
    type Optional_Descriptor_Proto  (Is_Set : Boolean := False) is
@@ -1050,16 +1710,17 @@ package Google.Protobuf.Descriptor is
 
    type Field_Descriptor_Proto is
      record
-        Name          : PB_Support.Universal_String_Vectors.Option;
-        Number        : PB_Support.Integer_32_Vectors.Option;
-        Label         : Google.Protobuf.Descriptor.Label_Vectors.Option;
-        PB_Type       : Google.Protobuf.Descriptor.PB_Type_Vectors.Option;
-        Type_Name     : PB_Support.Universal_String_Vectors.Option;
-        Extendee      : PB_Support.Universal_String_Vectors.Option;
-        Default_Value : PB_Support.Universal_String_Vectors.Option;
-        Oneof_Index   : PB_Support.Integer_32_Vectors.Option;
-        Json_Name     : PB_Support.Universal_String_Vectors.Option;
-        Options       : Google.Protobuf.Descriptor.Optional_Field_Options;
+        Name             : PB_Support.Universal_String_Vectors.Option;
+        Number           : PB_Support.Integer_32_Vectors.Option;
+        Label            : Google.Protobuf.Descriptor.Label_Vectors.Option;
+        PB_Type          : Google.Protobuf.Descriptor.PB_Type_Vectors.Option;
+        Type_Name        : PB_Support.Universal_String_Vectors.Option;
+        Extendee         : PB_Support.Universal_String_Vectors.Option;
+        Default_Value    : PB_Support.Universal_String_Vectors.Option;
+        Oneof_Index      : PB_Support.Integer_32_Vectors.Option;
+        Json_Name        : PB_Support.Universal_String_Vectors.Option;
+        Options          : Google.Protobuf.Descriptor.Optional_Field_Options;
+        Proto_3_Optional : PB_Support.Boolean_Vectors.Option;
      end record;
 
    type Optional_Field_Descriptor_Proto  (Is_Set : Boolean := False) is
@@ -1146,10 +1807,14 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Descriptor_Proto is
      record
-        Name    : PB_Support.Universal_String_Vectors.Option;
-        Value   : Google.Protobuf.Descriptor
+        Name           : PB_Support.Universal_String_Vectors.Option;
+        Value          : Google.Protobuf.Descriptor
           .Enum_Value_Descriptor_Proto_Vector;
-        Options : Google.Protobuf.Descriptor.Optional_Enum_Options;
+        Options        : Google.Protobuf.Descriptor.Optional_Enum_Options;
+        Reserved_Range : Google.Protobuf.Descriptor.Enum_Reserved_Range_Vector;
+        Reserved_Name  : League.String_Vectors.Universal_String_Vector;
+        Visibility     : Google.Protobuf.Descriptor.Symbol_Visibility_Vectors
+          .Option;
      end record;
 
    type Optional_Enum_Descriptor_Proto  (Is_Set : Boolean := False) is
@@ -1473,6 +2138,63 @@ private
 
    overriding procedure Finalize (Self : in out Descriptor_Proto_Vector);
 
+   procedure Read_Declaration
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Declaration);
+
+   procedure Write_Declaration
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Declaration);
+
+   for Declaration'Read use Read_Declaration;
+
+   for Declaration'Write use Write_Declaration;
+
+   type Declaration_Array is array (Positive range <>) of aliased Declaration;
+
+   type Declaration_Array_Access is access Declaration_Array;
+
+   type Declaration_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Declaration_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Declaration_Vector);
+
+   overriding procedure Finalize (Self : in out Declaration_Vector);
+
+   procedure Read_Extension_Range_Options
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Extension_Range_Options);
+
+   procedure Write_Extension_Range_Options
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Extension_Range_Options);
+
+   for Extension_Range_Options'Read use Read_Extension_Range_Options;
+
+   for Extension_Range_Options'Write use Write_Extension_Range_Options;
+
+   type Extension_Range_Options_Array is
+     array (Positive range <>) of aliased Extension_Range_Options;
+
+   type Extension_Range_Options_Array_Access is
+     access Extension_Range_Options_Array;
+
+   type Extension_Range_Options_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Extension_Range_Options_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Extension_Range_Options_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Extension_Range_Options_Vector);
+
    procedure Read_Field_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Field_Descriptor_Proto);
@@ -1530,6 +2252,34 @@ private
    overriding procedure Adjust (Self : in out Oneof_Descriptor_Proto_Vector);
 
    overriding procedure Finalize (Self : in out Oneof_Descriptor_Proto_Vector);
+
+   procedure Read_Enum_Reserved_Range
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Enum_Reserved_Range);
+
+   procedure Write_Enum_Reserved_Range
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Enum_Reserved_Range);
+
+   for Enum_Reserved_Range'Read use Read_Enum_Reserved_Range;
+
+   for Enum_Reserved_Range'Write use Write_Enum_Reserved_Range;
+
+   type Enum_Reserved_Range_Array is
+     array (Positive range <>) of aliased Enum_Reserved_Range;
+
+   type Enum_Reserved_Range_Array_Access is access Enum_Reserved_Range_Array;
+
+   type Enum_Reserved_Range_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Enum_Reserved_Range_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Enum_Reserved_Range_Vector);
+
+   overriding procedure Finalize (Self : in out Enum_Reserved_Range_Vector);
 
    procedure Read_Enum_Descriptor_Proto
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1706,6 +2456,62 @@ private
    overriding procedure Adjust (Self : in out Message_Options_Vector);
 
    overriding procedure Finalize (Self : in out Message_Options_Vector);
+
+   procedure Read_Edition_Default
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Edition_Default);
+
+   procedure Write_Edition_Default
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Edition_Default);
+
+   for Edition_Default'Read use Read_Edition_Default;
+
+   for Edition_Default'Write use Write_Edition_Default;
+
+   type Edition_Default_Array is
+     array (Positive range <>) of aliased Edition_Default;
+
+   type Edition_Default_Array_Access is access Edition_Default_Array;
+
+   type Edition_Default_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Edition_Default_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Edition_Default_Vector);
+
+   overriding procedure Finalize (Self : in out Edition_Default_Vector);
+
+   procedure Read_Feature_Support
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Feature_Support);
+
+   procedure Write_Feature_Support
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Feature_Support);
+
+   for Feature_Support'Read use Read_Feature_Support;
+
+   for Feature_Support'Write use Write_Feature_Support;
+
+   type Feature_Support_Array is
+     array (Positive range <>) of aliased Feature_Support;
+
+   type Feature_Support_Array_Access is access Feature_Support_Array;
+
+   type Feature_Support_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Feature_Support_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Feature_Support_Vector);
+
+   overriding procedure Finalize (Self : in out Feature_Support_Vector);
 
    procedure Read_Field_Options
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -1929,6 +2735,120 @@ private
    overriding procedure Adjust (Self : in out Uninterpreted_Option_Vector);
 
    overriding procedure Finalize (Self : in out Uninterpreted_Option_Vector);
+
+   procedure Read_Visibility_Feature
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Visibility_Feature);
+
+   procedure Write_Visibility_Feature
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Visibility_Feature);
+
+   for Visibility_Feature'Read use Read_Visibility_Feature;
+
+   for Visibility_Feature'Write use Write_Visibility_Feature;
+
+   type Visibility_Feature_Array is
+     array (Positive range <>) of aliased Visibility_Feature;
+
+   type Visibility_Feature_Array_Access is access Visibility_Feature_Array;
+
+   type Visibility_Feature_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Visibility_Feature_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Visibility_Feature_Vector);
+
+   overriding procedure Finalize (Self : in out Visibility_Feature_Vector);
+
+   procedure Read_Feature_Set
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Feature_Set);
+
+   procedure Write_Feature_Set
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Feature_Set);
+
+   for Feature_Set'Read use Read_Feature_Set;
+
+   for Feature_Set'Write use Write_Feature_Set;
+
+   type Feature_Set_Array is array (Positive range <>) of aliased Feature_Set;
+
+   type Feature_Set_Array_Access is access Feature_Set_Array;
+
+   type Feature_Set_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Feature_Set_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Feature_Set_Vector);
+
+   overriding procedure Finalize (Self : in out Feature_Set_Vector);
+
+   procedure Read_Feature_Set_Edition_Default
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Feature_Set_Edition_Default);
+
+   procedure Write_Feature_Set_Edition_Default
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Feature_Set_Edition_Default);
+
+   for Feature_Set_Edition_Default'Read use Read_Feature_Set_Edition_Default;
+
+   for Feature_Set_Edition_Default'Write use Write_Feature_Set_Edition_Default;
+
+   type Feature_Set_Edition_Default_Array is
+     array (Positive range <>) of aliased Feature_Set_Edition_Default;
+
+   type Feature_Set_Edition_Default_Array_Access is
+     access Feature_Set_Edition_Default_Array;
+
+   type Feature_Set_Edition_Default_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Feature_Set_Edition_Default_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust
+    (Self : in out Feature_Set_Edition_Default_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Feature_Set_Edition_Default_Vector);
+
+   procedure Read_Feature_Set_Defaults
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Feature_Set_Defaults);
+
+   procedure Write_Feature_Set_Defaults
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Feature_Set_Defaults);
+
+   for Feature_Set_Defaults'Read use Read_Feature_Set_Defaults;
+
+   for Feature_Set_Defaults'Write use Write_Feature_Set_Defaults;
+
+   type Feature_Set_Defaults_Array is
+     array (Positive range <>) of aliased Feature_Set_Defaults;
+
+   type Feature_Set_Defaults_Array_Access is access Feature_Set_Defaults_Array;
+
+   type Feature_Set_Defaults_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Feature_Set_Defaults_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Feature_Set_Defaults_Vector);
+
+   overriding procedure Finalize (Self : in out Feature_Set_Defaults_Vector);
 
    procedure Read_Location
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
