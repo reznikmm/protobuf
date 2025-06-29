@@ -30,9 +30,11 @@ package body Compiler.Field_Descriptors is
      return League.Strings.Universal_String
        renames League.Strings.To_Universal_String;
 
+   type Option_Kind is (Optional, Required, Primitive);
+
    function Type_Name
      (Self        : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Is_Option   : Boolean;
+      Is_Option   : Option_Kind;
       Is_Repeated : Boolean) return Compiler.Context.Ada_Type_Name;
 
    function Default (X : Google.Protobuf.Descriptor.PB_Type)
@@ -41,7 +43,7 @@ package body Compiler.Field_Descriptors is
 
    function Default
      (Self      : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Is_Option : Boolean;
+      Is_Option : Option_Kind;
       Pkg       : League.Strings.Universal_String;
       Tipe      : League.Strings.Universal_String;
       Fake      : Compiler.Context.String_Sets.Set)
@@ -68,7 +70,7 @@ package body Compiler.Field_Descriptors is
 
    function Is_Optional
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-       return Boolean;
+       return Option_Kind;
 
    function Is_Message
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
@@ -81,7 +83,7 @@ package body Compiler.Field_Descriptors is
 
    function Write_Name
      (Self      : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Is_Option : Boolean)
+      Is_Option : Option_Kind)
       return League.Strings.Universal_String;
 
    ---------------
@@ -124,11 +126,11 @@ package body Compiler.Field_Descriptors is
       Name : constant League.Strings.Universal_String :=
         Compiler.Context.To_Ada_Name (Self.Name.Value);
       Is_Vector : constant Boolean := Is_Repeated (Self, Pkg, Tipe, Fake);
-      Is_Option : constant Boolean :=
-        Is_Optional (Self) and not Is_Vector and not Self.Oneof_Index.Is_Set;
+      Is_Option : constant Option_Kind :=
+        (if Is_Vector then Required else Is_Optional (Self));
       My_Type : constant League.Strings.Universal_String :=
         Compiler.Context.Relative_Name
-          (+Type_Name (Self, Is_Option,  Is_Vector), Pkg);
+          (+Type_Name (Self, Is_Option, Is_Vector), Pkg);
    begin
       Result := F.New_Variable
         (Name            => F.New_Name (Name),
@@ -175,7 +177,7 @@ package body Compiler.Field_Descriptors is
 
    function Default
      (Self      : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Is_Option : Boolean;
+      Is_Option : Option_Kind;
       Pkg       : League.Strings.Universal_String;
       Tipe      : League.Strings.Universal_String;
       Fake      : Compiler.Context.String_Sets.Set)
@@ -185,7 +187,7 @@ package body Compiler.Field_Descriptors is
    begin
       if Is_Repeated (Self, Pkg, Tipe, Fake) then
          null;
-      elsif Is_Option and Compiler.Context.Is_Proto_2 then
+      elsif Is_Option = Optional then
          null;
       elsif Self.Type_Name.Is_Set then
          declare
@@ -235,8 +237,8 @@ package body Compiler.Field_Descriptors is
    is
       Is_Vector : constant Boolean := Is_Repeated
         (Self, +"", +"", Compiler.Context.String_Sets.Empty_Set);
-      Is_Option : constant Boolean :=
-        Is_Optional (Self) and not Is_Vector and not Self.Oneof_Index.Is_Set;
+      Is_Option : constant Option_Kind :=
+        (if Is_Vector then Required else Is_Optional (Self));
       My_Pkg    : constant League.Strings.Universal_String :=
         Type_Name (Self, Is_Option, Is_Vector).Package_Name;
    begin
@@ -304,9 +306,21 @@ package body Compiler.Field_Descriptors is
 
    function Is_Optional
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-       return Boolean is
+      return Option_Kind is
    begin
-      return not Self.Label.Is_Set or else Self.Label.Value = LABEL_OPTIONAL;
+      if Self.Oneof_Index.Is_Set then
+         return Required;
+      elsif Compiler.Context.Is_Proto_2 then
+         if Self.Label.Is_Set and then Self.Label.Value /= LABEL_OPTIONAL then
+            return Required;
+         else
+            return Optional;
+         end if;
+      elsif Is_Message (Self) then
+         return Optional;
+      else
+         return Primitive;
+      end if;
    end Is_Optional;
 
    ---------------
@@ -425,9 +439,7 @@ package body Compiler.Field_Descriptors is
                    Value   => F.New_Name (+"<>"))))));
 
          My_Name.Prepend ("V.Variant.");
-      elsif not Is_Vector and Is_Optional (Self)
-        and (Is_Message (Self) or Compiler.Context.Is_Proto_2)
-      then
+      elsif not Is_Vector and Is_Optional (Self) = Optional then
          My_Name.Prepend ("V.");
          Result := F.New_If
            (Condition  => F.New_Infix
@@ -531,7 +543,7 @@ package body Compiler.Field_Descriptors is
 
    function Type_Name
      (Self        : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Is_Option   : Boolean;
+      Is_Option   : Option_Kind;
       Is_Repeated : Boolean)
       return Compiler.Context.Ada_Type_Name
    is
@@ -554,12 +566,14 @@ package body Compiler.Field_Descriptors is
                   if Element.Is_Enumeration then
                      if Is_Repeated then
                         Result.Type_Name.Append ("_Vectors.Vector");
-                     elsif Is_Option and Compiler.Context.Is_Proto_2 then
+                     elsif Is_Option = Optional then
                         Result.Type_Name.Append ("_Vectors.Option");
                      end if;
                   elsif Is_Repeated then
                      Result.Type_Name.Append ("_Vector");
-                  elsif Is_Option and not Self.Oneof_Index.Is_Set then
+                  elsif Is_Option = Optional
+                    and not Self.Oneof_Index.Is_Set
+                  then
                      Result.Type_Name := Element.Optional_Type;
                   end if;
                end;
@@ -568,7 +582,7 @@ package body Compiler.Field_Descriptors is
                  "Type not found: " & Value.To_UTF_8_String;
             end if;
          end;
-      elsif Is_Option and Compiler.Context.Is_Proto_2 then
+      elsif Is_Option = Optional then
          Result := Map (Self.PB_Type.Value);
          Result.Package_Name :=
            "PB_Support." & Result.Type_Name & "_Vectors";
@@ -618,9 +632,12 @@ package body Compiler.Field_Descriptors is
 
       Is_Enum   : constant Boolean := Field_Descriptors.Is_Enum (Self);
       Is_Vector : constant Boolean := Is_Repeated (Self, Pkg, Tipe, Fake);
-      Is_Option : constant Boolean := Is_Optional (Self)
-        and not Is_Vector
-        and not Self.Oneof_Index.Is_Set;
+      --  Is_Option : constant Boolean := Is_Optional (Self)
+      --    and not Is_Vector
+      --    and not Self.Oneof_Index.Is_Set;
+
+      Is_Option : constant Option_Kind :=
+        (if Is_Vector then Required else Is_Optional (Self));
 
       My_Name : constant League.Strings.Universal_String :=
         Compiler.Context.To_Ada_Name (Self.Name.Value);
@@ -635,17 +652,17 @@ package body Compiler.Field_Descriptors is
       elsif Is_Message (Self) then
          if Is_Vector then
             Value.Append (+" (J)");
-         elsif Is_Option then
+         elsif Is_Option = Optional then
             Value.Append (+".Value");
          end if;
-      elsif Is_Option and Compiler.Context.Is_Proto_2 then
+      elsif Is_Option = Optional then
          Value.Append (+".Value");
       end if;
 
       if Is_Message (Self) then
 
          Full := Compiler.Context.Relative_Name
-           (+Type_Name (Self, False, False), Pkg);
+           (+Type_Name (Self, Required, False), Pkg);
 
          Result := F.New_List
            (F.New_Statement
@@ -685,12 +702,12 @@ package body Compiler.Field_Descriptors is
             F.New_Argument_Association
               (F.New_Selected_Name (Value))));
 
-         if Is_Option and not Compiler.Context.Is_Proto_2 then
+         if Is_Option = Primitive then
             Result := F.New_Apply
              (F.New_Selected_Name (Get & "_IO.Write_Option"),
               F.New_List
                 (Result,
-                 Default (Self, False, Pkg, Tipe, Fake)));
+                 Default (Self, Required, Pkg, Tipe, Fake)));
          elsif Is_Packed (Self) then
             Result := F.New_Apply
              (F.New_Selected_Name (Get & "_IO.Write_Packed"),
@@ -710,7 +727,7 @@ package body Compiler.Field_Descriptors is
             F.New_Argument_Association
              (F.New_Selected_Name (Value)));
 
-         if Is_Option and not Compiler.Context.Is_Proto_2 then
+         if Is_Option = Primitive then
             Initial := Default (Self.PB_Type.Value);
 
             if Initial.Is_Empty then
@@ -732,10 +749,7 @@ package body Compiler.Field_Descriptors is
          Result := F.New_Statement (Result);
       end if;
 
-      if Is_Option and
-        (Is_Message (Self) or Compiler.Context.Is_Proto_2) and
-        not Self.Oneof_Index.Is_Set
-      then
+      if Is_Option = Optional then
          Result := F.New_If
            (F.New_Selected_Name ("V." & My_Name & ".Is_Set"),
             Result);
@@ -750,7 +764,7 @@ package body Compiler.Field_Descriptors is
 
    function Write_Name
      (Self      : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Is_Option : Boolean)
+      Is_Option : Option_Kind)
       return League.Strings.Universal_String
    is
       use all type Google.Protobuf.Descriptor.PB_Type;
@@ -772,7 +786,7 @@ package body Compiler.Field_Descriptors is
          Result.Append ("_Zigzag");
       end if;
 
-      if Is_Option and not Compiler.Context.Is_Proto_2 then
+      if Is_Option = Primitive then
          Result.Append ("_Option");
       elsif Packed then
          Result.Append ("_Packed");
