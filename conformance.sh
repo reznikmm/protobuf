@@ -10,7 +10,7 @@ if [ ! -f $PB_DIR/conformance/conformance.proto ] ; then
   exit 0
 fi
 
-if [ ! -f $PB_CACHE/conformance-test-runner ] ; then
+if [ ! -f $PB_CACHE/conformance_test_runner ] ; then
   (cd $PB_DIR; cmake . -Dprotobuf_BUILD_CONFORMANCE=ON && cmake --build .)
 
   mkdir -p $PB_CACHE

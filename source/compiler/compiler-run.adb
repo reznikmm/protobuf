@@ -79,6 +79,8 @@ begin
       end;
    end loop;
 
+   Result.Supported_Features := (True, 1);  --  FEATURE_PROTO3_OPTIONAL
+
    Google.Protobuf.Compiler.Plugin.Code_Generator_Response'Write
      (Stream'Unchecked_Access, Result);
 end Compiler.Run;

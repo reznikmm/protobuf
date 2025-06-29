@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2020-2025 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -20,6 +20,7 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
+with PB_Support.Boolean_Vectors;
 with PB_Support.Integer_32_Vectors;
 
 with Compiler.Enum_Descriptors;
@@ -87,6 +88,10 @@ package body Compiler.Descriptors is
 
    function Is_One_Of
      (Value : PB_Support.Integer_32_Vectors.Option;
+      Index : Positive) return Boolean;
+
+   function Is_Synthetic_One_Of
+     (Self  : Google.Protobuf.Descriptor.Descriptor_Proto;
       Index : Positive) return Boolean;
 
    function Indexing_Spec
@@ -345,6 +350,32 @@ package body Compiler.Descriptors is
    begin
       return Value.Is_Set and then Natural (Value.Value) + 1 = Index;
    end Is_One_Of;
+
+   -------------------------
+   -- Is_Synthetic_One_Of --
+   -------------------------
+
+   function Is_Synthetic_One_Of
+     (Self  : Google.Protobuf.Descriptor.Descriptor_Proto;
+      Index : Positive) return Boolean
+   is
+      use type PB_Support.Boolean_Vectors.Option;
+   begin
+      for J in 1 .. Self.Field.Length loop
+         declare
+            Field : constant Google.Protobuf.Descriptor.Field_Descriptor_Proto
+              := Self.Field (J);
+         begin
+            if Is_One_Of (Field.Oneof_Index, Index) and then
+              Field.Proto_3_Optional = (True, True)
+            then
+               return True;
+            end if;
+         end;
+      end loop;
+
+      return False;
+   end Is_Synthetic_One_Of;
 
    ------------------------
    -- One_Of_Declaration --
@@ -654,7 +685,7 @@ package body Compiler.Descriptors is
       Indexing : Ada_Pretty.Node_Access;
    begin
       for J in 1 .. Self.Field.Length loop
-         if not Self.Field (J).Oneof_Index.Is_Set then
+         if not Field_Descriptors.Is_One_Of (Self.Field (J)) then
             Item := Compiler.Field_Descriptors.Component
               (Self.Field (J), Pkg, My_Name, Fake);
 
@@ -663,6 +694,8 @@ package body Compiler.Descriptors is
       end loop;
 
       for J in 1 .. Self.Oneof_Decl.Length loop
+         exit when Is_Synthetic_One_Of (Self, J);
+
          One_Of_Declaration (Self, J, Pkg, Prefix, Fake, One_Of, Result);
       end loop;
 
@@ -804,7 +837,7 @@ package body Compiler.Descriptors is
         (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
          return League.Strings.Universal_String is
       begin
-         if Field.Oneof_Index.Is_Set then
+         if Field_Descriptors.Is_One_Of (Field) then
             return Compiler.Context.To_Ada_Name
               (Self.Oneof_Decl
                 (Natural (Field.Oneof_Index.Value) + 1).Name.Value);
@@ -1193,7 +1226,7 @@ package body Compiler.Descriptors is
       Stmts := F.New_Statement (F.New_Selected_Name (+"WS.Start_Message"));
 
       for J in 1 .. Self.Field.Length loop
-         if not Self.Field (J).Oneof_Index.Is_Set then
+         if not Field_Descriptors.Is_One_Of (Self.Field (J)) then
             Stmts := F.New_List
               (Stmts,
                Compiler.Field_Descriptors.Write_Call
@@ -1207,6 +1240,8 @@ package body Compiler.Descriptors is
               Compiler.Context.To_Ada_Name (Self.Oneof_Decl (K).Name.Value);
             Cases : Ada_Pretty.Node_Access;
          begin
+            exit when Is_Synthetic_One_Of (Self, K);
+
             for J in 1 .. Self.Field.Length loop
                if Is_One_Of (Self.Field (J).Oneof_Index, K) then
                   Cases := F.New_List
