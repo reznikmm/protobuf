@@ -53,7 +53,7 @@ or submit PRs.
 ## Support
 
 If you find this open source project useful, you may provide me a small support
-on [Patreon](https://www.patreon.com/ada_ru).
+on [Patreon](https://www.patreon.com/ada_re).
 
 ## License
 
