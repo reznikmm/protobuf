@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2020-2025 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -29,6 +29,11 @@ with Google.Protobuf.Descriptor;
 with Compiler.Context;
 
 package Compiler.Field_Descriptors is
+
+   function Is_One_Of
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+       return Boolean;
+   --  Return True if Field is a "real" one-of field
 
    procedure Dependency
      (Self   : Google.Protobuf.Descriptor.Field_Descriptor_Proto;

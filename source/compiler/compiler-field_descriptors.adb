@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2020-2025 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -19,6 +19,8 @@
 --  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
+
+with PB_Support.Boolean_Vectors;
 
 package body Compiler.Field_Descriptors is
 
@@ -300,15 +302,33 @@ package body Compiler.Field_Descriptors is
       end if;
    end Is_Message;
 
+   ---------------
+   -- Is_One_Of --
+   ---------------
+
+   function Is_One_Of
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+      return Boolean
+   is
+      use type PB_Support.Boolean_Vectors.Option;
+   begin
+      return Self.Oneof_Index.Is_Set and then
+        Self.Proto_3_Optional /= (True, True);
+   end Is_One_Of;
+
    -----------------
    -- Is_Optional --
    -----------------
 
    function Is_Optional
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-      return Option_Kind is
+      return Option_Kind
+   is
+      use type PB_Support.Boolean_Vectors.Option;
    begin
-      if Self.Oneof_Index.Is_Set then
+      if Self.Proto_3_Optional = (True, True) then
+         return Optional;
+      elsif Self.Oneof_Index.Is_Set then
          return Required;
       elsif Compiler.Context.Is_Proto_2 then
          if Self.Label.Is_Set and then Self.Label.Value /= LABEL_OPTIONAL then
@@ -424,7 +444,7 @@ package body Compiler.Field_Descriptors is
    begin
       Field := Integer (Self.Number.Value);
 
-      if Self.Oneof_Index.Is_Set then
+      if Is_One_Of (Self) then
          Result := F.New_If
           (Condition  => F.New_List
             (F.New_Selected_Name ("V.Variant." & Oneof),
@@ -571,9 +591,7 @@ package body Compiler.Field_Descriptors is
                      end if;
                   elsif Is_Repeated then
                      Result.Type_Name.Append ("_Vector");
-                  elsif Is_Option = Optional
-                    and not Self.Oneof_Index.Is_Set
-                  then
+                  elsif Is_Option = Optional then
                      Result.Type_Name := Element.Optional_Type;
                   end if;
                end;
@@ -647,7 +665,7 @@ package body Compiler.Field_Descriptors is
       Initial : League.Strings.Universal_String;
       Value   : League.Strings.Universal_String := "V." & My_Name;
    begin
-      if Self.Oneof_Index.Is_Set then
+      if Is_One_Of (Self) then
          Value := "V.Variant." & My_Name;
       elsif Is_Message (Self) then
          if Is_Vector then
