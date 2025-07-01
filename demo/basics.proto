@@ -1,0 +1,16 @@
+//  Very simplified person database
+
+package My_Format;  // Parent package. Child name stems from file name.
+
+enum Gender_Type
+  {Male   = 0;
+   Female = 1;}
+  
+message Person
+  {required string      name       = 1;
+   required int32       birth_year = 2;
+   optional Gender_Type gender     = 3;}
+   
+message Crowd
+  {repeated Person individual     = 1;
+   required int32  useless_symbol = 2;}
