@@ -40,6 +40,14 @@ PATH=.objs/compiler/:$PATH protoc --ada_out=/tmp/ /usr/include/google/protobuf/d
 
 See more details in [Ada Generated Code](docs/generated_code.md) document.
 
+### Demo
+
+A very simple demo could be found in `demo/` folder. To run it just execute:
+
+```shell
+alr -C demo run
+```
+
 ## Maintainer
 
 [@MaximReznik](https://github.com/reznikmm).

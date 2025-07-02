@@ -15,7 +15,7 @@ if [ ! -f $PB_CACHE/conformance_test_runner ] ; then
 
   mkdir -p $PB_CACHE
   cp -v --no-dereference \
-    $PB_DIR/_deps/jsoncpp-build/src/lib_json/libjsoncpp.so.26 \
+    $PB_DIR/_deps/jsoncpp-build/src/lib_json/libjsoncpp.so* \
     $PB_DIR/conformance_test_runner \
     $PB_CACHE
 fi

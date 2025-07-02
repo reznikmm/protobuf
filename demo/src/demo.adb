@@ -34,7 +34,7 @@ procedure Demo is
    end Write_Person;
 
    procedure Read_Person (db_name : String) is
-      use Ada.Streams.Stream_IO, League.Strings, My_Format.Basics;
+      use Ada.Streams.Stream_IO, My_Format.Basics;
       p : Person;
       f : File_Type;
    begin
@@ -75,7 +75,7 @@ procedure Demo is
    end Write_Crowd;
 
    procedure Read_Crowd (db_name : String) is
-      use Ada.Streams.Stream_IO, League.Strings, My_Format.Basics;
+      use Ada.Streams.Stream_IO, My_Format.Basics;
       c : Crowd;
       f : File_Type;
    begin

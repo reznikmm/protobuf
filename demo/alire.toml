@@ -1,0 +1,29 @@
+name = "demo"
+description = "A simple demo for Ada protobuf"
+version = "0.1.0-dev"
+
+authors = ["Max Reznik"]
+maintainers = ["Max Reznik <reznikmm@gmail.com>"]
+maintainers-logins = ["reznikmm"]
+licenses = "MIT"
+website = ""
+tags = []
+
+executables = ["demo"]
+
+[build-switches]
+development.optimization = ["-O2"]
+development.style_checks = ["-gnatyN"]
+#development.style_checks = ["-gnaty"]
+development.compile_checks = "Errors"
+development.contracts = "Yes"
+
+[[actions]]
+type = "pre-build"
+command = ["protoc", "--ada_out=src", "basics.proto"]
+
+[[depends-on]]
+protobuf = "^1.0.0"
+
+[[pins]]
+protobuf = { path='..' }
