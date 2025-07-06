@@ -20,9 +20,34 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with PB_Support.Vectors;
+with Ada.Streams;
 with League.Stream_Element_Vectors;
 
-package PB_Support.Stream_Element_Vector_Vectors is
-  new PB_Support.Vectors (League.Stream_Element_Vectors.Stream_Element_Vector);
-pragma Preelaborate (PB_Support.Stream_Element_Vector_Vectors);
+package Proto_Support.Memory_Streams is
+
+   type Memory_Stream is new Ada.Streams.Root_Stream_Type with private;
+
+   procedure Clear (Self : in out Memory_Stream'Class);
+
+   function Written
+     (Self : Memory_Stream'Class) return Ada.Streams.Stream_Element_Count;
+
+   function Data (Self : Memory_Stream'Class)
+     return League.Stream_Element_Vectors.Stream_Element_Vector;
+
+private
+   type Memory_Stream is new Ada.Streams.Root_Stream_Type with record
+      Data : League.Stream_Element_Vectors.Stream_Element_Vector;
+      Read : Ada.Streams.Stream_Element_Count := 0;
+   end record;
+
+   overriding procedure Read
+     (Self : in out Memory_Stream;
+      Item : out Ada.Streams.Stream_Element_Array;
+      Last : out Ada.Streams.Stream_Element_Offset);
+
+   overriding procedure Write
+     (Self : in out Memory_Stream;
+      Item : Ada.Streams.Stream_Element_Array);
+
+end Proto_Support.Memory_Streams;

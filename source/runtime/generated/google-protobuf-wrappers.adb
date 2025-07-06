@@ -1,6 +1,6 @@
 with Ada.Unchecked_Deallocation;
-with PB_Support.IO;
-with PB_Support.Internal;
+with Proto_Support.IO;
+with Proto_Support.Internal;
 
 package body Google.Protobuf.Wrappers is
 
@@ -69,14 +69,14 @@ package body Google.Protobuf.Wrappers is
    procedure Read_Double_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Double_Value) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Double_Value;
@@ -85,17 +85,17 @@ package body Google.Protobuf.Wrappers is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Double_Value) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Double_Value (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Value, 0.0);
@@ -170,14 +170,14 @@ package body Google.Protobuf.Wrappers is
    procedure Read_Float_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Float_Value) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Float_Value;
@@ -186,17 +186,17 @@ package body Google.Protobuf.Wrappers is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Float_Value) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Float_Value (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Value, 0.0);
@@ -271,14 +271,14 @@ package body Google.Protobuf.Wrappers is
    procedure Read_Int_64Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Int_64Value) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Int_64Value;
@@ -287,17 +287,17 @@ package body Google.Protobuf.Wrappers is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Int_64Value) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Int_64Value (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Value, 0);
@@ -372,14 +372,14 @@ package body Google.Protobuf.Wrappers is
    procedure Read_UInt_64Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out UInt_64Value) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_UInt_64Value;
@@ -388,17 +388,17 @@ package body Google.Protobuf.Wrappers is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : UInt_64Value) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_UInt_64Value (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Value, 0);
@@ -473,14 +473,14 @@ package body Google.Protobuf.Wrappers is
    procedure Read_Int_32Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Int_32Value) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Int_32Value;
@@ -489,17 +489,17 @@ package body Google.Protobuf.Wrappers is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Int_32Value) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Int_32Value (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Value, 0);
@@ -574,14 +574,14 @@ package body Google.Protobuf.Wrappers is
    procedure Read_UInt_32Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out UInt_32Value) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_UInt_32Value;
@@ -590,17 +590,17 @@ package body Google.Protobuf.Wrappers is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : UInt_32Value) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_UInt_32Value (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Value, 0);
@@ -675,14 +675,14 @@ package body Google.Protobuf.Wrappers is
    procedure Read_Bool_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Bool_Value) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Bool_Value;
@@ -691,17 +691,17 @@ package body Google.Protobuf.Wrappers is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Bool_Value) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Bool_Value (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Value, False);
@@ -776,14 +776,14 @@ package body Google.Protobuf.Wrappers is
    procedure Read_String_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out String_Value) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_String_Value;
@@ -792,17 +792,17 @@ package body Google.Protobuf.Wrappers is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : String_Value) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_String_Value (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Value);
@@ -877,14 +877,14 @@ package body Google.Protobuf.Wrappers is
    procedure Read_Bytes_Value
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Bytes_Value) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Bytes_Value;
@@ -893,17 +893,17 @@ package body Google.Protobuf.Wrappers is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Bytes_Value) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Bytes_Value (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Value);

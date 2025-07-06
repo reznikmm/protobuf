@@ -26,7 +26,7 @@ with League.Text_Codecs;
 
 --  with Ada.Streams.Stream_IO;
 
-package body PB_Support.IO is
+package body Proto_Support.IO is
 
    use type Ada.Streams.Stream_Element;
    use type Ada.Streams.Stream_Element_Count;
@@ -155,7 +155,7 @@ package body PB_Support.IO is
          end if;
 
          for J in 1 .. Value.Length loop
-            Length := Length + PB_Support.Internal.Size
+            Length := Length + Proto_Support.Internal.Size
               (Interfaces.Integer_32 (Cast (Value.Get (J))));
          end loop;
 
@@ -279,7 +279,7 @@ package body PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_64_Vectors.Vector)
+      Value    : in out Proto_Support.Integer_64_Vectors.Vector)
    is
       Item : Interfaces.Integer_64;
    begin
@@ -307,7 +307,7 @@ package body PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_32_Vectors.Vector)
+      Value    : in out Proto_Support.Integer_32_Vectors.Vector)
    is
       Item : Interfaces.Integer_32;
    begin
@@ -335,7 +335,7 @@ package body PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_64_Vectors.Vector)
+      Value    : in out Proto_Support.Unsigned_64_Vectors.Vector)
    is
       Item : Interfaces.Unsigned_64;
    begin
@@ -363,7 +363,7 @@ package body PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_32_Vectors.Vector)
+      Value    : in out Proto_Support.Unsigned_32_Vectors.Vector)
    is
       Item : Interfaces.Unsigned_32;
    begin
@@ -395,7 +395,7 @@ package body PB_Support.IO is
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Boolean_Vectors.Vector)
+      Value    : in out Proto_Support.Boolean_Vectors.Vector)
    is
       Item : Boolean := False;
    begin
@@ -469,7 +469,7 @@ package body PB_Support.IO is
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.IEEE_Float_64_Vectors.Vector)
+      Value    : in out Proto_Support.IEEE_Float_64_Vectors.Vector)
    is
       Item : Interfaces.IEEE_Float_64;
    begin
@@ -501,7 +501,7 @@ package body PB_Support.IO is
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.IEEE_Float_32_Vectors.Vector)
+      Value    : in out Proto_Support.IEEE_Float_32_Vectors.Vector)
    is
       Item : Interfaces.IEEE_Float_32;
    begin
@@ -552,7 +552,7 @@ package body PB_Support.IO is
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_32_Vectors.Vector)
+      Value    : in out Proto_Support.Integer_32_Vectors.Vector)
    is
       function Cast is new Ada.Unchecked_Conversion
         (Interfaces.Unsigned_32, Interfaces.Integer_32);
@@ -593,7 +593,7 @@ package body PB_Support.IO is
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_64_Vectors.Vector)
+      Value    : in out Proto_Support.Integer_64_Vectors.Vector)
    is
       ----------
       -- Cast --
@@ -773,7 +773,7 @@ package body PB_Support.IO is
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Stream_Element_Vector_Vectors.Vector)
+      Value    : in out Proto_Support.Stream_Element_Vector_Vectors.Vector)
    is
       Item : League.Stream_Element_Vectors.Stream_Element_Vector;
    begin
@@ -825,7 +825,7 @@ package body PB_Support.IO is
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_32_Vectors.Vector)
+      Value    : in out Proto_Support.Unsigned_32_Vectors.Vector)
    is
       Item : Interfaces.Unsigned_32 := 0;
    begin
@@ -867,7 +867,7 @@ package body PB_Support.IO is
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_64_Vectors.Vector)
+      Value    : in out Proto_Support.Unsigned_64_Vectors.Vector)
    is
       Item : Interfaces.Unsigned_64 := 0;
    begin
@@ -989,7 +989,7 @@ package body PB_Support.IO is
    procedure Read_Zigzag_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : out PB_Support.Integer_32_Vectors.Vector) is
+      Value    : out Proto_Support.Integer_32_Vectors.Vector) is
    begin
       if Encoding = Var_Int then
          declare
@@ -1040,7 +1040,7 @@ package body PB_Support.IO is
    procedure Read_Zigzag_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : out PB_Support.Integer_64_Vectors.Vector)
+      Value    : out Proto_Support.Integer_64_Vectors.Vector)
    is
    begin
       if Encoding = Var_Int then
@@ -1127,4 +1127,4 @@ package body PB_Support.IO is
       end case;
    end Unknown_Field;
 
-end PB_Support.IO;
+end Proto_Support.IO;

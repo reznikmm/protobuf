@@ -20,47 +20,10 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with Ada.Finalization;
+with Interfaces;
+with Proto_Support.Vectors;
 
-generic
-   type Element_Type is private;
+package Proto_Support.IEEE_Float_32_Vectors is
+  new Proto_Support.Vectors (Interfaces.IEEE_Float_32);
 
-package PB_Support.Vectors is
-   pragma Preelaborate;
-
-   type Vector is tagged private;
-   pragma Preelaborable_Initialization (Vector);
-
-   function Length (Self : Vector) return Natural
-     with Inline;
-
-   function Get (Self : Vector; Index : Positive) return Element_Type
-     with Inline;
-
-   procedure Clear (Self : in out Vector)
-     with Inline;
-
-   procedure Append (Self : in out Vector; Value : Element_Type);
-
-   type Option (Is_Set : Boolean := False) is record
-      case Is_Set is
-         when True =>
-            Value : Element_Type;
-         when False =>
-            null;
-      end case;
-   end record;
-
-private
-   type Element_Array is array (Positive range <>) of Element_Type;
-   type Element_Array_Access is access Element_Array;
-
-   type Vector is new Ada.Finalization.Controlled with record
-      Data   : Element_Array_Access;
-      Length : Natural := 0;
-   end record;
-
-   overriding procedure Adjust (Self : in out Vector);
-   overriding procedure Finalize (Self : in out Vector);
-
-end PB_Support.Vectors;
+pragma Preelaborate (Proto_Support.IEEE_Float_32_Vectors);

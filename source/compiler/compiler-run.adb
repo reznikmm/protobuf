@@ -25,12 +25,12 @@ with League.Strings;
 with Google.Protobuf.Compiler.Plugin;
 with Google.Protobuf.Descriptor;
 
-with PB_Support.Stdio_Streams;
+with Proto_Support.Stdio_Streams;
 with Compiler.Context;
 with Compiler.File_Descriptors;
 
 procedure Compiler.Run is
-   Stream  : aliased PB_Support.Stdio_Streams.Stdio_Stream;
+   Stream  : aliased Proto_Support.Stdio_Streams.Stdio_Stream;
    Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
    Result  : Google.Protobuf.Compiler.Plugin.Code_Generator_Response;
 begin

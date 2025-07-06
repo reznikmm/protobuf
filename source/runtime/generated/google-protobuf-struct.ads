@@ -2,15 +2,15 @@ with Ada.Finalization;
 with Ada.Streams;
 with Interfaces;
 with League.Strings;
-with PB_Support.Vectors;
+with Proto_Support.Vectors;
 
 package Google.Protobuf.Struct is
 
-   type Null_Value is (PB_NULL_VALUE);
+   type Null_Value is (Proto_NULL_VALUE);
 
-   for Null_Value use (PB_NULL_VALUE => 0);
+   for Null_Value use (Proto_NULL_VALUE => 0);
 
-   package Null_Value_Vectors is new PB_Support.Vectors (Null_Value);
+   package Null_Value_Vectors is new Proto_Support.Vectors (Null_Value);
 
    type Struct_Vector is tagged private
      with Variable_Indexing => Get_Struct_Variable_Reference,
@@ -126,7 +126,7 @@ package Google.Protobuf.Struct is
               null;
            when Null_Value_Kind =>
               Null_Value : Google.Protobuf.Struct.Null_Value :=
-                Google.Protobuf.Struct.PB_NULL_VALUE;
+                Google.Protobuf.Struct.Proto_NULL_VALUE;
            when Number_Value_Kind =>
               Number_Value : Interfaces.IEEE_Float_64 := 0.0;
            when String_Value_Kind =>

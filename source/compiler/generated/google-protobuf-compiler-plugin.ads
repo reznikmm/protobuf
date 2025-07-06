@@ -2,10 +2,10 @@ with Ada.Finalization;
 with Ada.Streams;
 with Google.Protobuf.Descriptor;
 with League.String_Vectors;
-with PB_Support.Integer_32_Vectors;
-with PB_Support.Universal_String_Vectors;
-with PB_Support.Unsigned_64_Vectors;
-with PB_Support.Vectors;
+with Proto_Support.Integer_32_Vectors;
+with Proto_Support.Universal_String_Vectors;
+with Proto_Support.Unsigned_64_Vectors;
+with Proto_Support.Vectors;
 
 package Google.Protobuf.Compiler.Plugin is
 
@@ -16,7 +16,7 @@ package Google.Protobuf.Compiler.Plugin is
      (FEATURE_NONE              => 0, FEATURE_PROTO3_OPTIONAL   => 1,
       FEATURE_SUPPORTS_EDITIONS => 2);
 
-   package Feature_Vectors is new PB_Support.Vectors (Feature);
+   package Feature_Vectors is new Proto_Support.Vectors (Feature);
 
    type Version_Vector is tagged private
      with Variable_Indexing => Get_Version_Variable_Reference,
@@ -36,10 +36,10 @@ package Google.Protobuf.Compiler.Plugin is
 
    type Version is
      record
-        Major  : PB_Support.Integer_32_Vectors.Option;
-        Minor  : PB_Support.Integer_32_Vectors.Option;
-        Patch  : PB_Support.Integer_32_Vectors.Option;
-        Suffix : PB_Support.Universal_String_Vectors.Option;
+        Major  : Proto_Support.Integer_32_Vectors.Option;
+        Minor  : Proto_Support.Integer_32_Vectors.Option;
+        Patch  : Proto_Support.Integer_32_Vectors.Option;
+        Suffix : Proto_Support.Universal_String_Vectors.Option;
      end record;
 
    type Optional_Version  (Is_Set : Boolean := False) is
@@ -82,7 +82,7 @@ package Google.Protobuf.Compiler.Plugin is
      record
         File_To_Generate        : League.String_Vectors
           .Universal_String_Vector;
-        Parameter               : PB_Support.Universal_String_Vectors.Option;
+        Parameter               : Proto_Support.Universal_String_Vectors.Option;
         Proto_File              : Google.Protobuf.Descriptor
           .File_Descriptor_Proto_Vector;
         Source_File_Descriptors : Google.Protobuf.Descriptor
@@ -131,9 +131,9 @@ package Google.Protobuf.Compiler.Plugin is
 
    type File is
      record
-        Name                : PB_Support.Universal_String_Vectors.Option;
-        Insertion_Point     : PB_Support.Universal_String_Vectors.Option;
-        Content             : PB_Support.Universal_String_Vectors.Option;
+        Name                : Proto_Support.Universal_String_Vectors.Option;
+        Insertion_Point     : Proto_Support.Universal_String_Vectors.Option;
+        Content             : Proto_Support.Universal_String_Vectors.Option;
         Generated_Code_Info : Google.Protobuf.Descriptor
           .Optional_Generated_Code_Info;
      end record;
@@ -176,10 +176,10 @@ package Google.Protobuf.Compiler.Plugin is
 
    type Code_Generator_Response is
      record
-        Error              : PB_Support.Universal_String_Vectors.Option;
-        Supported_Features : PB_Support.Unsigned_64_Vectors.Option;
-        Minimum_Edition    : PB_Support.Integer_32_Vectors.Option;
-        Maximum_Edition    : PB_Support.Integer_32_Vectors.Option;
+        Error              : Proto_Support.Universal_String_Vectors.Option;
+        Supported_Features : Proto_Support.Unsigned_64_Vectors.Option;
+        Minimum_Edition    : Proto_Support.Integer_32_Vectors.Option;
+        Maximum_Edition    : Proto_Support.Integer_32_Vectors.Option;
         File               : Google.Protobuf.Compiler.Plugin.File_Vector;
      end record;
 
