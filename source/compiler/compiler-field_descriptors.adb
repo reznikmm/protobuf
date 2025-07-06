@@ -1,24 +1,6 @@
---  MIT License
+--  SPDX-FileCopyrightText: 2020-2025 Max Reznik <reznikmm@gmail.com>
 --
---  Copyright (c) 2020-2025 Max Reznik
---
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and/or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
---  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
+--  SPDX-License-Identifier: MIT
 
 with PB_Support.Boolean_Vectors;
 
@@ -249,7 +231,7 @@ package body Compiler.Field_Descriptors is
       end if;
 
       if Is_Enum (Self) then
-         Result.Include (+"PB_Support.Vectors");
+         Result.Include (+"Proto_Support.Vectors");
       end if;
    end Dependency;
 
@@ -525,7 +507,7 @@ package body Compiler.Field_Descriptors is
    is
       use all type Google.Protobuf.Descriptor.PB_Type;
       use type League.Strings.Universal_String;
-      Result  : League.Strings.Universal_String := +"PB_Support.IO.Read";
+      Result  : League.Strings.Universal_String := +"Proto_Support.IO.Read";
       Is_Vector : constant Boolean :=
         Self.Label.Is_Set and then Self.Label.Value = LABEL_REPEATED;
    begin
@@ -603,7 +585,7 @@ package body Compiler.Field_Descriptors is
       elsif Is_Option = Optional then
          Result := Map (Self.PB_Type.Value);
          Result.Package_Name :=
-           "PB_Support." & Result.Type_Name & "_Vectors";
+           "Proto_Support." & Result.Type_Name & "_Vectors";
          Result.Type_Name := +"Option";
       elsif not Is_Repeated then
          Result := Map (Self.PB_Type.Value);
@@ -612,7 +594,7 @@ package body Compiler.Field_Descriptors is
       else
          Result := Map (Self.PB_Type.Value);
          Result.Package_Name :=
-           "PB_Support." & Result.Type_Name & "_Vectors";
+           "Proto_Support." & Result.Type_Name & "_Vectors";
          Result.Type_Name := +"Vector";
       end if;
 
@@ -693,7 +675,7 @@ package body Compiler.Field_Descriptors is
                        (F.New_Literal (Integer (Self.Number.Value))),
                       F.New_Argument_Association
                        (F.New_Selected_Name
-                         (+"PB_Support.Length_Delimited"))))))),
+                         (+"Proto_Support.Length_Delimited"))))))),
             F.New_Statement
              (F.New_Apply
                (F.New_Selected_Name (Full & "'Write"),

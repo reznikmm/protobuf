@@ -1,24 +1,6 @@
---  MIT License
+--  SPDX-FileCopyrightText: 2020-2025 Max Reznik <reznikmm@gmail.com>
 --
---  Copyright (c) 2020-2025 Max Reznik
---
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and/or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
---  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
+--  SPDX-License-Identifier: MIT
 
 with PB_Support.Boolean_Vectors;
 with PB_Support.Integer_32_Vectors;
@@ -209,7 +191,7 @@ package body Compiler.Descriptors is
       Result.Include (+"Ada.Streams");
 
       if Self.Enum_Type.Length > 0 then
-         Result.Include (+"PB_Support.Vectors");
+         Result.Include (+"Proto_Support.Vectors");
       end if;
 
       for J in 1 .. Self.Field.Length loop
@@ -855,7 +837,7 @@ package body Compiler.Descriptors is
    begin
       Key := F.New_Variable
         (Name            => F.New_Name (+"Key"),
-         Type_Definition => F.New_Selected_Name (+"PB_Support.IO.Key"),
+         Type_Definition => F.New_Selected_Name (+"Proto_Support.IO.Key"),
          Is_Aliased      => True);
 
       for J in 1 .. Self.Field.Length loop
@@ -875,7 +857,7 @@ package body Compiler.Descriptors is
             List   => F.New_Statement
               (F.New_Apply
                  (Prefix    => F.New_Selected_Name
-                    (+"PB_Support.IO.Unknown_Field"),
+                    (+"Proto_Support.IO.Unknown_Field"),
                   Arguments => F.New_List
                     (F.New_Argument_Association (F.New_Name (+"Stream")),
                      F.New_Argument_Association
@@ -897,7 +879,7 @@ package body Compiler.Descriptors is
          Statements   => F.New_Loop
            (Condition  => F.New_Apply
                 (Prefix    => F.New_Selected_Name
-                     (+"PB_Support.IO.Read_Key"),
+                     (+"Proto_Support.IO.Read_Key"),
                  Arguments => F.New_List
                    (F.New_Argument_Association
                       (F.New_Name (+"Stream")),
@@ -1196,7 +1178,7 @@ package body Compiler.Descriptors is
       If_Stmt : Ada_Pretty.Node_Access;
       Decl    : Ada_Pretty.Node_Access;
       Stream  : constant Ada_Pretty.Node_Access :=
-        F.New_Selected_Name (+"PB_Support.Internal.Stream");
+        F.New_Selected_Name (+"Proto_Support.Internal.Stream");
       Stmts   : Ada_Pretty.Node_Access;
    begin
       If_Stmt := F.New_If
@@ -1204,7 +1186,7 @@ package body Compiler.Descriptors is
            (F.New_Selected_Name (+"Stream.all"),
             F.New_Infix
               (+"not in",
-               F.New_Selected_Name (+"PB_Support.Internal.Stream"))),
+               F.New_Selected_Name (+"Proto_Support.Internal.Stream"))),
          F.New_Block
            (Declarations => F.New_Variable
                 (Name            => F.New_Name (+"WS"),
