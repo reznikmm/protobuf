@@ -10,15 +10,15 @@ with Interfaces;
 with League.Stream_Element_Vectors;
 with League.String_Vectors;
 with League.Strings;
-with PB_Support.Boolean_Vectors;
-with PB_Support.IEEE_Float_32_Vectors;
-with PB_Support.IEEE_Float_64_Vectors;
-with PB_Support.Integer_32_Vectors;
-with PB_Support.Integer_64_Vectors;
-with PB_Support.Stream_Element_Vector_Vectors;
-with PB_Support.Unsigned_32_Vectors;
-with PB_Support.Unsigned_64_Vectors;
-with PB_Support.Vectors;
+with Proto_Support.Boolean_Vectors;
+with Proto_Support.IEEE_Float_32_Vectors;
+with Proto_Support.IEEE_Float_64_Vectors;
+with Proto_Support.Integer_32_Vectors;
+with Proto_Support.Integer_64_Vectors;
+with Proto_Support.Stream_Element_Vector_Vectors;
+with Proto_Support.Unsigned_32_Vectors;
+with Proto_Support.Unsigned_64_Vectors;
+with Proto_Support.Vectors;
 
 package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
@@ -26,13 +26,13 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    for Foreign_Enum use (FOREIGN_FOO => 0, FOREIGN_BAR => 1, FOREIGN_BAZ => 2);
 
-   package Foreign_Enum_Vectors is new PB_Support.Vectors (Foreign_Enum);
+   package Foreign_Enum_Vectors is new Proto_Support.Vectors (Foreign_Enum);
 
    type Nested_Enum is (NEG, FOO, BAR, BAZ);
 
    for Nested_Enum use (NEG =>  - 1, FOO => 0, BAR => 1, BAZ => 2);
 
-   package Nested_Enum_Vectors is new PB_Support.Vectors (Nested_Enum);
+   package Nested_Enum_Vectors is new Proto_Support.Vectors (Nested_Enum);
 
    type Aliased_Enum is (ALIAS_FOO, ALIAS_BAR, ALIAS_BAZ);
 
@@ -42,13 +42,13 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    function bAz return Aliased_Enum is (MOO);
 
-   package Aliased_Enum_Vectors is new PB_Support.Vectors (Aliased_Enum);
+   package Aliased_Enum_Vectors is new Proto_Support.Vectors (Aliased_Enum);
 
    type Bool is (kFalse, kTrue);
 
    for Bool use (kFalse => 0, kTrue  => 1);
 
-   package Bool_Vectors is new PB_Support.Vectors (Bool);
+   package Bool_Vectors is new Proto_Support.Vectors (Bool);
 
    type Test_All_Types_Proto_3_Vector is tagged private
      with Variable_Indexing => Get_Test_All_Types_Proto_3_Variable_Reference,
@@ -1252,7 +1252,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                 Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.FOO;
            when Oneof_Null_Value_Kind =>
               Oneof_Null_Value : Google.Protobuf.Struct.Null_Value :=
-                Google.Protobuf.Struct.PB_NULL_VALUE;
+                Google.Protobuf.Struct.Proto_NULL_VALUE;
         end case;
      end record;
 
@@ -1291,23 +1291,25 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Optional_Cord              : League.Strings.Universal_String;
         Recursive_Message          : Protobuf_Test_Messages.Proto_3
           .Test_Messages_Proto_3.Test_All_Types_Proto_3_Vector;
-        Repeated_Int_32            : PB_Support.Integer_32_Vectors.Vector;
-        Repeated_Int_64            : PB_Support.Integer_64_Vectors.Vector;
-        Repeated_Uint_32           : PB_Support.Unsigned_32_Vectors.Vector;
-        Repeated_Uint_64           : PB_Support.Unsigned_64_Vectors.Vector;
-        Repeated_Sint_32           : PB_Support.Integer_32_Vectors.Vector;
-        Repeated_Sint_64           : PB_Support.Integer_64_Vectors.Vector;
-        Repeated_Fixed_32          : PB_Support.Unsigned_32_Vectors.Vector;
-        Repeated_Fixed_64          : PB_Support.Unsigned_64_Vectors.Vector;
-        Repeated_Sfixed_32         : PB_Support.Integer_32_Vectors.Vector;
-        Repeated_Sfixed_64         : PB_Support.Integer_64_Vectors.Vector;
-        Repeated_Float             : PB_Support.IEEE_Float_32_Vectors.Vector;
-        Repeated_Double            : PB_Support.IEEE_Float_64_Vectors.Vector;
-        Repeated_Bool              : PB_Support.Boolean_Vectors.Vector;
+        Repeated_Int_32            : Proto_Support.Integer_32_Vectors.Vector;
+        Repeated_Int_64            : Proto_Support.Integer_64_Vectors.Vector;
+        Repeated_Uint_32           : Proto_Support.Unsigned_32_Vectors.Vector;
+        Repeated_Uint_64           : Proto_Support.Unsigned_64_Vectors.Vector;
+        Repeated_Sint_32           : Proto_Support.Integer_32_Vectors.Vector;
+        Repeated_Sint_64           : Proto_Support.Integer_64_Vectors.Vector;
+        Repeated_Fixed_32          : Proto_Support.Unsigned_32_Vectors.Vector;
+        Repeated_Fixed_64          : Proto_Support.Unsigned_64_Vectors.Vector;
+        Repeated_Sfixed_32         : Proto_Support.Integer_32_Vectors.Vector;
+        Repeated_Sfixed_64         : Proto_Support.Integer_64_Vectors.Vector;
+        Repeated_Float             : Proto_Support.IEEE_Float_32_Vectors
+          .Vector;
+        Repeated_Double            : Proto_Support.IEEE_Float_64_Vectors
+          .Vector;
+        Repeated_Bool              : Proto_Support.Boolean_Vectors.Vector;
         Repeated_String            : League.String_Vectors
           .Universal_String_Vector;
-        Repeated_Bytes             : PB_Support.Stream_Element_Vector_Vectors
-          .Vector;
+        Repeated_Bytes             : Proto_Support
+          .Stream_Element_Vector_Vectors.Vector;
         Repeated_Nested_Message    : Protobuf_Test_Messages.Proto_3
           .Test_Messages_Proto_3.Nested_Message_Vector;
         Repeated_Foreign_Message   : Protobuf_Test_Messages.Proto_3
@@ -1320,34 +1322,38 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
           .Universal_String_Vector;
         Repeated_Cord              : League.String_Vectors
           .Universal_String_Vector;
-        Packed_Int_32              : PB_Support.Integer_32_Vectors.Vector;
-        Packed_Int_64              : PB_Support.Integer_64_Vectors.Vector;
-        Packed_Uint_32             : PB_Support.Unsigned_32_Vectors.Vector;
-        Packed_Uint_64             : PB_Support.Unsigned_64_Vectors.Vector;
-        Packed_Sint_32             : PB_Support.Integer_32_Vectors.Vector;
-        Packed_Sint_64             : PB_Support.Integer_64_Vectors.Vector;
-        Packed_Fixed_32            : PB_Support.Unsigned_32_Vectors.Vector;
-        Packed_Fixed_64            : PB_Support.Unsigned_64_Vectors.Vector;
-        Packed_Sfixed_32           : PB_Support.Integer_32_Vectors.Vector;
-        Packed_Sfixed_64           : PB_Support.Integer_64_Vectors.Vector;
-        Packed_Float               : PB_Support.IEEE_Float_32_Vectors.Vector;
-        Packed_Double              : PB_Support.IEEE_Float_64_Vectors.Vector;
-        Packed_Bool                : PB_Support.Boolean_Vectors.Vector;
+        Packed_Int_32              : Proto_Support.Integer_32_Vectors.Vector;
+        Packed_Int_64              : Proto_Support.Integer_64_Vectors.Vector;
+        Packed_Uint_32             : Proto_Support.Unsigned_32_Vectors.Vector;
+        Packed_Uint_64             : Proto_Support.Unsigned_64_Vectors.Vector;
+        Packed_Sint_32             : Proto_Support.Integer_32_Vectors.Vector;
+        Packed_Sint_64             : Proto_Support.Integer_64_Vectors.Vector;
+        Packed_Fixed_32            : Proto_Support.Unsigned_32_Vectors.Vector;
+        Packed_Fixed_64            : Proto_Support.Unsigned_64_Vectors.Vector;
+        Packed_Sfixed_32           : Proto_Support.Integer_32_Vectors.Vector;
+        Packed_Sfixed_64           : Proto_Support.Integer_64_Vectors.Vector;
+        Packed_Float               : Proto_Support.IEEE_Float_32_Vectors
+          .Vector;
+        Packed_Double              : Proto_Support.IEEE_Float_64_Vectors
+          .Vector;
+        Packed_Bool                : Proto_Support.Boolean_Vectors.Vector;
         Packed_Nested_Enum         : Protobuf_Test_Messages.Proto_3
           .Test_Messages_Proto_3.Nested_Enum_Vectors.Vector;
-        Unpacked_Int_32            : PB_Support.Integer_32_Vectors.Vector;
-        Unpacked_Int_64            : PB_Support.Integer_64_Vectors.Vector;
-        Unpacked_Uint_32           : PB_Support.Unsigned_32_Vectors.Vector;
-        Unpacked_Uint_64           : PB_Support.Unsigned_64_Vectors.Vector;
-        Unpacked_Sint_32           : PB_Support.Integer_32_Vectors.Vector;
-        Unpacked_Sint_64           : PB_Support.Integer_64_Vectors.Vector;
-        Unpacked_Fixed_32          : PB_Support.Unsigned_32_Vectors.Vector;
-        Unpacked_Fixed_64          : PB_Support.Unsigned_64_Vectors.Vector;
-        Unpacked_Sfixed_32         : PB_Support.Integer_32_Vectors.Vector;
-        Unpacked_Sfixed_64         : PB_Support.Integer_64_Vectors.Vector;
-        Unpacked_Float             : PB_Support.IEEE_Float_32_Vectors.Vector;
-        Unpacked_Double            : PB_Support.IEEE_Float_64_Vectors.Vector;
-        Unpacked_Bool              : PB_Support.Boolean_Vectors.Vector;
+        Unpacked_Int_32            : Proto_Support.Integer_32_Vectors.Vector;
+        Unpacked_Int_64            : Proto_Support.Integer_64_Vectors.Vector;
+        Unpacked_Uint_32           : Proto_Support.Unsigned_32_Vectors.Vector;
+        Unpacked_Uint_64           : Proto_Support.Unsigned_64_Vectors.Vector;
+        Unpacked_Sint_32           : Proto_Support.Integer_32_Vectors.Vector;
+        Unpacked_Sint_64           : Proto_Support.Integer_64_Vectors.Vector;
+        Unpacked_Fixed_32          : Proto_Support.Unsigned_32_Vectors.Vector;
+        Unpacked_Fixed_64          : Proto_Support.Unsigned_64_Vectors.Vector;
+        Unpacked_Sfixed_32         : Proto_Support.Integer_32_Vectors.Vector;
+        Unpacked_Sfixed_64         : Proto_Support.Integer_64_Vectors.Vector;
+        Unpacked_Float             : Proto_Support.IEEE_Float_32_Vectors
+          .Vector;
+        Unpacked_Double            : Proto_Support.IEEE_Float_64_Vectors
+          .Vector;
+        Unpacked_Bool              : Proto_Support.Boolean_Vectors.Vector;
         Unpacked_Nested_Enum       : Protobuf_Test_Messages.Proto_3
           .Test_Messages_Proto_3.Nested_Enum_Vectors.Vector;
         Map_Int_32_Int_32          : Protobuf_Test_Messages.Proto_3
@@ -1434,7 +1440,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Optional_Any               : Google.Protobuf.Any.Optional_Any;
         Optional_Value             : Google.Protobuf.Struct.Optional_Value;
         Optional_Null_Value        : Google.Protobuf.Struct.Null_Value :=
-          Google.Protobuf.Struct.PB_NULL_VALUE;
+          Google.Protobuf.Struct.Proto_NULL_VALUE;
         Repeated_Duration          : Google.Protobuf.Duration.Duration_Vector;
         Repeated_Timestamp         : Google.Protobuf.Timestamp
           .Timestamp_Vector;

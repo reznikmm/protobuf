@@ -1,24 +1,6 @@
---  MIT License
+--  SPDX-FileCopyrightText: 2020-2025 Max Reznik <reznikmm@gmail.com>
 --
---  Copyright (c) 2020-2025 Max Reznik
---
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and/or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
---  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
+--  SPDX-License-Identifier: MIT
 
 with Ada.Exceptions;
 with Ada.IO_Exceptions;
@@ -27,8 +9,8 @@ with Interfaces;
 
 with League.Strings;
 
-with PB_Support.Memory_Streams;
-with PB_Support.Stdio_Streams;
+with Proto_Support.Memory_Streams;
+with Proto_Support.Stdio_Streams;
 
 with Conformance.Conformance;
 with Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2;
@@ -52,8 +34,8 @@ procedure Conformance.Run is
       use type Conformance.Conformance_Request_Variant_Kind;
       use type Conformance.Wire_Format;
 
-      Output : aliased PB_Support.Memory_Streams.Memory_Stream;
-      Input  : aliased PB_Support.Memory_Streams.Memory_Stream;
+      Output : aliased Proto_Support.Memory_Streams.Memory_Stream;
+      Input  : aliased Proto_Support.Memory_Streams.Memory_Stream;
    begin
       if Request.Variant.Payload /= Conformance.Protobuf_Payload_Kind then
          Responce.Variant :=
@@ -138,7 +120,7 @@ procedure Conformance.Run is
          Output.Data);
    end Do_Test;
 
-   Stream : aliased PB_Support.Stdio_Streams.Stdio_Stream;
+   Stream : aliased Proto_Support.Stdio_Streams.Stdio_Stream;
 
 begin
    Stream.Initialize;
@@ -160,7 +142,7 @@ begin
             Last   : constant Ada.Streams.Stream_Element_Count :=
               Ada.Streams.Stream_Element_Count (Size);
             Buffer : Ada.Streams.Stream_Element_Array (1 .. Last);
-            Memory : aliased PB_Support.Memory_Streams.Memory_Stream;
+            Memory : aliased Proto_Support.Memory_Streams.Memory_Stream;
          begin
             Ada.Streams.Stream_Element_Array'Read (Stream'Access, Buffer);
             Memory.Write (Buffer);
@@ -169,7 +151,7 @@ begin
 
          declare
             Last   : Ada.Streams.Stream_Element_Count;
-            Memory : aliased PB_Support.Memory_Streams.Memory_Stream;
+            Memory : aliased Proto_Support.Memory_Streams.Memory_Stream;
          begin
             Do_Test (Request, Responce);
 
