@@ -22,7 +22,7 @@
 
 with Ada.Unchecked_Conversion;
 
-package body PB_Support.Internal is
+package body Proto_Support.Internal is
 
    use type Ada.Streams.Stream_Element_Count;
 
@@ -243,7 +243,7 @@ package body PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Boolean_Vectors.Vector) is
+      Value : Proto_Support.Boolean_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write (Field, Value.Get (J));
@@ -286,7 +286,7 @@ package body PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.IEEE_Float_32_Vectors.Vector) is
+      Value : Proto_Support.IEEE_Float_32_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write (Field, Value.Get (J));
@@ -300,7 +300,7 @@ package body PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.IEEE_Float_64_Vectors.Vector) is
+      Value : Proto_Support.IEEE_Float_64_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write (Field, Value.Get (J));
@@ -392,7 +392,7 @@ package body PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Stream_Element_Vector_Vectors.Vector) is
+      Value : Proto_Support.Stream_Element_Vector_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write (Field, Value.Get (J));
@@ -481,7 +481,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_32_Vectors.Vector) is
+      Value : Proto_Support.Unsigned_32_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Varint (Field, Value.Get (J));
@@ -565,7 +565,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector) is
+      Value : Proto_Support.Integer_32_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Varint (Field, Value.Get (J));
@@ -579,7 +579,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector) is
+      Value : Proto_Support.Integer_64_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Varint (Field, Value.Get (J));
@@ -593,7 +593,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_64_Vectors.Vector) is
+      Value : Proto_Support.Unsigned_64_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Varint (Field, Value.Get (J));
@@ -682,7 +682,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_32_Vectors.Vector)
+      Value : Proto_Support.Unsigned_32_Vectors.Vector)
    is
       Length : Ada.Streams.Stream_Element_Count := 0;
    begin
@@ -709,7 +709,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_64_Vectors.Vector)
+      Value : Proto_Support.Unsigned_64_Vectors.Vector)
    is
       Length : Ada.Streams.Stream_Element_Count := 0;
    begin
@@ -736,7 +736,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector)
+      Value : Proto_Support.Integer_32_Vectors.Vector)
    is
       Length : Ada.Streams.Stream_Element_Count := 0;
    begin
@@ -763,7 +763,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector)
+      Value : Proto_Support.Integer_64_Vectors.Vector)
    is
       Length : Ada.Streams.Stream_Element_Count := 0;
    begin
@@ -895,7 +895,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Boolean_Vectors.Vector)
+      Value : Proto_Support.Boolean_Vectors.Vector)
    is
       Length : constant Ada.Streams.Stream_Element_Count :=
         Ada.Streams.Stream_Element_Count (Value.Length);
@@ -922,7 +922,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.IEEE_Float_32_Vectors.Vector)
+      Value : Proto_Support.IEEE_Float_32_Vectors.Vector)
    is
       Length : constant Ada.Streams.Stream_Element_Count :=
         Ada.Streams.Stream_Element_Count (Value.Length) * 4;
@@ -946,7 +946,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.IEEE_Float_64_Vectors.Vector)
+      Value : Proto_Support.IEEE_Float_64_Vectors.Vector)
    is
       Length : constant Ada.Streams.Stream_Element_Count :=
         Ada.Streams.Stream_Element_Count (Value.Length) * 8;
@@ -1016,7 +1016,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Zigzag
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector) is
+      Value : Proto_Support.Integer_32_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Zigzag (Field, Value.Get (J));
@@ -1026,7 +1026,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Zigzag
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector) is
+      Value : Proto_Support.Integer_64_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Zigzag (Field, Value.Get (J));
@@ -1062,7 +1062,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Zigzag_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector)
+      Value : Proto_Support.Integer_32_Vectors.Vector)
    is
       use type Interfaces.Integer_32;
       use type Interfaces.Unsigned_32;
@@ -1092,7 +1092,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Zigzag_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector)
+      Value : Proto_Support.Integer_64_Vectors.Vector)
    is
       use type Interfaces.Integer_64;
       use type Interfaces.Unsigned_64;
@@ -1206,7 +1206,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Fixed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector) is
+      Value : Proto_Support.Integer_32_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Fixed (Field, Value.Get (J));
@@ -1216,7 +1216,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Fixed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector) is
+      Value : Proto_Support.Integer_64_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Fixed (Field, Value.Get (J));
@@ -1226,7 +1226,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Fixed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_32_Vectors.Vector) is
+      Value : Proto_Support.Unsigned_32_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Fixed (Field, Value.Get (J));
@@ -1236,7 +1236,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Fixed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_64_Vectors.Vector) is
+      Value : Proto_Support.Unsigned_64_Vectors.Vector) is
    begin
       for J in 1 .. Value.Length loop
          Self.Write_Fixed (Field, Value.Get (J));
@@ -1298,7 +1298,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Fixed_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector)
+      Value : Proto_Support.Integer_32_Vectors.Vector)
    is
       Length : constant Ada.Streams.Stream_Element_Count :=
         Ada.Streams.Stream_Element_Count (Value.Length) * 4;
@@ -1322,7 +1322,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Fixed_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector)
+      Value : Proto_Support.Integer_64_Vectors.Vector)
    is
       Length : constant Ada.Streams.Stream_Element_Count :=
         Ada.Streams.Stream_Element_Count (Value.Length) * 8;
@@ -1346,7 +1346,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Fixed_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_32_Vectors.Vector)
+      Value : Proto_Support.Unsigned_32_Vectors.Vector)
    is
       Length : constant Ada.Streams.Stream_Element_Count :=
         Ada.Streams.Stream_Element_Count (Value.Length) * 4;
@@ -1370,7 +1370,7 @@ package body PB_Support.Internal is
    not overriding procedure Write_Fixed_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_64_Vectors.Vector)
+      Value : Proto_Support.Unsigned_64_Vectors.Vector)
    is
       Length : constant Ada.Streams.Stream_Element_Count :=
         Ada.Streams.Stream_Element_Count (Value.Length) * 8;
@@ -1391,4 +1391,4 @@ package body PB_Support.Internal is
       end if;
    end Write_Fixed_Packed;
 
-end PB_Support.Internal;
+end Proto_Support.Internal;

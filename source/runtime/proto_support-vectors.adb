@@ -22,7 +22,7 @@
 
 with Ada.Unchecked_Deallocation;
 
-package body PB_Support.Vectors is
+package body Proto_Support.Vectors is
 
    procedure Free is new Ada.Unchecked_Deallocation
      (Element_Array, Element_Array_Access);
@@ -97,4 +97,4 @@ package body PB_Support.Vectors is
       return Self.Length;
    end Length;
 
-end PB_Support.Vectors;
+end Proto_Support.Vectors;

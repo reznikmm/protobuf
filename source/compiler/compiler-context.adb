@@ -89,7 +89,7 @@ package body Compiler.Context is
 
    function Join
      (Prefix : League.Strings.Universal_String;
-      Name   : PB_Support.Universal_String_Vectors.Option)
+      Name   : Proto_Support.Universal_String_Vectors.Option)
       return League.Strings.Universal_String
    is
       Result : League.Strings.Universal_String := Prefix;
@@ -108,7 +108,7 @@ package body Compiler.Context is
    -------------------
 
    function New_Type_Name
-     (Name    : PB_Support.Universal_String_Vectors.Option;
+     (Name    : Proto_Support.Universal_String_Vectors.Option;
       Default : League.Strings.Universal_String;
       Prefix  : League.Strings.Universal_String;
       Local   : Compiler.Context.Named_Type_Maps.Map;

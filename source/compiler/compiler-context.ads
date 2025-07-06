@@ -31,7 +31,7 @@ with League.Strings.Hash;
 with Google.Protobuf.Descriptor;
 with Google.Protobuf.Compiler.Plugin;
 
-with PB_Support.Universal_String_Vectors;
+with Proto_Support.Universal_String_Vectors;
 
 package Compiler.Context is
 
@@ -124,12 +124,12 @@ package Compiler.Context is
 
    function Join
      (Prefix : League.Strings.Universal_String;
-      Name   : PB_Support.Universal_String_Vectors.Option)
+      Name   : Proto_Support.Universal_String_Vectors.Option)
       return League.Strings.Universal_String;
    --  Return "prefix . name"
 
    function New_Type_Name
-     (Name    : PB_Support.Universal_String_Vectors.Option;
+     (Name    : Proto_Support.Universal_String_Vectors.Option;
       Default : League.Strings.Universal_String;
       Prefix  : League.Strings.Universal_String;
       Local   : Compiler.Context.Named_Type_Maps.Map;

@@ -20,9 +20,9 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with PB_Support.Vectors;
+with Proto_Support.Vectors;
 with Interfaces;
 
-package PB_Support.Integer_64_Vectors is
-  new PB_Support.Vectors (Interfaces.Integer_64);
-pragma Preelaborate (PB_Support.Integer_64_Vectors);
+package Proto_Support.Unsigned_32_Vectors is
+  new Proto_Support.Vectors (Interfaces.Unsigned_32);
+pragma Preelaborate (Proto_Support.Unsigned_32_Vectors);

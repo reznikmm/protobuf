@@ -2,8 +2,8 @@
 --
 --  SPDX-License-Identifier: MIT
 
-with PB_Support.Boolean_Vectors;
-with PB_Support.Integer_32_Vectors;
+with Proto_Support.Boolean_Vectors;
+with Proto_Support.Integer_32_Vectors;
 
 with Compiler.Enum_Descriptors;
 with Compiler.Field_Descriptors;
@@ -69,7 +69,7 @@ package body Compiler.Descriptors is
       Component : in out Ada_Pretty.Node_Access);
 
    function Is_One_Of
-     (Value : PB_Support.Integer_32_Vectors.Option;
+     (Value : Proto_Support.Integer_32_Vectors.Option;
       Index : Positive) return Boolean;
 
    function Is_Synthetic_One_Of
@@ -326,7 +326,7 @@ package body Compiler.Descriptors is
    ---------------
 
    function Is_One_Of
-     (Value : PB_Support.Integer_32_Vectors.Option;
+     (Value : Proto_Support.Integer_32_Vectors.Option;
       Index : Positive) return Boolean
    is
    begin
@@ -341,7 +341,7 @@ package body Compiler.Descriptors is
      (Self  : Google.Protobuf.Descriptor.Descriptor_Proto;
       Index : Positive) return Boolean
    is
-      use type PB_Support.Boolean_Vectors.Option;
+      use type Proto_Support.Boolean_Vectors.Option;
    begin
       for J in 1 .. Self.Field.Length loop
          declare

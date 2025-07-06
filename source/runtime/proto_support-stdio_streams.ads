@@ -23,7 +23,7 @@
 with Ada.Streams;
 with Interfaces.C_Streams;
 
-package PB_Support.Stdio_Streams is
+package Proto_Support.Stdio_Streams is
 
    type Stdio_Stream is new Ada.Streams.Root_Stream_Type with private;
 
@@ -49,4 +49,4 @@ private
      (Self : in out Stdio_Stream;
       Item : Ada.Streams.Stream_Element_Array);
 
-end PB_Support.Stdio_Streams;
+end Proto_Support.Stdio_Streams;

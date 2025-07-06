@@ -20,7 +20,7 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-package body PB_Support.Stdio_Streams is
+package body Proto_Support.Stdio_Streams is
 
    -----------
    -- Flush --
@@ -92,4 +92,4 @@ package body PB_Support.Stdio_Streams is
       pragma Assert (Size = Item'Length);
    end Write;
 
-end PB_Support.Stdio_Streams;
+end Proto_Support.Stdio_Streams;

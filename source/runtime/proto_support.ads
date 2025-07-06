@@ -20,7 +20,7 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-package PB_Support is
+package Proto_Support is
 
    pragma Pure;
 
@@ -39,4 +39,4 @@ package PB_Support is
       Encoding : Wire_Type;
    end record;
 
-end PB_Support;
+end Proto_Support;

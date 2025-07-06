@@ -20,9 +20,9 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with PB_Support.Vectors;
-with League.Strings;
+with Proto_Support.Vectors;
+with League.Stream_Element_Vectors;
 
-package PB_Support.Universal_String_Vectors is
-  new PB_Support.Vectors (League.Strings.Universal_String);
-pragma Preelaborate (PB_Support.Universal_String_Vectors);
+package Proto_Support.Stream_Element_Vector_Vectors is
+  new Proto_Support.Vectors (League.Stream_Element_Vectors.Stream_Element_Vector);
+pragma Preelaborate (Proto_Support.Stream_Element_Vector_Vectors);

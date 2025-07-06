@@ -271,8 +271,8 @@ package body Compiler.File_Descriptors is
    is
       Result : League.Strings.Universal_String := +".";
    begin
-      if Self.PB_Package.Is_Set then
-         Result.Append (Self.PB_Package.Value);
+      if Self.Proto_Package.Is_Set then
+         Result.Append (Self.Proto_Package.Value);
       end if;
 
       return Result;
@@ -308,15 +308,15 @@ package body Compiler.File_Descriptors is
       --  look like an identifier.
       Fixed : constant League.Strings.Universal_String :=
         Base_Name.Split ('-', League.Strings.Skip_Empty).Join ("_");
-      PB_Pkg    : League.Strings.Universal_String;
+      Proto_Pkg    : League.Strings.Universal_String;
       Result    : League.Strings.Universal_String :=
         Compiler.Context.To_Ada_Name (Fixed);
    begin
-      if Self.PB_Package.Is_Set then
-         PB_Pkg := Self.PB_Package.Value;
-         PB_Pkg := Compiler.Context.To_Selected_Ada_Name (PB_Pkg);
-         PB_Pkg.Append (".");
-         Result.Prepend (PB_Pkg);
+      if Self.Proto_Package.Is_Set then
+         Proto_Pkg := Self.Proto_Package.Value;
+         Proto_Pkg := Compiler.Context.To_Selected_Ada_Name (Proto_Pkg);
+         Proto_Pkg.Append (".");
+         Result.Prepend (Proto_Pkg);
       end if;
 
       return Result;

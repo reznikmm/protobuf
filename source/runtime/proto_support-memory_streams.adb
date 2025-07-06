@@ -20,7 +20,7 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-package body PB_Support.Memory_Streams is
+package body Proto_Support.Memory_Streams is
 
    -----------
    -- Clear --
@@ -86,4 +86,4 @@ package body PB_Support.Memory_Streams is
       return Self.Data.Length;
    end Written;
 
-end PB_Support.Memory_Streams;
+end Proto_Support.Memory_Streams;
