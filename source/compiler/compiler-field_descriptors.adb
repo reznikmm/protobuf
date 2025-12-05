@@ -2,6 +2,7 @@
 --
 --  SPDX-License-Identifier: MIT
 
+with Proto_Support.Boolean_Options;
 with Proto_Support.Boolean_Vectors;
 
 package body Compiler.Field_Descriptors is
@@ -231,6 +232,7 @@ package body Compiler.Field_Descriptors is
       end if;
 
       if Is_Enum (Self) then
+         Result.Include (+"Proto_Support.Options");
          Result.Include (+"Proto_Support.Vectors");
       end if;
    end Dependency;
@@ -292,7 +294,7 @@ package body Compiler.Field_Descriptors is
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Boolean
    is
-      use type Proto_Support.Boolean_Vectors.Option;
+      use type Proto_Support.Boolean_Options.Option;
    begin
       return Self.Oneof_Index.Is_Set and then
         Self.Proto_3_Optional /= (True, True);
@@ -306,7 +308,7 @@ package body Compiler.Field_Descriptors is
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Option_Kind
    is
-      use type Proto_Support.Boolean_Vectors.Option;
+      use type Proto_Support.Boolean_Options.Option;
    begin
       if Self.Proto_3_Optional = (True, True) then
          return Optional;
@@ -569,7 +571,7 @@ package body Compiler.Field_Descriptors is
                      if Is_Repeated then
                         Result.Type_Name.Append ("_Vectors.Vector");
                      elsif Is_Option = Optional then
-                        Result.Type_Name.Append ("_Vectors.Option");
+                        Result.Type_Name.Append ("_Options.Option");
                      end if;
                   elsif Is_Repeated then
                      Result.Type_Name.Append ("_Vector");
@@ -585,7 +587,7 @@ package body Compiler.Field_Descriptors is
       elsif Is_Option = Optional then
          Result := Map (Self.Proto_Type.Value);
          Result.Package_Name :=
-           "Proto_Support." & Result.Type_Name & "_Vectors";
+           "Proto_Support." & Result.Type_Name & "_Options";
          Result.Type_Name := +"Option";
       elsif not Is_Repeated then
          Result := Map (Self.Proto_Type.Value);

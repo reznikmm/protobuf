@@ -11,7 +11,7 @@ project Conformance is
 
    for Source_Dirs use
      ("../source/conformance", "../source/conformance/generated");
-   for Object_Dir use "../.objs/conformance/" & Protobuf_Config.Build_Profile;
+   for Object_Dir use "../.objs/conformance/";
    for Main use ("conformance-run.adb");
 
    package Compiler is

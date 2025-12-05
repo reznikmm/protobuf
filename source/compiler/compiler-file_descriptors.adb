@@ -224,6 +224,7 @@ package body Compiler.File_Descriptors is
       end loop;
 
       if Self.Enum_Type.Length > 0 then
+         Set.Include (+"Proto_Support.Options");
          Set.Include (+"Proto_Support.Vectors");
       end if;
 

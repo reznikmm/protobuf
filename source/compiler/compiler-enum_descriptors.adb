@@ -253,10 +253,15 @@ package body Compiler.Enum_Descriptors is
 
       Item := F.New_List
         (Aliases,
-         F.New_Package_Instantiation
-          (Name        => F.New_Name (Name & "_Vectors"),
-           Template    => F.New_Selected_Name (+"Proto_Support.Vectors"),
-           Actual_Part => F.New_Name (Name)));
+         F.New_List
+           (F.New_Package_Instantiation
+                (Name        => F.New_Name (Name & "_Vectors"),
+                 Template    => F.New_Selected_Name (+"Proto_Support.Vectors"),
+                 Actual_Part => F.New_Name (Name)),
+            F.New_Package_Instantiation
+              (Name        => F.New_Name (Name & "_Options"),
+               Template    => F.New_Selected_Name (+"Proto_Support.Options"),
+               Actual_Part => F.New_Name (Name))));
 
       Result := F.New_List ((Result, Clause, Item));
 

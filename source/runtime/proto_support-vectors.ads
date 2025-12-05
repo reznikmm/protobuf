@@ -25,15 +25,6 @@ package Proto_Support.Vectors is
 
    procedure Append (Self : in out Vector; Value : Element_Type);
 
-   type Option (Is_Set : Boolean := False) is record
-      case Is_Set is
-         when True =>
-            Value : Element_Type;
-         when False =>
-            null;
-      end case;
-   end record;
-
 private
    type Element_Array is array (Positive range <>) of Element_Type;
    type Element_Array_Access is access Element_Array;

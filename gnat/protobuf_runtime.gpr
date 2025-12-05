@@ -7,21 +7,26 @@ with "protobuf_runtime_config.gpr";
 
 library project Protobuf_Runtime is
 
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("PROTOBUF_LIBRARY_TYPE", external ("LIBRARY_TYPE", "relocatable"));
+
    for Source_Dirs use ("../source/runtime", "../source/runtime/generated");
-   for Object_Dir use "../.objs/runtime/" & Protobuf_Runtime_Config.Build_Profile;
+   for Object_Dir use "../.objs/runtime/"
+     & Protobuf_Runtime_Config.Build_Profile & "/"
+     & Library_Type;
 
    for Library_Name use "adapbrt";
-   for Library_Dir use "../.libs";
-   for Library_ALI_Dir use "../.libs/adapbrt";
+   for Library_Dir use "../.libs/"
+     & Protobuf_Runtime_Config.Build_Profile & "/"
+     & Library_Type;
+   --  for Library_ALI_Dir use "../.libs/adapbrt";
    for Library_Version use "libadapbrt.so." & Protobuf_Runtime_Config.Crate_Version;
 
    for Languages use ("Ada");
 
    for Create_Missing_Dirs use "True";
 
-   type Library_Type_Type is ("relocatable", "static", "static-pic");
-   Library_Type : Library_Type_Type :=
-     external ("PROTOBUF_LIBRARY_TYPE", external ("LIBRARY_TYPE", "relocatable"));
    for Library_Kind use Library_Type;
 
    package Compiler is
