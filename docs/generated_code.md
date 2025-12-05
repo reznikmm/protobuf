@@ -30,7 +30,7 @@ message Blah {}
 ```
 
 The protocol buffer compiler generates a record type called `Blah`
-and corresponding `'Read/'Write` aspects to serialize to/from
+and corresponding `'Read`/`'Write` aspects to serialize to/from
 `Ada.Streams.Root_Stream_Type`. For parsing from and serializing
 to a binary stream use corresponding Ada streaming:
 
@@ -46,7 +46,7 @@ end;
 ```
 
 Also, for each message declaration the compiler creates corresponding
-_vector_ and _optional_ types. Optional type looks like this:
+_vector_ and _optional_ types. An optional type looks like this:
 
 ```ada
    type Optional_Blah (Is_Set : Boolean := False) is
@@ -72,8 +72,8 @@ begin
    end if;
 end Process;
 ```
-Vector type a bit more complex. To allow indexing on the vector,
-the compiler generates Ada 2012 `Variable_Indexing`, `Constant_Indexing`
+A vector type is a bit more complex. To allow indexing on the vector,
+the compiler generates Ada 2012 `Variable_Indexing` and `Constant_Indexing`
 aspects and all related constructs.
 These are mostly meaningless for the user, but make the Ada compiler happy.
 It also generates `Length`, `Clear` and `Append` routines.
@@ -112,7 +112,7 @@ It also generates `Length`, `Clear` and `Append` routines.
      Value : Blah);
 ```
 
-With these declarations a user can process vectors like this:
+With these declarations, a user can process vectors like this:
 ```ada
 procedure Process (V : in out Blah_Vector) is
 begin
@@ -190,7 +190,7 @@ enum Bar {
 }
 ```
 
-For this field definitions:
+For this field definition:
 ```protobuf
 Bar foo = 1;
 ```
@@ -202,9 +202,9 @@ type Blah is record
 end record;
 ```
 
-Note: enumeration parsing procedure uses Ada.Unchecked_Convention, so
+Note: enumeration parsing procedure uses `Ada.Unchecked_Convention`, so
 read value could be invalid when `enum` definition changed and new literals
-are added. To detect such situation you can check the component value
+are added. To detect such situation, you can check the component value
 with `X.Foo'Valid` attribute before using.
 
 
@@ -213,7 +213,7 @@ Given the message type `Bar`, for any of these field definitions:
 
 ```protobuf
 optional Bar foo1 = 1;
-required Bar foo2 = 1;
+required Bar foo2 = 2;
 ```
 
 The compiler will generate the following accessor components:
@@ -225,16 +225,16 @@ end record;
 ```
 
 #### Partial support for mutual dependent messages.
-With such representation we can't have mutual dependent message declarations,
+With such representation, we can't have mutual dependent message declarations,
 because this is not allowed in Ada. But if the field is repeated then all
 works fine, because a vector type breaks circular dependency.
-To give at least a minimum support for such case the compiler tries to
+To give at least a minimum support for such case, the compiler tries to
 break a circle by replacing a singular message field with a repeated one.
 User should ensure that the vector contains the required number of elements
 (exactly one for a `required` field and zero-or-one for an `optional` field).
 
 ### Repeated Fields of Predefined Types
-For repeated fields of predefined types the compiler uses the corresponding
+For repeated fields of predefined types, the compiler uses the corresponding
 vector type from a package instantiation provided by the support library,
 like this:
 
@@ -258,7 +258,7 @@ For repeated fields of a message type the compiler uses
 a vector type declared with the message type.
 
 ### Oneof Fields
-For now we support only single `Oneof` construction per message.
+For now, we support only single `Oneof` construction per message.
 The compiler generates a component with name `Variant` of a corresponding type.
 This component has a discriminant with the name `Oneof`.
 There is a single component for each discriminant value.
@@ -270,8 +270,8 @@ There is no special support for map fields for now.
 `Any` type isn't provided yet.
 
 ## Oneof
-Currently we support only a single `Oneof` construction per message.
-For a such construction the compiler generates an enumeration type and
+Currently, we support only a single `Oneof` construction per message.
+For such a construction, the compiler generates an enumeration type and
 a discriminated record type. Inside a message it generates one component
 with name `Variant`. For example:
 ```protobuf
