@@ -15,6 +15,7 @@ with Proto_Support.IEEE_Float_32_Vectors;
 with Proto_Support.IEEE_Float_64_Vectors;
 with Proto_Support.Integer_32_Vectors;
 with Proto_Support.Integer_64_Vectors;
+with Proto_Support.Options;
 with Proto_Support.Stream_Element_Vector_Vectors;
 with Proto_Support.Unsigned_32_Vectors;
 with Proto_Support.Unsigned_64_Vectors;
@@ -28,11 +29,15 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    package Foreign_Enum_Vectors is new Proto_Support.Vectors (Foreign_Enum);
 
+   package Foreign_Enum_Options is new Proto_Support.Options (Foreign_Enum);
+
    type Nested_Enum is (NEG, FOO, BAR, BAZ);
 
    for Nested_Enum use (NEG =>  - 1, FOO => 0, BAR => 1, BAZ => 2);
 
    package Nested_Enum_Vectors is new Proto_Support.Vectors (Nested_Enum);
+
+   package Nested_Enum_Options is new Proto_Support.Options (Nested_Enum);
 
    type Aliased_Enum is (ALIAS_FOO, ALIAS_BAR, ALIAS_BAZ);
 
@@ -44,11 +49,15 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    package Aliased_Enum_Vectors is new Proto_Support.Vectors (Aliased_Enum);
 
+   package Aliased_Enum_Options is new Proto_Support.Options (Aliased_Enum);
+
    type Bool is (kFalse, kTrue);
 
    for Bool use (kFalse => 0, kTrue  => 1);
 
    package Bool_Vectors is new Proto_Support.Vectors (Bool);
+
+   package Bool_Options is new Proto_Support.Options (Bool);
 
    type Test_All_Types_Proto_3_Vector is tagged private
      with Variable_Indexing => Get_Test_All_Types_Proto_3_Variable_Reference,

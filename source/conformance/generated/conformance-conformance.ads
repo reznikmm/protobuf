@@ -2,6 +2,7 @@ with Ada.Finalization;
 with Ada.Streams;
 with League.Stream_Element_Vectors;
 with League.Strings;
+with Proto_Support.Options;
 with Proto_Support.Vectors;
 
 package Conformance.Conformance is
@@ -13,6 +14,8 @@ package Conformance.Conformance is
       TEXT_FORMAT => 4);
 
    package Wire_Format_Vectors is new Proto_Support.Vectors (Wire_Format);
+
+   package Wire_Format_Options is new Proto_Support.Options (Wire_Format);
 
    type Test_Category is
      (UNSPECIFIED_TEST, BINARY_TEST, JSON_TEST,
@@ -27,6 +30,8 @@ package Conformance.Conformance is
       TEXT_FORMAT_TEST                 => 5);
 
    package Test_Category_Vectors is new Proto_Support.Vectors (Test_Category);
+
+   package Test_Category_Options is new Proto_Support.Options (Test_Category);
 
    type Test_Status_Vector is tagged private
      with Variable_Indexing => Get_Test_Status_Variable_Reference,

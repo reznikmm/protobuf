@@ -560,9 +560,11 @@ package body Google.Protobuf.Descriptor is
                if  not V.Proto_Package.Is_Set then
                   V.Proto_Package := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Proto_Package.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Proto_Package.Value);
             when 3 =>
-               Proto_Support.IO.Read_Vector (Stream, Key.Encoding, V.Dependency);
+               Proto_Support.IO.Read_Vector
+                 (Stream, Key.Encoding, V.Dependency);
             when 10 =>
                Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Public_Dependency);
@@ -949,7 +951,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Start.Is_Set then
                   V.Start := (True, others => <>);
                end if;
-               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Start.Value);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Start.Value);
             when 2 =>
                if  not V.Proto_End.Is_Set then
                   V.Proto_End := (True, others => <>);
@@ -1077,7 +1080,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Start.Is_Set then
                   V.Start := (True, others => <>);
                end if;
-               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Start.Value);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Start.Value);
             when 2 =>
                if  not V.Proto_End.Is_Set then
                   V.Proto_End := (True, others => <>);
@@ -1344,7 +1348,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Proto_Type.Is_Set then
                   V.Proto_Type := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Proto_Type.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Proto_Type.Value);
             when 5 =>
                if  not V.Reserved.Is_Set then
                   V.Reserved := (True, others => <>);
@@ -1952,7 +1957,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Start.Is_Set then
                   V.Start := (True, others => <>);
                end if;
-               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Start.Value);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Start.Value);
             when 2 =>
                if  not V.Proto_End.Is_Set then
                   V.Proto_End := (True, others => <>);
@@ -2347,12 +2353,14 @@ package body Google.Protobuf.Descriptor is
                if  not V.Input_Type.Is_Set then
                   V.Input_Type := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Input_Type.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Input_Type.Value);
             when 3 =>
                if  not V.Output_Type.Is_Set then
                   V.Output_Type := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Output_Type.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Output_Type.Value);
             when 4 =>
                if  not V.Options.Is_Set then
                   V.Options := (True, others => <>);
@@ -2493,7 +2501,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Java_Package.Is_Set then
                   V.Java_Package := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Java_Package.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Java_Package.Value);
             when 8 =>
                if  not V.Java_Outer_Classname.Is_Set then
                   V.Java_Outer_Classname := (True, others => <>);
@@ -2528,7 +2537,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Go_Package.Is_Set then
                   V.Go_Package := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Go_Package.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Go_Package.Value);
             when 16 =>
                if  not V.Cc_Generic_Services.Is_Set then
                   V.Cc_Generic_Services := (True, others => <>);
@@ -2551,7 +2561,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Deprecated.Is_Set then
                   V.Deprecated := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 31 =>
                if  not V.Cc_Enable_Arenas.Is_Set then
                   V.Cc_Enable_Arenas := (True, others => <>);
@@ -2574,7 +2585,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Swift_Prefix.Is_Set then
                   V.Swift_Prefix := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Swift_Prefix.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Swift_Prefix.Value);
             when 40 =>
                if  not V.Php_Class_Prefix.Is_Set then
                   V.Php_Class_Prefix := (True, others => <>);
@@ -2597,7 +2609,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Ruby_Package.Is_Set then
                   V.Ruby_Package := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Ruby_Package.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Ruby_Package.Value);
             when 50 =>
                if  not V.Features.Is_Set then
                   V.Features := (True, others => <>);
@@ -2792,7 +2805,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Deprecated.Is_Set then
                   V.Deprecated := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 7 =>
                if  not V.Map_Entry.Is_Set then
                   V.Map_Entry := (True, others => <>);
@@ -2972,7 +2986,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Deprecated.Is_Set then
                   V.Deprecated := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 10 =>
                if  not V.Weak.Is_Set then
                   V.Weak := (True, others => <>);
@@ -2982,7 +2997,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Debug_Redact.Is_Set then
                   V.Debug_Redact := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Debug_Redact.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Debug_Redact.Value);
             when 17 =>
                if  not V.Retention.Is_Set then
                   V.Retention := (True, others => <>);
@@ -3302,6 +3318,12 @@ package body Google.Protobuf.Descriptor is
                end if;
                Google_Protobuf_Descriptor_Edition_IO.Read
                  (Stream, Key.Encoding, V.Edition_Removed.Value);
+            when 5 =>
+               if  not V.Removal_Error.Is_Set then
+                  V.Removal_Error := (True, others => <>);
+               end if;
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Removal_Error.Value);
             when others =>
                Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -3339,6 +3361,9 @@ package body Google.Protobuf.Descriptor is
          if V.Edition_Removed.Is_Set then
             Google_Protobuf_Descriptor_Edition_IO.Write
               (WS, 4, V.Edition_Removed.Value);
+         end if;
+         if V.Removal_Error.Is_Set then
+            WS.Write (5, V.Removal_Error.Value);
          end if;
          if WS.End_Message then
             Write_Feature_Support (WS'Access, V);
@@ -3538,12 +3563,14 @@ package body Google.Protobuf.Descriptor is
                if  not V.Allow_Alias.Is_Set then
                   V.Allow_Alias := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Allow_Alias.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Allow_Alias.Value);
             when 3 =>
                if  not V.Deprecated.Is_Set then
                   V.Deprecated := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 6 =>
                if  not V.Deprecated_Legacy_Json_Field_Conflicts.Is_Set then
                   V.Deprecated_Legacy_Json_Field_Conflicts :=
@@ -3686,7 +3713,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Deprecated.Is_Set then
                   V.Deprecated := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 2 =>
                if  not V.Features.Is_Set then
                   V.Features := (True, others => <>);
@@ -3697,7 +3725,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Debug_Redact.Is_Set then
                   V.Debug_Redact := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Debug_Redact.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Debug_Redact.Value);
             when 4 =>
                if  not V.Feature_Support.Is_Set then
                   V.Feature_Support := (True, others => <>);
@@ -3838,7 +3867,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Deprecated.Is_Set then
                   V.Deprecated := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 999 =>
                Google_Protobuf_Descriptor_Uninterpreted_Option_IO.Read_Vector
                  (Stream, Key.Encoding, V.Uninterpreted_Option);
@@ -3959,7 +3989,8 @@ package body Google.Protobuf.Descriptor is
                if  not V.Deprecated.Is_Set then
                   V.Deprecated := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Deprecated.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Deprecated.Value);
             when 34 =>
                if  not V.Idempotency_Level.Is_Set then
                   V.Idempotency_Level := (True, others => <>);
@@ -4119,12 +4150,14 @@ package body Google.Protobuf.Descriptor is
                if  not V.Double_Value.Is_Set then
                   V.Double_Value := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Double_Value.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Double_Value.Value);
             when 7 =>
                if  not V.String_Value.Is_Set then
                   V.String_Value := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.String_Value.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.String_Value.Value);
             when 8 =>
                if  not V.Aggregate_Value.Is_Set then
                   V.Aggregate_Value := (True, others => <>);
@@ -5015,9 +5048,11 @@ package body Google.Protobuf.Descriptor is
       while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               Proto_Support.IO.Read_Varint_Vector (Stream, Key.Encoding, V.Path);
+               Proto_Support.IO.Read_Varint_Vector
+                 (Stream, Key.Encoding, V.Path);
             when 2 =>
-               Proto_Support.IO.Read_Varint_Vector (Stream, Key.Encoding, V.Span);
+               Proto_Support.IO.Read_Varint_Vector
+                 (Stream, Key.Encoding, V.Span);
             when 3 =>
                if  not V.Leading_Comments.Is_Set then
                   V.Leading_Comments := (True, others => <>);
@@ -5251,12 +5286,14 @@ package body Google.Protobuf.Descriptor is
       while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               Proto_Support.IO.Read_Varint_Vector (Stream, Key.Encoding, V.Path);
+               Proto_Support.IO.Read_Varint_Vector
+                 (Stream, Key.Encoding, V.Path);
             when 2 =>
                if  not V.Source_File.Is_Set then
                   V.Source_File := (True, others => <>);
                end if;
-               Proto_Support.IO.Read (Stream, Key.Encoding, V.Source_File.Value);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Source_File.Value);
             when 3 =>
                if  not V.Proto_Begin.Is_Set then
                   V.Proto_Begin := (True, others => <>);

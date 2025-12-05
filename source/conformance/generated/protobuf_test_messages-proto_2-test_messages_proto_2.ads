@@ -4,14 +4,23 @@ with Interfaces;
 with League.Stream_Element_Vectors;
 with League.String_Vectors;
 with League.Strings;
+with Proto_Support.Boolean_Options;
 with Proto_Support.Boolean_Vectors;
+with Proto_Support.IEEE_Float_32_Options;
 with Proto_Support.IEEE_Float_32_Vectors;
+with Proto_Support.IEEE_Float_64_Options;
 with Proto_Support.IEEE_Float_64_Vectors;
+with Proto_Support.Integer_32_Options;
 with Proto_Support.Integer_32_Vectors;
+with Proto_Support.Integer_64_Options;
 with Proto_Support.Integer_64_Vectors;
+with Proto_Support.Options;
+with Proto_Support.Stream_Element_Vector_Options;
 with Proto_Support.Stream_Element_Vector_Vectors;
-with Proto_Support.Universal_String_Vectors;
+with Proto_Support.Universal_String_Options;
+with Proto_Support.Unsigned_32_Options;
 with Proto_Support.Unsigned_32_Vectors;
+with Proto_Support.Unsigned_64_Options;
 with Proto_Support.Unsigned_64_Vectors;
 with Proto_Support.Vectors;
 
@@ -25,17 +34,24 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
    package Foreign_Enum_Proto_2_Vectors is
      new Proto_Support.Vectors (Foreign_Enum_Proto_2);
 
+   package Foreign_Enum_Proto_2_Options is
+     new Proto_Support.Options (Foreign_Enum_Proto_2);
+
    type Nested_Enum is (NEG, FOO, BAR, BAZ);
 
    for Nested_Enum use (NEG =>  - 1, FOO => 0, BAR => 1, BAZ => 2);
 
    package Nested_Enum_Vectors is new Proto_Support.Vectors (Nested_Enum);
 
+   package Nested_Enum_Options is new Proto_Support.Options (Nested_Enum);
+
    type Bool is (kFalse, kTrue);
 
    for Bool use (kFalse => 0, kTrue  => 1);
 
    package Bool_Vectors is new Proto_Support.Vectors (Bool);
+
+   package Bool_Options is new Proto_Support.Options (Bool);
 
    type Test_All_Required_Types_Proto_2_Nested_Enum is (NEG, FOO, BAR, BAZ);
 
@@ -44,6 +60,9 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    package Test_All_Required_Types_Proto_2_Nested_Enum_Vectors is
      new Proto_Support.Vectors (Test_All_Required_Types_Proto_2_Nested_Enum);
+
+   package Test_All_Required_Types_Proto_2_Nested_Enum_Options is
+     new Proto_Support.Options (Test_All_Required_Types_Proto_2_Nested_Enum);
 
    type Test_All_Types_Proto_2_Vector is tagged private
      with Variable_Indexing => Get_Test_All_Types_Proto_2_Variable_Reference,
@@ -275,8 +294,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Int_32Int_32Entry is
      record
-        Key   : Proto_Support.Integer_32_Vectors.Option;
-        Value : Proto_Support.Integer_32_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Map_Int_32Int_32Entry  (Is_Set : Boolean := False) is
@@ -320,8 +339,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Int_64Int_64Entry is
      record
-        Key   : Proto_Support.Integer_64_Vectors.Option;
-        Value : Proto_Support.Integer_64_Vectors.Option;
+        Key   : Proto_Support.Integer_64_Options.Option;
+        Value : Proto_Support.Integer_64_Options.Option;
      end record;
 
    type Optional_Map_Int_64Int_64Entry  (Is_Set : Boolean := False) is
@@ -365,8 +384,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Uint_32Uint_32Entry is
      record
-        Key   : Proto_Support.Unsigned_32_Vectors.Option;
-        Value : Proto_Support.Unsigned_32_Vectors.Option;
+        Key   : Proto_Support.Unsigned_32_Options.Option;
+        Value : Proto_Support.Unsigned_32_Options.Option;
      end record;
 
    type Optional_Map_Uint_32Uint_32Entry  (Is_Set : Boolean := False) is
@@ -411,8 +430,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Uint_64Uint_64Entry is
      record
-        Key   : Proto_Support.Unsigned_64_Vectors.Option;
-        Value : Proto_Support.Unsigned_64_Vectors.Option;
+        Key   : Proto_Support.Unsigned_64_Options.Option;
+        Value : Proto_Support.Unsigned_64_Options.Option;
      end record;
 
    type Optional_Map_Uint_64Uint_64Entry  (Is_Set : Boolean := False) is
@@ -457,8 +476,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Sint_32Sint_32Entry is
      record
-        Key   : Proto_Support.Integer_32_Vectors.Option;
-        Value : Proto_Support.Integer_32_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Map_Sint_32Sint_32Entry  (Is_Set : Boolean := False) is
@@ -503,8 +522,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Sint_64Sint_64Entry is
      record
-        Key   : Proto_Support.Integer_64_Vectors.Option;
-        Value : Proto_Support.Integer_64_Vectors.Option;
+        Key   : Proto_Support.Integer_64_Options.Option;
+        Value : Proto_Support.Integer_64_Options.Option;
      end record;
 
    type Optional_Map_Sint_64Sint_64Entry  (Is_Set : Boolean := False) is
@@ -549,8 +568,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Fixed_32Fixed_32Entry is
      record
-        Key   : Proto_Support.Unsigned_32_Vectors.Option;
-        Value : Proto_Support.Unsigned_32_Vectors.Option;
+        Key   : Proto_Support.Unsigned_32_Options.Option;
+        Value : Proto_Support.Unsigned_32_Options.Option;
      end record;
 
    type Optional_Map_Fixed_32Fixed_32Entry  (Is_Set : Boolean := False) is
@@ -595,8 +614,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Fixed_64Fixed_64Entry is
      record
-        Key   : Proto_Support.Unsigned_64_Vectors.Option;
-        Value : Proto_Support.Unsigned_64_Vectors.Option;
+        Key   : Proto_Support.Unsigned_64_Options.Option;
+        Value : Proto_Support.Unsigned_64_Options.Option;
      end record;
 
    type Optional_Map_Fixed_64Fixed_64Entry  (Is_Set : Boolean := False) is
@@ -641,8 +660,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Sfixed_32Sfixed_32Entry is
      record
-        Key   : Proto_Support.Integer_32_Vectors.Option;
-        Value : Proto_Support.Integer_32_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Map_Sfixed_32Sfixed_32Entry  (Is_Set : Boolean := False) is
@@ -687,8 +706,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Sfixed_64Sfixed_64Entry is
      record
-        Key   : Proto_Support.Integer_64_Vectors.Option;
-        Value : Proto_Support.Integer_64_Vectors.Option;
+        Key   : Proto_Support.Integer_64_Options.Option;
+        Value : Proto_Support.Integer_64_Options.Option;
      end record;
 
    type Optional_Map_Sfixed_64Sfixed_64Entry  (Is_Set : Boolean := False) is
@@ -733,8 +752,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Int_32Bool_Entry is
      record
-        Key   : Proto_Support.Integer_32_Vectors.Option;
-        Value : Proto_Support.Boolean_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.Boolean_Options.Option;
      end record;
 
    type Optional_Map_Int_32Bool_Entry  (Is_Set : Boolean := False) is
@@ -778,8 +797,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Int_32Float_Entry is
      record
-        Key   : Proto_Support.Integer_32_Vectors.Option;
-        Value : Proto_Support.IEEE_Float_32_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.IEEE_Float_32_Options.Option;
      end record;
 
    type Optional_Map_Int_32Float_Entry  (Is_Set : Boolean := False) is
@@ -823,8 +842,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Int_32Double_Entry is
      record
-        Key   : Proto_Support.Integer_32_Vectors.Option;
-        Value : Proto_Support.IEEE_Float_64_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.IEEE_Float_64_Options.Option;
      end record;
 
    type Optional_Map_Int_32Double_Entry  (Is_Set : Boolean := False) is
@@ -868,8 +887,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Bool_Bool_Entry is
      record
-        Key   : Proto_Support.Boolean_Vectors.Option;
-        Value : Proto_Support.Boolean_Vectors.Option;
+        Key   : Proto_Support.Boolean_Options.Option;
+        Value : Proto_Support.Boolean_Options.Option;
      end record;
 
    type Optional_Map_Bool_Bool_Entry  (Is_Set : Boolean := False) is
@@ -913,8 +932,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_String_Entry is
      record
-        Key   : Proto_Support.Universal_String_Vectors.Option;
-        Value : Proto_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
+        Value : Proto_Support.Universal_String_Options.Option;
      end record;
 
    type Optional_Map_String_String_Entry  (Is_Set : Boolean := False) is
@@ -959,8 +978,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_Bytes_Entry is
      record
-        Key   : Proto_Support.Universal_String_Vectors.Option;
-        Value : Proto_Support.Stream_Element_Vector_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
+        Value : Proto_Support.Stream_Element_Vector_Options.Option;
      end record;
 
    type Optional_Map_String_Bytes_Entry  (Is_Set : Boolean := False) is
@@ -1004,9 +1023,9 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_Nested_Enum_Entry is
      record
-        Key   : Proto_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
         Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
-          .Nested_Enum_Vectors.Option;
+          .Nested_Enum_Options.Option;
      end record;
 
    type Optional_Map_String_Nested_Enum_Entry  (Is_Set : Boolean := False) is
@@ -1051,9 +1070,9 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_Foreign_Enum_Entry is
      record
-        Key   : Proto_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
         Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
-          .Foreign_Enum_Proto_2_Vectors.Option;
+          .Foreign_Enum_Proto_2_Options.Option;
      end record;
 
    type Optional_Map_String_Foreign_Enum_Entry  (Is_Set : Boolean := False) is
@@ -1100,8 +1119,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Data is
      record
-        Group_Int_32  : Proto_Support.Integer_32_Vectors.Option;
-        Group_Uint_32 : Proto_Support.Unsigned_32_Vectors.Option;
+        Group_Int_32  : Proto_Support.Integer_32_Options.Option;
+        Group_Uint_32 : Proto_Support.Unsigned_32_Options.Option;
      end record;
 
    type Optional_Data  (Is_Set : Boolean := False) is
@@ -1143,8 +1162,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Multi_Word_Group_Field is
      record
-        Group_Int_32  : Proto_Support.Integer_32_Vectors.Option;
-        Group_Uint_32 : Proto_Support.Unsigned_32_Vectors.Option;
+        Group_Int_32  : Proto_Support.Integer_32_Options.Option;
+        Group_Uint_32 : Proto_Support.Unsigned_32_Options.Option;
      end record;
 
    type Optional_Multi_Word_Group_Field  (Is_Set : Boolean := False) is
@@ -1229,7 +1248,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Message_Set_Correct_Extension_1 is
      record
-        Str : Proto_Support.Universal_String_Vectors.Option;
+        Str : Proto_Support.Universal_String_Options.Option;
      end record;
 
    type Optional_Message_Set_Correct_Extension_1
@@ -1277,7 +1296,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Message_Set_Correct_Extension_2 is
      record
-        I : Proto_Support.Integer_32_Vectors.Option;
+        I : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Message_Set_Correct_Extension_2
@@ -1385,7 +1404,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Foreign_Message_Proto_2 is
      record
-        C : Proto_Support.Integer_32_Vectors.Option;
+        C : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Foreign_Message_Proto_2  (Is_Set : Boolean := False) is
@@ -1430,8 +1449,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Group_Field is
      record
-        Group_Int_32  : Proto_Support.Integer_32_Vectors.Option;
-        Group_Uint_32 : Proto_Support.Unsigned_32_Vectors.Option;
+        Group_Int_32  : Proto_Support.Integer_32_Options.Option;
+        Group_Uint_32 : Proto_Support.Unsigned_32_Options.Option;
      end record;
 
    type Optional_Group_Field  (Is_Set : Boolean := False) is
@@ -1473,7 +1492,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Optional_Group is
      record
-        A : Proto_Support.Integer_32_Vectors.Option;
+        A : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Optional_Group  (Is_Set : Boolean := False) is
@@ -1517,13 +1536,13 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Unknown_To_Test_All_Types is
      record
-        Optional_Int_32 : Proto_Support.Integer_32_Vectors.Option;
-        Optional_String : Proto_Support.Universal_String_Vectors.Option;
+        Optional_Int_32 : Proto_Support.Integer_32_Options.Option;
+        Optional_String : Proto_Support.Universal_String_Options.Option;
         Nested_Message  : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Optional_Foreign_Message_Proto_2;
         Optionalgroup   : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Optional_Optional_Group;
-        Optional_Bool   : Proto_Support.Boolean_Vectors.Option;
+        Optional_Bool   : Proto_Support.Boolean_Options.Option;
         Repeated_Int_32 : Proto_Support.Integer_32_Vectors.Vector;
      end record;
 
@@ -1652,7 +1671,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type One_String_Proto_2 is
      record
-        Data : Proto_Support.Universal_String_Vectors.Option;
+        Data : Proto_Support.Universal_String_Options.Option;
      end record;
 
    type Optional_One_String_Proto_2  (Is_Set : Boolean := False) is
@@ -1696,8 +1715,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Proto_With_Keywords is
      record
-        Inline   : Proto_Support.Integer_32_Vectors.Option;
-        Concept  : Proto_Support.Universal_String_Vectors.Option;
+        Inline   : Proto_Support.Integer_32_Options.Option;
+        Concept  : Proto_Support.Universal_String_Options.Option;
         Requires : League.String_Vectors.Universal_String_Vector;
      end record;
 
@@ -2195,7 +2214,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_Foreign_Message_Entry is
      record
-        Key   : Proto_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
         Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Optional_Foreign_Message_Proto_2;
      end record;
@@ -2246,7 +2265,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Nested_Message is
      record
-        A           : Proto_Support.Integer_32_Vectors.Option;
+        A           : Proto_Support.Integer_32_Options.Option;
         Corecursive : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Test_All_Types_Proto_2_Vector;
      end record;
@@ -2292,7 +2311,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Int_32Nested_Message_Entry is
      record
-        Key   : Proto_Support.Integer_32_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
         Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Optional_Nested_Message;
      end record;
@@ -2341,7 +2360,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_Nested_Message_Entry is
      record
-        Key   : Proto_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
         Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Optional_Nested_Message;
      end record;
@@ -2434,36 +2453,36 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Test_All_Types_Proto_2 is
      record
-        Optional_Int_32            : Proto_Support.Integer_32_Vectors.Option;
-        Optional_Int_64            : Proto_Support.Integer_64_Vectors.Option;
-        Optional_Uint_32           : Proto_Support.Unsigned_32_Vectors.Option;
-        Optional_Uint_64           : Proto_Support.Unsigned_64_Vectors.Option;
-        Optional_Sint_32           : Proto_Support.Integer_32_Vectors.Option;
-        Optional_Sint_64           : Proto_Support.Integer_64_Vectors.Option;
-        Optional_Fixed_32          : Proto_Support.Unsigned_32_Vectors.Option;
-        Optional_Fixed_64          : Proto_Support.Unsigned_64_Vectors.Option;
-        Optional_Sfixed_32         : Proto_Support.Integer_32_Vectors.Option;
-        Optional_Sfixed_64         : Proto_Support.Integer_64_Vectors.Option;
-        Optional_Float             : Proto_Support.IEEE_Float_32_Vectors
+        Optional_Int_32            : Proto_Support.Integer_32_Options.Option;
+        Optional_Int_64            : Proto_Support.Integer_64_Options.Option;
+        Optional_Uint_32           : Proto_Support.Unsigned_32_Options.Option;
+        Optional_Uint_64           : Proto_Support.Unsigned_64_Options.Option;
+        Optional_Sint_32           : Proto_Support.Integer_32_Options.Option;
+        Optional_Sint_64           : Proto_Support.Integer_64_Options.Option;
+        Optional_Fixed_32          : Proto_Support.Unsigned_32_Options.Option;
+        Optional_Fixed_64          : Proto_Support.Unsigned_64_Options.Option;
+        Optional_Sfixed_32         : Proto_Support.Integer_32_Options.Option;
+        Optional_Sfixed_64         : Proto_Support.Integer_64_Options.Option;
+        Optional_Float             : Proto_Support.IEEE_Float_32_Options
           .Option;
-        Optional_Double            : Proto_Support.IEEE_Float_64_Vectors
+        Optional_Double            : Proto_Support.IEEE_Float_64_Options
           .Option;
-        Optional_Bool              : Proto_Support.Boolean_Vectors.Option;
-        Optional_String            : Proto_Support.Universal_String_Vectors
+        Optional_Bool              : Proto_Support.Boolean_Options.Option;
+        Optional_String            : Proto_Support.Universal_String_Options
           .Option;
         Optional_Bytes             : Proto_Support
-          .Stream_Element_Vector_Vectors.Option;
+          .Stream_Element_Vector_Options.Option;
         Optional_Nested_Message    : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Optional_Nested_Message;
         Optional_Foreign_Message   : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Optional_Foreign_Message_Proto_2;
         Optional_Nested_Enum       : Protobuf_Test_Messages.Proto_2
-          .Test_Messages_Proto_2.Nested_Enum_Vectors.Option;
+          .Test_Messages_Proto_2.Nested_Enum_Options.Option;
         Optional_Foreign_Enum      : Protobuf_Test_Messages.Proto_2
-          .Test_Messages_Proto_2.Foreign_Enum_Proto_2_Vectors.Option;
-        Optional_String_Piece      : Proto_Support.Universal_String_Vectors
+          .Test_Messages_Proto_2.Foreign_Enum_Proto_2_Options.Option;
+        Optional_String_Piece      : Proto_Support.Universal_String_Options
           .Option;
-        Optional_Cord              : Proto_Support.Universal_String_Vectors
+        Optional_Cord              : Proto_Support.Universal_String_Options
           .Option;
         Recursive_Message          : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Test_All_Types_Proto_2_Vector;
@@ -2578,43 +2597,43 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Test_Messages_Proto_2.Optional_Data;
         Multiwordgroupfield        : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Optional_Multi_Word_Group_Field;
-        Default_Int_32             : Proto_Support.Integer_32_Vectors.Option;
-        Default_Int_64             : Proto_Support.Integer_64_Vectors.Option;
-        Default_Uint_32            : Proto_Support.Unsigned_32_Vectors.Option;
-        Default_Uint_64            : Proto_Support.Unsigned_64_Vectors.Option;
-        Default_Sint_32            : Proto_Support.Integer_32_Vectors.Option;
-        Default_Sint_64            : Proto_Support.Integer_64_Vectors.Option;
-        Default_Fixed_32           : Proto_Support.Unsigned_32_Vectors.Option;
-        Default_Fixed_64           : Proto_Support.Unsigned_64_Vectors.Option;
-        Default_Sfixed_32          : Proto_Support.Integer_32_Vectors.Option;
-        Default_Sfixed_64          : Proto_Support.Integer_64_Vectors.Option;
-        Default_Float              : Proto_Support.IEEE_Float_32_Vectors
+        Default_Int_32             : Proto_Support.Integer_32_Options.Option;
+        Default_Int_64             : Proto_Support.Integer_64_Options.Option;
+        Default_Uint_32            : Proto_Support.Unsigned_32_Options.Option;
+        Default_Uint_64            : Proto_Support.Unsigned_64_Options.Option;
+        Default_Sint_32            : Proto_Support.Integer_32_Options.Option;
+        Default_Sint_64            : Proto_Support.Integer_64_Options.Option;
+        Default_Fixed_32           : Proto_Support.Unsigned_32_Options.Option;
+        Default_Fixed_64           : Proto_Support.Unsigned_64_Options.Option;
+        Default_Sfixed_32          : Proto_Support.Integer_32_Options.Option;
+        Default_Sfixed_64          : Proto_Support.Integer_64_Options.Option;
+        Default_Float              : Proto_Support.IEEE_Float_32_Options
           .Option;
-        Default_Double             : Proto_Support.IEEE_Float_64_Vectors
+        Default_Double             : Proto_Support.IEEE_Float_64_Options
           .Option;
-        Default_Bool               : Proto_Support.Boolean_Vectors.Option;
-        Default_String             : Proto_Support.Universal_String_Vectors
+        Default_Bool               : Proto_Support.Boolean_Options.Option;
+        Default_String             : Proto_Support.Universal_String_Options
           .Option;
         Default_Bytes              : Proto_Support
-          .Stream_Element_Vector_Vectors.Option;
-        Fieldname_1                : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_2               : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_3               : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_4               : Proto_Support.Integer_32_Vectors.Option;
-        Field_0name_5              : Proto_Support.Integer_32_Vectors.Option;
-        Field_0_Name_6             : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_7               : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_8               : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_9               : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_10              : Proto_Support.Integer_32_Vectors.Option;
-        FIELD_NAME11               : Proto_Support.Integer_32_Vectors.Option;
-        FIELD_Name_12              : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_13              : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_14              : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_15              : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_16              : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_17              : Proto_Support.Integer_32_Vectors.Option;
-        Field_Name_18              : Proto_Support.Integer_32_Vectors.Option;
+          .Stream_Element_Vector_Options.Option;
+        Fieldname_1                : Proto_Support.Integer_32_Options.Option;
+        Field_Name_2               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_3               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_4               : Proto_Support.Integer_32_Options.Option;
+        Field_0name_5              : Proto_Support.Integer_32_Options.Option;
+        Field_0_Name_6             : Proto_Support.Integer_32_Options.Option;
+        Field_Name_7               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_8               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_9               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_10              : Proto_Support.Integer_32_Options.Option;
+        FIELD_NAME11               : Proto_Support.Integer_32_Options.Option;
+        FIELD_Name_12              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_13              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_14              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_15              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_16              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_17              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_18              : Proto_Support.Integer_32_Options.Option;
         Message_Set_Correct        : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Optional_Message_Set_Correct;
         Variant                    : Test_All_Types_Proto_2_Variant;

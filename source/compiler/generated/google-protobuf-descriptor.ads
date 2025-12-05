@@ -2,13 +2,15 @@ with Ada.Finalization;
 with Ada.Streams;
 with League.String_Vectors;
 with League.Strings;
-with Proto_Support.Boolean_Vectors;
-with Proto_Support.IEEE_Float_64_Vectors;
+with Proto_Support.Boolean_Options;
+with Proto_Support.IEEE_Float_64_Options;
+with Proto_Support.Integer_32_Options;
 with Proto_Support.Integer_32_Vectors;
-with Proto_Support.Integer_64_Vectors;
-with Proto_Support.Stream_Element_Vector_Vectors;
-with Proto_Support.Universal_String_Vectors;
-with Proto_Support.Unsigned_64_Vectors;
+with Proto_Support.Integer_64_Options;
+with Proto_Support.Options;
+with Proto_Support.Stream_Element_Vector_Options;
+with Proto_Support.Universal_String_Options;
+with Proto_Support.Unsigned_64_Options;
 with Proto_Support.Vectors;
 
 package Google.Protobuf.Descriptor is
@@ -16,18 +18,21 @@ package Google.Protobuf.Descriptor is
    type Edition is
      (EDITION_UNKNOWN, EDITION_1_TEST_ONLY, EDITION_2_TEST_ONLY,
       EDITION_LEGACY, EDITION_PROTO2, EDITION_PROTO3, EDITION_2023,
-      EDITION_2024, EDITION_99997_TEST_ONLY, EDITION_99998_TEST_ONLY,
-      EDITION_99999_TEST_ONLY, EDITION_MAX);
+      EDITION_2024, EDITION_UNSTABLE, EDITION_99997_TEST_ONLY,
+      EDITION_99998_TEST_ONLY, EDITION_99999_TEST_ONLY, EDITION_MAX);
 
    for Edition use
      (EDITION_UNKNOWN         => 0, EDITION_1_TEST_ONLY     => 1,
       EDITION_2_TEST_ONLY     => 2, EDITION_LEGACY          => 900,
       EDITION_PROTO2          => 998, EDITION_PROTO3          => 999,
       EDITION_2023            => 1000, EDITION_2024            => 1001,
-      EDITION_99997_TEST_ONLY => 99997, EDITION_99998_TEST_ONLY => 99998,
-      EDITION_99999_TEST_ONLY => 99999, EDITION_MAX             => 2147483647);
+      EDITION_UNSTABLE        => 9999, EDITION_99997_TEST_ONLY => 99997,
+      EDITION_99998_TEST_ONLY => 99998, EDITION_99999_TEST_ONLY => 99999,
+      EDITION_MAX             => 2147483647);
 
    package Edition_Vectors is new Proto_Support.Vectors (Edition);
+
+   package Edition_Options is new Proto_Support.Options (Edition);
 
    type Symbol_Visibility is
      (VISIBILITY_UNSET, VISIBILITY_LOCAL, VISIBILITY_EXPORT);
@@ -38,13 +43,18 @@ package Google.Protobuf.Descriptor is
    package Symbol_Visibility_Vectors is
      new Proto_Support.Vectors (Symbol_Visibility);
 
+   package Symbol_Visibility_Options is
+     new Proto_Support.Options (Symbol_Visibility);
+
    type Verification_State is (EXTENSION_DECLARATION, UNVERIFIED);
 
-   for Verification_State use
-     (EXTENSION_DECLARATION => 0, UNVERIFIED            => 1);
+   for Verification_State use (EXTENSION_DECLARATION => 0, UNVERIFIED  => 1);
 
    package Verification_State_Vectors is
      new Proto_Support.Vectors (Verification_State);
+
+   package Verification_State_Options is
+     new Proto_Support.Options (Verification_State);
 
    type Proto_Type is
      (TYPE_DOUBLE, TYPE_FLOAT, TYPE_INT64, TYPE_UINT64, TYPE_INT32,
@@ -62,12 +72,16 @@ package Google.Protobuf.Descriptor is
 
    package Proto_Type_Vectors is new Proto_Support.Vectors (Proto_Type);
 
+   package Proto_Type_Options is new Proto_Support.Options (Proto_Type);
+
    type Label is (LABEL_OPTIONAL, LABEL_REQUIRED, LABEL_REPEATED);
 
    for Label use
      (LABEL_OPTIONAL => 1, LABEL_REQUIRED => 2, LABEL_REPEATED => 3);
 
    package Label_Vectors is new Proto_Support.Vectors (Label);
+
+   package Label_Options is new Proto_Support.Options (Label);
 
    type Optimize_Mode is (SPEED, CODE_SIZE, LITE_RUNTIME);
 
@@ -76,17 +90,23 @@ package Google.Protobuf.Descriptor is
 
    package Optimize_Mode_Vectors is new Proto_Support.Vectors (Optimize_Mode);
 
+   package Optimize_Mode_Options is new Proto_Support.Options (Optimize_Mode);
+
    type CType is (STRING, CORD, STRING_PIECE);
 
    for CType use (STRING       => 0, CORD         => 1, STRING_PIECE => 2);
 
    package CType_Vectors is new Proto_Support.Vectors (CType);
 
+   package CType_Options is new Proto_Support.Options (CType);
+
    type JSType is (JS_NORMAL, JS_STRING, JS_NUMBER);
 
    for JSType use (JS_NORMAL => 0, JS_STRING => 1, JS_NUMBER => 2);
 
    package JSType_Vectors is new Proto_Support.Vectors (JSType);
+
+   package JSType_Options is new Proto_Support.Options (JSType);
 
    type Option_Retention is
      (RETENTION_UNKNOWN, RETENTION_RUNTIME, RETENTION_SOURCE);
@@ -96,6 +116,9 @@ package Google.Protobuf.Descriptor is
 
    package Option_Retention_Vectors is
      new Proto_Support.Vectors (Option_Retention);
+
+   package Option_Retention_Options is
+     new Proto_Support.Options (Option_Retention);
 
    type Option_Target_Type is
      (TARGET_TYPE_UNKNOWN, TARGET_TYPE_FILE, TARGET_TYPE_EXTENSION_RANGE,
@@ -113,6 +136,9 @@ package Google.Protobuf.Descriptor is
    package Option_Target_Type_Vectors is
      new Proto_Support.Vectors (Option_Target_Type);
 
+   package Option_Target_Type_Options is
+     new Proto_Support.Options (Option_Target_Type);
+
    type Idempotency_Level is
      (IDEMPOTENCY_UNKNOWN, NO_SIDE_EFFECTS, IDEMPOTENT);
 
@@ -123,6 +149,9 @@ package Google.Protobuf.Descriptor is
    package Idempotency_Level_Vectors is
      new Proto_Support.Vectors (Idempotency_Level);
 
+   package Idempotency_Level_Options is
+     new Proto_Support.Options (Idempotency_Level);
+
    type Field_Presence is
      (FIELD_PRESENCE_UNKNOWN, EXPLICIT, IMPLICIT, LEGACY_REQUIRED);
 
@@ -130,7 +159,11 @@ package Google.Protobuf.Descriptor is
      (FIELD_PRESENCE_UNKNOWN => 0, EXPLICIT               => 1,
       IMPLICIT               => 2, LEGACY_REQUIRED        => 3);
 
-   package Field_Presence_Vectors is new Proto_Support.Vectors (Field_Presence);
+   package Field_Presence_Vectors is
+     new Proto_Support.Vectors (Field_Presence);
+
+   package Field_Presence_Options is
+     new Proto_Support.Options (Field_Presence);
 
    type Enum_Type is (ENUM_TYPE_UNKNOWN, OPEN, CLOSED);
 
@@ -138,6 +171,8 @@ package Google.Protobuf.Descriptor is
      (ENUM_TYPE_UNKNOWN => 0, OPEN              => 1, CLOSED            => 2);
 
    package Enum_Type_Vectors is new Proto_Support.Vectors (Enum_Type);
+
+   package Enum_Type_Options is new Proto_Support.Options (Enum_Type);
 
    type Repeated_Field_Encoding is
      (REPEATED_FIELD_ENCODING_UNKNOWN, PACKED, EXPANDED);
@@ -150,13 +185,20 @@ package Google.Protobuf.Descriptor is
    package Repeated_Field_Encoding_Vectors is
      new Proto_Support.Vectors (Repeated_Field_Encoding);
 
+   package Repeated_Field_Encoding_Options is
+     new Proto_Support.Options (Repeated_Field_Encoding);
+
    type Utf_8Validation is (UTF8_VALIDATION_UNKNOWN, VERIFY, NONE);
 
    for Utf_8Validation use
      (UTF8_VALIDATION_UNKNOWN => 0, VERIFY                  => 2,
       NONE                    => 3);
 
-   package Utf_8Validation_Vectors is new Proto_Support.Vectors (Utf_8Validation);
+   package Utf_8Validation_Vectors is
+     new Proto_Support.Vectors (Utf_8Validation);
+
+   package Utf_8Validation_Options is
+     new Proto_Support.Options (Utf_8Validation);
 
    type Message_Encoding is
      (MESSAGE_ENCODING_UNKNOWN, LENGTH_PREFIXED, DELIMITED);
@@ -168,6 +210,9 @@ package Google.Protobuf.Descriptor is
    package Message_Encoding_Vectors is
      new Proto_Support.Vectors (Message_Encoding);
 
+   package Message_Encoding_Options is
+     new Proto_Support.Options (Message_Encoding);
+
    type Json_Format is (JSON_FORMAT_UNKNOWN, ALLOW, LEGACY_BEST_EFFORT);
 
    for Json_Format use
@@ -175,6 +220,8 @@ package Google.Protobuf.Descriptor is
       LEGACY_BEST_EFFORT  => 2);
 
    package Json_Format_Vectors is new Proto_Support.Vectors (Json_Format);
+
+   package Json_Format_Options is new Proto_Support.Options (Json_Format);
 
    type Enforce_Naming_Style is
      (ENFORCE_NAMING_STYLE_UNKNOWN, STYLE2024, STYLE_LEGACY);
@@ -185,6 +232,9 @@ package Google.Protobuf.Descriptor is
 
    package Enforce_Naming_Style_Vectors is
      new Proto_Support.Vectors (Enforce_Naming_Style);
+
+   package Enforce_Naming_Style_Options is
+     new Proto_Support.Options (Enforce_Naming_Style);
 
    type Default_Symbol_Visibility is
      (DEFAULT_SYMBOL_VISIBILITY_UNKNOWN, EXPORT_ALL, EXPORT_TOP_LEVEL,
@@ -200,11 +250,16 @@ package Google.Protobuf.Descriptor is
    package Default_Symbol_Visibility_Vectors is
      new Proto_Support.Vectors (Default_Symbol_Visibility);
 
+   package Default_Symbol_Visibility_Options is
+     new Proto_Support.Options (Default_Symbol_Visibility);
+
    type Semantic is (NONE, SET, ALIAS);
 
    for Semantic use (NONE  => 0, SET   => 1, ALIAS => 2);
 
    package Semantic_Vectors is new Proto_Support.Vectors (Semantic);
+
+   package Semantic_Options is new Proto_Support.Options (Semantic);
 
    type File_Descriptor_Set_Vector is tagged private
      with Variable_Indexing => Get_File_Descriptor_Set_Variable_Reference,
@@ -389,8 +444,8 @@ package Google.Protobuf.Descriptor is
 
    type Reserved_Range is
      record
-        Start  : Proto_Support.Integer_32_Vectors.Option;
-        Proto_End : Proto_Support.Integer_32_Vectors.Option;
+        Start     : Proto_Support.Integer_32_Options.Option;
+        Proto_End : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Reserved_Range  (Is_Set : Boolean := False) is
@@ -433,11 +488,11 @@ package Google.Protobuf.Descriptor is
 
    type Declaration is
      record
-        Number    : Proto_Support.Integer_32_Vectors.Option;
-        Full_Name : Proto_Support.Universal_String_Vectors.Option;
-        Proto_Type   : Proto_Support.Universal_String_Vectors.Option;
-        Reserved  : Proto_Support.Boolean_Vectors.Option;
-        Repeated  : Proto_Support.Boolean_Vectors.Option;
+        Number     : Proto_Support.Integer_32_Options.Option;
+        Full_Name  : Proto_Support.Universal_String_Options.Option;
+        Proto_Type : Proto_Support.Universal_String_Options.Option;
+        Reserved   : Proto_Support.Boolean_Options.Option;
+        Repeated   : Proto_Support.Boolean_Options.Option;
      end record;
 
    type Optional_Declaration  (Is_Set : Boolean := False) is
@@ -478,8 +533,8 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Reserved_Range is
      record
-        Start  : Proto_Support.Integer_32_Vectors.Option;
-        Proto_End : Proto_Support.Integer_32_Vectors.Option;
+        Start     : Proto_Support.Integer_32_Options.Option;
+        Proto_End : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Enum_Reserved_Range  (Is_Set : Boolean := False) is
@@ -522,8 +577,8 @@ package Google.Protobuf.Descriptor is
 
    type Edition_Default is
      record
-        Edition : Google.Protobuf.Descriptor.Edition_Vectors.Option;
-        Value   : Proto_Support.Universal_String_Vectors.Option;
+        Edition : Google.Protobuf.Descriptor.Edition_Options.Option;
+        Value   : Proto_Support.Universal_String_Options.Option;
      end record;
 
    type Optional_Edition_Default  (Is_Set : Boolean := False) is
@@ -566,13 +621,14 @@ package Google.Protobuf.Descriptor is
 
    type Feature_Support is
      record
-        Edition_Introduced  : Google.Protobuf.Descriptor.Edition_Vectors
+        Edition_Introduced  : Google.Protobuf.Descriptor.Edition_Options
           .Option;
-        Edition_Deprecated  : Google.Protobuf.Descriptor.Edition_Vectors
+        Edition_Deprecated  : Google.Protobuf.Descriptor.Edition_Options
           .Option;
-        Deprecation_Warning : Proto_Support.Universal_String_Vectors.Option;
-        Edition_Removed     : Google.Protobuf.Descriptor.Edition_Vectors
+        Deprecation_Warning : Proto_Support.Universal_String_Options.Option;
+        Edition_Removed     : Google.Protobuf.Descriptor.Edition_Options
           .Option;
+        Removal_Error       : Proto_Support.Universal_String_Options.Option;
      end record;
 
    type Optional_Feature_Support  (Is_Set : Boolean := False) is
@@ -658,12 +714,13 @@ package Google.Protobuf.Descriptor is
    type Uninterpreted_Option is
      record
         Name               : Google.Protobuf.Descriptor.Name_Part_Vector;
-        Identifier_Value   : Proto_Support.Universal_String_Vectors.Option;
-        Positive_Int_Value : Proto_Support.Unsigned_64_Vectors.Option;
-        Negative_Int_Value : Proto_Support.Integer_64_Vectors.Option;
-        Double_Value       : Proto_Support.IEEE_Float_64_Vectors.Option;
-        String_Value       : Proto_Support.Stream_Element_Vector_Vectors.Option;
-        Aggregate_Value    : Proto_Support.Universal_String_Vectors.Option;
+        Identifier_Value   : Proto_Support.Universal_String_Options.Option;
+        Positive_Int_Value : Proto_Support.Unsigned_64_Options.Option;
+        Negative_Int_Value : Proto_Support.Integer_64_Options.Option;
+        Double_Value       : Proto_Support.IEEE_Float_64_Options.Option;
+        String_Value       : Proto_Support.Stream_Element_Vector_Options
+          .Option;
+        Aggregate_Value    : Proto_Support.Universal_String_Options.Option;
      end record;
 
    type Optional_Uninterpreted_Option  (Is_Set : Boolean := False) is
@@ -747,21 +804,21 @@ package Google.Protobuf.Descriptor is
    type Feature_Set is
      record
         Field_Presence            : Google.Protobuf.Descriptor
-          .Field_Presence_Vectors.Option;
+          .Field_Presence_Options.Option;
         Enum_Type                 : Google.Protobuf.Descriptor
-          .Enum_Type_Vectors.Option;
+          .Enum_Type_Options.Option;
         Repeated_Field_Encoding   : Google.Protobuf.Descriptor
-          .Repeated_Field_Encoding_Vectors.Option;
+          .Repeated_Field_Encoding_Options.Option;
         Utf_8_Validation          : Google.Protobuf.Descriptor
-          .Utf_8Validation_Vectors.Option;
+          .Utf_8Validation_Options.Option;
         Message_Encoding          : Google.Protobuf.Descriptor
-          .Message_Encoding_Vectors.Option;
+          .Message_Encoding_Options.Option;
         Json_Format               : Google.Protobuf.Descriptor
-          .Json_Format_Vectors.Option;
+          .Json_Format_Options.Option;
         Enforce_Naming_Style      : Google.Protobuf.Descriptor
-          .Enforce_Naming_Style_Vectors.Option;
+          .Enforce_Naming_Style_Options.Option;
         Default_Symbol_Visibility : Google.Protobuf.Descriptor
-          .Default_Symbol_Visibility_Vectors.Option;
+          .Default_Symbol_Visibility_Options.Option;
      end record;
 
    type Optional_Feature_Set  (Is_Set : Boolean := False) is
@@ -802,7 +859,7 @@ package Google.Protobuf.Descriptor is
 
    type Feature_Set_Edition_Default is
      record
-        Edition              : Google.Protobuf.Descriptor.Edition_Vectors
+        Edition              : Google.Protobuf.Descriptor.Edition_Options
           .Option;
         Overridable_Features : Google.Protobuf.Descriptor.Optional_Feature_Set;
         Fixed_Features       : Google.Protobuf.Descriptor.Optional_Feature_Set;
@@ -851,8 +908,8 @@ package Google.Protobuf.Descriptor is
      record
         Defaults        : Google.Protobuf.Descriptor
           .Feature_Set_Edition_Default_Vector;
-        Minimum_Edition : Google.Protobuf.Descriptor.Edition_Vectors.Option;
-        Maximum_Edition : Google.Protobuf.Descriptor.Edition_Vectors.Option;
+        Minimum_Edition : Google.Protobuf.Descriptor.Edition_Options.Option;
+        Maximum_Edition : Google.Protobuf.Descriptor.Edition_Options.Option;
      end record;
 
    type Optional_Feature_Set_Defaults  (Is_Set : Boolean := False) is
@@ -897,8 +954,10 @@ package Google.Protobuf.Descriptor is
      record
         Path                      : Proto_Support.Integer_32_Vectors.Vector;
         Span                      : Proto_Support.Integer_32_Vectors.Vector;
-        Leading_Comments          : Proto_Support.Universal_String_Vectors.Option;
-        Trailing_Comments         : Proto_Support.Universal_String_Vectors.Option;
+        Leading_Comments          : Proto_Support.Universal_String_Options
+          .Option;
+        Trailing_Comments         : Proto_Support.Universal_String_Options
+          .Option;
         Leading_Detached_Comments : League.String_Vectors
           .Universal_String_Vector;
      end record;
@@ -985,10 +1044,10 @@ package Google.Protobuf.Descriptor is
    type Annotation is
      record
         Path        : Proto_Support.Integer_32_Vectors.Vector;
-        Source_File : Proto_Support.Universal_String_Vectors.Option;
-        Proto_Begin    : Proto_Support.Integer_32_Vectors.Option;
-        Proto_End      : Proto_Support.Integer_32_Vectors.Option;
-        Semantic    : Google.Protobuf.Descriptor.Semantic_Vectors.Option;
+        Source_File : Proto_Support.Universal_String_Options.Option;
+        Proto_Begin : Proto_Support.Integer_32_Options.Option;
+        Proto_End   : Proto_Support.Integer_32_Options.Option;
+        Semantic    : Google.Protobuf.Descriptor.Semantic_Options.Option;
      end record;
 
    type Optional_Annotation  (Is_Set : Boolean := False) is
@@ -1077,7 +1136,7 @@ package Google.Protobuf.Descriptor is
         Declaration          : Google.Protobuf.Descriptor.Declaration_Vector;
         Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
         Verification         : Google.Protobuf.Descriptor
-          .Verification_State_Vectors.Option;
+          .Verification_State_Options.Option;
      end record;
 
    type Optional_Extension_Range_Options  (Is_Set : Boolean := False) is
@@ -1121,35 +1180,35 @@ package Google.Protobuf.Descriptor is
 
    type File_Options is
      record
-        Java_Package                  : Proto_Support.Universal_String_Vectors
+        Java_Package                  : Proto_Support.Universal_String_Options
           .Option;
-        Java_Outer_Classname          : Proto_Support.Universal_String_Vectors
+        Java_Outer_Classname          : Proto_Support.Universal_String_Options
           .Option;
-        Java_Multiple_Files           : Proto_Support.Boolean_Vectors.Option;
-        Java_Generate_Equals_And_Hash : Proto_Support.Boolean_Vectors.Option;
-        Java_String_Check_Utf_8       : Proto_Support.Boolean_Vectors.Option;
+        Java_Multiple_Files           : Proto_Support.Boolean_Options.Option;
+        Java_Generate_Equals_And_Hash : Proto_Support.Boolean_Options.Option;
+        Java_String_Check_Utf_8       : Proto_Support.Boolean_Options.Option;
         Optimize_For                  : Google.Protobuf.Descriptor
-          .Optimize_Mode_Vectors.Option;
-        Go_Package                    : Proto_Support.Universal_String_Vectors
+          .Optimize_Mode_Options.Option;
+        Go_Package                    : Proto_Support.Universal_String_Options
           .Option;
-        Cc_Generic_Services           : Proto_Support.Boolean_Vectors.Option;
-        Java_Generic_Services         : Proto_Support.Boolean_Vectors.Option;
-        Py_Generic_Services           : Proto_Support.Boolean_Vectors.Option;
-        Deprecated                    : Proto_Support.Boolean_Vectors.Option;
-        Cc_Enable_Arenas              : Proto_Support.Boolean_Vectors.Option;
-        Objc_Class_Prefix             : Proto_Support.Universal_String_Vectors
+        Cc_Generic_Services           : Proto_Support.Boolean_Options.Option;
+        Java_Generic_Services         : Proto_Support.Boolean_Options.Option;
+        Py_Generic_Services           : Proto_Support.Boolean_Options.Option;
+        Deprecated                    : Proto_Support.Boolean_Options.Option;
+        Cc_Enable_Arenas              : Proto_Support.Boolean_Options.Option;
+        Objc_Class_Prefix             : Proto_Support.Universal_String_Options
           .Option;
-        Csharp_Namespace              : Proto_Support.Universal_String_Vectors
+        Csharp_Namespace              : Proto_Support.Universal_String_Options
           .Option;
-        Swift_Prefix                  : Proto_Support.Universal_String_Vectors
+        Swift_Prefix                  : Proto_Support.Universal_String_Options
           .Option;
-        Php_Class_Prefix              : Proto_Support.Universal_String_Vectors
+        Php_Class_Prefix              : Proto_Support.Universal_String_Options
           .Option;
-        Php_Namespace                 : Proto_Support.Universal_String_Vectors
+        Php_Namespace                 : Proto_Support.Universal_String_Options
           .Option;
-        Php_Metadata_Namespace        : Proto_Support.Universal_String_Vectors
+        Php_Metadata_Namespace        : Proto_Support.Universal_String_Options
           .Option;
-        Ruby_Package                  : Proto_Support.Universal_String_Vectors
+        Ruby_Package                  : Proto_Support.Universal_String_Options
           .Option;
         Features                      : Google.Protobuf.Descriptor
           .Optional_Feature_Set;
@@ -1195,15 +1254,15 @@ package Google.Protobuf.Descriptor is
 
    type Message_Options is
      record
-        Message_Set_Wire_Format                : Proto_Support.Boolean_Vectors
+        Message_Set_Wire_Format                : Proto_Support.Boolean_Options
           .Option;
-        No_Standard_Descriptor_Accessor        : Proto_Support.Boolean_Vectors
+        No_Standard_Descriptor_Accessor        : Proto_Support.Boolean_Options
           .Option;
-        Deprecated                             : Proto_Support.Boolean_Vectors
+        Deprecated                             : Proto_Support.Boolean_Options
           .Option;
-        Map_Entry                              : Proto_Support.Boolean_Vectors
+        Map_Entry                              : Proto_Support.Boolean_Options
           .Option;
-        Deprecated_Legacy_Json_Field_Conflicts : Proto_Support.Boolean_Vectors
+        Deprecated_Legacy_Json_Field_Conflicts : Proto_Support.Boolean_Options
           .Option;
         Features                               : Google.Protobuf.Descriptor
           .Optional_Feature_Set;
@@ -1251,17 +1310,17 @@ package Google.Protobuf.Descriptor is
 
    type Field_Options is
      record
-        Ctype                : Google.Protobuf.Descriptor.CType_Vectors.Option;
-        Packed               : Proto_Support.Boolean_Vectors.Option;
-        Jstype               : Google.Protobuf.Descriptor.JSType_Vectors
+        Ctype                : Google.Protobuf.Descriptor.CType_Options.Option;
+        Packed               : Proto_Support.Boolean_Options.Option;
+        Jstype               : Google.Protobuf.Descriptor.JSType_Options
           .Option;
-        Lazy                 : Proto_Support.Boolean_Vectors.Option;
-        Unverified_Lazy      : Proto_Support.Boolean_Vectors.Option;
-        Deprecated           : Proto_Support.Boolean_Vectors.Option;
-        Weak                 : Proto_Support.Boolean_Vectors.Option;
-        Debug_Redact         : Proto_Support.Boolean_Vectors.Option;
+        Lazy                 : Proto_Support.Boolean_Options.Option;
+        Unverified_Lazy      : Proto_Support.Boolean_Options.Option;
+        Deprecated           : Proto_Support.Boolean_Options.Option;
+        Weak                 : Proto_Support.Boolean_Options.Option;
+        Debug_Redact         : Proto_Support.Boolean_Options.Option;
         Retention            : Google.Protobuf.Descriptor
-          .Option_Retention_Vectors.Option;
+          .Option_Retention_Options.Option;
         Targets              : Google.Protobuf.Descriptor
           .Option_Target_Type_Vectors.Vector;
         Edition_Defaults     : Google.Protobuf.Descriptor
@@ -1354,11 +1413,11 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Options is
      record
-        Allow_Alias                            : Proto_Support.Boolean_Vectors
+        Allow_Alias                            : Proto_Support.Boolean_Options
           .Option;
-        Deprecated                             : Proto_Support.Boolean_Vectors
+        Deprecated                             : Proto_Support.Boolean_Options
           .Option;
-        Deprecated_Legacy_Json_Field_Conflicts : Proto_Support.Boolean_Vectors
+        Deprecated_Legacy_Json_Field_Conflicts : Proto_Support.Boolean_Options
           .Option;
         Features                               : Google.Protobuf.Descriptor
           .Optional_Feature_Set;
@@ -1404,9 +1463,9 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Value_Options is
      record
-        Deprecated           : Proto_Support.Boolean_Vectors.Option;
+        Deprecated           : Proto_Support.Boolean_Options.Option;
         Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
-        Debug_Redact         : Proto_Support.Boolean_Vectors.Option;
+        Debug_Redact         : Proto_Support.Boolean_Options.Option;
         Feature_Support      : Google.Protobuf.Descriptor
           .Optional_Feature_Support;
         Uninterpreted_Option : Google.Protobuf.Descriptor
@@ -1454,7 +1513,7 @@ package Google.Protobuf.Descriptor is
    type Service_Options is
      record
         Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
-        Deprecated           : Proto_Support.Boolean_Vectors.Option;
+        Deprecated           : Proto_Support.Boolean_Options.Option;
         Uninterpreted_Option : Google.Protobuf.Descriptor
           .Uninterpreted_Option_Vector;
      end record;
@@ -1499,9 +1558,9 @@ package Google.Protobuf.Descriptor is
 
    type Method_Options is
      record
-        Deprecated           : Proto_Support.Boolean_Vectors.Option;
+        Deprecated           : Proto_Support.Boolean_Options.Option;
         Idempotency_Level    : Google.Protobuf.Descriptor
-          .Idempotency_Level_Vectors.Option;
+          .Idempotency_Level_Options.Option;
         Features             : Google.Protobuf.Descriptor.Optional_Feature_Set;
         Uninterpreted_Option : Google.Protobuf.Descriptor
           .Uninterpreted_Option_Vector;
@@ -1547,8 +1606,8 @@ package Google.Protobuf.Descriptor is
 
    type File_Descriptor_Proto is
      record
-        Name              : Proto_Support.Universal_String_Vectors.Option;
-        Proto_Package        : Proto_Support.Universal_String_Vectors.Option;
+        Name              : Proto_Support.Universal_String_Options.Option;
+        Proto_Package     : Proto_Support.Universal_String_Options.Option;
         Dependency        : League.String_Vectors.Universal_String_Vector;
         Public_Dependency : Proto_Support.Integer_32_Vectors.Vector;
         Weak_Dependency   : Proto_Support.Integer_32_Vectors.Vector;
@@ -1563,8 +1622,8 @@ package Google.Protobuf.Descriptor is
         Options           : Google.Protobuf.Descriptor.Optional_File_Options;
         Source_Code_Info  : Google.Protobuf.Descriptor
           .Optional_Source_Code_Info;
-        Syntax            : Proto_Support.Universal_String_Vectors.Option;
-        Edition           : Google.Protobuf.Descriptor.Edition_Vectors.Option;
+        Syntax            : Proto_Support.Universal_String_Options.Option;
+        Edition           : Google.Protobuf.Descriptor.Edition_Options.Option;
      end record;
 
    type Optional_File_Descriptor_Proto  (Is_Set : Boolean := False) is
@@ -1607,9 +1666,10 @@ package Google.Protobuf.Descriptor is
 
    type Extension_Range is
      record
-        Start   : Proto_Support.Integer_32_Vectors.Option;
-        Proto_End  : Proto_Support.Integer_32_Vectors.Option;
-        Options : Google.Protobuf.Descriptor.Optional_Extension_Range_Options;
+        Start     : Proto_Support.Integer_32_Options.Option;
+        Proto_End : Proto_Support.Integer_32_Options.Option;
+        Options   : Google.Protobuf.Descriptor
+          .Optional_Extension_Range_Options;
      end record;
 
    type Optional_Extension_Range  (Is_Set : Boolean := False) is
@@ -1652,7 +1712,7 @@ package Google.Protobuf.Descriptor is
 
    type Descriptor_Proto is
      record
-        Name            : Proto_Support.Universal_String_Vectors.Option;
+        Name            : Proto_Support.Universal_String_Options.Option;
         Field           : Google.Protobuf.Descriptor
           .Field_Descriptor_Proto_Vector;
         Extension       : Google.Protobuf.Descriptor
@@ -1666,7 +1726,7 @@ package Google.Protobuf.Descriptor is
         Options         : Google.Protobuf.Descriptor.Optional_Message_Options;
         Reserved_Range  : Google.Protobuf.Descriptor.Reserved_Range_Vector;
         Reserved_Name   : League.String_Vectors.Universal_String_Vector;
-        Visibility      : Google.Protobuf.Descriptor.Symbol_Visibility_Vectors
+        Visibility      : Google.Protobuf.Descriptor.Symbol_Visibility_Options
           .Option;
      end record;
 
@@ -1710,17 +1770,18 @@ package Google.Protobuf.Descriptor is
 
    type Field_Descriptor_Proto is
      record
-        Name             : Proto_Support.Universal_String_Vectors.Option;
-        Number           : Proto_Support.Integer_32_Vectors.Option;
-        Label            : Google.Protobuf.Descriptor.Label_Vectors.Option;
-        Proto_Type          : Google.Protobuf.Descriptor.Proto_Type_Vectors.Option;
-        Type_Name        : Proto_Support.Universal_String_Vectors.Option;
-        Extendee         : Proto_Support.Universal_String_Vectors.Option;
-        Default_Value    : Proto_Support.Universal_String_Vectors.Option;
-        Oneof_Index      : Proto_Support.Integer_32_Vectors.Option;
-        Json_Name        : Proto_Support.Universal_String_Vectors.Option;
+        Name             : Proto_Support.Universal_String_Options.Option;
+        Number           : Proto_Support.Integer_32_Options.Option;
+        Label            : Google.Protobuf.Descriptor.Label_Options.Option;
+        Proto_Type       : Google.Protobuf.Descriptor.Proto_Type_Options
+          .Option;
+        Type_Name        : Proto_Support.Universal_String_Options.Option;
+        Extendee         : Proto_Support.Universal_String_Options.Option;
+        Default_Value    : Proto_Support.Universal_String_Options.Option;
+        Oneof_Index      : Proto_Support.Integer_32_Options.Option;
+        Json_Name        : Proto_Support.Universal_String_Options.Option;
         Options          : Google.Protobuf.Descriptor.Optional_Field_Options;
-        Proto_3_Optional : Proto_Support.Boolean_Vectors.Option;
+        Proto_3_Optional : Proto_Support.Boolean_Options.Option;
      end record;
 
    type Optional_Field_Descriptor_Proto  (Is_Set : Boolean := False) is
@@ -1763,7 +1824,7 @@ package Google.Protobuf.Descriptor is
 
    type Oneof_Descriptor_Proto is
      record
-        Name    : Proto_Support.Universal_String_Vectors.Option;
+        Name    : Proto_Support.Universal_String_Options.Option;
         Options : Google.Protobuf.Descriptor.Optional_Oneof_Options;
      end record;
 
@@ -1807,13 +1868,13 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Descriptor_Proto is
      record
-        Name           : Proto_Support.Universal_String_Vectors.Option;
+        Name           : Proto_Support.Universal_String_Options.Option;
         Value          : Google.Protobuf.Descriptor
           .Enum_Value_Descriptor_Proto_Vector;
         Options        : Google.Protobuf.Descriptor.Optional_Enum_Options;
         Reserved_Range : Google.Protobuf.Descriptor.Enum_Reserved_Range_Vector;
         Reserved_Name  : League.String_Vectors.Universal_String_Vector;
-        Visibility     : Google.Protobuf.Descriptor.Symbol_Visibility_Vectors
+        Visibility     : Google.Protobuf.Descriptor.Symbol_Visibility_Options
           .Option;
      end record;
 
@@ -1857,8 +1918,8 @@ package Google.Protobuf.Descriptor is
 
    type Enum_Value_Descriptor_Proto is
      record
-        Name    : Proto_Support.Universal_String_Vectors.Option;
-        Number  : Proto_Support.Integer_32_Vectors.Option;
+        Name    : Proto_Support.Universal_String_Options.Option;
+        Number  : Proto_Support.Integer_32_Options.Option;
         Options : Google.Protobuf.Descriptor.Optional_Enum_Value_Options;
      end record;
 
@@ -1903,7 +1964,7 @@ package Google.Protobuf.Descriptor is
 
    type Service_Descriptor_Proto is
      record
-        Name    : Proto_Support.Universal_String_Vectors.Option;
+        Name    : Proto_Support.Universal_String_Options.Option;
         Method  : Google.Protobuf.Descriptor.Method_Descriptor_Proto_Vector;
         Options : Google.Protobuf.Descriptor.Optional_Service_Options;
      end record;
@@ -1949,12 +2010,12 @@ package Google.Protobuf.Descriptor is
 
    type Method_Descriptor_Proto is
      record
-        Name             : Proto_Support.Universal_String_Vectors.Option;
-        Input_Type       : Proto_Support.Universal_String_Vectors.Option;
-        Output_Type      : Proto_Support.Universal_String_Vectors.Option;
+        Name             : Proto_Support.Universal_String_Options.Option;
+        Input_Type       : Proto_Support.Universal_String_Options.Option;
+        Output_Type      : Proto_Support.Universal_String_Options.Option;
         Options          : Google.Protobuf.Descriptor.Optional_Method_Options;
-        Client_Streaming : Proto_Support.Boolean_Vectors.Option;
-        Server_Streaming : Proto_Support.Boolean_Vectors.Option;
+        Client_Streaming : Proto_Support.Boolean_Options.Option;
+        Server_Streaming : Proto_Support.Boolean_Options.Option;
      end record;
 
    type Optional_Method_Descriptor_Proto  (Is_Set : Boolean := False) is

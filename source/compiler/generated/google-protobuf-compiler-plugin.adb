@@ -100,17 +100,20 @@ package body Google.Protobuf.Compiler.Plugin is
                if  not V.Major.Is_Set then
                   V.Major := (True, others => <>);
                end if;
-               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Major.Value);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Major.Value);
             when 2 =>
                if  not V.Minor.Is_Set then
                   V.Minor := (True, others => <>);
                end if;
-               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Minor.Value);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Minor.Value);
             when 3 =>
                if  not V.Patch.Is_Set then
                   V.Patch := (True, others => <>);
                end if;
-               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Patch.Value);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Patch.Value);
             when 4 =>
                if  not V.Suffix.Is_Set then
                   V.Suffix := (True, others => <>);
