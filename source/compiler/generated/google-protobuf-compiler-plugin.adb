@@ -1,29 +1,29 @@
 with Ada.Unchecked_Deallocation;
-with PB_Support.IO;
-with PB_Support.Internal;
+with Proto_Support.IO;
+with Proto_Support.Internal;
 
 package body Google.Protobuf.Compiler.Plugin is
 
    package Google_Protobuf_Descriptor_File_Descriptor_Proto_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.File_Descriptor_Proto,
         Google.Protobuf.Descriptor.File_Descriptor_Proto_Vector,
         Google.Protobuf.Descriptor.Append);
 
    package Google_Protobuf_Descriptor_Generated_Code_Info_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Descriptor.Generated_Code_Info,
         Google.Protobuf.Descriptor.Generated_Code_Info_Vector,
         Google.Protobuf.Descriptor.Append);
 
    package Google_Protobuf_Compiler_Plugin_File_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Compiler.Plugin.File,
         Google.Protobuf.Compiler.Plugin.File_Vector,
         Google.Protobuf.Compiler.Plugin.Append);
 
    package Google_Protobuf_Compiler_Plugin_Version_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Compiler.Plugin.Version,
         Google.Protobuf.Compiler.Plugin.Version_Vector,
         Google.Protobuf.Compiler.Plugin.Append);
@@ -92,32 +92,35 @@ package body Google.Protobuf.Compiler.Plugin is
    procedure Read_Version
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Version) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                if  not V.Major.Is_Set then
                   V.Major := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Major.Value);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Major.Value);
             when 2 =>
                if  not V.Minor.Is_Set then
                   V.Minor := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Minor.Value);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Minor.Value);
             when 3 =>
                if  not V.Patch.Is_Set then
                   V.Patch := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Patch.Value);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Patch.Value);
             when 4 =>
                if  not V.Suffix.Is_Set then
                   V.Suffix := (True, others => <>);
                end if;
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Suffix.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Suffix.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Version;
@@ -126,17 +129,17 @@ package body Google.Protobuf.Compiler.Plugin is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Version) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Version (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          if V.Major.Is_Set then
@@ -227,18 +230,18 @@ package body Google.Protobuf.Compiler.Plugin is
    procedure Read_Code_Generator_Request
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Code_Generator_Request) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.File_To_Generate);
             when 2 =>
                if  not V.Parameter.Is_Set then
                   V.Parameter := (True, others => <>);
                end if;
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Parameter.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Parameter.Value);
             when 15 =>
                Google_Protobuf_Descriptor_File_Descriptor_Proto_IO.Read_Vector
                  (Stream, Key.Encoding, V.Proto_File);
@@ -252,7 +255,7 @@ package body Google.Protobuf.Compiler.Plugin is
                Google_Protobuf_Compiler_Plugin_Version_IO.Read
                  (Stream, Key.Encoding, V.Compiler_Version.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Code_Generator_Request;
@@ -261,17 +264,17 @@ package body Google.Protobuf.Compiler.Plugin is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Code_Generator_Request) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Code_Generator_Request (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write (1, V.File_To_Generate);
@@ -279,17 +282,17 @@ package body Google.Protobuf.Compiler.Plugin is
             WS.Write (2, V.Parameter.Value);
          end if;
          for J in 1 .. V.Proto_File.Length loop
-            WS.Write_Key ((15, PB_Support.Length_Delimited));
+            WS.Write_Key ((15, Proto_Support.Length_Delimited));
             Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
               (Stream, V.Proto_File (J));
          end loop;
          for J in 1 .. V.Source_File_Descriptors.Length loop
-            WS.Write_Key ((17, PB_Support.Length_Delimited));
+            WS.Write_Key ((17, Proto_Support.Length_Delimited));
             Google.Protobuf.Descriptor.File_Descriptor_Proto'Write
               (Stream, V.Source_File_Descriptors (J));
          end loop;
          if V.Compiler_Version.Is_Set then
-            WS.Write_Key ((3, PB_Support.Length_Delimited));
+            WS.Write_Key ((3, Proto_Support.Length_Delimited));
             Google.Protobuf.Compiler.Plugin.Version'Write
               (Stream, V.Compiler_Version.Value);
          end if;
@@ -370,38 +373,38 @@ package body Google.Protobuf.Compiler.Plugin is
    procedure Read_Code_Generator_Response
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Code_Generator_Response) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                if  not V.Error.Is_Set then
                   V.Error := (True, others => <>);
                end if;
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Error.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Error.Value);
             when 2 =>
                if  not V.Supported_Features.Is_Set then
                   V.Supported_Features := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Supported_Features.Value);
             when 3 =>
                if  not V.Minimum_Edition.Is_Set then
                   V.Minimum_Edition := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Minimum_Edition.Value);
             when 4 =>
                if  not V.Maximum_Edition.Is_Set then
                   V.Maximum_Edition := (True, others => <>);
                end if;
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Maximum_Edition.Value);
             when 15 =>
                Google_Protobuf_Compiler_Plugin_File_IO.Read_Vector
                  (Stream, Key.Encoding, V.File);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Code_Generator_Response;
@@ -410,17 +413,17 @@ package body Google.Protobuf.Compiler.Plugin is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Code_Generator_Response) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Code_Generator_Response (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          if V.Error.Is_Set then
@@ -436,7 +439,7 @@ package body Google.Protobuf.Compiler.Plugin is
             WS.Write_Varint (4, V.Maximum_Edition.Value);
          end if;
          for J in 1 .. V.File.Length loop
-            WS.Write_Key ((15, PB_Support.Length_Delimited));
+            WS.Write_Key ((15, Proto_Support.Length_Delimited));
             Google.Protobuf.Compiler.Plugin.File'Write (Stream, V.File (J));
          end loop;
          if WS.End_Message then
@@ -509,26 +512,26 @@ package body Google.Protobuf.Compiler.Plugin is
    procedure Read_File
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out File) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
                if  not V.Name.Is_Set then
                   V.Name := (True, others => <>);
                end if;
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Name.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Name.Value);
             when 2 =>
                if  not V.Insertion_Point.Is_Set then
                   V.Insertion_Point := (True, others => <>);
                end if;
-               PB_Support.IO.Read
+               Proto_Support.IO.Read
                  (Stream, Key.Encoding, V.Insertion_Point.Value);
             when 15 =>
                if  not V.Content.Is_Set then
                   V.Content := (True, others => <>);
                end if;
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Content.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Content.Value);
             when 16 =>
                if  not V.Generated_Code_Info.Is_Set then
                   V.Generated_Code_Info := (True, others => <>);
@@ -536,7 +539,7 @@ package body Google.Protobuf.Compiler.Plugin is
                Google_Protobuf_Descriptor_Generated_Code_Info_IO.Read
                  (Stream, Key.Encoding, V.Generated_Code_Info.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_File;
@@ -545,17 +548,17 @@ package body Google.Protobuf.Compiler.Plugin is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : File) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_File (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          if V.Name.Is_Set then
@@ -568,7 +571,7 @@ package body Google.Protobuf.Compiler.Plugin is
             WS.Write (15, V.Content.Value);
          end if;
          if V.Generated_Code_Info.Is_Set then
-            WS.Write_Key ((16, PB_Support.Length_Delimited));
+            WS.Write_Key ((16, Proto_Support.Length_Delimited));
             Google.Protobuf.Descriptor.Generated_Code_Info'Write
               (Stream, V.Generated_Code_Info.Value);
          end if;

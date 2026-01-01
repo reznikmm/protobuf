@@ -29,10 +29,10 @@ do
     -I`dirname $PB_DIR/$J` $PB_DIR/$J
 done
 
-gprbuild -p -P gnat/conformance.gpr
+gprbuild -j0 -p -P gnat/conformance.gpr
 
 export LD_LIBRARY_PATH=$PB_CACHE
 
 $PB_CACHE/conformance_test_runner \
    --failure_list ada_failing_tests.txt \
-  .objs/conformance/development/conformance-run
+  .objs/conformance/conformance-run

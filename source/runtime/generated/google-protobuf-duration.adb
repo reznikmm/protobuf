@@ -1,6 +1,6 @@
 with Ada.Unchecked_Deallocation;
-with PB_Support.IO;
-with PB_Support.Internal;
+with Proto_Support.IO;
+with Proto_Support.Internal;
 
 package body Google.Protobuf.Duration is
 
@@ -68,16 +68,16 @@ package body Google.Protobuf.Duration is
    procedure Read_Duration
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Duration) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Seconds);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Seconds);
             when 2 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Nanos);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Nanos);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Duration;
@@ -86,17 +86,17 @@ package body Google.Protobuf.Duration is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Duration) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Duration (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Seconds, 0);

@@ -1,7 +1,7 @@
 with Ada.Finalization;
 with Ada.Streams;
-with League.Stream_Element_Vectors;
 with League.Strings;
+with Proto_Support.Stream_Element_Vectors;
 
 package Google.Protobuf.Any is
 
@@ -12,7 +12,7 @@ package Google.Protobuf.Any is
    type Any is
      record
         Type_Url : League.Strings.Universal_String;
-        Value    : League.Stream_Element_Vectors.Stream_Element_Vector;
+        Value    : Proto_Support.Stream_Element_Vectors.Vector;
      end record;
 
    type Optional_Any  (Is_Set : Boolean := False) is

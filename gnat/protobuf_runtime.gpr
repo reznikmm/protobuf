@@ -1,44 +1,32 @@
---  MIT License
+--  SPDX-FileCopyrightText: 2020-2025 Max Reznik <reznikmm@gmail.com>
 --
 --  Copyright (c) 2020-2023 Max Reznik
 --
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and/or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
---  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
 
 with "protobuf_runtime_config.gpr";
 
 library project Protobuf_Runtime is
 
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("PROTOBUF_LIBRARY_TYPE", external ("LIBRARY_TYPE", "relocatable"));
+
    for Source_Dirs use ("../source/runtime", "../source/runtime/generated");
-   for Object_Dir use "../.objs/runtime/" & Protobuf_Runtime_Config.Build_Profile;
+   for Object_Dir use "../.objs/runtime/"
+     & Protobuf_Runtime_Config.Build_Profile & "/"
+     & Library_Type;
 
    for Library_Name use "adapbrt";
-   for Library_Dir use "../.libs";
-   for Library_ALI_Dir use "../.libs/adapbrt";
+   for Library_Dir use "../.libs/"
+     & Protobuf_Runtime_Config.Build_Profile & "/"
+     & Library_Type;
+   --  for Library_ALI_Dir use "../.libs/adapbrt";
    for Library_Version use "libadapbrt.so." & Protobuf_Runtime_Config.Crate_Version;
 
    for Languages use ("Ada");
 
    for Create_Missing_Dirs use "True";
 
-   type Library_Type_Type is ("relocatable", "static", "static-pic");
-   Library_Type : Library_Type_Type :=
-     external ("PROTOBUF_LIBRARY_TYPE", external ("LIBRARY_TYPE", "relocatable"));
    for Library_Kind use Library_Type;
 
    package Compiler is

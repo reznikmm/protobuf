@@ -1,19 +1,28 @@
 with Ada.Finalization;
 with Ada.Streams;
 with Interfaces;
-with League.Stream_Element_Vectors;
 with League.String_Vectors;
 with League.Strings;
-with PB_Support.Boolean_Vectors;
-with PB_Support.IEEE_Float_32_Vectors;
-with PB_Support.IEEE_Float_64_Vectors;
-with PB_Support.Integer_32_Vectors;
-with PB_Support.Integer_64_Vectors;
-with PB_Support.Stream_Element_Vector_Vectors;
-with PB_Support.Universal_String_Vectors;
-with PB_Support.Unsigned_32_Vectors;
-with PB_Support.Unsigned_64_Vectors;
-with PB_Support.Vectors;
+with Proto_Support.Boolean_Options;
+with Proto_Support.Boolean_Vectors;
+with Proto_Support.IEEE_Float_32_Options;
+with Proto_Support.IEEE_Float_32_Vectors;
+with Proto_Support.IEEE_Float_64_Options;
+with Proto_Support.IEEE_Float_64_Vectors;
+with Proto_Support.Integer_32_Options;
+with Proto_Support.Integer_32_Vectors;
+with Proto_Support.Integer_64_Options;
+with Proto_Support.Integer_64_Vectors;
+with Proto_Support.Options;
+with Proto_Support.Stream_Element_Vectors;
+with Proto_Support.Universal_String_Options;
+with Proto_Support.Unsigned_32_Options;
+with Proto_Support.Unsigned_32_Vectors;
+with Proto_Support.Unsigned_64_Options;
+with Proto_Support.Unsigned_64_Vectors;
+with Proto_Support.Vector_Options;
+with Proto_Support.Vector_Vectors;
+with Proto_Support.Vectors;
 
 package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
@@ -23,19 +32,37 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
      (FOREIGN_FOO => 0, FOREIGN_BAR => 1, FOREIGN_BAZ => 2);
 
    package Foreign_Enum_Proto_2_Vectors is
-     new PB_Support.Vectors (Foreign_Enum_Proto_2);
+     new Proto_Support.Vectors (Foreign_Enum_Proto_2);
+
+   package Foreign_Enum_Proto_2_Options is
+     new Proto_Support.Options (Foreign_Enum_Proto_2);
 
    type Nested_Enum is (NEG, FOO, BAR, BAZ);
 
    for Nested_Enum use (NEG =>  - 1, FOO => 0, BAR => 1, BAZ => 2);
 
-   package Nested_Enum_Vectors is new PB_Support.Vectors (Nested_Enum);
+   package Nested_Enum_Vectors is new Proto_Support.Vectors (Nested_Enum);
+
+   package Nested_Enum_Options is new Proto_Support.Options (Nested_Enum);
 
    type Bool is (kFalse, kTrue);
 
    for Bool use (kFalse => 0, kTrue  => 1);
 
-   package Bool_Vectors is new PB_Support.Vectors (Bool);
+   package Bool_Vectors is new Proto_Support.Vectors (Bool);
+
+   package Bool_Options is new Proto_Support.Options (Bool);
+
+   type Test_All_Required_Types_Proto_2_Nested_Enum is (NEG, FOO, BAR, BAZ);
+
+   for Test_All_Required_Types_Proto_2_Nested_Enum use
+     (NEG =>  - 1, FOO => 0, BAR => 1, BAZ => 2);
+
+   package Test_All_Required_Types_Proto_2_Nested_Enum_Vectors is
+     new Proto_Support.Vectors (Test_All_Required_Types_Proto_2_Nested_Enum);
+
+   package Test_All_Required_Types_Proto_2_Nested_Enum_Options is
+     new Proto_Support.Options (Test_All_Required_Types_Proto_2_Nested_Enum);
 
    type Test_All_Types_Proto_2_Vector is tagged private
      with Variable_Indexing => Get_Test_All_Types_Proto_2_Variable_Reference,
@@ -89,6 +116,10 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
        Get_Map_Sfixed_64Sfixed_64Entry_Variable_Reference,
      Constant_Indexing => Get_Map_Sfixed_64Sfixed_64Entry_Constant_Reference;
 
+   type Map_Int_32Bool_Entry_Vector is tagged private
+     with Variable_Indexing => Get_Map_Int_32Bool_Entry_Variable_Reference,
+     Constant_Indexing => Get_Map_Int_32Bool_Entry_Constant_Reference;
+
    type Map_Int_32Float_Entry_Vector is tagged private
      with Variable_Indexing => Get_Map_Int_32Float_Entry_Variable_Reference,
      Constant_Indexing => Get_Map_Int_32Float_Entry_Constant_Reference;
@@ -96,6 +127,12 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
    type Map_Int_32Double_Entry_Vector is tagged private
      with Variable_Indexing => Get_Map_Int_32Double_Entry_Variable_Reference,
      Constant_Indexing => Get_Map_Int_32Double_Entry_Constant_Reference;
+
+   type Map_Int_32Nested_Message_Entry_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Map_Int_32Nested_Message_Entry_Variable_Reference,
+     Constant_Indexing =>
+       Get_Map_Int_32Nested_Message_Entry_Constant_Reference;
 
    type Map_Bool_Bool_Entry_Vector is tagged private
      with Variable_Indexing => Get_Map_Bool_Bool_Entry_Variable_Reference,
@@ -135,6 +172,10 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
      with Variable_Indexing => Get_Data_Variable_Reference,
      Constant_Indexing => Get_Data_Constant_Reference;
 
+   type Multi_Word_Group_Field_Vector is tagged private
+     with Variable_Indexing => Get_Multi_Word_Group_Field_Variable_Reference,
+     Constant_Indexing => Get_Multi_Word_Group_Field_Constant_Reference;
+
    type Message_Set_Correct_Vector is tagged private
      with Variable_Indexing => Get_Message_Set_Correct_Variable_Reference,
      Constant_Indexing => Get_Message_Set_Correct_Constant_Reference;
@@ -151,9 +192,17 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
      Constant_Indexing =>
        Get_Message_Set_Correct_Extension_2_Constant_Reference;
 
+   type Extension_With_Oneof_Vector is tagged private
+     with Variable_Indexing => Get_Extension_With_Oneof_Variable_Reference,
+     Constant_Indexing => Get_Extension_With_Oneof_Constant_Reference;
+
    type Foreign_Message_Proto_2_Vector is tagged private
      with Variable_Indexing => Get_Foreign_Message_Proto_2_Variable_Reference,
      Constant_Indexing => Get_Foreign_Message_Proto_2_Constant_Reference;
+
+   type Group_Field_Vector is tagged private
+     with Variable_Indexing => Get_Group_Field_Variable_Reference,
+     Constant_Indexing => Get_Group_Field_Constant_Reference;
 
    type Unknown_To_Test_All_Types_Vector is tagged private
      with Variable_Indexing =>
@@ -176,10 +225,77 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
      with Variable_Indexing => Get_One_String_Proto_2_Variable_Reference,
      Constant_Indexing => Get_One_String_Proto_2_Constant_Reference;
 
+   type Proto_With_Keywords_Vector is tagged private
+     with Variable_Indexing => Get_Proto_With_Keywords_Variable_Reference,
+     Constant_Indexing => Get_Proto_With_Keywords_Constant_Reference;
+
+   type Test_All_Required_Types_Proto_2_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Variable_Reference,
+     Constant_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Constant_Reference;
+
+   type Test_All_Required_Types_Proto_2_Nested_Message_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Nested_Message_Variable_Reference,
+     Constant_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Nested_Message_Constant_Reference;
+
+   type Test_All_Required_Types_Proto_2_Data_Vector is tagged private
+     with Variable_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Data_Variable_Reference,
+     Constant_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Data_Constant_Reference;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Vector is
+     tagged private
+     with Variable_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Variable_Reference,
+     Constant_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Constant_Reference;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Vector is
+     tagged private
+     with Variable_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Variable_Reference,
+     Constant_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Constant_Reference;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Vector is
+     tagged private
+     with Variable_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Variable_Reference,
+     Constant_Indexing =>
+       Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Constant_Reference;
+
+   type Test_Large_Oneof_Vector is tagged private
+     with Variable_Indexing => Get_Test_Large_Oneof_Variable_Reference,
+     Constant_Indexing => Get_Test_Large_Oneof_Constant_Reference;
+
+   type A1_Vector is tagged private
+     with Variable_Indexing => Get_A1_Variable_Reference,
+     Constant_Indexing => Get_A1_Constant_Reference;
+
+   type A2_Vector is tagged private
+     with Variable_Indexing => Get_A2_Variable_Reference,
+     Constant_Indexing => Get_A2_Constant_Reference;
+
+   type A3_Vector is tagged private
+     with Variable_Indexing => Get_A3_Variable_Reference,
+     Constant_Indexing => Get_A3_Constant_Reference;
+
+   type A4_Vector is tagged private
+     with Variable_Indexing => Get_A4_Variable_Reference,
+     Constant_Indexing => Get_A4_Constant_Reference;
+
+   type A5_Vector is tagged private
+     with Variable_Indexing => Get_A5_Variable_Reference,
+     Constant_Indexing => Get_A5_Constant_Reference;
+
    type Map_Int_32Int_32Entry is
      record
-        Key   : PB_Support.Integer_32_Vectors.Option;
-        Value : PB_Support.Integer_32_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Map_Int_32Int_32Entry  (Is_Set : Boolean := False) is
@@ -223,8 +339,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Int_64Int_64Entry is
      record
-        Key   : PB_Support.Integer_64_Vectors.Option;
-        Value : PB_Support.Integer_64_Vectors.Option;
+        Key   : Proto_Support.Integer_64_Options.Option;
+        Value : Proto_Support.Integer_64_Options.Option;
      end record;
 
    type Optional_Map_Int_64Int_64Entry  (Is_Set : Boolean := False) is
@@ -268,8 +384,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Uint_32Uint_32Entry is
      record
-        Key   : PB_Support.Unsigned_32_Vectors.Option;
-        Value : PB_Support.Unsigned_32_Vectors.Option;
+        Key   : Proto_Support.Unsigned_32_Options.Option;
+        Value : Proto_Support.Unsigned_32_Options.Option;
      end record;
 
    type Optional_Map_Uint_32Uint_32Entry  (Is_Set : Boolean := False) is
@@ -314,8 +430,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Uint_64Uint_64Entry is
      record
-        Key   : PB_Support.Unsigned_64_Vectors.Option;
-        Value : PB_Support.Unsigned_64_Vectors.Option;
+        Key   : Proto_Support.Unsigned_64_Options.Option;
+        Value : Proto_Support.Unsigned_64_Options.Option;
      end record;
 
    type Optional_Map_Uint_64Uint_64Entry  (Is_Set : Boolean := False) is
@@ -360,8 +476,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Sint_32Sint_32Entry is
      record
-        Key   : PB_Support.Integer_32_Vectors.Option;
-        Value : PB_Support.Integer_32_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Map_Sint_32Sint_32Entry  (Is_Set : Boolean := False) is
@@ -406,8 +522,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Sint_64Sint_64Entry is
      record
-        Key   : PB_Support.Integer_64_Vectors.Option;
-        Value : PB_Support.Integer_64_Vectors.Option;
+        Key   : Proto_Support.Integer_64_Options.Option;
+        Value : Proto_Support.Integer_64_Options.Option;
      end record;
 
    type Optional_Map_Sint_64Sint_64Entry  (Is_Set : Boolean := False) is
@@ -452,8 +568,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Fixed_32Fixed_32Entry is
      record
-        Key   : PB_Support.Unsigned_32_Vectors.Option;
-        Value : PB_Support.Unsigned_32_Vectors.Option;
+        Key   : Proto_Support.Unsigned_32_Options.Option;
+        Value : Proto_Support.Unsigned_32_Options.Option;
      end record;
 
    type Optional_Map_Fixed_32Fixed_32Entry  (Is_Set : Boolean := False) is
@@ -498,8 +614,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Fixed_64Fixed_64Entry is
      record
-        Key   : PB_Support.Unsigned_64_Vectors.Option;
-        Value : PB_Support.Unsigned_64_Vectors.Option;
+        Key   : Proto_Support.Unsigned_64_Options.Option;
+        Value : Proto_Support.Unsigned_64_Options.Option;
      end record;
 
    type Optional_Map_Fixed_64Fixed_64Entry  (Is_Set : Boolean := False) is
@@ -544,8 +660,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Sfixed_32Sfixed_32Entry is
      record
-        Key   : PB_Support.Integer_32_Vectors.Option;
-        Value : PB_Support.Integer_32_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Map_Sfixed_32Sfixed_32Entry  (Is_Set : Boolean := False) is
@@ -590,8 +706,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Sfixed_64Sfixed_64Entry is
      record
-        Key   : PB_Support.Integer_64_Vectors.Option;
-        Value : PB_Support.Integer_64_Vectors.Option;
+        Key   : Proto_Support.Integer_64_Options.Option;
+        Value : Proto_Support.Integer_64_Options.Option;
      end record;
 
    type Optional_Map_Sfixed_64Sfixed_64Entry  (Is_Set : Boolean := False) is
@@ -634,10 +750,55 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       return Map_Sfixed_64Sfixed_64Entry_Constant_Reference
      with Inline;
 
+   type Map_Int_32Bool_Entry is
+     record
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.Boolean_Options.Option;
+     end record;
+
+   type Optional_Map_Int_32Bool_Entry  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Map_Int_32Bool_Entry;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Map_Int_32Bool_Entry_Vector) return Natural;
+
+   procedure Clear (Self : in out Map_Int_32Bool_Entry_Vector);
+
+   procedure Append
+    (Self : in out Map_Int_32Bool_Entry_Vector;
+     V    : Map_Int_32Bool_Entry);
+
+   type Map_Int_32Bool_Entry_Variable_Reference
+     (Element : not null access Map_Int_32Bool_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Bool_Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_32Bool_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Bool_Entry_Variable_Reference
+     with Inline;
+
+   type Map_Int_32Bool_Entry_Constant_Reference
+     (Element : not null access constant Map_Int_32Bool_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Bool_Entry_Constant_Reference
+    (Self  : aliased Map_Int_32Bool_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Bool_Entry_Constant_Reference
+     with Inline;
+
    type Map_Int_32Float_Entry is
      record
-        Key   : PB_Support.Integer_32_Vectors.Option;
-        Value : PB_Support.IEEE_Float_32_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.IEEE_Float_32_Options.Option;
      end record;
 
    type Optional_Map_Int_32Float_Entry  (Is_Set : Boolean := False) is
@@ -681,8 +842,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Int_32Double_Entry is
      record
-        Key   : PB_Support.Integer_32_Vectors.Option;
-        Value : PB_Support.IEEE_Float_64_Vectors.Option;
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Proto_Support.IEEE_Float_64_Options.Option;
      end record;
 
    type Optional_Map_Int_32Double_Entry  (Is_Set : Boolean := False) is
@@ -726,8 +887,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_Bool_Bool_Entry is
      record
-        Key   : PB_Support.Boolean_Vectors.Option;
-        Value : PB_Support.Boolean_Vectors.Option;
+        Key   : Proto_Support.Boolean_Options.Option;
+        Value : Proto_Support.Boolean_Options.Option;
      end record;
 
    type Optional_Map_Bool_Bool_Entry  (Is_Set : Boolean := False) is
@@ -771,8 +932,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_String_Entry is
      record
-        Key   : PB_Support.Universal_String_Vectors.Option;
-        Value : PB_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
+        Value : Proto_Support.Universal_String_Options.Option;
      end record;
 
    type Optional_Map_String_String_Entry  (Is_Set : Boolean := False) is
@@ -817,8 +978,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_Bytes_Entry is
      record
-        Key   : PB_Support.Universal_String_Vectors.Option;
-        Value : PB_Support.Stream_Element_Vector_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
+        Value : Proto_Support.Vector_Options.Option;
      end record;
 
    type Optional_Map_String_Bytes_Entry  (Is_Set : Boolean := False) is
@@ -862,9 +1023,9 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_Nested_Enum_Entry is
      record
-        Key   : PB_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
         Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
-          .Nested_Enum_Vectors.Option;
+          .Nested_Enum_Options.Option;
      end record;
 
    type Optional_Map_String_Nested_Enum_Entry  (Is_Set : Boolean := False) is
@@ -909,9 +1070,9 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Map_String_Foreign_Enum_Entry is
      record
-        Key   : PB_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
         Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
-          .Foreign_Enum_Proto_2_Vectors.Option;
+          .Foreign_Enum_Proto_2_Options.Option;
      end record;
 
    type Optional_Map_String_Foreign_Enum_Entry  (Is_Set : Boolean := False) is
@@ -958,8 +1119,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Data is
      record
-        Group_Int_32  : PB_Support.Integer_32_Vectors.Option;
-        Group_Uint_32 : PB_Support.Unsigned_32_Vectors.Option;
+        Group_Int_32  : Proto_Support.Integer_32_Options.Option;
+        Group_Uint_32 : Proto_Support.Unsigned_32_Options.Option;
      end record;
 
    type Optional_Data  (Is_Set : Boolean := False) is
@@ -997,6 +1158,51 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
     (Self  : aliased Data_Vector;
      Index : Positive)
       return Data_Constant_Reference
+     with Inline;
+
+   type Multi_Word_Group_Field is
+     record
+        Group_Int_32  : Proto_Support.Integer_32_Options.Option;
+        Group_Uint_32 : Proto_Support.Unsigned_32_Options.Option;
+     end record;
+
+   type Optional_Multi_Word_Group_Field  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Multi_Word_Group_Field;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Multi_Word_Group_Field_Vector) return Natural;
+
+   procedure Clear (Self : in out Multi_Word_Group_Field_Vector);
+
+   procedure Append
+    (Self : in out Multi_Word_Group_Field_Vector;
+     V    : Multi_Word_Group_Field);
+
+   type Multi_Word_Group_Field_Variable_Reference
+     (Element : not null access Multi_Word_Group_Field) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Multi_Word_Group_Field_Variable_Reference
+    (Self  : aliased in out Multi_Word_Group_Field_Vector;
+     Index : Positive)
+      return Multi_Word_Group_Field_Variable_Reference
+     with Inline;
+
+   type Multi_Word_Group_Field_Constant_Reference
+     (Element : not null access constant Multi_Word_Group_Field) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Multi_Word_Group_Field_Constant_Reference
+    (Self  : aliased Multi_Word_Group_Field_Vector;
+     Index : Positive)
+      return Multi_Word_Group_Field_Constant_Reference
      with Inline;
 
    type Message_Set_Correct is null record;
@@ -1042,7 +1248,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Message_Set_Correct_Extension_1 is
      record
-        Str : PB_Support.Universal_String_Vectors.Option;
+        Str : Proto_Support.Universal_String_Options.Option;
      end record;
 
    type Optional_Message_Set_Correct_Extension_1
@@ -1090,7 +1296,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Message_Set_Correct_Extension_2 is
      record
-        I : PB_Support.Integer_32_Vectors.Option;
+        I : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Message_Set_Correct_Extension_2
@@ -1136,9 +1342,69 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       return Message_Set_Correct_Extension_2_Constant_Reference
      with Inline;
 
+   type Extension_With_Oneof_Variant_Kind is
+     (Oneof_Field_Not_Set, A_Kind             , B_Kind             );
+
+   type Extension_With_Oneof_Variant
+     (Oneof_Field : Extension_With_Oneof_Variant_Kind := Oneof_Field_Not_Set) is
+     record
+        case Oneof_Field is
+           when Oneof_Field_Not_Set =>
+              null;
+           when A_Kind =>
+              A : Interfaces.Integer_32 := 0;
+           when B_Kind =>
+              B : Interfaces.Integer_32 := 0;
+        end case;
+     end record;
+
+   type Extension_With_Oneof is
+     record
+        Variant : Extension_With_Oneof_Variant;
+     end record;
+
+   type Optional_Extension_With_Oneof  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Extension_With_Oneof;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Extension_With_Oneof_Vector) return Natural;
+
+   procedure Clear (Self : in out Extension_With_Oneof_Vector);
+
+   procedure Append
+    (Self : in out Extension_With_Oneof_Vector;
+     V    : Extension_With_Oneof);
+
+   type Extension_With_Oneof_Variable_Reference
+     (Element : not null access Extension_With_Oneof) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Extension_With_Oneof_Variable_Reference
+    (Self  : aliased in out Extension_With_Oneof_Vector;
+     Index : Positive)
+      return Extension_With_Oneof_Variable_Reference
+     with Inline;
+
+   type Extension_With_Oneof_Constant_Reference
+     (Element : not null access constant Extension_With_Oneof) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Extension_With_Oneof_Constant_Reference
+    (Self  : aliased Extension_With_Oneof_Vector;
+     Index : Positive)
+      return Extension_With_Oneof_Constant_Reference
+     with Inline;
+
    type Foreign_Message_Proto_2 is
      record
-        C : PB_Support.Integer_32_Vectors.Option;
+        C : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Foreign_Message_Proto_2  (Is_Set : Boolean := False) is
@@ -1181,9 +1447,52 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       return Foreign_Message_Proto_2_Constant_Reference
      with Inline;
 
+   type Group_Field is
+     record
+        Group_Int_32  : Proto_Support.Integer_32_Options.Option;
+        Group_Uint_32 : Proto_Support.Unsigned_32_Options.Option;
+     end record;
+
+   type Optional_Group_Field  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Group_Field;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Group_Field_Vector) return Natural;
+
+   procedure Clear (Self : in out Group_Field_Vector);
+
+   procedure Append (Self : in out Group_Field_Vector; V    : Group_Field);
+
+   type Group_Field_Variable_Reference
+     (Element : not null access Group_Field) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Group_Field_Variable_Reference
+    (Self  : aliased in out Group_Field_Vector;
+     Index : Positive)
+      return Group_Field_Variable_Reference
+     with Inline;
+
+   type Group_Field_Constant_Reference
+     (Element : not null access constant Group_Field) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Group_Field_Constant_Reference
+    (Self  : aliased Group_Field_Vector;
+     Index : Positive)
+      return Group_Field_Constant_Reference
+     with Inline;
+
    type Optional_Group is
      record
-        A : PB_Support.Integer_32_Vectors.Option;
+        A : Proto_Support.Integer_32_Options.Option;
      end record;
 
    type Optional_Optional_Group  (Is_Set : Boolean := False) is
@@ -1227,14 +1536,14 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Unknown_To_Test_All_Types is
      record
-        Optional_Int_32 : PB_Support.Integer_32_Vectors.Option;
-        Optional_String : PB_Support.Universal_String_Vectors.Option;
+        Optional_Int_32 : Proto_Support.Integer_32_Options.Option;
+        Optional_String : Proto_Support.Universal_String_Options.Option;
         Nested_Message  : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Optional_Foreign_Message_Proto_2;
         Optionalgroup   : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Optional_Optional_Group;
-        Optional_Bool   : PB_Support.Boolean_Vectors.Option;
-        Repeated_Int_32 : PB_Support.Integer_32_Vectors.Vector;
+        Optional_Bool   : Proto_Support.Boolean_Options.Option;
+        Repeated_Int_32 : Proto_Support.Integer_32_Vectors.Vector;
      end record;
 
    type Optional_Unknown_To_Test_All_Types  (Is_Set : Boolean := False) is
@@ -1362,7 +1671,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type One_String_Proto_2 is
      record
-        Data : PB_Support.Universal_String_Vectors.Option;
+        Data : Proto_Support.Universal_String_Options.Option;
      end record;
 
    type Optional_One_String_Proto_2  (Is_Set : Boolean := False) is
@@ -1404,9 +1713,508 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       return One_String_Proto_2_Constant_Reference
      with Inline;
 
+   type Proto_With_Keywords is
+     record
+        Inline   : Proto_Support.Integer_32_Options.Option;
+        Concept  : Proto_Support.Universal_String_Options.Option;
+        Requires : League.String_Vectors.Universal_String_Vector;
+     end record;
+
+   type Optional_Proto_With_Keywords  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Proto_With_Keywords;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Proto_With_Keywords_Vector) return Natural;
+
+   procedure Clear (Self : in out Proto_With_Keywords_Vector);
+
+   procedure Append
+    (Self : in out Proto_With_Keywords_Vector;
+     V    : Proto_With_Keywords);
+
+   type Proto_With_Keywords_Variable_Reference
+     (Element : not null access Proto_With_Keywords) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Proto_With_Keywords_Variable_Reference
+    (Self  : aliased in out Proto_With_Keywords_Vector;
+     Index : Positive)
+      return Proto_With_Keywords_Variable_Reference
+     with Inline;
+
+   type Proto_With_Keywords_Constant_Reference
+     (Element : not null access constant Proto_With_Keywords) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Proto_With_Keywords_Constant_Reference
+    (Self  : aliased Proto_With_Keywords_Vector;
+     Index : Positive)
+      return Proto_With_Keywords_Constant_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Data is
+     record
+        Group_Int_32  : Interfaces.Integer_32 := 0;
+        Group_Uint_32 : Interfaces.Unsigned_32 := 0;
+     end record;
+
+   type Optional_Test_All_Required_Types_Proto_2_Data
+     (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Test_All_Required_Types_Proto_2_Data;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length
+    (Self : Test_All_Required_Types_Proto_2_Data_Vector)
+      return Natural;
+
+   procedure Clear (Self : in out Test_All_Required_Types_Proto_2_Data_Vector);
+
+   procedure Append
+    (Self : in out Test_All_Required_Types_Proto_2_Data_Vector;
+     V    : Test_All_Required_Types_Proto_2_Data);
+
+   type Test_All_Required_Types_Proto_2_Data_Variable_Reference
+     (Element : not null access Test_All_Required_Types_Proto_2_Data) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Data_Variable_Reference
+    (Self  : aliased in out Test_All_Required_Types_Proto_2_Data_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Data_Variable_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Data_Constant_Reference
+     (Element : not null access constant Test_All_Required_Types_Proto_2_Data) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Data_Constant_Reference
+    (Self  : aliased Test_All_Required_Types_Proto_2_Data_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Data_Constant_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct is null record;
+
+   type Optional_Test_All_Required_Types_Proto_2_Message_Set_Correct
+     (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Test_All_Required_Types_Proto_2_Message_Set_Correct;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length
+    (Self : Test_All_Required_Types_Proto_2_Message_Set_Correct_Vector)
+      return Natural;
+
+   procedure Clear
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Vector);
+
+   procedure Append
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Vector;
+     V    : Test_All_Required_Types_Proto_2_Message_Set_Correct);
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Variable_Reference
+     (Element : not null access Test_All_Required_Types_Proto_2_Message_Set_Correct) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Variable_Reference
+    (Self  : aliased in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Message_Set_Correct_Variable_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Constant_Reference
+     (Element : not null access constant Test_All_Required_Types_Proto_2_Message_Set_Correct) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Constant_Reference
+    (Self  : aliased Test_All_Required_Types_Proto_2_Message_Set_Correct_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Message_Set_Correct_Constant_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1 is
+     record
+        Str : League.Strings.Universal_String;
+     end record;
+
+   type Optional_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1
+     (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length
+    (Self : Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Vector)
+      return Natural;
+
+   procedure Clear
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Vector);
+
+   procedure Append
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Vector;
+     V    : Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1);
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Variable_Reference
+     (Element : not null access Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Variable_Reference
+    (Self  : aliased in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Variable_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Constant_Reference
+     (Element : not null access constant Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Constant_Reference
+    (Self  : aliased Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Constant_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2 is
+     record
+        I : Interfaces.Integer_32 := 0;
+     end record;
+
+   type Optional_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2
+     (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length
+    (Self : Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Vector)
+      return Natural;
+
+   procedure Clear
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Vector);
+
+   procedure Append
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Vector;
+     V    : Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2);
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Variable_Reference
+     (Element : not null access Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Variable_Reference
+    (Self  : aliased in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Variable_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Constant_Reference
+     (Element : not null access constant Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Constant_Reference
+    (Self  : aliased Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Constant_Reference
+     with Inline;
+
+   type A1 is null record;
+
+   type Optional_A1  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A1;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : A1_Vector) return Natural;
+
+   procedure Clear (Self : in out A1_Vector);
+
+   procedure Append (Self : in out A1_Vector; V    : A1);
+
+   type A1_Variable_Reference  (Element : not null access A1) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A1_Variable_Reference
+    (Self  : aliased in out A1_Vector;
+     Index : Positive)
+      return A1_Variable_Reference
+     with Inline;
+
+   type A1_Constant_Reference  (Element : not null access constant A1) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A1_Constant_Reference
+    (Self  : aliased A1_Vector;
+     Index : Positive)
+      return A1_Constant_Reference
+     with Inline;
+
+   type A2 is null record;
+
+   type Optional_A2  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A2;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : A2_Vector) return Natural;
+
+   procedure Clear (Self : in out A2_Vector);
+
+   procedure Append (Self : in out A2_Vector; V    : A2);
+
+   type A2_Variable_Reference  (Element : not null access A2) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A2_Variable_Reference
+    (Self  : aliased in out A2_Vector;
+     Index : Positive)
+      return A2_Variable_Reference
+     with Inline;
+
+   type A2_Constant_Reference  (Element : not null access constant A2) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A2_Constant_Reference
+    (Self  : aliased A2_Vector;
+     Index : Positive)
+      return A2_Constant_Reference
+     with Inline;
+
+   type A3 is null record;
+
+   type Optional_A3  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A3;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : A3_Vector) return Natural;
+
+   procedure Clear (Self : in out A3_Vector);
+
+   procedure Append (Self : in out A3_Vector; V    : A3);
+
+   type A3_Variable_Reference  (Element : not null access A3) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A3_Variable_Reference
+    (Self  : aliased in out A3_Vector;
+     Index : Positive)
+      return A3_Variable_Reference
+     with Inline;
+
+   type A3_Constant_Reference  (Element : not null access constant A3) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A3_Constant_Reference
+    (Self  : aliased A3_Vector;
+     Index : Positive)
+      return A3_Constant_Reference
+     with Inline;
+
+   type A4 is null record;
+
+   type Optional_A4  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A4;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : A4_Vector) return Natural;
+
+   procedure Clear (Self : in out A4_Vector);
+
+   procedure Append (Self : in out A4_Vector; V    : A4);
+
+   type A4_Variable_Reference  (Element : not null access A4) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A4_Variable_Reference
+    (Self  : aliased in out A4_Vector;
+     Index : Positive)
+      return A4_Variable_Reference
+     with Inline;
+
+   type A4_Constant_Reference  (Element : not null access constant A4) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A4_Constant_Reference
+    (Self  : aliased A4_Vector;
+     Index : Positive)
+      return A4_Constant_Reference
+     with Inline;
+
+   type A5 is null record;
+
+   type Optional_A5  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A5;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : A5_Vector) return Natural;
+
+   procedure Clear (Self : in out A5_Vector);
+
+   procedure Append (Self : in out A5_Vector; V    : A5);
+
+   type A5_Variable_Reference  (Element : not null access A5) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A5_Variable_Reference
+    (Self  : aliased in out A5_Vector;
+     Index : Positive)
+      return A5_Variable_Reference
+     with Inline;
+
+   type A5_Constant_Reference  (Element : not null access constant A5) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_A5_Constant_Reference
+    (Self  : aliased A5_Vector;
+     Index : Positive)
+      return A5_Constant_Reference
+     with Inline;
+
+   type Test_Large_Oneof_Variant_Kind is
+     (Large_Oneof_Not_Set,
+      A1_Kind            ,
+      A2_Kind            ,
+      A3_Kind            ,
+      A4_Kind            ,
+      A5_Kind            );
+
+   type Test_Large_Oneof_Variant
+     (Large_Oneof : Test_Large_Oneof_Variant_Kind := Large_Oneof_Not_Set) is
+     record
+        case Large_Oneof is
+           when Large_Oneof_Not_Set =>
+              null;
+           when A1_Kind =>
+              A1 : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A1;
+           when A2_Kind =>
+              A2 : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A2;
+           when A3_Kind =>
+              A3 : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A3;
+           when A4_Kind =>
+              A4 : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A4;
+           when A5_Kind =>
+              A5 : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A5;
+        end case;
+     end record;
+
+   type Test_Large_Oneof is
+     record
+        Variant : Test_Large_Oneof_Variant;
+     end record;
+
+   type Optional_Test_Large_Oneof  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Test_Large_Oneof;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length (Self : Test_Large_Oneof_Vector) return Natural;
+
+   procedure Clear (Self : in out Test_Large_Oneof_Vector);
+
+   procedure Append
+    (Self : in out Test_Large_Oneof_Vector;
+     V    : Test_Large_Oneof);
+
+   type Test_Large_Oneof_Variable_Reference
+     (Element : not null access Test_Large_Oneof) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_Large_Oneof_Variable_Reference
+    (Self  : aliased in out Test_Large_Oneof_Vector;
+     Index : Positive)
+      return Test_Large_Oneof_Variable_Reference
+     with Inline;
+
+   type Test_Large_Oneof_Constant_Reference
+     (Element : not null access constant Test_Large_Oneof) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_Large_Oneof_Constant_Reference
+    (Self  : aliased Test_Large_Oneof_Vector;
+     Index : Positive)
+      return Test_Large_Oneof_Constant_Reference
+     with Inline;
+
    type Map_String_Foreign_Message_Entry is
      record
-        Key   : PB_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
         Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Optional_Foreign_Message_Proto_2;
      end record;
@@ -1457,7 +2265,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Nested_Message is
      record
-        A           : PB_Support.Integer_32_Vectors.Option;
+        A           : Proto_Support.Integer_32_Options.Option;
         Corecursive : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Test_All_Types_Proto_2_Vector;
      end record;
@@ -1501,9 +2309,58 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
       return Nested_Message_Constant_Reference
      with Inline;
 
+   type Map_Int_32Nested_Message_Entry is
+     record
+        Key   : Proto_Support.Integer_32_Options.Option;
+        Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+          .Optional_Nested_Message;
+     end record;
+
+   type Optional_Map_Int_32Nested_Message_Entry  (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Map_Int_32Nested_Message_Entry;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length
+    (Self : Map_Int_32Nested_Message_Entry_Vector)
+      return Natural;
+
+   procedure Clear (Self : in out Map_Int_32Nested_Message_Entry_Vector);
+
+   procedure Append
+    (Self : in out Map_Int_32Nested_Message_Entry_Vector;
+     V    : Map_Int_32Nested_Message_Entry);
+
+   type Map_Int_32Nested_Message_Entry_Variable_Reference
+     (Element : not null access Map_Int_32Nested_Message_Entry) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Nested_Message_Entry_Variable_Reference
+    (Self  : aliased in out Map_Int_32Nested_Message_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Nested_Message_Entry_Variable_Reference
+     with Inline;
+
+   type Map_Int_32Nested_Message_Entry_Constant_Reference
+     (Element : not null access constant Map_Int_32Nested_Message_Entry) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Map_Int_32Nested_Message_Entry_Constant_Reference
+    (Self  : aliased Map_Int_32Nested_Message_Entry_Vector;
+     Index : Positive)
+      return Map_Int_32Nested_Message_Entry_Constant_Reference
+     with Inline;
+
    type Map_String_Nested_Message_Entry is
      record
-        Key   : PB_Support.Universal_String_Vectors.Option;
+        Key   : Proto_Support.Universal_String_Options.Option;
         Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
           .Optional_Nested_Message;
      end record;
@@ -1577,8 +2434,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
            when Oneof_String_Kind =>
               Oneof_String : League.Strings.Universal_String;
            when Oneof_Bytes_Kind =>
-              Oneof_Bytes : League.Stream_Element_Vectors
-                .Stream_Element_Vector;
+              Oneof_Bytes : Proto_Support.Stream_Element_Vectors.Vector;
            when Oneof_Bool_Kind =>
               Oneof_Bool : Boolean := False;
            when Oneof_Uint_64_Kind =>
@@ -1596,54 +2452,56 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
 
    type Test_All_Types_Proto_2 is
      record
-        Optional_Int_32            : PB_Support.Integer_32_Vectors.Option;
-        Optional_Int_64            : PB_Support.Integer_64_Vectors.Option;
-        Optional_Uint_32           : PB_Support.Unsigned_32_Vectors.Option;
-        Optional_Uint_64           : PB_Support.Unsigned_64_Vectors.Option;
-        Optional_Sint_32           : PB_Support.Integer_32_Vectors.Option;
-        Optional_Sint_64           : PB_Support.Integer_64_Vectors.Option;
-        Optional_Fixed_32          : PB_Support.Unsigned_32_Vectors.Option;
-        Optional_Fixed_64          : PB_Support.Unsigned_64_Vectors.Option;
-        Optional_Sfixed_32         : PB_Support.Integer_32_Vectors.Option;
-        Optional_Sfixed_64         : PB_Support.Integer_64_Vectors.Option;
-        Optional_Float             : PB_Support.IEEE_Float_32_Vectors.Option;
-        Optional_Double            : PB_Support.IEEE_Float_64_Vectors.Option;
-        Optional_Bool              : PB_Support.Boolean_Vectors.Option;
-        Optional_String            : PB_Support.Universal_String_Vectors
+        Optional_Int_32            : Proto_Support.Integer_32_Options.Option;
+        Optional_Int_64            : Proto_Support.Integer_64_Options.Option;
+        Optional_Uint_32           : Proto_Support.Unsigned_32_Options.Option;
+        Optional_Uint_64           : Proto_Support.Unsigned_64_Options.Option;
+        Optional_Sint_32           : Proto_Support.Integer_32_Options.Option;
+        Optional_Sint_64           : Proto_Support.Integer_64_Options.Option;
+        Optional_Fixed_32          : Proto_Support.Unsigned_32_Options.Option;
+        Optional_Fixed_64          : Proto_Support.Unsigned_64_Options.Option;
+        Optional_Sfixed_32         : Proto_Support.Integer_32_Options.Option;
+        Optional_Sfixed_64         : Proto_Support.Integer_64_Options.Option;
+        Optional_Float             : Proto_Support.IEEE_Float_32_Options
           .Option;
-        Optional_Bytes             : PB_Support.Stream_Element_Vector_Vectors
+        Optional_Double            : Proto_Support.IEEE_Float_64_Options
           .Option;
+        Optional_Bool              : Proto_Support.Boolean_Options.Option;
+        Optional_String            : Proto_Support.Universal_String_Options
+          .Option;
+        Optional_Bytes             : Proto_Support.Vector_Options.Option;
         Optional_Nested_Message    : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Optional_Nested_Message;
         Optional_Foreign_Message   : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Optional_Foreign_Message_Proto_2;
         Optional_Nested_Enum       : Protobuf_Test_Messages.Proto_2
-          .Test_Messages_Proto_2.Nested_Enum_Vectors.Option;
+          .Test_Messages_Proto_2.Nested_Enum_Options.Option;
         Optional_Foreign_Enum      : Protobuf_Test_Messages.Proto_2
-          .Test_Messages_Proto_2.Foreign_Enum_Proto_2_Vectors.Option;
-        Optional_String_Piece      : PB_Support.Universal_String_Vectors
+          .Test_Messages_Proto_2.Foreign_Enum_Proto_2_Options.Option;
+        Optional_String_Piece      : Proto_Support.Universal_String_Options
           .Option;
-        Optional_Cord              : PB_Support.Universal_String_Vectors
+        Optional_Cord              : Proto_Support.Universal_String_Options
           .Option;
         Recursive_Message          : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Test_All_Types_Proto_2_Vector;
-        Repeated_Int_32            : PB_Support.Integer_32_Vectors.Vector;
-        Repeated_Int_64            : PB_Support.Integer_64_Vectors.Vector;
-        Repeated_Uint_32           : PB_Support.Unsigned_32_Vectors.Vector;
-        Repeated_Uint_64           : PB_Support.Unsigned_64_Vectors.Vector;
-        Repeated_Sint_32           : PB_Support.Integer_32_Vectors.Vector;
-        Repeated_Sint_64           : PB_Support.Integer_64_Vectors.Vector;
-        Repeated_Fixed_32          : PB_Support.Unsigned_32_Vectors.Vector;
-        Repeated_Fixed_64          : PB_Support.Unsigned_64_Vectors.Vector;
-        Repeated_Sfixed_32         : PB_Support.Integer_32_Vectors.Vector;
-        Repeated_Sfixed_64         : PB_Support.Integer_64_Vectors.Vector;
-        Repeated_Float             : PB_Support.IEEE_Float_32_Vectors.Vector;
-        Repeated_Double            : PB_Support.IEEE_Float_64_Vectors.Vector;
-        Repeated_Bool              : PB_Support.Boolean_Vectors.Vector;
+        Repeated_Int_32            : Proto_Support.Integer_32_Vectors.Vector;
+        Repeated_Int_64            : Proto_Support.Integer_64_Vectors.Vector;
+        Repeated_Uint_32           : Proto_Support.Unsigned_32_Vectors.Vector;
+        Repeated_Uint_64           : Proto_Support.Unsigned_64_Vectors.Vector;
+        Repeated_Sint_32           : Proto_Support.Integer_32_Vectors.Vector;
+        Repeated_Sint_64           : Proto_Support.Integer_64_Vectors.Vector;
+        Repeated_Fixed_32          : Proto_Support.Unsigned_32_Vectors.Vector;
+        Repeated_Fixed_64          : Proto_Support.Unsigned_64_Vectors.Vector;
+        Repeated_Sfixed_32         : Proto_Support.Integer_32_Vectors.Vector;
+        Repeated_Sfixed_64         : Proto_Support.Integer_64_Vectors.Vector;
+        Repeated_Float             : Proto_Support.IEEE_Float_32_Vectors
+          .Vector;
+        Repeated_Double            : Proto_Support.IEEE_Float_64_Vectors
+          .Vector;
+        Repeated_Bool              : Proto_Support.Boolean_Vectors.Vector;
         Repeated_String            : League.String_Vectors
           .Universal_String_Vector;
-        Repeated_Bytes             : PB_Support.Stream_Element_Vector_Vectors
-          .Vector;
+        Repeated_Bytes             : Proto_Support.Vector_Vectors.Vector;
         Repeated_Nested_Message    : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Nested_Message_Vector;
         Repeated_Foreign_Message   : Protobuf_Test_Messages.Proto_2
@@ -1656,34 +2514,38 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Universal_String_Vector;
         Repeated_Cord              : League.String_Vectors
           .Universal_String_Vector;
-        Packed_Int_32              : PB_Support.Integer_32_Vectors.Vector;
-        Packed_Int_64              : PB_Support.Integer_64_Vectors.Vector;
-        Packed_Uint_32             : PB_Support.Unsigned_32_Vectors.Vector;
-        Packed_Uint_64             : PB_Support.Unsigned_64_Vectors.Vector;
-        Packed_Sint_32             : PB_Support.Integer_32_Vectors.Vector;
-        Packed_Sint_64             : PB_Support.Integer_64_Vectors.Vector;
-        Packed_Fixed_32            : PB_Support.Unsigned_32_Vectors.Vector;
-        Packed_Fixed_64            : PB_Support.Unsigned_64_Vectors.Vector;
-        Packed_Sfixed_32           : PB_Support.Integer_32_Vectors.Vector;
-        Packed_Sfixed_64           : PB_Support.Integer_64_Vectors.Vector;
-        Packed_Float               : PB_Support.IEEE_Float_32_Vectors.Vector;
-        Packed_Double              : PB_Support.IEEE_Float_64_Vectors.Vector;
-        Packed_Bool                : PB_Support.Boolean_Vectors.Vector;
+        Packed_Int_32              : Proto_Support.Integer_32_Vectors.Vector;
+        Packed_Int_64              : Proto_Support.Integer_64_Vectors.Vector;
+        Packed_Uint_32             : Proto_Support.Unsigned_32_Vectors.Vector;
+        Packed_Uint_64             : Proto_Support.Unsigned_64_Vectors.Vector;
+        Packed_Sint_32             : Proto_Support.Integer_32_Vectors.Vector;
+        Packed_Sint_64             : Proto_Support.Integer_64_Vectors.Vector;
+        Packed_Fixed_32            : Proto_Support.Unsigned_32_Vectors.Vector;
+        Packed_Fixed_64            : Proto_Support.Unsigned_64_Vectors.Vector;
+        Packed_Sfixed_32           : Proto_Support.Integer_32_Vectors.Vector;
+        Packed_Sfixed_64           : Proto_Support.Integer_64_Vectors.Vector;
+        Packed_Float               : Proto_Support.IEEE_Float_32_Vectors
+          .Vector;
+        Packed_Double              : Proto_Support.IEEE_Float_64_Vectors
+          .Vector;
+        Packed_Bool                : Proto_Support.Boolean_Vectors.Vector;
         Packed_Nested_Enum         : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Nested_Enum_Vectors.Vector;
-        Unpacked_Int_32            : PB_Support.Integer_32_Vectors.Vector;
-        Unpacked_Int_64            : PB_Support.Integer_64_Vectors.Vector;
-        Unpacked_Uint_32           : PB_Support.Unsigned_32_Vectors.Vector;
-        Unpacked_Uint_64           : PB_Support.Unsigned_64_Vectors.Vector;
-        Unpacked_Sint_32           : PB_Support.Integer_32_Vectors.Vector;
-        Unpacked_Sint_64           : PB_Support.Integer_64_Vectors.Vector;
-        Unpacked_Fixed_32          : PB_Support.Unsigned_32_Vectors.Vector;
-        Unpacked_Fixed_64          : PB_Support.Unsigned_64_Vectors.Vector;
-        Unpacked_Sfixed_32         : PB_Support.Integer_32_Vectors.Vector;
-        Unpacked_Sfixed_64         : PB_Support.Integer_64_Vectors.Vector;
-        Unpacked_Float             : PB_Support.IEEE_Float_32_Vectors.Vector;
-        Unpacked_Double            : PB_Support.IEEE_Float_64_Vectors.Vector;
-        Unpacked_Bool              : PB_Support.Boolean_Vectors.Vector;
+        Unpacked_Int_32            : Proto_Support.Integer_32_Vectors.Vector;
+        Unpacked_Int_64            : Proto_Support.Integer_64_Vectors.Vector;
+        Unpacked_Uint_32           : Proto_Support.Unsigned_32_Vectors.Vector;
+        Unpacked_Uint_64           : Proto_Support.Unsigned_64_Vectors.Vector;
+        Unpacked_Sint_32           : Proto_Support.Integer_32_Vectors.Vector;
+        Unpacked_Sint_64           : Proto_Support.Integer_64_Vectors.Vector;
+        Unpacked_Fixed_32          : Proto_Support.Unsigned_32_Vectors.Vector;
+        Unpacked_Fixed_64          : Proto_Support.Unsigned_64_Vectors.Vector;
+        Unpacked_Sfixed_32         : Proto_Support.Integer_32_Vectors.Vector;
+        Unpacked_Sfixed_64         : Proto_Support.Integer_64_Vectors.Vector;
+        Unpacked_Float             : Proto_Support.IEEE_Float_32_Vectors
+          .Vector;
+        Unpacked_Double            : Proto_Support.IEEE_Float_64_Vectors
+          .Vector;
+        Unpacked_Bool              : Proto_Support.Boolean_Vectors.Vector;
         Unpacked_Nested_Enum       : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Nested_Enum_Vectors.Vector;
         Map_Int_32_Int_32          : Protobuf_Test_Messages.Proto_2
@@ -1706,10 +2568,14 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Test_Messages_Proto_2.Map_Sfixed_32Sfixed_32Entry_Vector;
         Map_Sfixed_64_Sfixed_64    : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Map_Sfixed_64Sfixed_64Entry_Vector;
+        Map_Int_32_Bool            : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Map_Int_32Bool_Entry_Vector;
         Map_Int_32_Float           : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Map_Int_32Float_Entry_Vector;
         Map_Int_32_Double          : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Map_Int_32Double_Entry_Vector;
+        Map_Int_32_Nested_Message  : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Map_Int_32Nested_Message_Entry_Vector;
         Map_Bool_Bool              : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Map_Bool_Bool_Entry_Vector;
         Map_String_String          : Protobuf_Test_Messages.Proto_2
@@ -1726,41 +2592,46 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
           .Test_Messages_Proto_2.Map_String_Foreign_Enum_Entry_Vector;
         Data                       : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Optional_Data;
-        Default_Int_32             : PB_Support.Integer_32_Vectors.Option;
-        Default_Int_64             : PB_Support.Integer_64_Vectors.Option;
-        Default_Uint_32            : PB_Support.Unsigned_32_Vectors.Option;
-        Default_Uint_64            : PB_Support.Unsigned_64_Vectors.Option;
-        Default_Sint_32            : PB_Support.Integer_32_Vectors.Option;
-        Default_Sint_64            : PB_Support.Integer_64_Vectors.Option;
-        Default_Fixed_32           : PB_Support.Unsigned_32_Vectors.Option;
-        Default_Fixed_64           : PB_Support.Unsigned_64_Vectors.Option;
-        Default_Sfixed_32          : PB_Support.Integer_32_Vectors.Option;
-        Default_Sfixed_64          : PB_Support.Integer_64_Vectors.Option;
-        Default_Float              : PB_Support.IEEE_Float_32_Vectors.Option;
-        Default_Double             : PB_Support.IEEE_Float_64_Vectors.Option;
-        Default_Bool               : PB_Support.Boolean_Vectors.Option;
-        Default_String             : PB_Support.Universal_String_Vectors
+        Multiwordgroupfield        : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Optional_Multi_Word_Group_Field;
+        Default_Int_32             : Proto_Support.Integer_32_Options.Option;
+        Default_Int_64             : Proto_Support.Integer_64_Options.Option;
+        Default_Uint_32            : Proto_Support.Unsigned_32_Options.Option;
+        Default_Uint_64            : Proto_Support.Unsigned_64_Options.Option;
+        Default_Sint_32            : Proto_Support.Integer_32_Options.Option;
+        Default_Sint_64            : Proto_Support.Integer_64_Options.Option;
+        Default_Fixed_32           : Proto_Support.Unsigned_32_Options.Option;
+        Default_Fixed_64           : Proto_Support.Unsigned_64_Options.Option;
+        Default_Sfixed_32          : Proto_Support.Integer_32_Options.Option;
+        Default_Sfixed_64          : Proto_Support.Integer_64_Options.Option;
+        Default_Float              : Proto_Support.IEEE_Float_32_Options
           .Option;
-        Default_Bytes              : PB_Support.Stream_Element_Vector_Vectors
+        Default_Double             : Proto_Support.IEEE_Float_64_Options
           .Option;
-        Fieldname_1                : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_2               : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_3               : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_4               : PB_Support.Integer_32_Vectors.Option;
-        Field_0name_5              : PB_Support.Integer_32_Vectors.Option;
-        Field_0_Name_6             : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_7               : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_8               : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_9               : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_10              : PB_Support.Integer_32_Vectors.Option;
-        FIELD_NAME11               : PB_Support.Integer_32_Vectors.Option;
-        FIELD_Name_12              : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_13              : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_14              : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_15              : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_16              : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_17              : PB_Support.Integer_32_Vectors.Option;
-        Field_Name_18              : PB_Support.Integer_32_Vectors.Option;
+        Default_Bool               : Proto_Support.Boolean_Options.Option;
+        Default_String             : Proto_Support.Universal_String_Options
+          .Option;
+        Default_Bytes              : Proto_Support.Vector_Options.Option;
+        Fieldname_1                : Proto_Support.Integer_32_Options.Option;
+        Field_Name_2               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_3               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_4               : Proto_Support.Integer_32_Options.Option;
+        Field_0name_5              : Proto_Support.Integer_32_Options.Option;
+        Field_0_Name_6             : Proto_Support.Integer_32_Options.Option;
+        Field_Name_7               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_8               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_9               : Proto_Support.Integer_32_Options.Option;
+        Field_Name_10              : Proto_Support.Integer_32_Options.Option;
+        FIELD_NAME11               : Proto_Support.Integer_32_Options.Option;
+        FIELD_Name_12              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_13              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_14              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_15              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_16              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_17              : Proto_Support.Integer_32_Options.Option;
+        Field_Name_18              : Proto_Support.Integer_32_Options.Option;
+        Message_Set_Correct        : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Optional_Message_Set_Correct;
         Variant                    : Test_All_Types_Proto_2_Variant;
      end record;
 
@@ -1801,6 +2672,158 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
     (Self  : aliased Test_All_Types_Proto_2_Vector;
      Index : Positive)
       return Test_All_Types_Proto_2_Constant_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Nested_Message is
+     record
+        A                    : Interfaces.Integer_32 := 0;
+        Corecursive          : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Vector;
+        Optional_Corecursive : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Vector;
+     end record;
+
+   type Optional_Test_All_Required_Types_Proto_2_Nested_Message
+     (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Test_All_Required_Types_Proto_2_Nested_Message;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length
+    (Self : Test_All_Required_Types_Proto_2_Nested_Message_Vector)
+      return Natural;
+
+   procedure Clear
+    (Self : in out Test_All_Required_Types_Proto_2_Nested_Message_Vector);
+
+   procedure Append
+    (Self : in out Test_All_Required_Types_Proto_2_Nested_Message_Vector;
+     V    : Test_All_Required_Types_Proto_2_Nested_Message);
+
+   type Test_All_Required_Types_Proto_2_Nested_Message_Variable_Reference
+     (Element : not null access Test_All_Required_Types_Proto_2_Nested_Message) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Nested_Message_Variable_Reference
+    (Self  : aliased in out Test_All_Required_Types_Proto_2_Nested_Message_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Nested_Message_Variable_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Nested_Message_Constant_Reference
+     (Element : not null access constant Test_All_Required_Types_Proto_2_Nested_Message) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Nested_Message_Constant_Reference
+    (Self  : aliased Test_All_Required_Types_Proto_2_Nested_Message_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Nested_Message_Constant_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2 is
+     record
+        Required_Int_32            : Interfaces.Integer_32 := 0;
+        Required_Int_64            : Interfaces.Integer_64 := 0;
+        Required_Uint_32           : Interfaces.Unsigned_32 := 0;
+        Required_Uint_64           : Interfaces.Unsigned_64 := 0;
+        Required_Sint_32           : Interfaces.Integer_32 := 0;
+        Required_Sint_64           : Interfaces.Integer_64 := 0;
+        Required_Fixed_32          : Interfaces.Unsigned_32 := 0;
+        Required_Fixed_64          : Interfaces.Unsigned_64 := 0;
+        Required_Sfixed_32         : Interfaces.Integer_32 := 0;
+        Required_Sfixed_64         : Interfaces.Integer_64 := 0;
+        Required_Float             : Interfaces.IEEE_Float_32 := 0.0;
+        Required_Double            : Interfaces.IEEE_Float_64 := 0.0;
+        Required_Bool              : Boolean := False;
+        Required_String            : League.Strings.Universal_String;
+        Required_Bytes             : Proto_Support.Stream_Element_Vectors
+          .Vector;
+        Required_Nested_Message    : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2
+          .Test_All_Required_Types_Proto_2_Nested_Message;
+        Required_Foreign_Message   : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Foreign_Message_Proto_2;
+        Required_Nested_Enum       : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Nested_Enum :=
+          Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.FOO;
+        Required_Foreign_Enum      : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Foreign_Enum_Proto_2 :=
+          Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.FOREIGN_FOO;
+        Required_String_Piece      : League.Strings.Universal_String;
+        Required_Cord              : League.Strings.Universal_String;
+        Recursive_Message          : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Vector;
+        Optional_Recursive_Message : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Vector;
+        Data                       : Protobuf_Test_Messages.Proto_2
+          .Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Data;
+        Default_Int_32             : Interfaces.Integer_32 := 0;
+        Default_Int_64             : Interfaces.Integer_64 := 0;
+        Default_Uint_32            : Interfaces.Unsigned_32 := 0;
+        Default_Uint_64            : Interfaces.Unsigned_64 := 0;
+        Default_Sint_32            : Interfaces.Integer_32 := 0;
+        Default_Sint_64            : Interfaces.Integer_64 := 0;
+        Default_Fixed_32           : Interfaces.Unsigned_32 := 0;
+        Default_Fixed_64           : Interfaces.Unsigned_64 := 0;
+        Default_Sfixed_32          : Interfaces.Integer_32 := 0;
+        Default_Sfixed_64          : Interfaces.Integer_64 := 0;
+        Default_Float              : Interfaces.IEEE_Float_32 := 0.0;
+        Default_Double             : Interfaces.IEEE_Float_64 := 0.0;
+        Default_Bool               : Boolean := False;
+        Default_String             : League.Strings.Universal_String;
+        Default_Bytes              : Proto_Support.Stream_Element_Vectors
+          .Vector;
+     end record;
+
+   type Optional_Test_All_Required_Types_Proto_2
+     (Is_Set : Boolean := False) is
+     record
+        case Is_Set is
+           when True =>
+              Value : Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+                .Test_All_Required_Types_Proto_2;
+           when False =>
+              null;
+        end case;
+     end record;
+
+   function Length
+    (Self : Test_All_Required_Types_Proto_2_Vector)
+      return Natural;
+
+   procedure Clear (Self : in out Test_All_Required_Types_Proto_2_Vector);
+
+   procedure Append
+    (Self : in out Test_All_Required_Types_Proto_2_Vector;
+     V    : Test_All_Required_Types_Proto_2);
+
+   type Test_All_Required_Types_Proto_2_Variable_Reference
+     (Element : not null access Test_All_Required_Types_Proto_2) is null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Variable_Reference
+    (Self  : aliased in out Test_All_Required_Types_Proto_2_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Variable_Reference
+     with Inline;
+
+   type Test_All_Required_Types_Proto_2_Constant_Reference
+     (Element : not null access constant Test_All_Required_Types_Proto_2) is
+     null record
+     with Implicit_Dereference => Element;
+
+   not overriding function Get_Test_All_Required_Types_Proto_2_Constant_Reference
+    (Self  : aliased Test_All_Required_Types_Proto_2_Vector;
+     Index : Positive)
+      return Test_All_Required_Types_Proto_2_Constant_Reference
      with Inline;
 private
 
@@ -2134,6 +3157,34 @@ private
    overriding procedure Finalize
     (Self : in out Map_Sfixed_64Sfixed_64Entry_Vector);
 
+   procedure Read_Map_Int_32Bool_Entry
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Map_Int_32Bool_Entry);
+
+   procedure Write_Map_Int_32Bool_Entry
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Map_Int_32Bool_Entry);
+
+   for Map_Int_32Bool_Entry'Read use Read_Map_Int_32Bool_Entry;
+
+   for Map_Int_32Bool_Entry'Write use Write_Map_Int_32Bool_Entry;
+
+   type Map_Int_32Bool_Entry_Array is
+     array (Positive range <>) of aliased Map_Int_32Bool_Entry;
+
+   type Map_Int_32Bool_Entry_Array_Access is access Map_Int_32Bool_Entry_Array;
+
+   type Map_Int_32Bool_Entry_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Map_Int_32Bool_Entry_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Map_Int_32Bool_Entry_Vector);
+
+   overriding procedure Finalize (Self : in out Map_Int_32Bool_Entry_Vector);
+
    procedure Read_Map_Int_32Float_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Int_32Float_Entry);
@@ -2191,6 +3242,37 @@ private
    overriding procedure Adjust (Self : in out Map_Int_32Double_Entry_Vector);
 
    overriding procedure Finalize (Self : in out Map_Int_32Double_Entry_Vector);
+
+   procedure Read_Map_Int_32Nested_Message_Entry
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Map_Int_32Nested_Message_Entry);
+
+   procedure Write_Map_Int_32Nested_Message_Entry
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Map_Int_32Nested_Message_Entry);
+
+   for Map_Int_32Nested_Message_Entry'Read use Read_Map_Int_32Nested_Message_Entry;
+
+   for Map_Int_32Nested_Message_Entry'Write use Write_Map_Int_32Nested_Message_Entry;
+
+   type Map_Int_32Nested_Message_Entry_Array is
+     array (Positive range <>) of aliased Map_Int_32Nested_Message_Entry;
+
+   type Map_Int_32Nested_Message_Entry_Array_Access is
+     access Map_Int_32Nested_Message_Entry_Array;
+
+   type Map_Int_32Nested_Message_Entry_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Map_Int_32Nested_Message_Entry_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust
+    (Self : in out Map_Int_32Nested_Message_Entry_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Map_Int_32Nested_Message_Entry_Vector);
 
    procedure Read_Map_Bool_Bool_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2430,6 +3512,35 @@ private
 
    overriding procedure Finalize (Self : in out Data_Vector);
 
+   procedure Read_Multi_Word_Group_Field
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Multi_Word_Group_Field);
+
+   procedure Write_Multi_Word_Group_Field
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Multi_Word_Group_Field);
+
+   for Multi_Word_Group_Field'Read use Read_Multi_Word_Group_Field;
+
+   for Multi_Word_Group_Field'Write use Write_Multi_Word_Group_Field;
+
+   type Multi_Word_Group_Field_Array is
+     array (Positive range <>) of aliased Multi_Word_Group_Field;
+
+   type Multi_Word_Group_Field_Array_Access is
+     access Multi_Word_Group_Field_Array;
+
+   type Multi_Word_Group_Field_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Multi_Word_Group_Field_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Multi_Word_Group_Field_Vector);
+
+   overriding procedure Finalize (Self : in out Multi_Word_Group_Field_Vector);
+
    procedure Read_Message_Set_Correct
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Message_Set_Correct);
@@ -2520,6 +3631,34 @@ private
    overriding procedure Finalize
     (Self : in out Message_Set_Correct_Extension_2_Vector);
 
+   procedure Read_Extension_With_Oneof
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Extension_With_Oneof);
+
+   procedure Write_Extension_With_Oneof
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Extension_With_Oneof);
+
+   for Extension_With_Oneof'Read use Read_Extension_With_Oneof;
+
+   for Extension_With_Oneof'Write use Write_Extension_With_Oneof;
+
+   type Extension_With_Oneof_Array is
+     array (Positive range <>) of aliased Extension_With_Oneof;
+
+   type Extension_With_Oneof_Array_Access is access Extension_With_Oneof_Array;
+
+   type Extension_With_Oneof_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Extension_With_Oneof_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Extension_With_Oneof_Vector);
+
+   overriding procedure Finalize (Self : in out Extension_With_Oneof_Vector);
+
    procedure Read_Test_All_Types_Proto_2
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Test_All_Types_Proto_2);
@@ -2578,6 +3717,33 @@ private
 
    overriding procedure Finalize
     (Self : in out Foreign_Message_Proto_2_Vector);
+
+   procedure Read_Group_Field
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Group_Field);
+
+   procedure Write_Group_Field
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Group_Field);
+
+   for Group_Field'Read use Read_Group_Field;
+
+   for Group_Field'Write use Write_Group_Field;
+
+   type Group_Field_Array is array (Positive range <>) of aliased Group_Field;
+
+   type Group_Field_Array_Access is access Group_Field_Array;
+
+   type Group_Field_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Group_Field_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Group_Field_Vector);
+
+   overriding procedure Finalize (Self : in out Group_Field_Vector);
 
    procedure Read_Optional_Group
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
@@ -2723,5 +3889,390 @@ private
    overriding procedure Adjust (Self : in out One_String_Proto_2_Vector);
 
    overriding procedure Finalize (Self : in out One_String_Proto_2_Vector);
+
+   procedure Read_Proto_With_Keywords
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Proto_With_Keywords);
+
+   procedure Write_Proto_With_Keywords
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Proto_With_Keywords);
+
+   for Proto_With_Keywords'Read use Read_Proto_With_Keywords;
+
+   for Proto_With_Keywords'Write use Write_Proto_With_Keywords;
+
+   type Proto_With_Keywords_Array is
+     array (Positive range <>) of aliased Proto_With_Keywords;
+
+   type Proto_With_Keywords_Array_Access is access Proto_With_Keywords_Array;
+
+   type Proto_With_Keywords_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Proto_With_Keywords_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Proto_With_Keywords_Vector);
+
+   overriding procedure Finalize (Self : in out Proto_With_Keywords_Vector);
+
+   procedure Read_Test_All_Required_Types_Proto_2_Nested_Message
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Test_All_Required_Types_Proto_2_Nested_Message);
+
+   procedure Write_Test_All_Required_Types_Proto_2_Nested_Message
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Test_All_Required_Types_Proto_2_Nested_Message);
+
+   for Test_All_Required_Types_Proto_2_Nested_Message'Read use Read_Test_All_Required_Types_Proto_2_Nested_Message;
+
+   for Test_All_Required_Types_Proto_2_Nested_Message'Write use Write_Test_All_Required_Types_Proto_2_Nested_Message;
+
+   type Test_All_Required_Types_Proto_2_Nested_Message_Array is
+     array
+       (Positive range <>) of
+     aliased Test_All_Required_Types_Proto_2_Nested_Message;
+
+   type Test_All_Required_Types_Proto_2_Nested_Message_Array_Access is
+     access Test_All_Required_Types_Proto_2_Nested_Message_Array;
+
+   type Test_All_Required_Types_Proto_2_Nested_Message_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Test_All_Required_Types_Proto_2_Nested_Message_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust
+    (Self : in out Test_All_Required_Types_Proto_2_Nested_Message_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Test_All_Required_Types_Proto_2_Nested_Message_Vector);
+
+   procedure Read_Test_All_Required_Types_Proto_2_Data
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Test_All_Required_Types_Proto_2_Data);
+
+   procedure Write_Test_All_Required_Types_Proto_2_Data
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Test_All_Required_Types_Proto_2_Data);
+
+   for Test_All_Required_Types_Proto_2_Data'Read use Read_Test_All_Required_Types_Proto_2_Data;
+
+   for Test_All_Required_Types_Proto_2_Data'Write use Write_Test_All_Required_Types_Proto_2_Data;
+
+   type Test_All_Required_Types_Proto_2_Data_Array is
+     array (Positive range <>) of aliased Test_All_Required_Types_Proto_2_Data;
+
+   type Test_All_Required_Types_Proto_2_Data_Array_Access is
+     access Test_All_Required_Types_Proto_2_Data_Array;
+
+   type Test_All_Required_Types_Proto_2_Data_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Test_All_Required_Types_Proto_2_Data_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust
+    (Self : in out Test_All_Required_Types_Proto_2_Data_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Test_All_Required_Types_Proto_2_Data_Vector);
+
+   procedure Read_Test_All_Required_Types_Proto_2_Message_Set_Correct
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Test_All_Required_Types_Proto_2_Message_Set_Correct);
+
+   procedure Write_Test_All_Required_Types_Proto_2_Message_Set_Correct
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Test_All_Required_Types_Proto_2_Message_Set_Correct);
+
+   for Test_All_Required_Types_Proto_2_Message_Set_Correct'Read use Read_Test_All_Required_Types_Proto_2_Message_Set_Correct;
+
+   for Test_All_Required_Types_Proto_2_Message_Set_Correct'Write use Write_Test_All_Required_Types_Proto_2_Message_Set_Correct;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Array is
+     array
+       (Positive range <>) of
+     aliased Test_All_Required_Types_Proto_2_Message_Set_Correct;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Array_Access is
+     access Test_All_Required_Types_Proto_2_Message_Set_Correct_Array;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Test_All_Required_Types_Proto_2_Message_Set_Correct_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Vector);
+
+   procedure Read_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1);
+
+   procedure Write_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1);
+
+   for Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1'Read use Read_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1;
+
+   for Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1'Write use Write_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Array is
+     array
+       (Positive range <>) of
+     aliased Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Array_Access is
+     access Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Array;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1_Vector);
+
+   procedure Read_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2);
+
+   procedure Write_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2);
+
+   for Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2'Read use Read_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2;
+
+   for Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2'Write use Write_Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Array is
+     array
+       (Positive range <>) of
+     aliased Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Array_Access is
+     access Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Array;
+
+   type Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2_Vector);
+
+   procedure Read_Test_All_Required_Types_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Test_All_Required_Types_Proto_2);
+
+   procedure Write_Test_All_Required_Types_Proto_2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Test_All_Required_Types_Proto_2);
+
+   for Test_All_Required_Types_Proto_2'Read use Read_Test_All_Required_Types_Proto_2;
+
+   for Test_All_Required_Types_Proto_2'Write use Write_Test_All_Required_Types_Proto_2;
+
+   type Test_All_Required_Types_Proto_2_Array is
+     array (Positive range <>) of aliased Test_All_Required_Types_Proto_2;
+
+   type Test_All_Required_Types_Proto_2_Array_Access is
+     access Test_All_Required_Types_Proto_2_Array;
+
+   type Test_All_Required_Types_Proto_2_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Test_All_Required_Types_Proto_2_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust
+    (Self : in out Test_All_Required_Types_Proto_2_Vector);
+
+   overriding procedure Finalize
+    (Self : in out Test_All_Required_Types_Proto_2_Vector);
+
+   procedure Read_A1
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out A1);
+
+   procedure Write_A1
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : A1);
+
+   for A1'Read use Read_A1;
+
+   for A1'Write use Write_A1;
+
+   type A1_Array is array (Positive range <>) of aliased A1;
+
+   type A1_Array_Access is access A1_Array;
+
+   type A1_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : A1_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out A1_Vector);
+
+   overriding procedure Finalize (Self : in out A1_Vector);
+
+   procedure Read_A2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out A2);
+
+   procedure Write_A2
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : A2);
+
+   for A2'Read use Read_A2;
+
+   for A2'Write use Write_A2;
+
+   type A2_Array is array (Positive range <>) of aliased A2;
+
+   type A2_Array_Access is access A2_Array;
+
+   type A2_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : A2_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out A2_Vector);
+
+   overriding procedure Finalize (Self : in out A2_Vector);
+
+   procedure Read_A3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out A3);
+
+   procedure Write_A3
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : A3);
+
+   for A3'Read use Read_A3;
+
+   for A3'Write use Write_A3;
+
+   type A3_Array is array (Positive range <>) of aliased A3;
+
+   type A3_Array_Access is access A3_Array;
+
+   type A3_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : A3_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out A3_Vector);
+
+   overriding procedure Finalize (Self : in out A3_Vector);
+
+   procedure Read_A4
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out A4);
+
+   procedure Write_A4
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : A4);
+
+   for A4'Read use Read_A4;
+
+   for A4'Write use Write_A4;
+
+   type A4_Array is array (Positive range <>) of aliased A4;
+
+   type A4_Array_Access is access A4_Array;
+
+   type A4_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : A4_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out A4_Vector);
+
+   overriding procedure Finalize (Self : in out A4_Vector);
+
+   procedure Read_A5
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out A5);
+
+   procedure Write_A5
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : A5);
+
+   for A5'Read use Read_A5;
+
+   for A5'Write use Write_A5;
+
+   type A5_Array is array (Positive range <>) of aliased A5;
+
+   type A5_Array_Access is access A5_Array;
+
+   type A5_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : A5_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out A5_Vector);
+
+   overriding procedure Finalize (Self : in out A5_Vector);
+
+   procedure Read_Test_Large_Oneof
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Test_Large_Oneof);
+
+   procedure Write_Test_Large_Oneof
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Test_Large_Oneof);
+
+   for Test_Large_Oneof'Read use Read_Test_Large_Oneof;
+
+   for Test_Large_Oneof'Write use Write_Test_Large_Oneof;
+
+   type Test_Large_Oneof_Array is
+     array (Positive range <>) of aliased Test_Large_Oneof;
+
+   type Test_Large_Oneof_Array_Access is access Test_Large_Oneof_Array;
+
+   type Test_Large_Oneof_Vector is
+     new Ada.Finalization.Controlled
+     with record
+        Data   : Test_Large_Oneof_Array_Access;
+        Length : Natural := 0;
+     end record;
+
+   overriding procedure Adjust (Self : in out Test_Large_Oneof_Vector);
+
+   overriding procedure Finalize (Self : in out Test_Large_Oneof_Vector);
 
 end Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2;

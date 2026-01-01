@@ -1,24 +1,6 @@
---  MIT License
+--  SPDX-FileCopyrightText: 2020-2025 Max Reznik <reznikmm@gmail.com>
 --
---  Copyright (c) 2020 Max Reznik
---
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and/or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
---  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
+--  SPDX-License-Identifier: MIT
 
 with Ada.Characters.Wide_Wide_Latin_1;
 with Ada.Directories;
@@ -127,7 +109,7 @@ package body Compiler.File_Descriptors is
                           (Compiler.Context.Compound_Name
                              (Info.Ada_Type, Pkg) & "_IO"),
                         Template    => F.New_Selected_Name
-                          (+"PB_Support.IO.Enum_IO"),
+                          (+"Proto_Support.IO.Enum_IO"),
                         Actual_Part => F.New_List
                           ((F.New_Argument_Association
                               (F.New_Selected_Name (Full)),
@@ -149,7 +131,7 @@ package body Compiler.File_Descriptors is
                           (Compiler.Context.Compound_Name
                              (Info.Ada_Type, Pkg) & "_IO"),
                         Template    => F.New_Selected_Name
-                          (+"PB_Support.IO.Message_IO"),
+                          (+"Proto_Support.IO.Message_IO"),
                         Actual_Part => F.New_List
                           ((F.New_Argument_Association
                                (F.New_Selected_Name (Full)),
@@ -194,8 +176,8 @@ package body Compiler.File_Descriptors is
       With_Clauses : constant Ada_Pretty.Node_Access :=
         F.New_List
           ((F.New_With (F.New_Selected_Name (+"Ada.Unchecked_Deallocation")),
-            F.New_With (F.New_Selected_Name (+"PB_Support.IO")),
-            F.New_With (F.New_Selected_Name (+"PB_Support.Internal"))));
+            F.New_With (F.New_Selected_Name (+"Proto_Support.IO")),
+            F.New_With (F.New_Selected_Name (+"Proto_Support.Internal"))));
 
       Unit   : constant Ada_Pretty.Node_Access :=
         F.New_Compilation_Unit
@@ -242,7 +224,8 @@ package body Compiler.File_Descriptors is
       end loop;
 
       if Self.Enum_Type.Length > 0 then
-         Set.Include (+"PB_Support.Vectors");
+         Set.Include (+"Proto_Support.Options");
+         Set.Include (+"Proto_Support.Vectors");
       end if;
 
       for J of Set loop
@@ -289,8 +272,8 @@ package body Compiler.File_Descriptors is
    is
       Result : League.Strings.Universal_String := +".";
    begin
-      if Self.PB_Package.Is_Set then
-         Result.Append (Self.PB_Package.Value);
+      if Self.Proto_Package.Is_Set then
+         Result.Append (Self.Proto_Package.Value);
       end if;
 
       return Result;
@@ -326,15 +309,15 @@ package body Compiler.File_Descriptors is
       --  look like an identifier.
       Fixed : constant League.Strings.Universal_String :=
         Base_Name.Split ('-', League.Strings.Skip_Empty).Join ("_");
-      PB_Pkg    : League.Strings.Universal_String;
+      Proto_Pkg    : League.Strings.Universal_String;
       Result    : League.Strings.Universal_String :=
         Compiler.Context.To_Ada_Name (Fixed);
    begin
-      if Self.PB_Package.Is_Set then
-         PB_Pkg := Self.PB_Package.Value;
-         PB_Pkg := Compiler.Context.To_Selected_Ada_Name (PB_Pkg);
-         PB_Pkg.Append (".");
-         Result.Prepend (PB_Pkg);
+      if Self.Proto_Package.Is_Set then
+         Proto_Pkg := Self.Proto_Package.Value;
+         Proto_Pkg := Compiler.Context.To_Selected_Ada_Name (Proto_Pkg);
+         Proto_Pkg.Append (".");
+         Result.Prepend (Proto_Pkg);
       end if;
 
       return Result;

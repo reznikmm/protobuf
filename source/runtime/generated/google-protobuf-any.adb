@@ -1,6 +1,6 @@
 with Ada.Unchecked_Deallocation;
-with PB_Support.IO;
-with PB_Support.Internal;
+with Proto_Support.IO;
+with Proto_Support.Internal;
 
 package body Google.Protobuf.Any is
 
@@ -67,16 +67,16 @@ package body Google.Protobuf.Any is
    procedure Read_Any
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Any) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Type_Url);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Type_Url);
             when 2 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Any;
@@ -85,17 +85,17 @@ package body Google.Protobuf.Any is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Any) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Any (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Type_Url);

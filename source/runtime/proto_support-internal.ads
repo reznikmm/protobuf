@@ -1,24 +1,7 @@
---  MIT License
+--  SPDX-FileCopyrightText: 2020-2025 Max Reznik <reznikmm@gmail.com>
 --
 --  Copyright (c) 2020-2023 Max Reznik
 --
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and/or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
---  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
 
 --  This is internal unit, don't use it in an application.
 
@@ -27,21 +10,21 @@ with Ada.Containers.Indefinite_Holders;
 with Ada.Containers.Vectors;
 with Interfaces;
 
-with League.Stream_Element_Vectors;
+with Proto_Support.Stream_Element_Vectors;
 with League.String_Vectors;
 with League.Strings;
 with League.Text_Codecs;
 
-with PB_Support.Boolean_Vectors;
-with PB_Support.IEEE_Float_32_Vectors;
-with PB_Support.IEEE_Float_64_Vectors;
-with PB_Support.Integer_32_Vectors;
-with PB_Support.Integer_64_Vectors;
-with PB_Support.Stream_Element_Vector_Vectors;
-with PB_Support.Unsigned_32_Vectors;
-with PB_Support.Unsigned_64_Vectors;
+with Proto_Support.Boolean_Vectors;
+with Proto_Support.IEEE_Float_32_Vectors;
+with Proto_Support.IEEE_Float_64_Vectors;
+with Proto_Support.Integer_32_Vectors;
+with Proto_Support.Integer_64_Vectors;
+with Proto_Support.Stream_Element_Vector_Vectors;
+with Proto_Support.Unsigned_32_Vectors;
+with Proto_Support.Unsigned_64_Vectors;
 
-package PB_Support.Internal is
+package Proto_Support.Internal is
    pragma Preelaborate;
 
    type Stream
@@ -74,12 +57,12 @@ package PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Boolean_Vectors.Vector);
+      Value : Proto_Support.Boolean_Vectors.Vector);
 
    not overriding procedure Write_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Boolean_Vectors.Vector);
+      Value : Proto_Support.Boolean_Vectors.Vector);
 
    not overriding procedure Write_Option
      (Self    : in out Stream;
@@ -97,13 +80,13 @@ package PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.IEEE_Float_32_Vectors.Vector)
+      Value : Proto_Support.IEEE_Float_32_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.IEEE_Float_32_Vectors.Vector);
+      Value : Proto_Support.IEEE_Float_32_Vectors.Vector);
 
    not overriding procedure Write_Option
      (Self    : in out Stream;
@@ -121,13 +104,13 @@ package PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.IEEE_Float_64_Vectors.Vector)
+      Value : Proto_Support.IEEE_Float_64_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.IEEE_Float_64_Vectors.Vector);
+      Value : Proto_Support.IEEE_Float_64_Vectors.Vector);
 
    not overriding procedure Write_Option
      (Self    : in out Stream;
@@ -159,21 +142,21 @@ package PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : League.Stream_Element_Vectors.Stream_Element_Vector)
+      Value : Proto_Support.Stream_Element_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Stream_Element_Vector_Vectors.Vector)
+      Value : Proto_Support.Stream_Element_Vector_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Option
      (Self    : in out Stream;
       Field   : Field_Number;
-      Value   : League.Stream_Element_Vectors.Stream_Element_Vector;
-      Default : League.Stream_Element_Vectors.Stream_Element_Vector :=
-        League.Stream_Element_Vectors.Empty_Stream_Element_Vector)
+      Value   : Proto_Support.Stream_Element_Vectors.Vector;
+      Default : Proto_Support.Stream_Element_Vectors.Vector :=
+        Proto_Support.Stream_Element_Vectors.Empty_Vector)
           with Inline;
 
    not overriding procedure Write_Varint
@@ -185,13 +168,13 @@ package PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_32_Vectors.Vector)
+      Value : Proto_Support.Unsigned_32_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_32_Vectors.Vector);
+      Value : Proto_Support.Unsigned_32_Vectors.Vector);
 
    not overriding procedure Write_Varint
      (Self  : in out Stream;
@@ -202,13 +185,13 @@ package PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_64_Vectors.Vector)
+      Value : Proto_Support.Unsigned_64_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_64_Vectors.Vector);
+      Value : Proto_Support.Unsigned_64_Vectors.Vector);
 
    not overriding procedure Write_Varint
      (Self  : in out Stream;
@@ -224,13 +207,13 @@ package PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector)
+      Value : Proto_Support.Integer_32_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector);
+      Value : Proto_Support.Integer_32_Vectors.Vector);
 
    not overriding procedure Write_Varint
      (Self  : in out Stream;
@@ -241,13 +224,13 @@ package PB_Support.Internal is
    not overriding procedure Write_Varint
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector)
+      Value : Proto_Support.Integer_64_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Varint_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector);
+      Value : Proto_Support.Integer_64_Vectors.Vector);
 
    not overriding procedure Write_Varint_Option
      (Self    : in out Stream;
@@ -292,24 +275,24 @@ package PB_Support.Internal is
    not overriding procedure Write_Zigzag
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector)
+      Value : Proto_Support.Integer_32_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Zigzag
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector)
+      Value : Proto_Support.Integer_64_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Zigzag_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector);
+      Value : Proto_Support.Integer_32_Vectors.Vector);
 
    not overriding procedure Write_Zigzag_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector);
+      Value : Proto_Support.Integer_64_Vectors.Vector);
 
    not overriding procedure Write_Zigzag_Option
      (Self    : in out Stream;
@@ -352,46 +335,46 @@ package PB_Support.Internal is
    not overriding procedure Write_Fixed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector)
+      Value : Proto_Support.Integer_32_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Fixed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector)
+      Value : Proto_Support.Integer_64_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Fixed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_32_Vectors.Vector)
+      Value : Proto_Support.Unsigned_32_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Fixed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_64_Vectors.Vector)
+      Value : Proto_Support.Unsigned_64_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write_Fixed_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_32_Vectors.Vector);
+      Value : Proto_Support.Integer_32_Vectors.Vector);
 
    not overriding procedure Write_Fixed_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Integer_64_Vectors.Vector);
+      Value : Proto_Support.Integer_64_Vectors.Vector);
 
    not overriding procedure Write_Fixed_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_32_Vectors.Vector);
+      Value : Proto_Support.Unsigned_32_Vectors.Vector);
 
    not overriding procedure Write_Fixed_Packed
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Unsigned_64_Vectors.Vector);
+      Value : Proto_Support.Unsigned_64_Vectors.Vector);
 
    not overriding procedure Write_Fixed_Option
      (Self    : in out Stream;
@@ -484,4 +467,4 @@ private
 
    Codec : Text_Codec_Holders.Holder;
 
-end PB_Support.Internal;
+end Proto_Support.Internal;

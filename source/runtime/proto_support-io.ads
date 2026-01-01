@@ -1,47 +1,30 @@
---  MIT License
+--  SPDX-FileCopyrightText: 2020-2025 Max Reznik <reznikmm@gmail.com>
 --
---  Copyright (c) 2020 Max Reznik
+--  SPDX-License-Identifier: MIT
 --
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and/or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
---  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
 
 with Ada.Streams;
 with Interfaces;
 
 with League.Strings;
-with League.Stream_Element_Vectors;
+with Proto_Support.Stream_Element_Vectors;
 with League.String_Vectors;
 
-with PB_Support.Boolean_Vectors;
-with PB_Support.IEEE_Float_32_Vectors;
-with PB_Support.IEEE_Float_64_Vectors;
-with PB_Support.Integer_32_Vectors;
-with PB_Support.Integer_64_Vectors;
-with PB_Support.Internal;
-with PB_Support.Stream_Element_Vector_Vectors;
-with PB_Support.Unsigned_32_Vectors;
-with PB_Support.Unsigned_64_Vectors;
-with PB_Support.Vectors;
+with Proto_Support.Boolean_Vectors;
+with Proto_Support.IEEE_Float_32_Vectors;
+with Proto_Support.IEEE_Float_64_Vectors;
+with Proto_Support.Integer_32_Vectors;
+with Proto_Support.Integer_64_Vectors;
+with Proto_Support.Internal;
+with Proto_Support.Stream_Element_Vector_Vectors;
+with Proto_Support.Unsigned_32_Vectors;
+with Proto_Support.Unsigned_64_Vectors;
+with Proto_Support.Vectors;
 
-package PB_Support.IO is
+package Proto_Support.IO is
    pragma Preelaborate;
 
-   subtype Key is PB_Support.Key;
+   subtype Key is Proto_Support.Key;
 
    function Read_Key
      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -69,12 +52,12 @@ package PB_Support.IO is
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out League.Stream_Element_Vectors.Stream_Element_Vector);
+      Value    : in out Proto_Support.Stream_Element_Vectors.Vector);
 
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Stream_Element_Vector_Vectors.Vector);
+      Value    : in out Proto_Support.Stream_Element_Vector_Vectors.Vector);
 
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -84,7 +67,7 @@ package PB_Support.IO is
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Boolean_Vectors.Vector);
+      Value    : in out Proto_Support.Boolean_Vectors.Vector);
 
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -94,7 +77,7 @@ package PB_Support.IO is
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.IEEE_Float_64_Vectors.Vector);
+      Value    : in out Proto_Support.IEEE_Float_64_Vectors.Vector);
 
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -104,7 +87,7 @@ package PB_Support.IO is
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.IEEE_Float_32_Vectors.Vector);
+      Value    : in out Proto_Support.IEEE_Float_32_Vectors.Vector);
 
    procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -114,7 +97,7 @@ package PB_Support.IO is
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_64_Vectors.Vector);
+      Value    : in out Proto_Support.Integer_64_Vectors.Vector);
 
    procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -124,7 +107,7 @@ package PB_Support.IO is
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_64_Vectors.Vector);
+      Value    : in out Proto_Support.Unsigned_64_Vectors.Vector);
 
    procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -134,7 +117,7 @@ package PB_Support.IO is
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_32_Vectors.Vector);
+      Value    : in out Proto_Support.Integer_32_Vectors.Vector);
 
    procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -144,7 +127,7 @@ package PB_Support.IO is
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_32_Vectors.Vector);
+      Value    : in out Proto_Support.Unsigned_32_Vectors.Vector);
 
    procedure Read_Zigzag
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -154,7 +137,7 @@ package PB_Support.IO is
    procedure Read_Zigzag_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : out PB_Support.Integer_32_Vectors.Vector);
+      Value    : out Proto_Support.Integer_32_Vectors.Vector);
 
    procedure Read_Zigzag
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -164,7 +147,7 @@ package PB_Support.IO is
    procedure Read_Zigzag_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : out PB_Support.Integer_64_Vectors.Vector);
+      Value    : out Proto_Support.Integer_64_Vectors.Vector);
 
    procedure Read_Fixed
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -174,7 +157,7 @@ package PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_64_Vectors.Vector);
+      Value    : in out Proto_Support.Integer_64_Vectors.Vector);
 
    procedure Read_Fixed
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -184,7 +167,7 @@ package PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_64_Vectors.Vector);
+      Value    : in out Proto_Support.Unsigned_64_Vectors.Vector);
 
    procedure Read_Fixed
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -194,7 +177,7 @@ package PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Integer_32_Vectors.Vector);
+      Value    : in out Proto_Support.Integer_32_Vectors.Vector);
 
    procedure Read_Fixed
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -204,7 +187,7 @@ package PB_Support.IO is
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Unsigned_32_Vectors.Vector);
+      Value    : in out Proto_Support.Unsigned_32_Vectors.Vector);
 
    procedure Unknown_Field
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -213,7 +196,7 @@ package PB_Support.IO is
    generic
       type Element is (<>);
       type Integer_Element is range <>;
-      with package Vectors is new PB_Support.Vectors (Element);
+      with package Vectors is new Proto_Support.Vectors (Element);
    package Enum_IO is
       procedure Read
         (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -266,4 +249,4 @@ package PB_Support.IO is
          Value    : in out Vector);
    end Message_IO;
 
-end PB_Support.IO;
+end Proto_Support.IO;

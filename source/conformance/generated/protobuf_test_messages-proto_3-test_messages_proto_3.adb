@@ -1,64 +1,64 @@
 with Ada.Unchecked_Deallocation;
-with PB_Support.IO;
-with PB_Support.Internal;
+with Proto_Support.IO;
+with Proto_Support.Internal;
 
 package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
 
    package Google_Protobuf_Any_Any_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Any.Any, Google.Protobuf.Any.Any_Vector,
         Google.Protobuf.Any.Append);
 
    package Google_Protobuf_Wrappers_Bool_Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Bool_Value,
         Google.Protobuf.Wrappers.Bool_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
    package Google_Protobuf_Wrappers_Bytes_Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Bytes_Value,
         Google.Protobuf.Wrappers.Bytes_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
    package Google_Protobuf_Wrappers_Double_Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Double_Value,
         Google.Protobuf.Wrappers.Double_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
    package Google_Protobuf_Duration_Duration_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Duration.Duration,
         Google.Protobuf.Duration.Duration_Vector,
         Google.Protobuf.Duration.Append);
 
    package Google_Protobuf_Field_Mask_Field_Mask_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Field_Mask.Field_Mask,
         Google.Protobuf.Field_Mask.Field_Mask_Vector,
         Google.Protobuf.Field_Mask.Append);
 
    package Google_Protobuf_Wrappers_Float_Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Float_Value,
         Google.Protobuf.Wrappers.Float_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
    package Google_Protobuf_Wrappers_Int_32Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Int_32Value,
         Google.Protobuf.Wrappers.Int_32Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
    package Google_Protobuf_Wrappers_Int_64Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.Int_64Value,
         Google.Protobuf.Wrappers.Int_64Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
    package Google_Protobuf_Struct_List_Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Struct.List_Value,
         Google.Protobuf.Struct.List_Value_Vector,
         Google.Protobuf.Struct.Append);
@@ -67,42 +67,42 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      with Size => Google.Protobuf.Struct.Null_Value'Size;
 
    package Google_Protobuf_Struct_Null_Value_IO is
-     new PB_Support.IO.Enum_IO
+     new Proto_Support.IO.Enum_IO
        (Google.Protobuf.Struct.Null_Value,
         Integer_Google_Protobuf_Struct_Null_Value,
         Google.Protobuf.Struct.Null_Value_Vectors);
 
    package Google_Protobuf_Wrappers_String_Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.String_Value,
         Google.Protobuf.Wrappers.String_Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
    package Google_Protobuf_Struct_Struct_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Struct.Struct, Google.Protobuf.Struct.Struct_Vector,
         Google.Protobuf.Struct.Append);
 
    package Google_Protobuf_Timestamp_Timestamp_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Timestamp.Timestamp,
         Google.Protobuf.Timestamp.Timestamp_Vector,
         Google.Protobuf.Timestamp.Append);
 
    package Google_Protobuf_Wrappers_UInt_32Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.UInt_32Value,
         Google.Protobuf.Wrappers.UInt_32Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
    package Google_Protobuf_Wrappers_UInt_64Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Wrappers.UInt_64Value,
         Google.Protobuf.Wrappers.UInt_64Value_Vector,
         Google.Protobuf.Wrappers.Append);
 
    package Google_Protobuf_Struct_Value_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Google.Protobuf.Struct.Value, Google.Protobuf.Struct.Value_Vector,
         Google.Protobuf.Struct.Append);
 
@@ -112,21 +112,21 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
        Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Foreign_Enum'Size;
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum_IO is
-     new PB_Support.IO.Enum_IO
+     new Proto_Support.IO.Enum_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Foreign_Enum,
         Integer_Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Foreign_Enum_Vectors);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Message_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Foreign_Message,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Foreign_Message_Vector,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Test_All_Types_Proto_3_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Test_All_Types_Proto_3,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -139,14 +139,14 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
        Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Aliased_Enum'Size;
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Aliased_Enum_IO is
-     new PB_Support.IO.Enum_IO
+     new Proto_Support.IO.Enum_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Aliased_Enum,
         Integer_Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Aliased_Enum,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Aliased_Enum_Vectors);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Bool_Bool_Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Bool_Bool_Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -154,7 +154,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Fixed_32Fixed_32Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Fixed_32Fixed_32Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -162,7 +162,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Fixed_64Fixed_64Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Fixed_64Fixed_64Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -170,7 +170,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_32Double_Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Int_32Double_Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -178,7 +178,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_32Float_Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Int_32Float_Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -186,7 +186,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_32Int_32Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Int_32Int_32Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -194,7 +194,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Int_64Int_64Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Int_64Int_64Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -202,7 +202,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sfixed_32Sfixed_32Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Sfixed_32Sfixed_32Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -210,7 +210,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sfixed_64Sfixed_64Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Sfixed_64Sfixed_64Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -218,7 +218,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sint_32Sint_32Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Sint_32Sint_32Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -226,7 +226,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Sint_64Sint_64Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Sint_64Sint_64Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -234,7 +234,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Bytes_Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Bytes_Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -242,7 +242,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Foreign_Enum_Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Foreign_Enum_Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -250,7 +250,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Foreign_Message_Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Foreign_Message_Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -258,7 +258,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Nested_Enum_Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Nested_Enum_Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -266,7 +266,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_Nested_Message_Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_Nested_Message_Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -274,7 +274,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_String_String_Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_String_String_Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -282,7 +282,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Uint_32Uint_32Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Uint_32Uint_32Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -290,7 +290,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Append);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Map_Uint_64Uint_64Entry_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Map_Uint_64Uint_64Entry,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
@@ -303,14 +303,14 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
        Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Nested_Enum'Size;
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO is
-     new PB_Support.IO.Enum_IO
+     new Proto_Support.IO.Enum_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Nested_Enum,
         Integer_Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Nested_Enum_Vectors);
 
    package Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Message_IO is
-     new PB_Support.IO.Message_IO
+     new Proto_Support.IO.Message_IO
        (Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.Nested_Message,
         Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
           .Nested_Message_Vector,
@@ -334,15 +334,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Test_All_Types_Proto_3) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Test_All_Types_Proto_3'Size);
+      Aux_Data    : Test_All_Types_Proto_3_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Test_All_Types_Proto_3_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Test_All_Types_Proto_3_Array'
              (Self.Data.all
                 & Test_All_Types_Proto_3_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -383,50 +386,50 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Test_All_Types_Proto_3
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Test_All_Types_Proto_3) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Optional_Int_32);
             when 2 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Optional_Int_64);
             when 3 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Optional_Uint_32);
             when 4 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Optional_Uint_64);
             when 5 =>
-               PB_Support.IO.Read_Zigzag
+               Proto_Support.IO.Read_Zigzag
                  (Stream, Key.Encoding, V.Optional_Sint_32);
             when 6 =>
-               PB_Support.IO.Read_Zigzag
+               Proto_Support.IO.Read_Zigzag
                  (Stream, Key.Encoding, V.Optional_Sint_64);
             when 7 =>
-               PB_Support.IO.Read_Fixed
+               Proto_Support.IO.Read_Fixed
                  (Stream, Key.Encoding, V.Optional_Fixed_32);
             when 8 =>
-               PB_Support.IO.Read_Fixed
+               Proto_Support.IO.Read_Fixed
                  (Stream, Key.Encoding, V.Optional_Fixed_64);
             when 9 =>
-               PB_Support.IO.Read_Fixed
+               Proto_Support.IO.Read_Fixed
                  (Stream, Key.Encoding, V.Optional_Sfixed_32);
             when 10 =>
-               PB_Support.IO.Read_Fixed
+               Proto_Support.IO.Read_Fixed
                  (Stream, Key.Encoding, V.Optional_Sfixed_64);
             when 11 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Float);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Optional_Float);
             when 12 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Double);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Optional_Double);
             when 13 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Bool);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Optional_Bool);
             when 14 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_String);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Optional_String);
             when 15 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Bytes);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Optional_Bytes);
             when 18 =>
                if  not V.Optional_Nested_Message.Is_Set then
                   V.Optional_Nested_Message := (True, others => <>);
@@ -454,10 +457,10 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                  .Read
                  (Stream, Key.Encoding, V.Optional_Aliased_Enum);
             when 24 =>
-               PB_Support.IO.Read
+               Proto_Support.IO.Read
                  (Stream, Key.Encoding, V.Optional_String_Piece);
             when 25 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Optional_Cord);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Optional_Cord);
             when 27 =>
                if V.Recursive_Message.Length = 0 then
                   V.Recursive_Message.Append ((others => <>));
@@ -466,49 +469,49 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                  .Read
                  (Stream, Key.Encoding, V.Recursive_Message (1));
             when 31 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Repeated_Int_32);
             when 32 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Repeated_Int_64);
             when 33 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Repeated_Uint_32);
             when 34 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Repeated_Uint_64);
             when 35 =>
-               PB_Support.IO.Read_Zigzag_Vector
+               Proto_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Repeated_Sint_32);
             when 36 =>
-               PB_Support.IO.Read_Zigzag_Vector
+               Proto_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Repeated_Sint_64);
             when 37 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Repeated_Fixed_32);
             when 38 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Repeated_Fixed_64);
             when 39 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Repeated_Sfixed_32);
             when 40 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Repeated_Sfixed_64);
             when 41 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Float);
             when 42 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Double);
             when 43 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Bool);
             when 44 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_String);
             when 45 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Bytes);
             when 48 =>
                Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Message_IO
@@ -527,91 +530,92 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                  .Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Foreign_Enum);
             when 54 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_String_Piece);
             when 55 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Cord);
             when 75 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Packed_Int_32);
             when 76 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Packed_Int_64);
             when 77 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Packed_Uint_32);
             when 78 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Packed_Uint_64);
             when 79 =>
-               PB_Support.IO.Read_Zigzag_Vector
+               Proto_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Packed_Sint_32);
             when 80 =>
-               PB_Support.IO.Read_Zigzag_Vector
+               Proto_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Packed_Sint_64);
             when 81 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Packed_Fixed_32);
             when 82 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Packed_Fixed_64);
             when 83 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Packed_Sfixed_32);
             when 84 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Packed_Sfixed_64);
             when 85 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Packed_Float);
             when 86 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Packed_Double);
             when 87 =>
-               PB_Support.IO.Read_Vector (Stream, Key.Encoding, V.Packed_Bool);
+               Proto_Support.IO.Read_Vector
+                 (Stream, Key.Encoding, V.Packed_Bool);
             when 88 =>
                Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
                  .Read_Vector
                  (Stream, Key.Encoding, V.Packed_Nested_Enum);
             when 89 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Unpacked_Int_32);
             when 90 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Unpacked_Int_64);
             when 91 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Unpacked_Uint_32);
             when 92 =>
-               PB_Support.IO.Read_Varint_Vector
+               Proto_Support.IO.Read_Varint_Vector
                  (Stream, Key.Encoding, V.Unpacked_Uint_64);
             when 93 =>
-               PB_Support.IO.Read_Zigzag_Vector
+               Proto_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Unpacked_Sint_32);
             when 94 =>
-               PB_Support.IO.Read_Zigzag_Vector
+               Proto_Support.IO.Read_Zigzag_Vector
                  (Stream, Key.Encoding, V.Unpacked_Sint_64);
             when 95 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Unpacked_Fixed_32);
             when 96 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Unpacked_Fixed_64);
             when 97 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Unpacked_Sfixed_32);
             when 98 =>
-               PB_Support.IO.Read_Fixed_Vector
+               Proto_Support.IO.Read_Fixed_Vector
                  (Stream, Key.Encoding, V.Unpacked_Sfixed_64);
             when 99 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Float);
             when 100 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Double);
             when 101 =>
-               PB_Support.IO.Read_Vector
+               Proto_Support.IO.Read_Vector
                  (Stream, Key.Encoding, V.Unpacked_Bool);
             when 102 =>
                Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
@@ -697,7 +701,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                if V.Variant.Oneof_Field /= Oneof_Uint_32_Kind then
                   V.Variant := (Oneof_Uint_32_Kind, others => <>);
                end if;
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Variant.Oneof_Uint_32);
             when 112 =>
                if V.Variant.Oneof_Field /= Oneof_Nested_Message_Kind then
@@ -710,36 +714,37 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                if V.Variant.Oneof_Field /= Oneof_String_Kind then
                   V.Variant := (Oneof_String_Kind, others => <>);
                end if;
-               PB_Support.IO.Read
+               Proto_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_String);
             when 114 =>
                if V.Variant.Oneof_Field /= Oneof_Bytes_Kind then
                   V.Variant := (Oneof_Bytes_Kind, others => <>);
                end if;
-               PB_Support.IO.Read
+               Proto_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Bytes);
             when 115 =>
                if V.Variant.Oneof_Field /= Oneof_Bool_Kind then
                   V.Variant := (Oneof_Bool_Kind, others => <>);
                end if;
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Variant.Oneof_Bool);
+               Proto_Support.IO.Read
+                 (Stream, Key.Encoding, V.Variant.Oneof_Bool);
             when 116 =>
                if V.Variant.Oneof_Field /= Oneof_Uint_64_Kind then
                   V.Variant := (Oneof_Uint_64_Kind, others => <>);
                end if;
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Variant.Oneof_Uint_64);
             when 117 =>
                if V.Variant.Oneof_Field /= Oneof_Float_Kind then
                   V.Variant := (Oneof_Float_Kind, others => <>);
                end if;
-               PB_Support.IO.Read
+               Proto_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Float);
             when 118 =>
                if V.Variant.Oneof_Field /= Oneof_Double_Kind then
                   V.Variant := (Oneof_Double_Kind, others => <>);
                end if;
-               PB_Support.IO.Read
+               Proto_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Oneof_Double);
             when 119 =>
                if V.Variant.Oneof_Field /= Oneof_Enum_Kind then
@@ -896,60 +901,61 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                Google_Protobuf_Struct_List_Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_List_Value);
             when 401 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Fieldname_1);
+               Proto_Support.IO.Read_Varint
+                 (Stream, Key.Encoding, V.Fieldname_1);
             when 402 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_2);
             when 403 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_3);
             when 404 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_4);
             when 405 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_0name_5);
             when 406 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_0_Name_6);
             when 407 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_7);
             when 408 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_8);
             when 409 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_9);
             when 410 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_10);
             when 411 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.FIELD_NAME11);
             when 412 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.FIELD_Name_12);
             when 413 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_13);
             when 414 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_14);
             when 415 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_15);
             when 416 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_16);
             when 417 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_17);
             when 418 =>
-               PB_Support.IO.Read_Varint
+               Proto_Support.IO.Read_Varint
                  (Stream, Key.Encoding, V.Field_Name_18);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Test_All_Types_Proto_3;
@@ -958,17 +964,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Test_All_Types_Proto_3) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Test_All_Types_Proto_3 (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Optional_Int_32, 0);
@@ -987,13 +993,13 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
          WS.Write_Option (14, V.Optional_String);
          WS.Write_Option (15, V.Optional_Bytes);
          if V.Optional_Nested_Message.Is_Set then
-            WS.Write_Key ((18, PB_Support.Length_Delimited));
+            WS.Write_Key ((18, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Nested_Message'Write
               (Stream, V.Optional_Nested_Message.Value);
          end if;
          if V.Optional_Foreign_Message.Is_Set then
-            WS.Write_Key ((19, PB_Support.Length_Delimited));
+            WS.Write_Key ((19, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Foreign_Message'Write
               (Stream, V.Optional_Foreign_Message.Value);
@@ -1013,7 +1019,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
          WS.Write_Option (24, V.Optional_String_Piece);
          WS.Write_Option (25, V.Optional_Cord);
          for J in 1 .. V.Recursive_Message.Length loop
-            WS.Write_Key ((27, PB_Support.Length_Delimited));
+            WS.Write_Key ((27, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Test_All_Types_Proto_3'Write
               (Stream, V.Recursive_Message (J));
@@ -1034,13 +1040,13 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
          WS.Write (44, V.Repeated_String);
          WS.Write (45, V.Repeated_Bytes);
          for J in 1 .. V.Repeated_Nested_Message.Length loop
-            WS.Write_Key ((48, PB_Support.Length_Delimited));
+            WS.Write_Key ((48, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Nested_Message'Write
               (Stream, V.Repeated_Nested_Message (J));
          end loop;
          for J in 1 .. V.Repeated_Foreign_Message.Length loop
-            WS.Write_Key ((49, PB_Support.Length_Delimited));
+            WS.Write_Key ((49, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Foreign_Message'Write
               (Stream, V.Repeated_Foreign_Message (J));
@@ -1086,271 +1092,271 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            .Write
            (WS, 102, V.Unpacked_Nested_Enum);
          for J in 1 .. V.Map_Int_32_Int_32.Length loop
-            WS.Write_Key ((56, PB_Support.Length_Delimited));
+            WS.Write_Key ((56, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Int_32Int_32Entry'Write
               (Stream, V.Map_Int_32_Int_32 (J));
          end loop;
          for J in 1 .. V.Map_Int_64_Int_64.Length loop
-            WS.Write_Key ((57, PB_Support.Length_Delimited));
+            WS.Write_Key ((57, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Int_64Int_64Entry'Write
               (Stream, V.Map_Int_64_Int_64 (J));
          end loop;
          for J in 1 .. V.Map_Uint_32_Uint_32.Length loop
-            WS.Write_Key ((58, PB_Support.Length_Delimited));
+            WS.Write_Key ((58, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Uint_32Uint_32Entry'Write
               (Stream, V.Map_Uint_32_Uint_32 (J));
          end loop;
          for J in 1 .. V.Map_Uint_64_Uint_64.Length loop
-            WS.Write_Key ((59, PB_Support.Length_Delimited));
+            WS.Write_Key ((59, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Uint_64Uint_64Entry'Write
               (Stream, V.Map_Uint_64_Uint_64 (J));
          end loop;
          for J in 1 .. V.Map_Sint_32_Sint_32.Length loop
-            WS.Write_Key ((60, PB_Support.Length_Delimited));
+            WS.Write_Key ((60, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Sint_32Sint_32Entry'Write
               (Stream, V.Map_Sint_32_Sint_32 (J));
          end loop;
          for J in 1 .. V.Map_Sint_64_Sint_64.Length loop
-            WS.Write_Key ((61, PB_Support.Length_Delimited));
+            WS.Write_Key ((61, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Sint_64Sint_64Entry'Write
               (Stream, V.Map_Sint_64_Sint_64 (J));
          end loop;
          for J in 1 .. V.Map_Fixed_32_Fixed_32.Length loop
-            WS.Write_Key ((62, PB_Support.Length_Delimited));
+            WS.Write_Key ((62, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Fixed_32Fixed_32Entry'Write
               (Stream, V.Map_Fixed_32_Fixed_32 (J));
          end loop;
          for J in 1 .. V.Map_Fixed_64_Fixed_64.Length loop
-            WS.Write_Key ((63, PB_Support.Length_Delimited));
+            WS.Write_Key ((63, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Fixed_64Fixed_64Entry'Write
               (Stream, V.Map_Fixed_64_Fixed_64 (J));
          end loop;
          for J in 1 .. V.Map_Sfixed_32_Sfixed_32.Length loop
-            WS.Write_Key ((64, PB_Support.Length_Delimited));
+            WS.Write_Key ((64, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Sfixed_32Sfixed_32Entry'Write
               (Stream, V.Map_Sfixed_32_Sfixed_32 (J));
          end loop;
          for J in 1 .. V.Map_Sfixed_64_Sfixed_64.Length loop
-            WS.Write_Key ((65, PB_Support.Length_Delimited));
+            WS.Write_Key ((65, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Sfixed_64Sfixed_64Entry'Write
               (Stream, V.Map_Sfixed_64_Sfixed_64 (J));
          end loop;
          for J in 1 .. V.Map_Int_32_Float.Length loop
-            WS.Write_Key ((66, PB_Support.Length_Delimited));
+            WS.Write_Key ((66, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Int_32Float_Entry'Write
               (Stream, V.Map_Int_32_Float (J));
          end loop;
          for J in 1 .. V.Map_Int_32_Double.Length loop
-            WS.Write_Key ((67, PB_Support.Length_Delimited));
+            WS.Write_Key ((67, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Int_32Double_Entry'Write
               (Stream, V.Map_Int_32_Double (J));
          end loop;
          for J in 1 .. V.Map_Bool_Bool.Length loop
-            WS.Write_Key ((68, PB_Support.Length_Delimited));
+            WS.Write_Key ((68, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_Bool_Bool_Entry'Write
               (Stream, V.Map_Bool_Bool (J));
          end loop;
          for J in 1 .. V.Map_String_String.Length loop
-            WS.Write_Key ((69, PB_Support.Length_Delimited));
+            WS.Write_Key ((69, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_String_Entry'Write
               (Stream, V.Map_String_String (J));
          end loop;
          for J in 1 .. V.Map_String_Bytes.Length loop
-            WS.Write_Key ((70, PB_Support.Length_Delimited));
+            WS.Write_Key ((70, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Bytes_Entry'Write
               (Stream, V.Map_String_Bytes (J));
          end loop;
          for J in 1 .. V.Map_String_Nested_Message.Length loop
-            WS.Write_Key ((71, PB_Support.Length_Delimited));
+            WS.Write_Key ((71, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Nested_Message_Entry'Write
               (Stream, V.Map_String_Nested_Message (J));
          end loop;
          for J in 1 .. V.Map_String_Foreign_Message.Length loop
-            WS.Write_Key ((72, PB_Support.Length_Delimited));
+            WS.Write_Key ((72, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Foreign_Message_Entry'Write
               (Stream, V.Map_String_Foreign_Message (J));
          end loop;
          for J in 1 .. V.Map_String_Nested_Enum.Length loop
-            WS.Write_Key ((73, PB_Support.Length_Delimited));
+            WS.Write_Key ((73, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Nested_Enum_Entry'Write
               (Stream, V.Map_String_Nested_Enum (J));
          end loop;
          for J in 1 .. V.Map_String_Foreign_Enum.Length loop
-            WS.Write_Key ((74, PB_Support.Length_Delimited));
+            WS.Write_Key ((74, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Map_String_Foreign_Enum_Entry'Write
               (Stream, V.Map_String_Foreign_Enum (J));
          end loop;
          if V.Optional_Bool_Wrapper.Is_Set then
-            WS.Write_Key ((201, PB_Support.Length_Delimited));
+            WS.Write_Key ((201, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Bool_Value'Write
               (Stream, V.Optional_Bool_Wrapper.Value);
          end if;
          if V.Optional_Int_32_Wrapper.Is_Set then
-            WS.Write_Key ((202, PB_Support.Length_Delimited));
+            WS.Write_Key ((202, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Int_32Value'Write
               (Stream, V.Optional_Int_32_Wrapper.Value);
          end if;
          if V.Optional_Int_64_Wrapper.Is_Set then
-            WS.Write_Key ((203, PB_Support.Length_Delimited));
+            WS.Write_Key ((203, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Int_64Value'Write
               (Stream, V.Optional_Int_64_Wrapper.Value);
          end if;
          if V.Optional_Uint_32_Wrapper.Is_Set then
-            WS.Write_Key ((204, PB_Support.Length_Delimited));
+            WS.Write_Key ((204, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.UInt_32Value'Write
               (Stream, V.Optional_Uint_32_Wrapper.Value);
          end if;
          if V.Optional_Uint_64_Wrapper.Is_Set then
-            WS.Write_Key ((205, PB_Support.Length_Delimited));
+            WS.Write_Key ((205, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.UInt_64Value'Write
               (Stream, V.Optional_Uint_64_Wrapper.Value);
          end if;
          if V.Optional_Float_Wrapper.Is_Set then
-            WS.Write_Key ((206, PB_Support.Length_Delimited));
+            WS.Write_Key ((206, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Float_Value'Write
               (Stream, V.Optional_Float_Wrapper.Value);
          end if;
          if V.Optional_Double_Wrapper.Is_Set then
-            WS.Write_Key ((207, PB_Support.Length_Delimited));
+            WS.Write_Key ((207, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Double_Value'Write
               (Stream, V.Optional_Double_Wrapper.Value);
          end if;
          if V.Optional_String_Wrapper.Is_Set then
-            WS.Write_Key ((208, PB_Support.Length_Delimited));
+            WS.Write_Key ((208, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.String_Value'Write
               (Stream, V.Optional_String_Wrapper.Value);
          end if;
          if V.Optional_Bytes_Wrapper.Is_Set then
-            WS.Write_Key ((209, PB_Support.Length_Delimited));
+            WS.Write_Key ((209, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Bytes_Value'Write
               (Stream, V.Optional_Bytes_Wrapper.Value);
          end if;
          for J in 1 .. V.Repeated_Bool_Wrapper.Length loop
-            WS.Write_Key ((211, PB_Support.Length_Delimited));
+            WS.Write_Key ((211, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Bool_Value'Write
               (Stream, V.Repeated_Bool_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Int_32_Wrapper.Length loop
-            WS.Write_Key ((212, PB_Support.Length_Delimited));
+            WS.Write_Key ((212, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Int_32Value'Write
               (Stream, V.Repeated_Int_32_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Int_64_Wrapper.Length loop
-            WS.Write_Key ((213, PB_Support.Length_Delimited));
+            WS.Write_Key ((213, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Int_64Value'Write
               (Stream, V.Repeated_Int_64_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Uint_32_Wrapper.Length loop
-            WS.Write_Key ((214, PB_Support.Length_Delimited));
+            WS.Write_Key ((214, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.UInt_32Value'Write
               (Stream, V.Repeated_Uint_32_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Uint_64_Wrapper.Length loop
-            WS.Write_Key ((215, PB_Support.Length_Delimited));
+            WS.Write_Key ((215, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.UInt_64Value'Write
               (Stream, V.Repeated_Uint_64_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Float_Wrapper.Length loop
-            WS.Write_Key ((216, PB_Support.Length_Delimited));
+            WS.Write_Key ((216, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Float_Value'Write
               (Stream, V.Repeated_Float_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Double_Wrapper.Length loop
-            WS.Write_Key ((217, PB_Support.Length_Delimited));
+            WS.Write_Key ((217, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Double_Value'Write
               (Stream, V.Repeated_Double_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_String_Wrapper.Length loop
-            WS.Write_Key ((218, PB_Support.Length_Delimited));
+            WS.Write_Key ((218, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.String_Value'Write
               (Stream, V.Repeated_String_Wrapper (J));
          end loop;
          for J in 1 .. V.Repeated_Bytes_Wrapper.Length loop
-            WS.Write_Key ((219, PB_Support.Length_Delimited));
+            WS.Write_Key ((219, Proto_Support.Length_Delimited));
             Google.Protobuf.Wrappers.Bytes_Value'Write
               (Stream, V.Repeated_Bytes_Wrapper (J));
          end loop;
          if V.Optional_Duration.Is_Set then
-            WS.Write_Key ((301, PB_Support.Length_Delimited));
+            WS.Write_Key ((301, Proto_Support.Length_Delimited));
             Google.Protobuf.Duration.Duration'Write
               (Stream, V.Optional_Duration.Value);
          end if;
          if V.Optional_Timestamp.Is_Set then
-            WS.Write_Key ((302, PB_Support.Length_Delimited));
+            WS.Write_Key ((302, Proto_Support.Length_Delimited));
             Google.Protobuf.Timestamp.Timestamp'Write
               (Stream, V.Optional_Timestamp.Value);
          end if;
          if V.Optional_Field_Mask.Is_Set then
-            WS.Write_Key ((303, PB_Support.Length_Delimited));
+            WS.Write_Key ((303, Proto_Support.Length_Delimited));
             Google.Protobuf.Field_Mask.Field_Mask'Write
               (Stream, V.Optional_Field_Mask.Value);
          end if;
          if V.Optional_Struct.Is_Set then
-            WS.Write_Key ((304, PB_Support.Length_Delimited));
+            WS.Write_Key ((304, Proto_Support.Length_Delimited));
             Google.Protobuf.Struct.Struct'Write
               (Stream, V.Optional_Struct.Value);
          end if;
          if V.Optional_Any.Is_Set then
-            WS.Write_Key ((305, PB_Support.Length_Delimited));
+            WS.Write_Key ((305, Proto_Support.Length_Delimited));
             Google.Protobuf.Any.Any'Write (Stream, V.Optional_Any.Value);
          end if;
          if V.Optional_Value.Is_Set then
-            WS.Write_Key ((306, PB_Support.Length_Delimited));
+            WS.Write_Key ((306, Proto_Support.Length_Delimited));
             Google.Protobuf.Struct.Value'Write
               (Stream, V.Optional_Value.Value);
          end if;
          Google_Protobuf_Struct_Null_Value_IO.Write_Option
            (WS, 307, V.Optional_Null_Value,
-            Google.Protobuf.Struct.PB_NULL_VALUE);
+            Google.Protobuf.Struct.Proto_NULL_VALUE);
          for J in 1 .. V.Repeated_Duration.Length loop
-            WS.Write_Key ((311, PB_Support.Length_Delimited));
+            WS.Write_Key ((311, Proto_Support.Length_Delimited));
             Google.Protobuf.Duration.Duration'Write
               (Stream, V.Repeated_Duration (J));
          end loop;
          for J in 1 .. V.Repeated_Timestamp.Length loop
-            WS.Write_Key ((312, PB_Support.Length_Delimited));
+            WS.Write_Key ((312, Proto_Support.Length_Delimited));
             Google.Protobuf.Timestamp.Timestamp'Write
               (Stream, V.Repeated_Timestamp (J));
          end loop;
          for J in 1 .. V.Repeated_Fieldmask.Length loop
-            WS.Write_Key ((313, PB_Support.Length_Delimited));
+            WS.Write_Key ((313, Proto_Support.Length_Delimited));
             Google.Protobuf.Field_Mask.Field_Mask'Write
               (Stream, V.Repeated_Fieldmask (J));
          end loop;
          for J in 1 .. V.Repeated_Struct.Length loop
-            WS.Write_Key ((324, PB_Support.Length_Delimited));
+            WS.Write_Key ((324, Proto_Support.Length_Delimited));
             Google.Protobuf.Struct.Struct'Write
               (Stream, V.Repeated_Struct (J));
          end loop;
          for J in 1 .. V.Repeated_Any.Length loop
-            WS.Write_Key ((315, PB_Support.Length_Delimited));
+            WS.Write_Key ((315, Proto_Support.Length_Delimited));
             Google.Protobuf.Any.Any'Write (Stream, V.Repeated_Any (J));
          end loop;
          for J in 1 .. V.Repeated_Value.Length loop
-            WS.Write_Key ((316, PB_Support.Length_Delimited));
+            WS.Write_Key ((316, Proto_Support.Length_Delimited));
             Google.Protobuf.Struct.Value'Write (Stream, V.Repeated_Value (J));
          end loop;
          for J in 1 .. V.Repeated_List_Value.Length loop
-            WS.Write_Key ((317, PB_Support.Length_Delimited));
+            WS.Write_Key ((317, Proto_Support.Length_Delimited));
             Google.Protobuf.Struct.List_Value'Write
               (Stream, V.Repeated_List_Value (J));
          end loop;
@@ -1376,7 +1382,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             when Oneof_Uint_32_Kind =>
                WS.Write_Varint (111, V.Variant.Oneof_Uint_32);
             when Oneof_Nested_Message_Kind =>
-               WS.Write_Key ((112, PB_Support.Length_Delimited));
+               WS.Write_Key ((112, Proto_Support.Length_Delimited));
                Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
                  .Nested_Message'Write
                  (Stream, V.Variant.Oneof_Nested_Message);
@@ -1426,14 +1432,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Nested_Message) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Nested_Message'Size);
+      Aux_Data    : Nested_Message_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Nested_Message_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Nested_Message_Array'
              (Self.Data.all & Nested_Message_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1472,12 +1481,12 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Nested_Message
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Nested_Message) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.A);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.A);
             when 2 =>
                if V.Corecursive.Length = 0 then
                   V.Corecursive.Append ((others => <>));
@@ -1486,7 +1495,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                  .Read
                  (Stream, Key.Encoding, V.Corecursive (1));
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Nested_Message;
@@ -1495,22 +1504,22 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Nested_Message) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Nested_Message (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.A, 0);
          for J in 1 .. V.Corecursive.Length loop
-            WS.Write_Key ((2, PB_Support.Length_Delimited));
+            WS.Write_Key ((2, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Test_All_Types_Proto_3'Write
               (Stream, V.Corecursive (J));
@@ -1539,15 +1548,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Int_32Int_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Int_32Int_32Entry'Size);
+      Aux_Data    : Map_Int_32Int_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Int_32Int_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Int_32Int_32Entry_Array'
              (Self.Data.all
                 & Map_Int_32Int_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1588,16 +1600,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Int_32Int_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Int_32Int_32Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Int_32Int_32Entry;
@@ -1606,17 +1618,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Int_32Int_32Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Int_32Int_32Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Key, 0);
@@ -1645,15 +1657,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Int_64Int_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Int_64Int_64Entry'Size);
+      Aux_Data    : Map_Int_64Int_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Int_64Int_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Int_64Int_64Entry_Array'
              (Self.Data.all
                 & Map_Int_64Int_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1694,16 +1709,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Int_64Int_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Int_64Int_64Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Int_64Int_64Entry;
@@ -1712,17 +1727,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Int_64Int_64Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Int_64Int_64Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Key, 0);
@@ -1751,15 +1766,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Uint_32Uint_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Uint_32Uint_32Entry'Size);
+      Aux_Data    : Map_Uint_32Uint_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Uint_32Uint_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Uint_32Uint_32Entry_Array'
              (Self.Data.all
                 & Map_Uint_32Uint_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1801,16 +1819,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Uint_32Uint_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Uint_32Uint_32Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Uint_32Uint_32Entry;
@@ -1819,17 +1837,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Uint_32Uint_32Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Uint_32Uint_32Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Key, 0);
@@ -1858,15 +1876,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Uint_64Uint_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Uint_64Uint_64Entry'Size);
+      Aux_Data    : Map_Uint_64Uint_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Uint_64Uint_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Uint_64Uint_64Entry_Array'
              (Self.Data.all
                 & Map_Uint_64Uint_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1908,16 +1929,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Uint_64Uint_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Uint_64Uint_64Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Uint_64Uint_64Entry;
@@ -1926,17 +1947,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Uint_64Uint_64Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Uint_64Uint_64Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Key, 0);
@@ -1965,15 +1986,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Sint_32Sint_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Sint_32Sint_32Entry'Size);
+      Aux_Data    : Map_Sint_32Sint_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Sint_32Sint_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Sint_32Sint_32Entry_Array'
              (Self.Data.all
                 & Map_Sint_32Sint_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2015,16 +2039,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Sint_32Sint_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Sint_32Sint_32Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Sint_32Sint_32Entry;
@@ -2033,17 +2057,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Sint_32Sint_32Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Sint_32Sint_32Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Zigzag_Option (1, V.Key, 0);
@@ -2072,15 +2096,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Sint_64Sint_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Sint_64Sint_64Entry'Size);
+      Aux_Data    : Map_Sint_64Sint_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Sint_64Sint_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Sint_64Sint_64Entry_Array'
              (Self.Data.all
                 & Map_Sint_64Sint_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2122,16 +2149,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Sint_64Sint_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Sint_64Sint_64Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Zigzag (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Sint_64Sint_64Entry;
@@ -2140,17 +2167,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Sint_64Sint_64Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Sint_64Sint_64Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Zigzag_Option (1, V.Key, 0);
@@ -2179,15 +2206,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Fixed_32Fixed_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Fixed_32Fixed_32Entry'Size);
+      Aux_Data    : Map_Fixed_32Fixed_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Fixed_32Fixed_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Fixed_32Fixed_32Entry_Array'
              (Self.Data.all
                 & Map_Fixed_32Fixed_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2229,16 +2259,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Fixed_32Fixed_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Fixed_32Fixed_32Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Fixed_32Fixed_32Entry;
@@ -2247,17 +2277,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Fixed_32Fixed_32Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Fixed_32Fixed_32Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Fixed_Option (1, V.Key, 0);
@@ -2286,15 +2316,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Fixed_64Fixed_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Fixed_64Fixed_64Entry'Size);
+      Aux_Data    : Map_Fixed_64Fixed_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Fixed_64Fixed_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Fixed_64Fixed_64Entry_Array'
              (Self.Data.all
                 & Map_Fixed_64Fixed_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2336,16 +2369,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Fixed_64Fixed_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Fixed_64Fixed_64Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Fixed_64Fixed_64Entry;
@@ -2354,17 +2387,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Fixed_64Fixed_64Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Fixed_64Fixed_64Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Fixed_Option (1, V.Key, 0);
@@ -2396,16 +2429,19 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Sfixed_32Sfixed_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Sfixed_32Sfixed_32Entry'Size);
+      Aux_Data    : Map_Sfixed_32Sfixed_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_Sfixed_32Sfixed_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Sfixed_32Sfixed_32Entry_Array'
              (Self.Data.all
                 & Map_Sfixed_32Sfixed_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2448,16 +2484,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Sfixed_32Sfixed_32Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Sfixed_32Sfixed_32Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Sfixed_32Sfixed_32Entry;
@@ -2466,17 +2502,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Sfixed_32Sfixed_32Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Sfixed_32Sfixed_32Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Fixed_Option (1, V.Key, 0);
@@ -2508,16 +2544,19 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Sfixed_64Sfixed_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Sfixed_64Sfixed_64Entry'Size);
+      Aux_Data    : Map_Sfixed_64Sfixed_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_Sfixed_64Sfixed_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Sfixed_64Sfixed_64Entry_Array'
              (Self.Data.all
                 & Map_Sfixed_64Sfixed_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2560,16 +2599,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Sfixed_64Sfixed_64Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Sfixed_64Sfixed_64Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read_Fixed (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Sfixed_64Sfixed_64Entry;
@@ -2578,17 +2617,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Sfixed_64Sfixed_64Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Sfixed_64Sfixed_64Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Fixed_Option (1, V.Key, 0);
@@ -2617,15 +2656,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Int_32Float_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Int_32Float_Entry'Size);
+      Aux_Data    : Map_Int_32Float_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Int_32Float_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Int_32Float_Entry_Array'
              (Self.Data.all
                 & Map_Int_32Float_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2666,16 +2708,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Int_32Float_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Int_32Float_Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Int_32Float_Entry;
@@ -2684,17 +2726,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Int_32Float_Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Int_32Float_Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Key, 0);
@@ -2723,15 +2765,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Int_32Double_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Int_32Double_Entry'Size);
+      Aux_Data    : Map_Int_32Double_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Int_32Double_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Int_32Double_Entry_Array'
              (Self.Data.all
                 & Map_Int_32Double_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2772,16 +2817,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Int_32Double_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Int_32Double_Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Int_32Double_Entry;
@@ -2790,17 +2835,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Int_32Double_Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Int_32Double_Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.Key, 0);
@@ -2829,15 +2874,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Bool_Bool_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Bool_Bool_Entry'Size);
+      Aux_Data    : Map_Bool_Bool_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Bool_Bool_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Bool_Bool_Entry_Array'
              (Self.Data.all
                 & Map_Bool_Bool_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2877,16 +2925,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_Bool_Bool_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_Bool_Bool_Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_Bool_Bool_Entry;
@@ -2895,17 +2943,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_Bool_Bool_Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_Bool_Bool_Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Key, False);
@@ -2934,15 +2982,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_String_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_String_Entry'Size);
+      Aux_Data    : Map_String_String_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_String_String_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_String_Entry_Array'
              (Self.Data.all
                 & Map_String_String_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2984,16 +3035,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_String_String_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_String_Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_String_String_Entry;
@@ -3002,17 +3053,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_String_String_Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_String_String_Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Key);
@@ -3041,15 +3092,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Bytes_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Bytes_Entry'Size);
+      Aux_Data    : Map_String_Bytes_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_String_Bytes_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Bytes_Entry_Array'
              (Self.Data.all
                 & Map_String_Bytes_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3090,16 +3144,16 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_String_Bytes_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_Bytes_Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Value);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_String_Bytes_Entry;
@@ -3108,17 +3162,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_String_Bytes_Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_String_Bytes_Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Key);
@@ -3150,17 +3204,20 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Nested_Message_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Nested_Message_Entry'Size);
+      Aux_Data    : Map_String_Nested_Message_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_String_Nested_Message_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Nested_Message_Entry_Array'
              (Self.Data.all
                 & Map_String_Nested_Message_Entry_Array'
                   (1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3203,12 +3260,12 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_String_Nested_Message_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_Nested_Message_Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
@@ -3217,7 +3274,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                  .Read
                  (Stream, Key.Encoding, V.Value.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_String_Nested_Message_Entry;
@@ -3226,22 +3283,22 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_String_Nested_Message_Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_String_Nested_Message_Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Key);
          if V.Value.Is_Set then
-            WS.Write_Key ((2, PB_Support.Length_Delimited));
+            WS.Write_Key ((2, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Nested_Message'Write
               (Stream, V.Value.Value);
@@ -3273,17 +3330,20 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Foreign_Message_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Foreign_Message_Entry'Size);
+      Aux_Data    : Map_String_Foreign_Message_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_String_Foreign_Message_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Foreign_Message_Entry_Array'
              (Self.Data.all
                 & Map_String_Foreign_Message_Entry_Array'
                   (1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3326,12 +3386,12 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_String_Foreign_Message_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_Foreign_Message_Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
                if  not V.Value.Is_Set then
                   V.Value := (True, others => <>);
@@ -3340,7 +3400,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
                  .Read
                  (Stream, Key.Encoding, V.Value.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_String_Foreign_Message_Entry;
@@ -3349,22 +3409,22 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_String_Foreign_Message_Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_String_Foreign_Message_Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Key);
          if V.Value.Is_Set then
-            WS.Write_Key ((2, PB_Support.Length_Delimited));
+            WS.Write_Key ((2, Proto_Support.Length_Delimited));
             Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3
               .Foreign_Message'Write
               (Stream, V.Value.Value);
@@ -3396,16 +3456,19 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Nested_Enum_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Nested_Enum_Entry'Size);
+      Aux_Data    : Map_String_Nested_Enum_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_String_Nested_Enum_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Nested_Enum_Entry_Array'
              (Self.Data.all
                 & Map_String_Nested_Enum_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3448,18 +3511,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_String_Nested_Enum_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_Nested_Enum_Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
                Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Nested_Enum_IO
                  .Read
                  (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_String_Nested_Enum_Entry;
@@ -3468,17 +3531,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_String_Nested_Enum_Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_String_Nested_Enum_Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Key);
@@ -3513,17 +3576,20 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Foreign_Enum_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Foreign_Enum_Entry'Size);
+      Aux_Data    : Map_String_Foreign_Enum_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_String_Foreign_Enum_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Foreign_Enum_Entry_Array'
              (Self.Data.all
                 & Map_String_Foreign_Enum_Entry_Array'
                   (1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3566,18 +3632,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Map_String_Foreign_Enum_Entry
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Map_String_Foreign_Enum_Entry) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read (Stream, Key.Encoding, V.Key);
+               Proto_Support.IO.Read (Stream, Key.Encoding, V.Key);
             when 2 =>
                Protobuf_Test_Messages_Proto_3_Test_Messages_Proto_3_Foreign_Enum_IO
                  .Read
                  (Stream, Key.Encoding, V.Value);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Map_String_Foreign_Enum_Entry;
@@ -3586,17 +3652,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Map_String_Foreign_Enum_Entry) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Map_String_Foreign_Enum_Entry (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Option (1, V.Key);
@@ -3628,14 +3694,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Foreign_Message) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Foreign_Message'Size);
+      Aux_Data    : Foreign_Message_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Foreign_Message_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Foreign_Message_Array'
              (Self.Data.all & Foreign_Message_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3674,14 +3743,14 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Foreign_Message
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Foreign_Message) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when 1 =>
-               PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.C);
+               Proto_Support.IO.Read_Varint (Stream, Key.Encoding, V.C);
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Foreign_Message;
@@ -3690,17 +3759,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Foreign_Message) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Foreign_Message (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          WS.Write_Varint_Option (1, V.C, 0);
@@ -3728,15 +3797,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Null_Hypothesis_Proto_3) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Null_Hypothesis_Proto_3'Size);
+      Aux_Data    : Null_Hypothesis_Proto_3_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Null_Hypothesis_Proto_3_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Null_Hypothesis_Proto_3_Array'
              (Self.Data.all
                 & Null_Hypothesis_Proto_3_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3778,12 +3850,12 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Null_Hypothesis_Proto_3
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Null_Hypothesis_Proto_3) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Null_Hypothesis_Proto_3;
@@ -3792,17 +3864,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Null_Hypothesis_Proto_3) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Null_Hypothesis_Proto_3 (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          if WS.End_Message then
@@ -3829,15 +3901,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Enum_Only_Proto_3) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Only_Proto_3'Size);
+      Aux_Data    : Enum_Only_Proto_3_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Enum_Only_Proto_3_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Enum_Only_Proto_3_Array'
              (Self.Data.all
                 & Enum_Only_Proto_3_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3877,12 +3952,12 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    procedure Read_Enum_Only_Proto_3
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : out Enum_Only_Proto_3) is
-      Key : aliased PB_Support.IO.Key;
+      Key : aliased Proto_Support.IO.Key;
    begin
-      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+      while Proto_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
             when others =>
-               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+               Proto_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
       end loop;
    end Read_Enum_Only_Proto_3;
@@ -3891,17 +3966,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
     (Stream : access Ada.Streams.Root_Stream_Type'Class;
      V      : Enum_Only_Proto_3) is
    begin
-      if Stream.all not in PB_Support.Internal.Stream then
+      if Stream.all not in Proto_Support.Internal.Stream then
          declare
-            WS : aliased PB_Support.Internal.Stream (Stream);
+            WS : aliased Proto_Support.Internal.Stream (Stream);
          begin
             Write_Enum_Only_Proto_3 (WS'Access, V);
             return;
          end;
       end if;
       declare
-         WS : PB_Support.Internal.Stream renames
-           PB_Support.Internal.Stream (Stream.all);
+         WS : Proto_Support.Internal.Stream renames
+           Proto_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
          if WS.End_Message then

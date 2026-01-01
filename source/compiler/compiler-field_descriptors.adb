@@ -1,26 +1,8 @@
---  MIT License
+--  SPDX-FileCopyrightText: 2020-2025 Max Reznik <reznikmm@gmail.com>
 --
---  Copyright (c) 2020-2025 Max Reznik
---
---  Permission is hereby granted, free of charge, to any person obtaining a
---  copy of this software and associated documentation files (the "Software"),
---  to deal in the Software without restriction, including without limitation
---  the rights to use, copy, modify, merge, publish, distribute, sublicense,
---  and/or sell copies of the Software, and to permit persons to whom the
---  Software is furnished to do so, subject to the following conditions:
---
---  The above copyright notice and this permission notice shall be included in
---  all copies or substantial portions of the Software.
---
---  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
---  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
---  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
---  DEALINGS IN THE SOFTWARE.
+--  SPDX-License-Identifier: MIT
 
-with PB_Support.Boolean_Vectors;
+with Proto_Support.Boolean_Options;
 
 package body Compiler.Field_Descriptors is
 
@@ -39,7 +21,7 @@ package body Compiler.Field_Descriptors is
       Is_Option   : Option_Kind;
       Is_Repeated : Boolean) return Compiler.Context.Ada_Type_Name;
 
-   function Default (X : Google.Protobuf.Descriptor.PB_Type)
+   function Default (X : Google.Protobuf.Descriptor.Proto_Type)
      return League.Strings.Universal_String;
    --  Default value for a predefined type
 
@@ -52,8 +34,9 @@ package body Compiler.Field_Descriptors is
       return Ada_Pretty.Node_Access;
    --  Default value for a field
 
-   function Map (X : Google.Protobuf.Descriptor.PB_Type)
-     return Compiler.Context.Ada_Type_Name;
+   function Map
+     (X     : Google.Protobuf.Descriptor.Proto_Type;
+      Plain : Boolean) return Compiler.Context.Ada_Type_Name;
 
    function Is_Enum
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
@@ -146,10 +129,10 @@ package body Compiler.Field_Descriptors is
    -- Default --
    -------------
 
-   function Default (X : Google.Protobuf.Descriptor.PB_Type)
+   function Default (X : Google.Protobuf.Descriptor.Proto_Type)
      return League.Strings.Universal_String
    is
-      use all type Google.Protobuf.Descriptor.PB_Type;
+      use all type Google.Protobuf.Descriptor.Proto_Type;
    begin
       case X is
          when TYPE_DOUBLE   => return +"0.0";
@@ -215,10 +198,10 @@ package body Compiler.Field_Descriptors is
                   "Type not found: " & Value.To_UTF_8_String;
             end if;
          end;
-      elsif Self.PB_Type.Is_Set then
+      elsif Self.Proto_Type.Is_Set then
          declare
             Value : constant League.Strings.Universal_String :=
-              Default (Self.PB_Type.Value);
+              Default (Self.Proto_Type.Value);
          begin
             if not Value.Is_Empty then
                Result := F.New_Name (Value);
@@ -249,7 +232,8 @@ package body Compiler.Field_Descriptors is
       end if;
 
       if Is_Enum (Self) then
-         Result.Include (+"PB_Support.Vectors");
+         Result.Include (+"Proto_Support.Options");
+         Result.Include (+"Proto_Support.Vectors");
       end if;
    end Dependency;
 
@@ -310,7 +294,7 @@ package body Compiler.Field_Descriptors is
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Boolean
    is
-      use type PB_Support.Boolean_Vectors.Option;
+      use type Proto_Support.Boolean_Options.Option;
    begin
       return Self.Oneof_Index.Is_Set and then
         Self.Proto_3_Optional /= (True, True);
@@ -324,7 +308,7 @@ package body Compiler.Field_Descriptors is
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Option_Kind
    is
-      use type PB_Support.Boolean_Vectors.Option;
+      use type Proto_Support.Boolean_Options.Option;
    begin
       if Self.Proto_3_Optional = (True, True) then
          return Optional;
@@ -351,13 +335,13 @@ package body Compiler.Field_Descriptors is
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
       return Boolean
    is
-      use all type Google.Protobuf.Descriptor.PB_Type;
+      use all type Google.Protobuf.Descriptor.Proto_Type;
 
       Is_Primitive_Numeric_Vector : constant Boolean :=
         Self.Label.Is_Set
         and then Self.Label.Value = LABEL_REPEATED
-        and then Self.PB_Type.Is_Set
-        and then Self.PB_Type.Value not in TYPE_BYTES | TYPE_STRING;
+        and then Self.Proto_Type.Is_Set
+        and then Self.Proto_Type.Value not in TYPE_BYTES | TYPE_STRING;
 
       Packed : constant Boolean :=
         (Self.Options.Is_Set
@@ -395,10 +379,11 @@ package body Compiler.Field_Descriptors is
    -- Map --
    ---------
 
-   function Map (X : Google.Protobuf.Descriptor.PB_Type)
-     return Compiler.Context.Ada_Type_Name
+   function Map
+     (X     : Google.Protobuf.Descriptor.Proto_Type;
+      Plain : Boolean) return Compiler.Context.Ada_Type_Name
    is
-      use all type Google.Protobuf.Descriptor.PB_Type;
+      use all type Google.Protobuf.Descriptor.Proto_Type;
    begin
       case X is
          when TYPE_DOUBLE   => return (+"Interfaces", +"IEEE_Float_64");
@@ -410,9 +395,10 @@ package body Compiler.Field_Descriptors is
          when TYPE_FIXED32  => return (+"Interfaces", +"Unsigned_32");
          when TYPE_BOOL     => return (+"", +"Boolean");
          when TYPE_STRING   => return (+"League.Strings", +"Universal_String");
-         when TYPE_BYTES    => return
-              (+"League.Stream_Element_Vectors",
-               +"Stream_Element_Vector");
+         when TYPE_BYTES    =>
+            return
+              (+"Proto_Support.Stream_Element_Vectors",
+               (if Plain then +"Vector" else +"Stream_Element_Vector"));
          when TYPE_UINT32   => return (+"Interfaces", +"Unsigned_32");
          when TYPE_SFIXED32 => return (+"Interfaces", +"Integer_32");
          when TYPE_SFIXED64 => return (+"Interfaces", +"Integer_64");
@@ -523,9 +509,9 @@ package body Compiler.Field_Descriptors is
       Pkg  : League.Strings.Universal_String)
       return League.Strings.Universal_String
    is
-      use all type Google.Protobuf.Descriptor.PB_Type;
+      use all type Google.Protobuf.Descriptor.Proto_Type;
       use type League.Strings.Universal_String;
-      Result  : League.Strings.Universal_String := +"PB_Support.IO.Read";
+      Result  : League.Strings.Universal_String := +"Proto_Support.IO.Read";
       Is_Vector : constant Boolean :=
         Self.Label.Is_Set and then Self.Label.Value = LABEL_REPEATED;
    begin
@@ -536,15 +522,15 @@ package body Compiler.Field_Descriptors is
            (Compiler.Context.Named_Types (Self.Type_Name.Value).Ada_Type,
             Pkg);
          Result.Append ("_IO.Read");
-      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+      elsif Self.Proto_Type.Is_Set and then Self.Proto_Type.Value in
         TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 | TYPE_UINT32
       then
          Result.Append ("_Varint");
-      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+      elsif Self.Proto_Type.Is_Set and then Self.Proto_Type.Value in
         TYPE_FIXED64 | TYPE_FIXED32 | TYPE_SFIXED32 | TYPE_SFIXED64
       then
          Result.Append ("_Fixed");
-      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+      elsif Self.Proto_Type.Is_Set and then Self.Proto_Type.Value in
         TYPE_SINT32 | TYPE_SINT64
       then
          Result.Append ("_Zigzag");
@@ -568,7 +554,7 @@ package body Compiler.Field_Descriptors is
       return Compiler.Context.Ada_Type_Name
    is
       use type League.Strings.Universal_String;
-      use all type Google.Protobuf.Descriptor.PB_Type;
+      use all type Google.Protobuf.Descriptor.Proto_Type;
       Result : Compiler.Context.Ada_Type_Name;
    begin
       if Self.Type_Name.Is_Set then  --  Message or enum
@@ -587,7 +573,7 @@ package body Compiler.Field_Descriptors is
                      if Is_Repeated then
                         Result.Type_Name.Append ("_Vectors.Vector");
                      elsif Is_Option = Optional then
-                        Result.Type_Name.Append ("_Vectors.Option");
+                        Result.Type_Name.Append ("_Options.Option");
                      end if;
                   elsif Is_Repeated then
                      Result.Type_Name.Append ("_Vector");
@@ -601,18 +587,18 @@ package body Compiler.Field_Descriptors is
             end if;
          end;
       elsif Is_Option = Optional then
-         Result := Map (Self.PB_Type.Value);
+         Result := Map (Self.Proto_Type.Value, Plain => False);
          Result.Package_Name :=
-           "PB_Support." & Result.Type_Name & "_Vectors";
+           "Proto_Support." & Result.Type_Name & "_Options";
          Result.Type_Name := +"Option";
       elsif not Is_Repeated then
-         Result := Map (Self.PB_Type.Value);
-      elsif Self.PB_Type.Value = TYPE_STRING then
+         Result := Map (Self.Proto_Type.Value, Plain => True);
+      elsif Self.Proto_Type.Value = TYPE_STRING then
          Result := (+"League.String_Vectors", +"Universal_String_Vector");
       else
-         Result := Map (Self.PB_Type.Value);
+         Result := Map (Self.Proto_Type.Value, Plain => False);
          Result.Package_Name :=
-           "PB_Support." & Result.Type_Name & "_Vectors";
+           "Proto_Support." & Result.Type_Name & "_Vectors";
          Result.Type_Name := +"Vector";
       end if;
 
@@ -693,7 +679,7 @@ package body Compiler.Field_Descriptors is
                        (F.New_Literal (Integer (Self.Number.Value))),
                       F.New_Argument_Association
                        (F.New_Selected_Name
-                         (+"PB_Support.Length_Delimited"))))))),
+                         (+"Proto_Support.Length_Delimited"))))))),
             F.New_Statement
              (F.New_Apply
                (F.New_Selected_Name (Full & "'Write"),
@@ -746,7 +732,7 @@ package body Compiler.Field_Descriptors is
              (F.New_Selected_Name (Value)));
 
          if Is_Option = Primitive then
-            Initial := Default (Self.PB_Type.Value);
+            Initial := Default (Self.Proto_Type.Value);
 
             if Initial.Is_Empty then
                Result := F.New_Apply
@@ -785,20 +771,20 @@ package body Compiler.Field_Descriptors is
       Is_Option : Option_Kind)
       return League.Strings.Universal_String
    is
-      use all type Google.Protobuf.Descriptor.PB_Type;
+      use all type Google.Protobuf.Descriptor.Proto_Type;
 
       Result : League.Strings.Universal_String := +"Write";
       Packed : constant Boolean := Is_Packed (Self);
    begin
-      if Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+      if Self.Proto_Type.Is_Set and then Self.Proto_Type.Value in
         TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 | TYPE_UINT32
       then
          Result.Append ("_Varint");
-      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+      elsif Self.Proto_Type.Is_Set and then Self.Proto_Type.Value in
         TYPE_FIXED64 | TYPE_FIXED32 | TYPE_SFIXED32 | TYPE_SFIXED64
       then
          Result.Append ("_Fixed");
-      elsif Self.PB_Type.Is_Set and then Self.PB_Type.Value in
+      elsif Self.Proto_Type.Is_Set and then Self.Proto_Type.Value in
         TYPE_SINT32 | TYPE_SINT64
       then
          Result.Append ("_Zigzag");
