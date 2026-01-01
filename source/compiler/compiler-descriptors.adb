@@ -3,9 +3,7 @@
 --  SPDX-License-Identifier: MIT
 
 with Proto_Support.Boolean_Options;
-with Proto_Support.Boolean_Vectors;
 with Proto_Support.Integer_32_Options;
-with Proto_Support.Integer_32_Vectors;
 
 with Compiler.Enum_Descriptors;
 with Compiler.Field_Descriptors;

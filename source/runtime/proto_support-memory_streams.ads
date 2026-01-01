@@ -4,7 +4,7 @@
 --
 
 with Ada.Streams;
-with League.Stream_Element_Vectors;
+with Proto_Support.Stream_Element_Vectors;
 
 package Proto_Support.Memory_Streams is
 
@@ -16,11 +16,11 @@ package Proto_Support.Memory_Streams is
      (Self : Memory_Stream'Class) return Ada.Streams.Stream_Element_Count;
 
    function Data (Self : Memory_Stream'Class)
-     return League.Stream_Element_Vectors.Stream_Element_Vector;
+     return Proto_Support.Stream_Element_Vectors.Vector;
 
 private
    type Memory_Stream is new Ada.Streams.Root_Stream_Type with record
-      Data : League.Stream_Element_Vectors.Stream_Element_Vector;
+      Data : Proto_Support.Stream_Element_Vectors.Vector;
       Read : Ada.Streams.Stream_Element_Count := 0;
    end record;
 

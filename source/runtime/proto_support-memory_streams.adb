@@ -20,7 +20,7 @@ package body Proto_Support.Memory_Streams is
    ----------
 
    function Data (Self : Memory_Stream'Class)
-     return League.Stream_Element_Vectors.Stream_Element_Vector is
+     return Proto_Support.Stream_Element_Vectors.Vector is
    begin
       return Self.Data;
    end Data;
@@ -36,12 +36,15 @@ package body Proto_Support.Memory_Streams is
    is
       use type Ada.Streams.Stream_Element_Offset;
 
+      Length : constant Ada.Streams.Stream_Element_Offset :=
+        Ada.Streams.Stream_Element_Offset (Self.Data.Length);
       Count : constant Ada.Streams.Stream_Element_Offset :=
         Ada.Streams.Stream_Element_Offset'Min
-          (Item'Length, Self.Data.Length - Self.Read);
+          (Item'Length, Length - Self.Read);
    begin
       for J in 1 .. Count loop
-         Item (Item'First + J - 1) := Self.Data.Element (Self.Read + J);
+         Item (Item'First + J - 1) :=
+           Self.Data.Get (Positive (Self.Read + J));
       end loop;
 
       Last := Item'First + Count - 1;
@@ -56,7 +59,9 @@ package body Proto_Support.Memory_Streams is
      (Self : in out Memory_Stream;
       Item : Ada.Streams.Stream_Element_Array) is
    begin
-      Self.Data.Append (Item);
+      for Byte of Item loop
+         Self.Data.Append (Byte);
+      end loop;
    end Write;
 
    -------------
@@ -66,7 +71,7 @@ package body Proto_Support.Memory_Streams is
    function Written
      (Self : Memory_Stream'Class) return Ada.Streams.Stream_Element_Count is
    begin
-      return Self.Data.Length;
+      return Ada.Streams.Stream_Element_Count (Self.Data.Length);
    end Written;
 
 end Proto_Support.Memory_Streams;

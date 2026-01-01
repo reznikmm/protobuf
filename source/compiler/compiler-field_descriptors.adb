@@ -3,7 +3,6 @@
 --  SPDX-License-Identifier: MIT
 
 with Proto_Support.Boolean_Options;
-with Proto_Support.Boolean_Vectors;
 
 package body Compiler.Field_Descriptors is
 
@@ -35,8 +34,9 @@ package body Compiler.Field_Descriptors is
       return Ada_Pretty.Node_Access;
    --  Default value for a field
 
-   function Map (X : Google.Protobuf.Descriptor.Proto_Type)
-     return Compiler.Context.Ada_Type_Name;
+   function Map
+     (X     : Google.Protobuf.Descriptor.Proto_Type;
+      Plain : Boolean) return Compiler.Context.Ada_Type_Name;
 
    function Is_Enum
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
@@ -379,8 +379,9 @@ package body Compiler.Field_Descriptors is
    -- Map --
    ---------
 
-   function Map (X : Google.Protobuf.Descriptor.Proto_Type)
-     return Compiler.Context.Ada_Type_Name
+   function Map
+     (X     : Google.Protobuf.Descriptor.Proto_Type;
+      Plain : Boolean) return Compiler.Context.Ada_Type_Name
    is
       use all type Google.Protobuf.Descriptor.Proto_Type;
    begin
@@ -394,9 +395,10 @@ package body Compiler.Field_Descriptors is
          when TYPE_FIXED32  => return (+"Interfaces", +"Unsigned_32");
          when TYPE_BOOL     => return (+"", +"Boolean");
          when TYPE_STRING   => return (+"League.Strings", +"Universal_String");
-         when TYPE_BYTES    => return
-              (+"League.Stream_Element_Vectors",
-               +"Stream_Element_Vector");
+         when TYPE_BYTES    =>
+            return
+              (+"Proto_Support.Stream_Element_Vectors",
+               (if Plain then +"Vector" else +"Stream_Element_Vector"));
          when TYPE_UINT32   => return (+"Interfaces", +"Unsigned_32");
          when TYPE_SFIXED32 => return (+"Interfaces", +"Integer_32");
          when TYPE_SFIXED64 => return (+"Interfaces", +"Integer_64");
@@ -585,16 +587,16 @@ package body Compiler.Field_Descriptors is
             end if;
          end;
       elsif Is_Option = Optional then
-         Result := Map (Self.Proto_Type.Value);
+         Result := Map (Self.Proto_Type.Value, Plain => False);
          Result.Package_Name :=
            "Proto_Support." & Result.Type_Name & "_Options";
          Result.Type_Name := +"Option";
       elsif not Is_Repeated then
-         Result := Map (Self.Proto_Type.Value);
+         Result := Map (Self.Proto_Type.Value, Plain => True);
       elsif Self.Proto_Type.Value = TYPE_STRING then
          Result := (+"League.String_Vectors", +"Universal_String_Vector");
       else
-         Result := Map (Self.Proto_Type.Value);
+         Result := Map (Self.Proto_Type.Value, Plain => False);
          Result.Package_Name :=
            "Proto_Support." & Result.Type_Name & "_Vectors";
          Result.Type_Name := +"Vector";

@@ -25,6 +25,8 @@ package Proto_Support.Vectors is
 
    procedure Append (Self : in out Vector; Value : Element_Type);
 
+   Empty_Vector : constant Vector;
+
 private
    type Element_Array is array (Positive range <>) of Element_Type;
    type Element_Array_Access is access Element_Array;
@@ -36,5 +38,8 @@ private
 
    overriding procedure Adjust (Self : in out Vector);
    overriding procedure Finalize (Self : in out Vector);
+
+   Empty_Vector : constant Vector :=
+     (Ada.Finalization.Controlled with null, 0);
 
 end Proto_Support.Vectors;

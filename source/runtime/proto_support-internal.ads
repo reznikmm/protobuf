@@ -10,7 +10,7 @@ with Ada.Containers.Indefinite_Holders;
 with Ada.Containers.Vectors;
 with Interfaces;
 
-with League.Stream_Element_Vectors;
+with Proto_Support.Stream_Element_Vectors;
 with League.String_Vectors;
 with League.Strings;
 with League.Text_Codecs;
@@ -142,7 +142,7 @@ package Proto_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : League.Stream_Element_Vectors.Stream_Element_Vector)
+      Value : Proto_Support.Stream_Element_Vectors.Vector)
         with Inline;
 
    not overriding procedure Write
@@ -154,9 +154,9 @@ package Proto_Support.Internal is
    not overriding procedure Write_Option
      (Self    : in out Stream;
       Field   : Field_Number;
-      Value   : League.Stream_Element_Vectors.Stream_Element_Vector;
-      Default : League.Stream_Element_Vectors.Stream_Element_Vector :=
-        League.Stream_Element_Vectors.Empty_Stream_Element_Vector)
+      Value   : Proto_Support.Stream_Element_Vectors.Vector;
+      Default : Proto_Support.Stream_Element_Vectors.Vector :=
+        Proto_Support.Stream_Element_Vectors.Empty_Vector)
           with Inline;
 
    not overriding procedure Write_Varint

@@ -7,7 +7,7 @@ with Ada.Streams;
 with Interfaces;
 
 with League.Strings;
-with League.Stream_Element_Vectors;
+with Proto_Support.Stream_Element_Vectors;
 with League.String_Vectors;
 
 with Proto_Support.Boolean_Vectors;
@@ -52,7 +52,7 @@ package Proto_Support.IO is
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out League.Stream_Element_Vectors.Stream_Element_Vector);
+      Value    : in out Proto_Support.Stream_Element_Vectors.Vector);
 
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;

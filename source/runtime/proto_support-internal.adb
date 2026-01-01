@@ -31,7 +31,7 @@ package body Proto_Support.Internal is
 
    procedure Write
      (Self  : in out Stream;
-      Value : League.Stream_Element_Vectors.Stream_Element_Vector)
+      Value : Proto_Support.Stream_Element_Vectors.Vector)
         with Inline;
 
    procedure Write_Varint
@@ -347,9 +347,15 @@ package body Proto_Support.Internal is
       end if;
 
       declare
-         Data : constant League.Stream_Element_Vectors.Stream_Element_Vector :=
-           Codec.Constant_Reference.Encode (Value);
+         Raw : constant Ada.Streams.Stream_Element_Array :=
+           Codec.Constant_Reference.Encode (Value).To_Stream_Element_Array;
+
+         Data : Proto_Support.Stream_Element_Vectors.Vector;
       begin
+         for Byte of Raw loop
+            Data.Append (Byte);
+         end loop;
+
          Self.Write (Data);
       end;
    end Write;
@@ -389,7 +395,7 @@ package body Proto_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : League.Stream_Element_Vectors.Stream_Element_Vector) is
+      Value : Proto_Support.Stream_Element_Vectors.Vector) is
    begin
       Self.Write_Key ((Field, Length_Delimited));
       Self.Write (Value);
@@ -401,15 +407,25 @@ package body Proto_Support.Internal is
 
    procedure Write
      (Self  : in out Stream;
-      Value : League.Stream_Element_Vectors.Stream_Element_Vector)
+      Value : Proto_Support.Stream_Element_Vectors.Vector)
    is
+      Length : constant Ada.Streams.Stream_Element_Count :=
+        Ada.Streams.Stream_Element_Count (Value.Length);
    begin
-      Self.Write (Value.Length);
+      Self.Write (Length);
 
       if Self.Riffling then
-         Self.Written := Self.Written + Value.Length;
+         Self.Written := Self.Written + Length;
       else
-         Self.Parent.Write (Value.To_Stream_Element_Array);
+         declare
+            Raw : Ada.Streams.Stream_Element_Array (1 .. Length);
+         begin
+            for J in Raw'Range loop
+               Raw (J) := Value.Get (Positive (J));
+            end loop;
+
+            Self.Parent.Write (Raw);
+         end;
       end if;
    end Write;
 
@@ -864,11 +880,11 @@ package body Proto_Support.Internal is
    not overriding procedure Write_Option
      (Self    : in out Stream;
       Field   : Field_Number;
-      Value   : League.Stream_Element_Vectors.Stream_Element_Vector;
-      Default : League.Stream_Element_Vectors.Stream_Element_Vector :=
-        League.Stream_Element_Vectors.Empty_Stream_Element_Vector)
+      Value   : Proto_Support.Stream_Element_Vectors.Vector;
+      Default : Proto_Support.Stream_Element_Vectors.Vector :=
+        Proto_Support.Stream_Element_Vectors.Empty_Vector)
    is
-      use type League.Stream_Element_Vectors.Stream_Element_Vector;
+      use type Proto_Support.Stream_Element_Vectors.Vector;
    begin
       if Value /= Default then
          Self.Write (Field, Value);

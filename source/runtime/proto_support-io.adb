@@ -700,7 +700,7 @@ package body Proto_Support.IO is
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out League.Stream_Element_Vectors.Stream_Element_Vector)
+      Value    : in out Proto_Support.Stream_Element_Vectors.Vector)
    is
    begin
       pragma Assert (Encoding = Length_Delimited);
@@ -711,7 +711,10 @@ package body Proto_Support.IO is
          --  FIX: avoid large stack usage here
          Ada.Streams.Stream_Element_Array'Read (Stream, Data);
          Value.Clear;
-         Value.Append (Data);
+
+         for Byte of Data loop
+            Value.Append (Byte);
+         end loop;
       end;
    end Read;
 
@@ -724,13 +727,23 @@ package body Proto_Support.IO is
       Encoding : Wire_Type;
       Value    : out League.Strings.Universal_String)
    is
-      Data  : League.Stream_Element_Vectors.Stream_Element_Vector;
+      Data  : Proto_Support.Stream_Element_Vectors.Vector;
       Codec : constant League.Text_Codecs.Text_Codec :=
         League.Text_Codecs.Codec
           (League.Strings.To_Universal_String ("utf-8"));
    begin
       Read (Stream, Encoding, Data);
-      Value := Codec.Decode (Data);
+      declare
+         Length : constant Ada.Streams.Stream_Element_Count :=
+           Ada.Streams.Stream_Element_Count (Data.Length);
+         Raw    : Ada.Streams.Stream_Element_Array (1 .. Length);
+      begin
+         for J in Raw'Range loop
+            Raw (J) := Data.Get (Positive (J));
+         end loop;
+
+         Value := Codec.Decode (Raw);
+      end;
    end Read;
 
    ----------------------------------
@@ -758,7 +771,7 @@ package body Proto_Support.IO is
       Encoding : Wire_Type;
       Value    : in out Proto_Support.Stream_Element_Vector_Vectors.Vector)
    is
-      Item : League.Stream_Element_Vectors.Stream_Element_Vector;
+      Item : Proto_Support.Stream_Element_Vectors.Vector;
    begin
       --  FIXME: For now, unpacked vector only
       Read (Stream, Encoding, Item);

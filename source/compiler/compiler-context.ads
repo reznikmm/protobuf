@@ -15,7 +15,6 @@ with Google.Protobuf.Descriptor;
 with Google.Protobuf.Compiler.Plugin;
 
 with Proto_Support.Universal_String_Options;
-with Proto_Support.Universal_String_Vectors;
 
 package Compiler.Context is
 

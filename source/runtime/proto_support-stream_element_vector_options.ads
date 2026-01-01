@@ -4,8 +4,8 @@
 --
 
 with Proto_Support.Options;
-with League.Stream_Element_Vectors;
+with Proto_Support.Stream_Element_Vectors;
 
 package Proto_Support.Stream_Element_Vector_Options is
-  new Proto_Support.Options (League.Stream_Element_Vectors.Stream_Element_Vector);
+  new Proto_Support.Options (Proto_Support.Stream_Element_Vectors.Vector);
 pragma Preelaborate (Proto_Support.Stream_Element_Vector_Options);
