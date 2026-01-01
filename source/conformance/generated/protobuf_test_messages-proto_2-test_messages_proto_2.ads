@@ -1,7 +1,6 @@
 with Ada.Finalization;
 with Ada.Streams;
 with Interfaces;
-with League.Stream_Element_Vectors;
 with League.String_Vectors;
 with League.Strings;
 with Proto_Support.Boolean_Options;
@@ -15,13 +14,14 @@ with Proto_Support.Integer_32_Vectors;
 with Proto_Support.Integer_64_Options;
 with Proto_Support.Integer_64_Vectors;
 with Proto_Support.Options;
-with Proto_Support.Stream_Element_Vector_Options;
-with Proto_Support.Stream_Element_Vector_Vectors;
+with Proto_Support.Stream_Element_Vectors;
 with Proto_Support.Universal_String_Options;
 with Proto_Support.Unsigned_32_Options;
 with Proto_Support.Unsigned_32_Vectors;
 with Proto_Support.Unsigned_64_Options;
 with Proto_Support.Unsigned_64_Vectors;
+with Proto_Support.Vector_Options;
+with Proto_Support.Vector_Vectors;
 with Proto_Support.Vectors;
 
 package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
@@ -979,7 +979,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
    type Map_String_Bytes_Entry is
      record
         Key   : Proto_Support.Universal_String_Options.Option;
-        Value : Proto_Support.Stream_Element_Vector_Options.Option;
+        Value : Proto_Support.Vector_Options.Option;
      end record;
 
    type Optional_Map_String_Bytes_Entry  (Is_Set : Boolean := False) is
@@ -2434,8 +2434,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
            when Oneof_String_Kind =>
               Oneof_String : League.Strings.Universal_String;
            when Oneof_Bytes_Kind =>
-              Oneof_Bytes : League.Stream_Element_Vectors
-                .Stream_Element_Vector;
+              Oneof_Bytes : Proto_Support.Stream_Element_Vectors.Vector;
            when Oneof_Bool_Kind =>
               Oneof_Bool : Boolean := False;
            when Oneof_Uint_64_Kind =>
@@ -2470,8 +2469,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
         Optional_Bool              : Proto_Support.Boolean_Options.Option;
         Optional_String            : Proto_Support.Universal_String_Options
           .Option;
-        Optional_Bytes             : Proto_Support
-          .Stream_Element_Vector_Options.Option;
+        Optional_Bytes             : Proto_Support.Vector_Options.Option;
         Optional_Nested_Message    : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Optional_Nested_Message;
         Optional_Foreign_Message   : Protobuf_Test_Messages.Proto_2
@@ -2503,8 +2501,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
         Repeated_Bool              : Proto_Support.Boolean_Vectors.Vector;
         Repeated_String            : League.String_Vectors
           .Universal_String_Vector;
-        Repeated_Bytes             : Proto_Support
-          .Stream_Element_Vector_Vectors.Vector;
+        Repeated_Bytes             : Proto_Support.Vector_Vectors.Vector;
         Repeated_Nested_Message    : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2.Nested_Message_Vector;
         Repeated_Foreign_Message   : Protobuf_Test_Messages.Proto_2
@@ -2614,8 +2611,7 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
         Default_Bool               : Proto_Support.Boolean_Options.Option;
         Default_String             : Proto_Support.Universal_String_Options
           .Option;
-        Default_Bytes              : Proto_Support
-          .Stream_Element_Vector_Options.Option;
+        Default_Bytes              : Proto_Support.Vector_Options.Option;
         Fieldname_1                : Proto_Support.Integer_32_Options.Option;
         Field_Name_2               : Proto_Support.Integer_32_Options.Option;
         Field_Name_3               : Proto_Support.Integer_32_Options.Option;
@@ -2748,8 +2744,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
         Required_Double            : Interfaces.IEEE_Float_64 := 0.0;
         Required_Bool              : Boolean := False;
         Required_String            : League.Strings.Universal_String;
-        Required_Bytes             : League.Stream_Element_Vectors
-          .Stream_Element_Vector;
+        Required_Bytes             : Proto_Support.Stream_Element_Vectors
+          .Vector;
         Required_Nested_Message    : Protobuf_Test_Messages.Proto_2
           .Test_Messages_Proto_2
           .Test_All_Required_Types_Proto_2_Nested_Message;
@@ -2783,8 +2779,8 @@ package Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2 is
         Default_Double             : Interfaces.IEEE_Float_64 := 0.0;
         Default_Bool               : Boolean := False;
         Default_String             : League.Strings.Universal_String;
-        Default_Bytes              : League.Stream_Element_Vectors
-          .Stream_Element_Vector;
+        Default_Bytes              : Proto_Support.Stream_Element_Vectors
+          .Vector;
      end record;
 
    type Optional_Test_All_Required_Types_Proto_2

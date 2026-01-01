@@ -1,8 +1,8 @@
 with Ada.Finalization;
 with Ada.Streams;
 with Interfaces;
-with League.Stream_Element_Vectors;
 with League.Strings;
+with Proto_Support.Stream_Element_Vectors;
 
 package Google.Protobuf.Wrappers is
 
@@ -357,7 +357,7 @@ package Google.Protobuf.Wrappers is
 
    type Bytes_Value is
      record
-        Value : League.Stream_Element_Vectors.Stream_Element_Vector;
+        Value : Proto_Support.Stream_Element_Vectors.Vector;
      end record;
 
    type Optional_Bytes_Value  (Is_Set : Boolean := False) is

@@ -7,7 +7,6 @@ with Google.Protobuf.Struct;
 with Google.Protobuf.Timestamp;
 with Google.Protobuf.Wrappers;
 with Interfaces;
-with League.Stream_Element_Vectors;
 with League.String_Vectors;
 with League.Strings;
 with Proto_Support.Boolean_Vectors;
@@ -16,9 +15,10 @@ with Proto_Support.IEEE_Float_64_Vectors;
 with Proto_Support.Integer_32_Vectors;
 with Proto_Support.Integer_64_Vectors;
 with Proto_Support.Options;
-with Proto_Support.Stream_Element_Vector_Vectors;
+with Proto_Support.Stream_Element_Vectors;
 with Proto_Support.Unsigned_32_Vectors;
 with Proto_Support.Unsigned_64_Vectors;
+with Proto_Support.Vector_Vectors;
 with Proto_Support.Vectors;
 
 package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
@@ -807,7 +807,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
    type Map_String_Bytes_Entry is
      record
         Key   : League.Strings.Universal_String;
-        Value : League.Stream_Element_Vectors.Stream_Element_Vector;
+        Value : Proto_Support.Stream_Element_Vectors.Vector;
      end record;
 
    type Optional_Map_String_Bytes_Entry  (Is_Set : Boolean := False) is
@@ -1245,8 +1245,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
            when Oneof_String_Kind =>
               Oneof_String : League.Strings.Universal_String;
            when Oneof_Bytes_Kind =>
-              Oneof_Bytes : League.Stream_Element_Vectors
-                .Stream_Element_Vector;
+              Oneof_Bytes : Proto_Support.Stream_Element_Vectors.Vector;
            when Oneof_Bool_Kind =>
               Oneof_Bool : Boolean := False;
            when Oneof_Uint_64_Kind =>
@@ -1281,8 +1280,8 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Optional_Double            : Interfaces.IEEE_Float_64 := 0.0;
         Optional_Bool              : Boolean := False;
         Optional_String            : League.Strings.Universal_String;
-        Optional_Bytes             : League.Stream_Element_Vectors
-          .Stream_Element_Vector;
+        Optional_Bytes             : Proto_Support.Stream_Element_Vectors
+          .Vector;
         Optional_Nested_Message    : Protobuf_Test_Messages.Proto_3
           .Test_Messages_Proto_3.Optional_Nested_Message;
         Optional_Foreign_Message   : Protobuf_Test_Messages.Proto_3
@@ -1317,8 +1316,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Repeated_Bool              : Proto_Support.Boolean_Vectors.Vector;
         Repeated_String            : League.String_Vectors
           .Universal_String_Vector;
-        Repeated_Bytes             : Proto_Support
-          .Stream_Element_Vector_Vectors.Vector;
+        Repeated_Bytes             : Proto_Support.Vector_Vectors.Vector;
         Repeated_Nested_Message    : Protobuf_Test_Messages.Proto_3
           .Test_Messages_Proto_3.Nested_Message_Vector;
         Repeated_Foreign_Message   : Protobuf_Test_Messages.Proto_3

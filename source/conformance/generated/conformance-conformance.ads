@@ -1,8 +1,8 @@
 with Ada.Finalization;
 with Ada.Streams;
-with League.Stream_Element_Vectors;
 with League.Strings;
 with Proto_Support.Options;
+with Proto_Support.Stream_Element_Vectors;
 with Proto_Support.Vectors;
 
 package Conformance.Conformance is
@@ -164,8 +164,7 @@ package Conformance.Conformance is
            when Runtime_Error_Kind =>
               Runtime_Error : League.Strings.Universal_String;
            when Protobuf_Payload_Kind =>
-              Protobuf_Payload : League.Stream_Element_Vectors
-                .Stream_Element_Vector;
+              Protobuf_Payload : Proto_Support.Stream_Element_Vectors.Vector;
            when Json_Payload_Kind =>
               Json_Payload : League.Strings.Universal_String;
            when Skipped_Kind =>
@@ -277,8 +276,7 @@ package Conformance.Conformance is
            when Payload_Not_Set =>
               null;
            when Protobuf_Payload_Kind =>
-              Protobuf_Payload : League.Stream_Element_Vectors
-                .Stream_Element_Vector;
+              Protobuf_Payload : Proto_Support.Stream_Element_Vectors.Vector;
            when Json_Payload_Kind =>
               Json_Payload : League.Strings.Universal_String;
            when Jspb_Payload_Kind =>
