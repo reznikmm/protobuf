@@ -20,14 +20,10 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-package Compiler is
-   pragma Pure;
+with PB_Support.Basics;
+with PB_Support.Vectors;
 
-   type Runtime_Dep_Type is
-      (Runtime_League,      --  Use League library (and Matreshka).
-       Runtime_Plain_Ada);  --  Use only Ada.* or own resources;
-                            --  strings are assumed being UTF-8-encoded.
+package PB_Support.Stream_Element_Vector_Vectors is
+  new PB_Support.Vectors (PB_Support.Basics.Stream_Element_Vectors.Vector);
 
-   Runtime_Dep : constant Runtime_Dep_Type := Runtime_Plain_Ada;
-
-end Compiler;
+pragma Preelaborate (PB_Support.Stream_Element_Vector_Vectors);

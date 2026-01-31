@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2025 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -20,14 +20,10 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-package Compiler is
-   pragma Pure;
+with PB_Support.Vectors;
+with Ada.Strings.Unbounded;
 
-   type Runtime_Dep_Type is
-      (Runtime_League,      --  Use League library (and Matreshka).
-       Runtime_Plain_Ada);  --  Use only Ada.* or own resources;
-                            --  strings are assumed being UTF-8-encoded.
+package PB_Support.Unbounded_String_Vectors is
+  new PB_Support.Vectors (Ada.Strings.Unbounded.Unbounded_String);
 
-   Runtime_Dep : constant Runtime_Dep_Type := Runtime_Plain_Ada;
-
-end Compiler;
+pragma Preelaborate (PB_Support.Unbounded_String_Vectors);

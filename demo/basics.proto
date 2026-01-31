@@ -12,5 +12,16 @@ message Person
    optional Gender_Type gender     = 3;}
    
 message Crowd
-  {repeated Person individual     = 1;
-   required int32  useless_symbol = 2;}
+  {repeated Person individual       = 1;
+  
+   //  Testing Varint's:
+   
+   required int32  useless_symbol_1 = 2;
+   required int32  useless_symbol_2 = 3;
+   required int32  useless_symbol_3 = 4;
+   required int32  useless_symbol_4 = 5;
+   required int32  useless_symbol_5 = 6;
+   required int32  useless_symbol_6 = 7;
+   required int32  useless_symbol_7 = 8;
+   required int32  useless_symbol_8 = 9;}
+   

@@ -24,7 +24,7 @@ with "protobuf_runtime_config.gpr";
 
 library project Protobuf_Runtime is
 
-   for Source_Dirs use ("../source/runtime", "../source/runtime/generated");
+   for Source_Dirs use ("../source/runtime", "../source/runtime/using_matreshka", "../source/runtime/generated", "../source/runtime/generated/using_matreshka");
    for Object_Dir use "../.objs/runtime/" & Protobuf_Runtime_Config.Build_Profile;
 
    for Library_Name use "adapbrt";
