@@ -6,14 +6,17 @@ project Demo is
 
    Runtime_Dep : Runtime_Dep_Type := external ("Runtime_Dep", "Runtime_Plain_Ada");
 
+   Matreshka_League_Prefix :=
+      external ("MATRESHKA_LEAGUE_ALIRE_PREFIX", "../matreshka");
+
    case Runtime_Dep is
-   
+
       when "Runtime_Plain_Ada" =>
 
          for Source_Dirs use
-            (".", 
-             "..\protobuf\source\runtime",
-             "..\protobuf\source\runtime\using_plain_ada");
+            ("src",
+             "../source/runtime",
+             "../source/runtime/using_plain_ada");
              --
              --  Using plain Ada. Strings assume UTF-8 formatting.
 
@@ -21,31 +24,31 @@ project Demo is
 
       when "Runtime_League" =>
 
-         for Source_Dirs use               
-            (".", 
-             "..\protobuf\source\runtime",
-             "..\protobuf\source\runtime\using_matreshka",
+         for Source_Dirs use
+            ("src",
+             "../source/runtime",
+             "../source/runtime/using_matreshka",
              --
              --  The following is normally for the support of a few things like Unicode strings,
              --  unfortunately convoluted with XML, Regexp's, clocks, ini files, JSON,
              --  and many other unrelated things...
              --
-             "..\matreshka\source\league",
-             "..\matreshka\source\league\codecs",
-             "..\matreshka\source\league\iana",
-             "..\matreshka\source\league\codecs\tables",
-             "..\matreshka\source\league\ucd",
-             "..\matreshka\source\league\regexp",
-             "..\matreshka\source\league\os\windows",
-             "..\matreshka\source\xml\sax",
-             "..\matreshka\source\xml\sax\xml");
+             Matreshka_League_Prefix & "/source/league",
+             Matreshka_League_Prefix & "/source/league/codecs",
+             Matreshka_League_Prefix & "/source/league/iana",
+             Matreshka_League_Prefix & "/source/league/codecs/tables",
+             Matreshka_League_Prefix & "/source/league/ucd",
+             Matreshka_League_Prefix & "/source/league/regexp",
+             Matreshka_League_Prefix & "/source/league/os/windows",
+             Matreshka_League_Prefix & "/source/xml/sax",
+             Matreshka_League_Prefix & "/source/xml/sax/xml");
 
          for Main use ("demo_league.adb");
 
    end case;
-       
+
    for Object_Dir use "obj";
-   for Exec_Dir use ".";
+   for Exec_Dir use "bin";
    for Create_Missing_Dirs use "True";  --  Flips by default the "-p" switch
 
    package Compiler is
@@ -57,5 +60,5 @@ project Demo is
       --    jobs is the number of core processors on the platform."
       for Default_Switches ("ada") use ("-j0");
    end Builder;
-   
+
 end Demo;
