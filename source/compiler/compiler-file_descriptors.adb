@@ -287,9 +287,10 @@ package body Compiler.File_Descriptors is
      (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
        return League.Strings.Universal_String
    is
-      Result : League.Strings.Universal_String := +".";
+      Result : League.Strings.Universal_String;
    begin
       if Self.PB_Package.Is_Set then
+         Result.Append (".");
          Result.Append (Self.PB_Package.Value);
       end if;
 

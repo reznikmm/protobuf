@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message AnimalSpecies {
+   message SpeciesDescription {
+     string a_name = 1;
+     string a_family = 2;
+   }
+ }
+ message Animal {
+   AnimalSpecies.SpeciesDescription a_details = 1;
+   string a_name = 2;
+ }
