@@ -33,6 +33,7 @@ project Protoc_Gen_Ada is
    for Exec_Dir   use "../.objs/compiler";
    for Object_Dir use "../.objs/compiler/" & Protobuf_Config.Build_Profile;
    for Main use ("compiler-run.adb");
+   for Create_Missing_Dirs use "True";  --  Flips the "-p" switch
 
    package Compiler is
       for Default_Switches ("Ada") use
@@ -46,6 +47,9 @@ project Protoc_Gen_Ada is
 
    package Builder is
       for Executable ("compiler-run.adb") use "protoc-gen-ada";
+      --   "If -j0 is used, then the maximum number of simultaneous compilation
+      --    jobs is the number of core processors on the platform."
+      for Default_Switches ("ada") use ("-j0");
    end Builder;
 
    package Install is
