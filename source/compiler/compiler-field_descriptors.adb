@@ -411,14 +411,14 @@ package body Compiler.Field_Descriptors is
          when TYPE_BOOL     => return (+"", +"Boolean");
          when TYPE_STRING   =>
             return
-               (case Runtime_Dep is
+               (case Context.Runtime_Dep is
                    when Runtime_League =>
                       (+"League.Strings", +"Universal_String"),
                    when Runtime_Plain_Ada =>
                       (+"Ada.Strings.Unbounded", +"Unbounded_String"));
          when TYPE_BYTES    =>
             return
-               (case Runtime_Dep is
+               (case Context.Runtime_Dep is
                    when Runtime_League =>
                       (+"League.Stream_Element_Vectors",
                        +"Stream_Element_Vector"),
@@ -621,7 +621,7 @@ package body Compiler.Field_Descriptors is
          Result := Map (Self.PB_Type.Value);
       elsif Self.PB_Type.Value = TYPE_STRING then
          Result :=
-            (case Runtime_Dep is
+            (case Context.Runtime_Dep is
                 when Runtime_League =>
                     (+"League.String_Vectors",
                      +"Universal_String_Vector"),

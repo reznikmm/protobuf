@@ -28,6 +28,4 @@ package Compiler is
        Runtime_Plain_Ada);  --  Use only Ada.* or own resources;
                             --  strings are assumed being UTF-8-encoded.
 
-   Runtime_Dep : constant Runtime_Dep_Type := Runtime_Plain_Ada;
-
 end Compiler;

@@ -20,7 +20,8 @@ development.contracts = "Yes"
 
 [[actions]]
 type = "pre-build"
-command = ["protoc", "--ada_out=src", "basics.proto"]
+# Change the runtime option to league for the demo to use the League runtime.
+command = ["protoc", "--ada_out=src", "--ada_opt=runtime=plain_ada", "basics.proto"]
 
 [[depends-on]]
 protobuf = "^1.0.0"
