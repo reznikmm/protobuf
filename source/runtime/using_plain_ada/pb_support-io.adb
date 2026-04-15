@@ -43,6 +43,25 @@ package body PB_Support.IO is
      (Self : in out Stop_Stream;
       Item : Ada.Streams.Stream_Element_Array) is null;
 
+   -------------------------
+   -- Check_Varint_Length --
+   -------------------------
+
+   procedure Check_Varint_Length
+     (Count : Natural;
+      Data  : Ada.Streams.Stream_Element) is
+   begin
+      if Count > 10 then
+         raise Constraint_Error
+           with "overlong varint (more than 10 bytes)";
+      end if;
+
+      if Count = 10 and then Data >= 16#80# then
+         raise Constraint_Error
+           with "overlong varint (more than 10 bytes)";
+      end if;
+   end Check_Varint_Length;
+
    -------------
    -- Enum_IO --
    -------------
@@ -406,7 +425,9 @@ package body PB_Support.IO is
               (1 .. Read_Length (Stream));
          begin
             Ada.Streams.Stream_Element_Array'Read (Stream, Data);
-            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+            if Data'Length > 0 and then (Data (Data'Last) and 16#80#) /= 0 then
+               raise Constraint_Error with "Premature EOF in packed field";
+            end if;
 
             for J of Data loop
                Item := Item or ((J and 16#7F#) /= 0);
@@ -569,7 +590,9 @@ package body PB_Support.IO is
               (1 .. Read_Length (Stream));
          begin
             Ada.Streams.Stream_Element_Array'Read (Stream, Data);
-            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+            if Data'Length > 0 and then (Data (Data'Last) and 16#80#) /= 0 then
+               raise Constraint_Error with "Premature EOF in packed field";
+            end if;
 
             for J of Data loop
                Item := Item or
@@ -614,7 +637,9 @@ package body PB_Support.IO is
               (1 .. Read_Length (Stream));
          begin
             Ada.Streams.Stream_Element_Array'Read (Stream, Data);
-            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+            if Data'Length > 0 and then (Data (Data'Last) and 16#80#) /= 0 then
+               raise Constraint_Error with "Premature EOF in packed field";
+            end if;
 
             for J of Data loop
                Item := Item or
@@ -666,6 +691,7 @@ package body PB_Support.IO is
       Item  : Ada.Streams.Stream_Element;
       Shift : Natural := 4;  --  7 bits/item - 3 bit for wire type
       Field : Interfaces.Unsigned_32;
+      Count : Natural := 1;
    begin
       Stream.Read (Data, Last);
 
@@ -674,19 +700,40 @@ package body PB_Support.IO is
       end if;
 
       Item := Data (1);
-      Result.Encoding := Wire_Type'Val (Item and 7);
+      
+      declare
+         Wire : Natural := Natural (Item and 7);
+      begin
+         if Wire = 6 or else Wire = 7 then
+            raise Constraint_Error with "Unexpected wire encoding in tag";
+         end if;
+         Result.Encoding := Wire_Type'Val (Wire);
+      end;
 
       Field := Interfaces.Shift_Right
         (Interfaces.Unsigned_32 (Item and 16#7F#), 3);
 
       while Item >= 16#80# loop
          Ada.Streams.Stream_Element'Read (Stream, Item);
+         Count := Count + 1;
+         
+         if Count > 5 then
+            raise Constraint_Error with "overlong tag (more than 5 bytes)";
+         end if;
+         
+         if Count = 5 and then Item > 16#8F# then
+            raise Constraint_Error with "overlong tag (more than 5 bytes)";
+         end if;
 
          Field := Field or Interfaces.Shift_Left
            (Interfaces.Unsigned_32 (Item and 16#7F#), Shift);
 
          Shift := Shift + 7;
       end loop;
+
+      if Field = 0 or else Field > 16#1FFFFFFF# then
+         raise Constraint_Error with "Field number out of range";
+      end if;
 
       Result.Field := Field_Number'Val (Field);
 
@@ -800,10 +847,15 @@ package body PB_Support.IO is
          declare
             Data  : Ada.Streams.Stream_Element := 16#80#;
             Shift : Natural := 0;
+            Count : Natural := 0;
          begin
             Value := 0;
             while Data >= 16#80# loop
                Ada.Streams.Stream_Element'Read (Stream, Data);
+               Count := Count + 1;
+               
+               Check_Varint_Length (Count, Data);
+
                Value := Value or Interfaces.Shift_Left
                  (Interfaces.Unsigned_32 (Data and 16#7F#), Shift);
 
@@ -844,7 +896,9 @@ package body PB_Support.IO is
               (1 .. Read_Length (Stream));
          begin
             Ada.Streams.Stream_Element_Array'Read (Stream, Data);
-            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+            if Data'Length > 0 and then (Data (Data'Last) and 16#80#) /= 0 then
+               raise Constraint_Error with "Premature EOF in packed field";
+            end if;
 
             for J of Data loop
                Item := Item or
@@ -886,7 +940,9 @@ package body PB_Support.IO is
               (1 .. Read_Length (Stream));
          begin
             Ada.Streams.Stream_Element_Array'Read (Stream, Data);
-            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+            if Data'Length > 0 and then (Data (Data'Last) and 16#80#) /= 0 then
+               raise Constraint_Error with "Premature EOF in packed field";
+            end if;
 
             for J of Data loop
                Item := Item or
@@ -920,10 +976,15 @@ package body PB_Support.IO is
          declare
             Data  : Ada.Streams.Stream_Element := 16#80#;
             Shift : Natural := 0;
+            Count : Natural := 0;
          begin
             Value := 0;
             while Data >= 16#80# loop
                Ada.Streams.Stream_Element'Read (Stream, Data);
+               Count := Count + 1;
+               
+               Check_Varint_Length (Count, Data);
+
                Value := Value or Interfaces.Shift_Left
                  (Interfaces.Unsigned_64 (Data and 16#7F#), Shift);
 
@@ -1012,7 +1073,9 @@ package body PB_Support.IO is
               (1 .. Read_Length (Stream));
          begin
             Ada.Streams.Stream_Element_Array'Read (Stream, Data);
-            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+            if Data'Length > 0 and then (Data (Data'Last) and 16#80#) /= 0 then
+               raise Constraint_Error with "Premature EOF in packed field";
+            end if;
 
             for J of Data loop
                Item := Item or
@@ -1064,7 +1127,9 @@ package body PB_Support.IO is
               (1 .. Read_Length (Stream));
          begin
             Ada.Streams.Stream_Element_Array'Read (Stream, Data);
-            pragma Assert ((Data (Data'Last) and 16#80#) = 0);
+            if Data'Length > 0 and then (Data (Data'Last) and 16#80#) /= 0 then
+               raise Constraint_Error with "Premature EOF in packed field";
+            end if;
 
             for J of Data loop
                Item := Item or

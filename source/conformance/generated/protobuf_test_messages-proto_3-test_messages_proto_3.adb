@@ -33,6 +33,11 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Google.Protobuf.Duration.Duration_Vector,
         Google.Protobuf.Duration.Append);
 
+   package Google_Protobuf_Empty_Empty_IO is
+     new PB_Support.IO.Message_IO
+       (Google.Protobuf.Empty.Empty, Google.Protobuf.Empty.Empty_Vector,
+        Google.Protobuf.Empty.Append);
+
    package Google_Protobuf_Field_Mask_Field_Mask_IO is
      new PB_Support.IO.Message_IO
        (Google.Protobuf.Field_Mask.Field_Mask,
@@ -334,15 +339,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Test_All_Types_Proto_3) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Test_All_Types_Proto_3'Size);
+      Aux_Data    : Test_All_Types_Proto_3_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Test_All_Types_Proto_3_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Test_All_Types_Proto_3_Array'
              (Self.Data.all
                 & Test_All_Types_Proto_3_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -874,6 +882,12 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             when 307 =>
                Google_Protobuf_Struct_Null_Value_IO.Read
                  (Stream, Key.Encoding, V.Optional_Null_Value);
+            when 308 =>
+               if  not V.Optional_Empty.Is_Set then
+                  V.Optional_Empty := (True, others => <>);
+               end if;
+               Google_Protobuf_Empty_Empty_IO.Read
+                 (Stream, Key.Encoding, V.Optional_Empty.Value);
             when 311 =>
                Google_Protobuf_Duration_Duration_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_Duration);
@@ -895,6 +909,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             when 317 =>
                Google_Protobuf_Struct_List_Value_IO.Read_Vector
                  (Stream, Key.Encoding, V.Repeated_List_Value);
+            when 318 =>
+               Google_Protobuf_Empty_Empty_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Repeated_Empty);
             when 401 =>
                PB_Support.IO.Read_Varint (Stream, Key.Encoding, V.Fieldname_1);
             when 402 =>
@@ -1321,6 +1338,10 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
          Google_Protobuf_Struct_Null_Value_IO.Write_Option
            (WS, 307, V.Optional_Null_Value,
             Google.Protobuf.Struct.PB_NULL_VALUE);
+         if V.Optional_Empty.Is_Set then
+            WS.Write_Key ((308, PB_Support.Length_Delimited));
+            Google.Protobuf.Empty.Empty'Write (Stream, V.Optional_Empty.Value);
+         end if;
          for J in 1 .. V.Repeated_Duration.Length loop
             WS.Write_Key ((311, PB_Support.Length_Delimited));
             Google.Protobuf.Duration.Duration'Write
@@ -1353,6 +1374,10 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
             WS.Write_Key ((317, PB_Support.Length_Delimited));
             Google.Protobuf.Struct.List_Value'Write
               (Stream, V.Repeated_List_Value (J));
+         end loop;
+         for J in 1 .. V.Repeated_Empty.Length loop
+            WS.Write_Key ((318, PB_Support.Length_Delimited));
+            Google.Protobuf.Empty.Empty'Write (Stream, V.Repeated_Empty (J));
          end loop;
          WS.Write_Varint_Option (401, V.Fieldname_1, 0);
          WS.Write_Varint_Option (402, V.Field_Name_2, 0);
@@ -1426,14 +1451,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Nested_Message) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Nested_Message'Size);
+      Aux_Data    : Nested_Message_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Nested_Message_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Nested_Message_Array'
              (Self.Data.all & Nested_Message_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1539,15 +1567,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Int_32Int_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Int_32Int_32Entry'Size);
+      Aux_Data    : Map_Int_32Int_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Int_32Int_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Int_32Int_32Entry_Array'
              (Self.Data.all
                 & Map_Int_32Int_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1645,15 +1676,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Int_64Int_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Int_64Int_64Entry'Size);
+      Aux_Data    : Map_Int_64Int_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Int_64Int_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Int_64Int_64Entry_Array'
              (Self.Data.all
                 & Map_Int_64Int_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1751,15 +1785,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Uint_32Uint_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Uint_32Uint_32Entry'Size);
+      Aux_Data    : Map_Uint_32Uint_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Uint_32Uint_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Uint_32Uint_32Entry_Array'
              (Self.Data.all
                 & Map_Uint_32Uint_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1858,15 +1895,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Uint_64Uint_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Uint_64Uint_64Entry'Size);
+      Aux_Data    : Map_Uint_64Uint_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Uint_64Uint_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Uint_64Uint_64Entry_Array'
              (Self.Data.all
                 & Map_Uint_64Uint_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -1965,15 +2005,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Sint_32Sint_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Sint_32Sint_32Entry'Size);
+      Aux_Data    : Map_Sint_32Sint_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Sint_32Sint_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Sint_32Sint_32Entry_Array'
              (Self.Data.all
                 & Map_Sint_32Sint_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2072,15 +2115,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Sint_64Sint_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Sint_64Sint_64Entry'Size);
+      Aux_Data    : Map_Sint_64Sint_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Sint_64Sint_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Sint_64Sint_64Entry_Array'
              (Self.Data.all
                 & Map_Sint_64Sint_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2179,15 +2225,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Fixed_32Fixed_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Fixed_32Fixed_32Entry'Size);
+      Aux_Data    : Map_Fixed_32Fixed_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Fixed_32Fixed_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Fixed_32Fixed_32Entry_Array'
              (Self.Data.all
                 & Map_Fixed_32Fixed_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2286,15 +2335,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Fixed_64Fixed_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Fixed_64Fixed_64Entry'Size);
+      Aux_Data    : Map_Fixed_64Fixed_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Fixed_64Fixed_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Fixed_64Fixed_64Entry_Array'
              (Self.Data.all
                 & Map_Fixed_64Fixed_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2396,16 +2448,19 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Sfixed_32Sfixed_32Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Sfixed_32Sfixed_32Entry'Size);
+      Aux_Data    : Map_Sfixed_32Sfixed_32Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_Sfixed_32Sfixed_32Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Sfixed_32Sfixed_32Entry_Array'
              (Self.Data.all
                 & Map_Sfixed_32Sfixed_32Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2508,16 +2563,19 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Sfixed_64Sfixed_64Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Sfixed_64Sfixed_64Entry'Size);
+      Aux_Data    : Map_Sfixed_64Sfixed_64Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_Sfixed_64Sfixed_64Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Sfixed_64Sfixed_64Entry_Array'
              (Self.Data.all
                 & Map_Sfixed_64Sfixed_64Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2617,15 +2675,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Int_32Float_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Int_32Float_Entry'Size);
+      Aux_Data    : Map_Int_32Float_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Int_32Float_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Int_32Float_Entry_Array'
              (Self.Data.all
                 & Map_Int_32Float_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2723,15 +2784,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Int_32Double_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Int_32Double_Entry'Size);
+      Aux_Data    : Map_Int_32Double_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Int_32Double_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Int_32Double_Entry_Array'
              (Self.Data.all
                 & Map_Int_32Double_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2829,15 +2893,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_Bool_Bool_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_Bool_Bool_Entry'Size);
+      Aux_Data    : Map_Bool_Bool_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_Bool_Bool_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_Bool_Bool_Entry_Array'
              (Self.Data.all
                 & Map_Bool_Bool_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -2934,15 +3001,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_String_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_String_Entry'Size);
+      Aux_Data    : Map_String_String_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_String_String_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_String_Entry_Array'
              (Self.Data.all
                 & Map_String_String_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3041,15 +3111,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Bytes_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Bytes_Entry'Size);
+      Aux_Data    : Map_String_Bytes_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Map_String_Bytes_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Bytes_Entry_Array'
              (Self.Data.all
                 & Map_String_Bytes_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3150,17 +3223,20 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Nested_Message_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Nested_Message_Entry'Size);
+      Aux_Data    : Map_String_Nested_Message_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_String_Nested_Message_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Nested_Message_Entry_Array'
              (Self.Data.all
                 & Map_String_Nested_Message_Entry_Array'
                   (1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3273,17 +3349,20 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Foreign_Message_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Foreign_Message_Entry'Size);
+      Aux_Data    : Map_String_Foreign_Message_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_String_Foreign_Message_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Foreign_Message_Entry_Array'
              (Self.Data.all
                 & Map_String_Foreign_Message_Entry_Array'
                   (1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3396,16 +3475,19 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Nested_Enum_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Nested_Enum_Entry'Size);
+      Aux_Data    : Map_String_Nested_Enum_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_String_Nested_Enum_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Nested_Enum_Entry_Array'
              (Self.Data.all
                 & Map_String_Nested_Enum_Entry_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3513,17 +3595,20 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Map_String_Foreign_Enum_Entry) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Map_String_Foreign_Enum_Entry'Size);
+      Aux_Data    : Map_String_Foreign_Enum_Entry_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=
             new Map_String_Foreign_Enum_Entry_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Map_String_Foreign_Enum_Entry_Array'
              (Self.Data.all
                 & Map_String_Foreign_Enum_Entry_Array'
                   (1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3628,14 +3713,17 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Foreign_Message) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Foreign_Message'Size);
+      Aux_Data    : Foreign_Message_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Foreign_Message_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Foreign_Message_Array'
              (Self.Data.all & Foreign_Message_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3728,15 +3816,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Null_Hypothesis_Proto_3) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Null_Hypothesis_Proto_3'Size);
+      Aux_Data    : Null_Hypothesis_Proto_3_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Null_Hypothesis_Proto_3_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Null_Hypothesis_Proto_3_Array'
              (Self.Data.all
                 & Null_Hypothesis_Proto_3_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -3829,15 +3920,18 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
      V    : Enum_Only_Proto_3) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Enum_Only_Proto_3'Size);
+      Aux_Data    : Enum_Only_Proto_3_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Enum_Only_Proto_3_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Enum_Only_Proto_3_Array'
              (Self.Data.all
                 & Enum_Only_Proto_3_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;

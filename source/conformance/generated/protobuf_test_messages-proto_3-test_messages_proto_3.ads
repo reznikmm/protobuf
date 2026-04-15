@@ -2,6 +2,7 @@ with Ada.Finalization;
 with Ada.Streams;
 with Google.Protobuf.Any;
 with Google.Protobuf.Duration;
+with Google.Protobuf.Empty;
 with Google.Protobuf.Field_Mask;
 with Google.Protobuf.Struct;
 with Google.Protobuf.Timestamp;
@@ -1435,6 +1436,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Optional_Value             : Google.Protobuf.Struct.Optional_Value;
         Optional_Null_Value        : Google.Protobuf.Struct.Null_Value :=
           Google.Protobuf.Struct.PB_NULL_VALUE;
+        Optional_Empty             : Google.Protobuf.Empty.Optional_Empty;
         Repeated_Duration          : Google.Protobuf.Duration.Duration_Vector;
         Repeated_Timestamp         : Google.Protobuf.Timestamp
           .Timestamp_Vector;
@@ -1444,6 +1446,7 @@ package Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3 is
         Repeated_Any               : Google.Protobuf.Any.Any_Vector;
         Repeated_Value             : Google.Protobuf.Struct.Value_Vector;
         Repeated_List_Value        : Google.Protobuf.Struct.List_Value_Vector;
+        Repeated_Empty             : Google.Protobuf.Empty.Empty_Vector;
         Fieldname_1                : Interfaces.Integer_32 := 0;
         Field_Name_2               : Interfaces.Integer_32 := 0;
         Field_Name_3               : Interfaces.Integer_32 := 0;

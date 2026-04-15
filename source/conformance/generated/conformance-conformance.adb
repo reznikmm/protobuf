@@ -17,6 +17,11 @@ package body Conformance.Conformance is
        (Conformance.Test_Category, Integer_Conformance_Test_Category,
         Conformance.Test_Category_Vectors);
 
+   package Conformance_Test_Status_IO is
+     new PB_Support.IO.Message_IO
+       (Conformance.Test_Status, Conformance.Test_Status_Vector,
+        Conformance.Append);
+
    type Integer_Conformance_Wire_Format is  range 0 .. 4
      with Size => Conformance.Wire_Format'Size;
 
@@ -24,6 +29,113 @@ package body Conformance.Conformance is
      new PB_Support.IO.Enum_IO
        (Conformance.Wire_Format, Integer_Conformance_Wire_Format,
         Conformance.Wire_Format_Vectors);
+
+   function Length (Self : Test_Status_Vector) return Natural is
+   begin
+      return Self.Length;
+   end Length;
+
+   procedure Clear (Self : in out Test_Status_Vector) is
+   begin
+      Self.Length := 0;
+   end Clear;
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Test_Status_Array, Test_Status_Array_Access);
+
+   procedure Append (Self : in out Test_Status_Vector; V    : Test_Status) is
+      Init_Length : constant Positive :=
+        Positive'Max (1, 256 / Test_Status'Size);
+      Aux_Data    : Test_Status_Array_Access;
+   begin
+      if Self.Length = 0 then
+         Self.Data :=  new Test_Status_Array (1 .. Init_Length);
+
+      elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
+         Self.Data :=
+           new Test_Status_Array'
+             (Self.Data.all & Test_Status_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
+      end if;
+      Self.Length := Self.Length + 1;
+      Self.Data (Self.Length) := V;
+   end Append;
+
+   overriding procedure Adjust (Self : in out Test_Status_Vector) is
+   begin
+      if Self.Length > 0 then
+         Self.Data := new Test_Status_Array'(Self.Data (1 .. Self.Length));
+      end if;
+   end Adjust;
+
+   overriding procedure Finalize (Self : in out Test_Status_Vector) is
+   begin
+      if Self.Data /= null then
+         Free (Self.Data);
+      end if;
+   end Finalize;
+
+   not overriding function Get_Test_Status_Variable_Reference
+    (Self  : aliased in out Test_Status_Vector;
+     Index : Positive)
+      return Test_Status_Variable_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Test_Status_Variable_Reference;
+
+   not overriding function Get_Test_Status_Constant_Reference
+    (Self  : aliased Test_Status_Vector;
+     Index : Positive)
+      return Test_Status_Constant_Reference is
+   begin
+      return (Element => Self.Data (Index)'Access);
+   end Get_Test_Status_Constant_Reference;
+
+   procedure Read_Test_Status
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : out Test_Status) is
+      Key : aliased PB_Support.IO.Key;
+   begin
+      while PB_Support.IO.Read_Key (Stream, Key'Access) loop
+         case Key.Field is
+            when 1 =>
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Name);
+            when 2 =>
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Failure_Message);
+            when 3 =>
+               PB_Support.IO.Read (Stream, Key.Encoding, V.Matched_Name);
+            when others =>
+               PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
+         end case;
+      end loop;
+   end Read_Test_Status;
+
+   procedure Write_Test_Status
+    (Stream : access Ada.Streams.Root_Stream_Type'Class;
+     V      : Test_Status) is
+   begin
+      if Stream.all not in PB_Support.Internal.Stream then
+         declare
+            WS : aliased PB_Support.Internal.Stream (Stream);
+         begin
+            Write_Test_Status (WS'Access, V);
+            return;
+         end;
+      end if;
+      declare
+         WS : PB_Support.Internal.Stream renames
+           PB_Support.Internal.Stream (Stream.all);
+      begin
+         WS.Start_Message;
+         WS.Write_Option (1, V.Name);
+         WS.Write_Option (2, V.Failure_Message);
+         WS.Write_Option (3, V.Matched_Name);
+         if WS.End_Message then
+            Write_Test_Status (WS'Access, V);
+         end if;
+      end;
+   end Write_Test_Status;
 
    function Length (Self : Failure_Set_Vector) return Natural is
    begin
@@ -41,14 +153,17 @@ package body Conformance.Conformance is
    procedure Append (Self : in out Failure_Set_Vector; V    : Failure_Set) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Failure_Set'Size);
+      Aux_Data    : Failure_Set_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Failure_Set_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Failure_Set_Array'
              (Self.Data.all & Failure_Set_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -91,8 +206,9 @@ package body Conformance.Conformance is
    begin
       while PB_Support.IO.Read_Key (Stream, Key'Access) loop
          case Key.Field is
-            when 1 =>
-               PB_Support.IO.Read_Vector (Stream, Key.Encoding, V.Failure);
+            when 2 =>
+               Conformance_Test_Status_IO.Read_Vector
+                 (Stream, Key.Encoding, V.Test);
             when others =>
                PB_Support.IO.Unknown_Field (Stream, Key.Encoding);
          end case;
@@ -116,7 +232,10 @@ package body Conformance.Conformance is
            PB_Support.Internal.Stream (Stream.all);
       begin
          WS.Start_Message;
-         WS.Write (1, V.Failure);
+         for J in 1 .. V.Test.Length loop
+            WS.Write_Key ((2, PB_Support.Length_Delimited));
+            Conformance.Test_Status'Write (Stream, V.Test (J));
+         end loop;
          if WS.End_Message then
             Write_Failure_Set (WS'Access, V);
          end if;
@@ -141,15 +260,18 @@ package body Conformance.Conformance is
      V    : Conformance_Request) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Conformance_Request'Size);
+      Aux_Data    : Conformance_Request_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Conformance_Request_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Conformance_Request_Array'
              (Self.Data.all
                 & Conformance_Request_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -304,15 +426,18 @@ package body Conformance.Conformance is
      V    : Conformance_Response) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Conformance_Response'Size);
+      Aux_Data    : Conformance_Response_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Conformance_Response_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Conformance_Response_Array'
              (Self.Data.all
                 & Conformance_Response_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
@@ -368,6 +493,12 @@ package body Conformance.Conformance is
                end if;
                PB_Support.IO.Read
                  (Stream, Key.Encoding, V.Variant.Serialize_Error);
+            when 9 =>
+               if V.Variant.Result /= Timeout_Error_Kind then
+                  V.Variant := (Timeout_Error_Kind, others => <>);
+               end if;
+               PB_Support.IO.Read
+                 (Stream, Key.Encoding, V.Variant.Timeout_Error);
             when 2 =>
                if V.Variant.Result /= Runtime_Error_Kind then
                   V.Variant := (Runtime_Error_Kind, others => <>);
@@ -431,6 +562,8 @@ package body Conformance.Conformance is
                WS.Write (1, V.Variant.Parse_Error);
             when Serialize_Error_Kind =>
                WS.Write (6, V.Variant.Serialize_Error);
+            when Timeout_Error_Kind =>
+               WS.Write (9, V.Variant.Timeout_Error);
             when Runtime_Error_Kind =>
                WS.Write (2, V.Variant.Runtime_Error);
             when Protobuf_Payload_Kind =>
@@ -470,15 +603,18 @@ package body Conformance.Conformance is
      V    : Jspb_Encoding_Config) is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Jspb_Encoding_Config'Size);
+      Aux_Data    : Jspb_Encoding_Config_Array_Access;
    begin
       if Self.Length = 0 then
          Self.Data :=  new Jspb_Encoding_Config_Array (1 .. Init_Length);
 
       elsif Self.Length = Self.Data'Last then
+         Aux_Data := Self.Data;
          Self.Data :=
            new Jspb_Encoding_Config_Array'
              (Self.Data.all
                 & Jspb_Encoding_Config_Array'(1 .. Self.Length => <>));
+         Free (Aux_Data);
       end if;
       Self.Length := Self.Length + 1;
       Self.Data (Self.Length) := V;
