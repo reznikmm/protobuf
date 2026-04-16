@@ -10,11 +10,6 @@ maintainers-logins = ["reznikmm"]
 project-files = ["gnat/protoc_gen_ada.gpr"]
 tags = ["serialization", "marshalling", "protocol", "buffers", "rpc", "generator"]
 
-provides = ["protobuf_runtime=1.1.0-git"]
-
-[[forbids]]
-protobuf_runtime="*"
-
 [[depends-on]]
 ada_pretty = "any"
 matreshka_league = "any"

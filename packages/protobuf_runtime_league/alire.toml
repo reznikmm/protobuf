@@ -1,6 +1,7 @@
-name = "protobuf_runtime"
-description = "Supporting files for Ada Protobuf implementation"
+name = "protobuf_runtime_league"
+description = "Supporting files for Ada Protobuf implementation (League runtime)"
 version = "1.1.0-git"
+provides = ["protobuf_runtime=1.1.0-git"]
 
 website = "https://github.com/reznikmm/protobuf"
 authors = ["Max Reznik"]

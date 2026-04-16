@@ -1,0 +1,25 @@
+name = "protobuf_runtime_plain"
+description = "Supporting files for Ada Protobuf implementation (Plain Ada runtime)"
+version = "1.1.0-git"
+provides = ["protobuf_runtime=1.1.0-git"]
+
+website = "https://github.com/reznikmm/protobuf"
+authors = ["Max Reznik"]
+licenses = "MIT"
+maintainers = ["Max Reznik <reznikmm@gmail.com>"]
+maintainers-logins = ["reznikmm"]
+project-files = ["../../gnat/protobuf_runtime.gpr"]
+tags = ["serialization", "marshalling", "protocol", "buffers", "rpc", "protobuf"]
+
+[build-environment]
+PROTOBUF_RUNTIME = "plain_ada"
+
+[configuration]
+output_dir = "../../gnat"
+generate_ada = false
+generate_c = false
+
+[build-switches]
+development.optimization = ["-O0"]
+development.style_checks = ["-gnaty"]
+development.contracts = "Yes"
