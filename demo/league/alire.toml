@@ -27,4 +27,5 @@ command = ["protoc", "--ada_out=src", "--ada_opt=runtime=league", "basics.proto"
 protobuf = "^1.0.0"
 
 [[pins]]
-protobuf = { path='..' }
+protobuf = { path='../..' }
+protobuf_runtime_league = { path='../../packages/protobuf_runtime_league' }

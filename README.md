@@ -18,7 +18,7 @@ You can also build with [Alire](https://alire.ada.dev/):
 
 If you distribute a crate that doesn't require Protobuf compiler then
 you may depend just on `protobuf_runtime`. Alire will immediately detect multiple providers and prompt you to select between:
-1. `protobuf_runtime_plain`: The type generated for strings would be Unbounded_String (encoded by the user as UTF-8) instead.
+1. `protobuf_runtime_plain`: The type generated for strings would be Unbounded_String (encoded by the user as UTF-8). It requires no dependencies beyond the standard library.
 2. `protobuf_runtime_league`: The type generated for strings will be League's Universal_String, thus depending on the `matreshka_league` crate.
 
 The corresponding `alire.toml` files are
