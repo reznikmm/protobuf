@@ -25,7 +25,7 @@ with "protobuf_runtime_plain_config.gpr";
 library project Protobuf_Runtime_Plain_Ada is
 
    for Source_Dirs use ("../source/runtime",
-                        "../source/runtime/using_plain_ada",
+                        "../source/runtime/plain_ada",
                         "../source/runtime/generated/plain_ada");
    
    for Object_Dir use "../.objs/runtime_plain/" & Protobuf_Runtime_Plain_Config.Build_Profile;

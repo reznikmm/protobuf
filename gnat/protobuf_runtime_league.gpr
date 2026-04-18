@@ -25,7 +25,7 @@ with "protobuf_runtime_league_config.gpr";
 library project Protobuf_Runtime_League is
 
    for Source_Dirs use ("../source/runtime",
-                        "../source/runtime/using_matreshka",
+                        "../source/runtime/league",
                         "../source/runtime/generated/league");
    
    for Object_Dir use "../.objs/runtime_league/" & Protobuf_Runtime_League_Config.Build_Profile;
