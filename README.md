@@ -16,8 +16,8 @@ You can also build with [Alire](https://alire.ada.dev/):
 
     alr build
 
-If you distribute a crate that doesn't require Protobuf compiler then
-you may depend just on `protobuf_runtime`. Alire will immediately detect multiple providers and prompt you to select between:
+If you distribute a crate that doesn't require the Protobuf compiler then
+you may depend on providing crates directly. Alire offers two implementations for `protobuf_runtime`:
 1. `protobuf_runtime_plain`: The type generated for strings would be Unbounded_String (encoded by the user as UTF-8). It requires no dependencies beyond the standard library.
 2. `protobuf_runtime_league`: The type generated for strings will be League's Universal_String, thus depending on the `matreshka_league` crate.
 
@@ -36,7 +36,7 @@ The compiler depends on
 ## Usage
 Launch `protoc` with `--ada_out=<dir>` option having `protoc-gen-ada` in
 the `PATH`. The default is to generate code for the League runtime. Pass
-`--ada_opt=runtime=plain_ada` to generated code for the plain Ada runtime.
+`--ada_opt=runtime=plain_ada` to generate code for the plain Ada runtime.
 
 Example:
 
@@ -46,12 +46,23 @@ PATH=.objs/compiler/:$PATH protoc --ada_out=/tmp/ /usr/include/google/protobuf/d
 
 See more details in [Ada Generated Code](docs/generated_code.md) document.
 
+## Usage through Alire
+
+In your project, add the dependency to your preferred runtime implementation:
+```sh
+alr with protobuf_runtime_plain
+# or
+alr with protobuf_runtime_league
+```
+
 ### Demo
 
-A very simple demo could be found in `demo/` folder. To run it just execute:
+Two very simple demos can be found in the `demo/` folder, one for each runtime.
+To run them just execute:
 
-```shell
-alr -C demo run
+```sh
+alr -C demo/league run
+alr -C demo/plain_ada run
 ```
 
 ## Maintainer

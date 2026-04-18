@@ -8,7 +8,7 @@ authors = ["Max Reznik"]
 licenses = "MIT"
 maintainers = ["Max Reznik <reznikmm@gmail.com>"]
 maintainers-logins = ["reznikmm"]
-project-files = ["../../gnat/protobuf_runtime.gpr"]
+project-files = ["../../gnat/protobuf_runtime_league.gpr"]
 tags = ["serialization", "marshalling", "protocol", "buffers", "rpc", "protobuf"]
 
 [[depends-on]]

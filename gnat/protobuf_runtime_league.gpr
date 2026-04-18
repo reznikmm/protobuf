@@ -20,25 +20,21 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with "protobuf_runtime_config.gpr";
+with "protobuf_runtime_league_config.gpr";
 
-library project Protobuf_Runtime is
+library project Protobuf_Runtime_League is
 
-   Runtime := external ("PROTOBUF_RUNTIME", "matreshka");
+   for Source_Dirs use ("../source/runtime",
+                        "../source/runtime/using_matreshka",
+                        "../source/runtime/generated",
+                        "../source/runtime/generated/using_matreshka");
+   
+   for Object_Dir use "../.objs/runtime_league/" & Protobuf_Runtime_League_Config.Build_Profile;
 
-   case Runtime is
-      when "plain_ada" =>
-         for Source_Dirs use ("../source/runtime", "../source/runtime/using_plain_ada", "../source/runtime/generated", "../source/runtime/generated/using_plain_ada");
-      when others =>
-         for Source_Dirs use ("../source/runtime", "../source/runtime/using_matreshka", "../source/runtime/generated", "../source/runtime/generated/using_matreshka");
-   end case;
-
-   for Object_Dir use "../.objs/runtime/" & Protobuf_Runtime_Config.Build_Profile;
-
-   for Library_Name use "adapbrt";
+   for Library_Name use "adapbrtl";
    for Library_Dir use "../.libs";
-   for Library_ALI_Dir use "../.libs/adapbrt";
-   for Library_Version use "libadapbrt.so." & Protobuf_Runtime_Config.Crate_Version;
+   for Library_ALI_Dir use "../.libs/adapbrtl";
+   for Library_Version use "libadapbrtl.so." & Protobuf_Runtime_League_Config.Crate_Version;
 
    for Languages use ("Ada");
 
@@ -51,7 +47,7 @@ library project Protobuf_Runtime is
 
    package Compiler is
       for Default_Switches ("Ada") use
-        Protobuf_Runtime_Config.Ada_Compiler_Switches &
+        Protobuf_Runtime_League_Config.Ada_Compiler_Switches &
         ("-gnatQ",  -- Don't quit. Generate ALI and tree files even if illegalities
          "-gnatW8");
    end Compiler;
@@ -64,4 +60,4 @@ library project Protobuf_Runtime is
       for Artifacts (".") use ("share");
    end Install;
 
-end Protobuf_Runtime;
+end Protobuf_Runtime_League;

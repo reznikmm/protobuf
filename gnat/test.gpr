@@ -1,4 +1,4 @@
-with "protobuf_runtime.gpr";
+with "protobuf_runtime_league.gpr";
 
 project Test is
    Dir := external("DIR");

@@ -18,17 +18,17 @@ GPRINSTALL_FLAGS = --prefix=$(PREFIX) --sources-subdir=$(INSTALL_INCLUDE_DIR)\
  --link-lib-subdir=$(INSTALL_LIBRARY_DIR) --exec-subdir=$(INSTALL_BIN_DIR)
 
 all:
-	gprbuild $(GPRBUILD_FLAGS) -P gnat/protobuf_runtime.gpr
+	gprbuild $(GPRBUILD_FLAGS) -P gnat/protobuf_runtime_league.gpr
 	gprbuild $(GPRBUILD_FLAGS) -P gnat/protoc_gen_ada.gpr
 
 install:
-	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protobuf_runtime.gpr
+	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protobuf_runtime_league.gpr
 	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protoc_gen_ada.gpr --mode=usage
 	$(INSTALL) -D gdb/python/protobuf.py $(INSTALL_GDB_PLUGIN_DIR)/protobuf.py
 
 clean:
 	gprclean -q -P gnat/protoc_gen_ada.gpr
-	gprclean -q -P gnat/protobuf_runtime.gpr
+	gprclean -q -P gnat/protobuf_runtime_league.gpr
 
 check:
 	@echo Compile some predefined .proto files
@@ -36,7 +36,7 @@ check:
 	  echo $$J; PATH=.objs/compiler/:$$PATH \
 	  protoc --ada_out=source/runtime/generated \
 	   /usr/include/google/protobuf/$$J.proto; done
-	gprbuild -P gnat/protobuf_runtime.gpr
+	gprbuild -P gnat/protobuf_runtime_league.gpr
 	@echo Run regression tests
 	./testsuite/run_all.sh
 	@echo Run conformance test if any

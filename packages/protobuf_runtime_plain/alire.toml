@@ -8,11 +8,8 @@ authors = ["Max Reznik"]
 licenses = "MIT"
 maintainers = ["Max Reznik <reznikmm@gmail.com>"]
 maintainers-logins = ["reznikmm"]
-project-files = ["../../gnat/protobuf_runtime.gpr"]
+project-files = ["../../gnat/protobuf_runtime_plain.gpr"]
 tags = ["serialization", "marshalling", "protocol", "buffers", "rpc", "protobuf"]
-
-[build-environment]
-PROTOBUF_RUNTIME = "plain_ada"
 
 [configuration]
 output_dir = "../../gnat"
