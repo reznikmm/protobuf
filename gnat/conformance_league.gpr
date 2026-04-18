@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020-2023 Max Reznik
+--  Copyright (c) 2020 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -20,42 +20,25 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with "protobuf_runtime_plain_config.gpr";
+with "protobuf_runtime_league.gpr";
 
-library project Protobuf_Runtime_Plain is
+with "protobuf_config.gpr";
 
-   for Source_Dirs use ("../source/runtime",
-                        "../source/runtime/using_plain_ada");
-   
-   for Object_Dir use "../.objs/runtime_plain/" & Protobuf_Runtime_Plain_Config.Build_Profile;
+project Conformance is
 
-   for Library_Name use "adapbrtp";
-   for Library_Dir use "../.libs";
-   for Library_ALI_Dir use "../.libs/adapbrtp";
-   for Library_Version use "libadapbrtp.so." & Protobuf_Runtime_Plain_Config.Crate_Version;
-
-   for Languages use ("Ada");
-
-   for Create_Missing_Dirs use "True";
-
-   type Library_Type_Type is ("relocatable", "static", "static-pic");
-   Library_Type : Library_Type_Type :=
-     external ("PROTOBUF_LIBRARY_TYPE", external ("LIBRARY_TYPE", "relocatable"));
-   for Library_Kind use Library_Type;
+   for Source_Dirs use
+     ("../source/conformance", "../source/conformance/league", "../source/conformance/generated/league");
+   for Object_Dir use "../.objs/conformance/" & Protobuf_Config.Build_Profile;
+   for Main use ("conformance-run.adb");
 
    package Compiler is
       for Default_Switches ("Ada") use
-        Protobuf_Runtime_Plain_Config.Ada_Compiler_Switches &
-        ("-gnatQ",  -- Don't quit. Generate ALI and tree files even if illegalities
-         "-gnatW8");
+        Protobuf_Config.Ada_Compiler_Switches & ("-gnatW8");
    end Compiler;
 
    package Binder is
-      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+      for Switches ("ada") use ("-E");
    end Binder;
 
-   package Install is
-      for Artifacts (".") use ("share");
-   end Install;
+end Conformance;
 
-end Protobuf_Runtime_Plain;

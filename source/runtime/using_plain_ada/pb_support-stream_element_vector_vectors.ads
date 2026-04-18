@@ -24,6 +24,6 @@ with PB_Support.Basics;
 with PB_Support.Vectors;
 
 package PB_Support.Stream_Element_Vector_Vectors is
-  new PB_Support.Vectors (PB_Support.Basics.Stream_Element_Vectors.Vector);
+  new PB_Support.Vectors (PB_Support.Basics.Stream_Element_Vector);
 
 pragma Preelaborate (PB_Support.Stream_Element_Vector_Vectors);

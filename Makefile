@@ -19,6 +19,7 @@ GPRINSTALL_FLAGS = --prefix=$(PREFIX) --sources-subdir=$(INSTALL_INCLUDE_DIR)\
 
 all:
 	gprbuild $(GPRBUILD_FLAGS) -P gnat/protobuf_runtime_league.gpr
+	gprbuild $(GPRBUILD_FLAGS) -P gnat/protobuf_runtime_plain_ada.gpr
 	gprbuild $(GPRBUILD_FLAGS) -P gnat/protoc_gen_ada.gpr
 
 install:
@@ -29,15 +30,23 @@ install:
 clean:
 	gprclean -q -P gnat/protoc_gen_ada.gpr
 	gprclean -q -P gnat/protobuf_runtime_league.gpr
+	gprclean -q -P gnat/protobuf_runtime_plain_ada.gpr
 
 check:
+	@$(MAKE) do-check RUNTIME=league
+	@$(MAKE) do-check RUNTIME=plain_ada
+
+do-check:
+	@echo "Checking runtime: $(RUNTIME)"
 	@echo Compile some predefined .proto files
 	for J in any duration empty field_mask struct timestamp wrappers; do\
 	  echo $$J; PATH=.objs/compiler/:$$PATH \
-	  protoc --ada_out=source/runtime/generated \
-	   /usr/include/google/protobuf/$$J.proto; done
-	gprbuild -P gnat/protobuf_runtime_league.gpr
+	  mkdir -p source/runtime/generated/$(RUNTIME); \
+	   protoc --ada_opt=runtime=$(RUNTIME) --ada_out=source/runtime/generated/$(RUNTIME) \
+	   /usr/include/google/protobuf/$$J.proto; \
+	done
+	gprbuild -P gnat/protobuf_runtime_$(RUNTIME).gpr
 	@echo Run regression tests
-	./testsuite/run_all.sh
+	./testsuite/run_all.sh "" $(RUNTIME)
 	@echo Run conformance test if any
-	./conformance.sh $(PROTOBUF_DIR)
+	./conformance.sh $(PROTOBUF_DIR) $(RUNTIME)

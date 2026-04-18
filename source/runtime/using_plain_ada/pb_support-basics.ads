@@ -27,9 +27,13 @@ package PB_Support.Basics is
 
   package Stream_Element_Vectors is
      new Ada.Containers.Vectors
-        (Field_Number, 
+        (Positive, 
          Ada.Streams.Stream_Element,
          Ada.Streams."=");
+
+  subtype Stream_Element_Vector is Stream_Element_Vectors.Vector;
+  Empty_Stream_Element_Vector : Stream_Element_Vector
+    renames Stream_Element_Vectors.Empty_Vector;
   
 end PB_Support.Basics;
 

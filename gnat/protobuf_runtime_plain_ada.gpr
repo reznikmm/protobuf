@@ -20,20 +20,20 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with "protobuf_runtime_league_config.gpr";
+with "protobuf_runtime_plain_config.gpr";
 
-library project Protobuf_Runtime_League is
+library project Protobuf_Runtime_Plain_Ada is
 
    for Source_Dirs use ("../source/runtime",
-                        "../source/runtime/using_matreshka",
-                        "../source/runtime/generated/league");
+                        "../source/runtime/using_plain_ada",
+                        "../source/runtime/generated/plain_ada");
    
-   for Object_Dir use "../.objs/runtime_league/" & Protobuf_Runtime_League_Config.Build_Profile;
+   for Object_Dir use "../.objs/runtime_plain/" & Protobuf_Runtime_Plain_Config.Build_Profile;
 
-   for Library_Name use "adapbrtl";
+   for Library_Name use "adapbrtp";
    for Library_Dir use "../.libs";
-   for Library_ALI_Dir use "../.libs/adapbrtl";
-   for Library_Version use "libadapbrtl.so." & Protobuf_Runtime_League_Config.Crate_Version;
+   for Library_ALI_Dir use "../.libs/adapbrtp";
+   for Library_Version use "libadapbrtp.so." & Protobuf_Runtime_Plain_Config.Crate_Version;
 
    for Languages use ("Ada");
 
@@ -46,7 +46,7 @@ library project Protobuf_Runtime_League is
 
    package Compiler is
       for Default_Switches ("Ada") use
-        Protobuf_Runtime_League_Config.Ada_Compiler_Switches &
+        Protobuf_Runtime_Plain_Config.Ada_Compiler_Switches &
         ("-gnatQ",  -- Don't quit. Generate ALI and tree files even if illegalities
          "-gnatW8");
    end Compiler;
@@ -59,4 +59,4 @@ library project Protobuf_Runtime_League is
       for Artifacts (".") use ("share");
    end Install;
 
-end Protobuf_Runtime_League;
+end Protobuf_Runtime_Plain_Ada;

@@ -20,14 +20,14 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-with "protobuf_runtime_league.gpr";
+with "protobuf_runtime_plain_ada.gpr";
 
 with "protobuf_config.gpr";
 
-project Conformance is
+project Conformance_Plain_Ada is
 
    for Source_Dirs use
-     ("../source/conformance", "../source/conformance/generated");
+     ("../source/conformance", "../source/conformance/plain_ada", "../source/conformance/generated/plain_ada");
    for Object_Dir use "../.objs/conformance/" & Protobuf_Config.Build_Profile;
    for Main use ("conformance-run.adb");
 
@@ -40,5 +40,5 @@ project Conformance is
       for Switches ("ada") use ("-E");
    end Binder;
 
-end Conformance;
+end Conformance_Plain_Ada;
 

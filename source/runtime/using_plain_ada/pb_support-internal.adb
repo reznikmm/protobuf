@@ -48,7 +48,7 @@ package body PB_Support.Internal is
 
    procedure Write
      (Self  : in out Stream;
-      Value : PB_Support.Basics.Stream_Element_Vectors.Vector)
+      Value : PB_Support.Basics.Stream_Element_Vector)
         with Inline;
 
    procedure Write_Varint
@@ -358,13 +358,13 @@ package body PB_Support.Internal is
       Value : Ada.Strings.Unbounded.Unbounded_String) is
    begin
       declare
-         Data : PB_Support.Basics.Stream_Element_Vectors.Vector;
+         Data : PB_Support.Basics.Stream_Element_Vector;
          use type Ada.Containers.Count_Type;
       begin
          Data.Set_Length
             (Ada.Containers.Count_Type (Ada.Strings.Unbounded.Length (Value)));
          if Data.Length > 0 then
-            for I in 1 .. Field_Number (Data.Length) loop
+            for I in 1 .. Positive (Data.Length) loop
                --  This loop is probably performance-challenged because
                --  of the call to Replace_Element for each iteration...
                Data.Replace_Element
@@ -410,7 +410,7 @@ package body PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Basics.Stream_Element_Vectors.Vector) is
+      Value : PB_Support.Basics.Stream_Element_Vector) is
    begin
       Self.Write_Key ((Field, Length_Delimited));
       Self.Write (Value);
@@ -422,7 +422,7 @@ package body PB_Support.Internal is
 
    procedure Write
      (Self  : in out Stream;
-      Value : PB_Support.Basics.Stream_Element_Vectors.Vector)
+      Value : PB_Support.Basics.Stream_Element_Vector)
    is
    begin
       Self.Write (Ada.Streams.Stream_Element_Count (Value.Length));
@@ -435,7 +435,7 @@ package body PB_Support.Internal is
                (1 .. Ada.Streams.Stream_Element_Count (Value.Length));
          begin
             for I in A'Range loop
-               A (I) := Value (Field_Number (I));
+               A (I) := Value (Positive (I));
             end loop;
             Self.Parent.Write (A);
          end;
@@ -893,11 +893,11 @@ package body PB_Support.Internal is
    not overriding procedure Write_Option
      (Self    : in out Stream;
       Field   : Field_Number;
-      Value   : PB_Support.Basics.Stream_Element_Vectors.Vector;
-      Default : PB_Support.Basics.Stream_Element_Vectors.Vector :=
-        PB_Support.Basics.Stream_Element_Vectors.Empty_Vector)
+      Value   : PB_Support.Basics.Stream_Element_Vector;
+      Default : PB_Support.Basics.Stream_Element_Vector :=
+        PB_Support.Basics.Empty_Stream_Element_Vector)
    is
-      use type PB_Support.Basics.Stream_Element_Vectors.Vector;
+      use type PB_Support.Basics.Stream_Element_Vector;
    begin
       if Value /= Default then
          Self.Write (Field, Value);

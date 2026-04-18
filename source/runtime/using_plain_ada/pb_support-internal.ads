@@ -157,7 +157,7 @@ package PB_Support.Internal is
    not overriding procedure Write
      (Self  : in out Stream;
       Field : Field_Number;
-      Value : PB_Support.Basics.Stream_Element_Vectors.Vector)
+      Value : PB_Support.Basics.Stream_Element_Vector)
         with Inline;
 
    not overriding procedure Write
@@ -169,9 +169,9 @@ package PB_Support.Internal is
    not overriding procedure Write_Option
      (Self    : in out Stream;
       Field   : Field_Number;
-      Value   : PB_Support.Basics.Stream_Element_Vectors.Vector;
-      Default : PB_Support.Basics.Stream_Element_Vectors.Vector :=
-        PB_Support.Basics.Stream_Element_Vectors.Empty_Vector)
+      Value   : PB_Support.Basics.Stream_Element_Vector;
+      Default : PB_Support.Basics.Stream_Element_Vector :=
+        PB_Support.Basics.Empty_Stream_Element_Vector)
           with Inline;
 
    not overriding procedure Write_Varint

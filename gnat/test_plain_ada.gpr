@@ -1,7 +1,7 @@
-with "protobuf_runtime_league.gpr";
+with "protobuf_runtime_plain_ada.gpr";
 
-project Test is
+project Test_Plain_Ada is
    Dir := external("DIR");
    for Source_Dirs use (Dir);
    for Object_Dir use Dir;
-end Test;
+end Test_Plain_Ada;

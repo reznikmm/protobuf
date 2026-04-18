@@ -762,7 +762,7 @@ package body PB_Support.IO is
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Basics.Stream_Element_Vectors.Vector)
+      Value    : in out PB_Support.Basics.Stream_Element_Vector)
    is
    begin
       pragma Assert (Encoding = Length_Delimited);
@@ -789,14 +789,15 @@ package body PB_Support.IO is
       Encoding : Wire_Type;
       Value    : out Ada.Strings.Unbounded.Unbounded_String)
    is
-      Data  : PB_Support.Basics.Stream_Element_Vectors.Vector;
+      Data  : PB_Support.Basics.Stream_Element_Vector;
    begin
+      Ada.Strings.Unbounded.Set_Unbounded_String (Value, "");
       Read (Stream, Encoding, Data);
       --  This loop is probably performance-challenged because
       --  of the call to Append for each iteration...
       for I in 1 .. Data.Length loop
          Ada.Strings.Unbounded.Append
-            (Value, Character'Val (Data.Element (Field_Number (I))));
+            (Value, Character'Val (Data.Element (Positive (I))));
       end loop;
    end Read;
 
@@ -825,7 +826,7 @@ package body PB_Support.IO is
       Encoding : Wire_Type;
       Value    : in out PB_Support.Stream_Element_Vector_Vectors.Vector)
    is
-      Item : PB_Support.Basics.Stream_Element_Vectors.Vector;
+      Item : PB_Support.Basics.Stream_Element_Vector;
    begin
       --  FIXME: For now, unpacked vector only
       Read (Stream, Encoding, Item);

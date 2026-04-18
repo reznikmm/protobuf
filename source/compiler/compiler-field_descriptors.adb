@@ -424,7 +424,7 @@ package body Compiler.Field_Descriptors is
                        +"Stream_Element_Vector"),
                    when Runtime_Plain_Ada =>
                       (+"PB_Support.Basics",
-                       +"Stream_Element_Vectors.Vector"));
+                       +"Stream_Element_Vector"));
          when TYPE_UINT32   => return (+"Interfaces", +"Unsigned_32");
          when TYPE_SFIXED32 => return (+"Interfaces", +"Integer_32");
          when TYPE_SFIXED64 => return (+"Interfaces", +"Integer_64");

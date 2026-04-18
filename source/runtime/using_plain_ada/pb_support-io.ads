@@ -68,7 +68,7 @@ package PB_Support.IO is
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
-      Value    : in out PB_Support.Basics.Stream_Element_Vectors.Vector);
+      Value    : in out PB_Support.Basics.Stream_Element_Vector);
 
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
