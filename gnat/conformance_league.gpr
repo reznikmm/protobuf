@@ -20,12 +20,25 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-package Compiler is
-   pragma Pure;
+with "protobuf_runtime_league.gpr";
 
-   type Runtime_Dep_Type is
-      (Runtime_League,      --  Use League library (and Matreshka).
-       Runtime_Plain_Ada);  --  Use only Ada.* or own resources;
-                            --  strings are assumed being UTF-8-encoded.
+with "protobuf_config.gpr";
 
-end Compiler;
+project Conformance is
+
+   for Source_Dirs use
+     ("../source/conformance", "../source/conformance/league", "../source/conformance/generated/league");
+   for Object_Dir use "../.objs/conformance/" & Protobuf_Config.Build_Profile;
+   for Main use ("conformance-run.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+        Protobuf_Config.Ada_Compiler_Switches & ("-gnatW8");
+   end Compiler;
+
+   package Binder is
+      for Switches ("ada") use ("-E");
+   end Binder;
+
+end Conformance;
+

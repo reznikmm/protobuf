@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2020-2023 Max Reznik
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -20,37 +20,43 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
+with "protobuf_runtime_plain_config.gpr";
 
-with "protobuf_runtime_league.gpr";
+library project Protobuf_Runtime_Plain_Ada is
 
-with "protobuf_config.gpr";
+   for Source_Dirs use ("../source/runtime",
+                        "../source/runtime/plain_ada",
+                        "../source/runtime/generated/plain_ada");
+   
+   for Object_Dir use "../.objs/runtime_plain/" & Protobuf_Runtime_Plain_Config.Build_Profile;
 
-project Protoc_Gen_Ada is
-   for Source_Dirs use
-     ("../source/compiler",
-      "../source/compiler/generated");
+   for Library_Name use "adapbrtp";
+   for Library_Dir use "../.libs";
+   for Library_ALI_Dir use "../.libs/adapbrtp";
+   for Library_Version use "libadapbrtp.so." & Protobuf_Runtime_Plain_Config.Crate_Version;
 
-   for Exec_Dir   use "../.objs/compiler";
-   for Object_Dir use "../.objs/compiler/" & Protobuf_Config.Build_Profile;
-   for Main use ("compiler-run.adb");
-   for Create_Missing_Dirs use "True";  --  Flips the "-p" switch
+   for Languages use ("Ada");
+
+   for Create_Missing_Dirs use "True";
+
+   type Library_Type_Type is ("relocatable", "static", "static-pic");
+   Library_Type : Library_Type_Type :=
+     external ("PROTOBUF_LIBRARY_TYPE", external ("LIBRARY_TYPE", "relocatable"));
+   for Library_Kind use Library_Type;
 
    package Compiler is
       for Default_Switches ("Ada") use
-        Protobuf_Config.Ada_Compiler_Switches & ("-gnatW8", "-g");
+        Protobuf_Runtime_Plain_Config.Ada_Compiler_Switches &
+        ("-gnatQ",  -- Don't quit. Generate ALI and tree files even if illegalities
+         "-gnatW8");
    end Compiler;
 
    package Binder is
-      --  -Es: Store tracebacks in exception occurrences, and enable symbolic tracebacks
-      for Default_Switches ("ada") use ("-Es");
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
    end Binder;
 
-   package Builder is
-      for Executable ("compiler-run.adb") use "protoc-gen-ada";
-   end Builder;
-
    package Install is
-      for Artifacts ("bin") use ("../protoc-gen-ada");
+      for Artifacts (".") use ("share");
    end Install;
 
-end Protoc_Gen_Ada;
+end Protobuf_Runtime_Plain_Ada;

@@ -39,6 +39,32 @@ begin
    Google.Protobuf.Compiler.Plugin.Code_Generator_Request'Read
      (Stream'Unchecked_Access, Request);
 
+   if Request.Parameter.Is_Set then
+      declare
+         Param : constant Wide_Wide_String :=
+           Request.Parameter.Value.To_Wide_Wide_String;
+         League_Option : constant Wide_Wide_String := "runtime=league";
+         Plain_Ada_Option : constant Wide_Wide_String := "runtime=plain_ada";
+      begin
+         --  Poor-man parameter parsing
+         for I in Param'Range loop
+            if I + League_Option'Length - 1 <= Param'Last
+              and then Param (I .. I + League_Option'Length - 1) =
+              League_Option
+            then
+               Compiler.Context.Runtime_Dep := Compiler.Runtime_League;
+            end if;
+
+            if I + Plain_Ada_Option'Length - 1 <= Param'Last
+              and then Param (I .. I + Plain_Ada_Option'Length - 1) =
+              Plain_Ada_Option
+            then
+               Compiler.Context.Runtime_Dep := Compiler.Runtime_Plain_Ada;
+            end if;
+         end loop;
+      end;
+   end if;
+
    Compiler.Context.Populate_Named_Types
      (Request, Compiler.Context.Named_Types);
 

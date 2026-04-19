@@ -1,6 +1,6 @@
 --  MIT License
 --
---  Copyright (c) 2020 Max Reznik
+--  Copyright (c) 2025
 --
 --  Permission is hereby granted, free of charge, to any person obtaining a
 --  copy of this software and associated documentation files (the "Software"),
@@ -20,12 +20,21 @@
 --  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 --  DEALINGS IN THE SOFTWARE.
 
-package Compiler is
-   pragma Pure;
+with Ada.Containers.Vectors;
+with Ada.Streams;
 
-   type Runtime_Dep_Type is
-      (Runtime_League,      --  Use League library (and Matreshka).
-       Runtime_Plain_Ada);  --  Use only Ada.* or own resources;
-                            --  strings are assumed being UTF-8-encoded.
+package PB_Support.Basics is
 
-end Compiler;
+  package Stream_Element_Vectors is
+     new Ada.Containers.Vectors
+        (Positive, 
+         Ada.Streams.Stream_Element,
+         Ada.Streams."=");
+
+  subtype Stream_Element_Vector is Stream_Element_Vectors.Vector;
+  Empty_Stream_Element_Vector : Stream_Element_Vector
+    renames Stream_Element_Vectors.Empty_Vector;
+  
+end PB_Support.Basics;
+
+pragma Preelaborate (PB_Support.Basics);
