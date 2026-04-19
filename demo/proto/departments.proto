@@ -1,0 +1,17 @@
+syntax = "proto2";
+
+// This file is just to show how the Makefile dependencies work. If you touch
+// this file, the Proto compiler is only run on it.
+// If you touch basics.proto, the Proto compiler is run on both this file and
+// basics.proto, because this file imports it.
+
+import "basics.proto";
+
+package My_Format;  // Parent package. Child name stems from file name.
+
+
+message Department {
+	required string name = 1;
+	optional Person manager = 2;
+	required Crowd employees = 3;
+}
