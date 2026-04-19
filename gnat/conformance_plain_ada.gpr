@@ -27,7 +27,9 @@ with "protobuf_config.gpr";
 project Conformance_Plain_Ada is
 
    for Source_Dirs use
-     ("../source/conformance", "../source/conformance/plain_ada", "../source/conformance/generated/plain_ada");
+     ("../source/conformance",
+      "../source/conformance/plain_ada",
+      "../source/conformance/generated/plain_ada");
    for Object_Dir use "../.objs/conformance/" & Protobuf_Config.Build_Profile;
    for Main use ("conformance-run.adb");
 

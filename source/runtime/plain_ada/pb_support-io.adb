@@ -56,7 +56,7 @@ package body PB_Support.IO is
            with "overlong varint (more than 10 bytes)";
       end if;
 
-      if Count = 10 and then Data >= 16#80# then
+      if Count = 10 and then Data > 16#01# then
          raise Constraint_Error
            with "overlong varint (more than 10 bytes)";
       end if;
@@ -721,7 +721,7 @@ package body PB_Support.IO is
             raise Constraint_Error with "overlong tag (more than 5 bytes)";
          end if;
          
-         if Count = 5 and then Item > 16#8F# then
+         if Count = 5 and then Item > 16#0F# then
             raise Constraint_Error with "overlong tag (more than 5 bytes)";
          end if;
 

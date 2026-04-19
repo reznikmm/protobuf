@@ -24,6 +24,7 @@ all:
 
 install:
 	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protobuf_runtime_league.gpr
+	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protobuf_runtime_plain_ada.gpr
 	gprinstall $(GPRINSTALL_FLAGS) -p -P gnat/protoc_gen_ada.gpr --mode=usage
 	$(INSTALL) -D gdb/python/protobuf.py $(INSTALL_GDB_PLUGIN_DIR)/protobuf.py
 

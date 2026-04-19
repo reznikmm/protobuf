@@ -42,11 +42,11 @@ procedure Conformance.Run is
 
    procedure Do_Test
      (Request  : Conformance.Conformance_Request;
-      Responce : out Conformance.Conformance_Response);
+      Response : out Conformance.Conformance_Response);
 
    procedure Do_Test
      (Request  : Conformance.Conformance_Request;
-      Responce : out Conformance.Conformance_Response)
+      Response : out Conformance.Conformance_Response)
    is
       use type League.Strings.Universal_String;
       use type Conformance.Conformance_Request_Variant_Kind;
@@ -56,14 +56,14 @@ procedure Conformance.Run is
       Input  : aliased PB_Support.Memory_Streams.Memory_Stream;
    begin
       if Request.Variant.Payload /= Conformance.Protobuf_Payload_Kind then
-         Responce.Variant :=
+         Response.Variant :=
            (Conformance.Skipped_Kind,
             +"Unsupported payload:" &
               Conformance.Conformance_Request_Variant_Kind'Wide_Wide_Image
                 (Request.Variant.Payload));
          return;
       elsif Request.Requested_Output_Format /= Conformance.PROTOBUF then
-         Responce.Variant :=
+         Response.Variant :=
            (Conformance.Skipped_Kind,
             +"Unsupported output format:" &
               Conformance.Wire_Format'Wide_Wide_Image
@@ -83,7 +83,7 @@ procedure Conformance.Run is
             Conformance.Failure_Set'Write (Output'Access, Message);
          exception
             when E : others =>
-               Responce.Variant :=
+               Response.Variant :=
                  (Conformance.Parse_Error_Kind,
                   "Parse_Error:"
                   & League.Strings.From_UTF_8_String
@@ -101,7 +101,7 @@ procedure Conformance.Run is
             Test_All_Types_Proto_2'Write (Output'Access, Message);
          exception
             when E : others =>
-               Responce.Variant :=
+               Response.Variant :=
                  (Conformance.Parse_Error_Kind,
                   "Parse_Error:"
                   & League.Strings.From_UTF_8_String
@@ -119,7 +119,7 @@ procedure Conformance.Run is
             Test_All_Types_Proto_3'Write (Output'Access, Message);
          exception
             when E : others =>
-               Responce.Variant :=
+               Response.Variant :=
                  (Conformance.Parse_Error_Kind,
                   "Parse_Error:"
                   & League.Strings.From_UTF_8_String
@@ -127,13 +127,13 @@ procedure Conformance.Run is
                return;
          end;
       else
-         Responce.Variant :=
+         Response.Variant :=
            (Conformance.Skipped_Kind,
             "Unsupported message_type:" & Request.Message_Type);
          return;
       end if;
 
-      Responce.Variant :=
+      Response.Variant :=
         (Conformance.Protobuf_Payload_Kind,
          Output.Data);
    end Do_Test;
@@ -147,7 +147,7 @@ begin
       declare
          Size     : Interfaces.Unsigned_32;
          Request  : Conformance.Conformance_Request;
-         Responce : Conformance.Conformance_Response;
+         Response : Conformance.Conformance_Response;
       begin
          begin
             Interfaces.Unsigned_32'Read (Stream'Access, Size);
@@ -171,9 +171,9 @@ begin
             Last   : Ada.Streams.Stream_Element_Count;
             Memory : aliased PB_Support.Memory_Streams.Memory_Stream;
          begin
-            Do_Test (Request, Responce);
+            Do_Test (Request, Response);
 
-            Conformance.Conformance_Response'Write (Memory'Access, Responce);
+            Conformance.Conformance_Response'Write (Memory'Access, Response);
             Last := Memory.Written;
 
             declare

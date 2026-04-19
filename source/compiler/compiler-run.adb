@@ -98,7 +98,7 @@ begin
                Item.Name := (True, Base & ".adb");
                Item.Content :=
                  (Is_Set => True,
-                  Value  => Compiler.File_Descriptors.Body_Text (File));
+                  Value  => Compiler.File_Descriptors.Body_Text (File, Request));
                Result.File.Append (Item);
             end;
          end if;
