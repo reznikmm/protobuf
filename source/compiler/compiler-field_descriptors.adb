@@ -32,8 +32,6 @@ package body Compiler.Field_Descriptors is
      return League.Strings.Universal_String
        renames League.Strings.To_Universal_String;
 
-   type Option_Kind is (Optional, Required, Primitive);
-
    function Type_Name
      (Self        : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Is_Option   : Option_Kind;
@@ -55,26 +53,7 @@ package body Compiler.Field_Descriptors is
    function Map (X : Google.Protobuf.Descriptor.PB_Type)
      return Compiler.Context.Ada_Type_Name;
 
-   function Is_Enum
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-       return Boolean;
-
-   function Is_Repeated
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String;
-      Tipe : League.Strings.Universal_String;
-      Fake : Compiler.Context.String_Sets.Set)
-      return Boolean;
-
    function Is_Packed
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-       return Boolean;
-
-   function Is_Optional
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-       return Option_Kind;
-
-   function Is_Message
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
        return Boolean;
 

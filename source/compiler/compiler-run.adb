@@ -98,7 +98,31 @@ begin
                Item.Name := (True, Base & ".adb");
                Item.Content :=
                  (Is_Set => True,
-                  Value  => Compiler.File_Descriptors.Body_Text (File, Request));
+                  Value  => Compiler.File_Descriptors.Body_Text
+                    (File, Request));
+               Result.File.Append (Item);
+            end;
+
+            --  Generate JSON support
+            declare
+               Item : Google.Protobuf.Compiler.Plugin.File;
+            begin
+               Item.Name := (True, Base & "-json.ads");
+               Item.Content :=
+                 (Is_Set => True,
+                  Value  => Compiler.File_Descriptors.JSON_Specification_Text
+                    (File, Request));
+               Result.File.Append (Item);
+            end;
+
+            declare
+               Item : Google.Protobuf.Compiler.Plugin.File;
+            begin
+               Item.Name := (True, Base & "-json.adb");
+               Item.Content :=
+                 (Is_Set => True,
+                  Value  => Compiler.File_Descriptors.JSON_Body_Text
+                    (File, Request));
                Result.File.Append (Item);
             end;
          end if;

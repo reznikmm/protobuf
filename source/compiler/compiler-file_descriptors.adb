@@ -30,6 +30,7 @@ with League.String_Vectors;
 
 with Compiler.Descriptors;
 with Compiler.Enum_Descriptors;
+with Compiler.Field_Descriptors;
 
 package body Compiler.File_Descriptors is
 
@@ -595,5 +596,309 @@ package body Compiler.File_Descriptors is
 
       return Result;
    end Header_Comment;
+
+   -----------------------------
+   -- JSON_Specification_Text --
+   -----------------------------
+
+   function JSON_Specification_Text
+     (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
+      Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
+      return League.Strings.Universal_String
+   is
+      use type League.Strings.Universal_String;
+      LF : constant League.Strings.Universal_String :=
+        +("" & Ada.Characters.Wide_Wide_Latin_1.LF);
+      Pkg : constant League.Strings.Universal_String := Package_Name (Self);
+      Prefix : constant League.Strings.Universal_String := Get_Prefix (Self);
+      S   : League.Strings.Universal_String;
+
+      procedure Generate_Spec
+        (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
+         Prefix : League.Strings.Universal_String);
+
+      procedure Generate_Spec
+        (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
+         Prefix : League.Strings.Universal_String)
+      is
+         Key : constant League.Strings.Universal_String :=
+           Compiler.Context.Join (Prefix, Msg.Name);
+         Name : constant League.Strings.Universal_String :=
+           Compiler.Context.Named_Types (Key).Ada_Type.Type_Name;
+      begin
+         if not Compiler.Context.Named_Types (Key).Is_Enumeration then
+            S.Append (+"   procedure Write" & LF);
+            S.Append
+              (+"    (Stream : in out PB_Support.JSON.JSON_Writer;" & LF);
+            S.Append
+              (+"     Value  : Standard." & Pkg & "." & Name & ");" & LF);
+            S.Append (LF);
+         end if;
+
+         for J in 1 .. Msg.Nested_Type.Length loop
+            Generate_Spec (Msg.Nested_Type (J), Key);
+         end loop;
+      end Generate_Spec;
+
+   begin
+      S.Append (Header_Comment (Self, Request));
+      S.Append (LF);
+      S.Append (+"with PB_Support.JSON;" & LF);
+      S.Append (LF);
+      S.Append (+"package " & Pkg & ".JSON is" & LF);
+      S.Append (LF);
+
+      for J in 1 .. Self.Message_Type.Length loop
+         Generate_Spec (Self.Message_Type (J), Prefix);
+      end loop;
+
+      S.Append (+"end " & Pkg & ".JSON;" & LF);
+      return S;
+   end JSON_Specification_Text;
+
+   function JSON_Body_Text
+     (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
+      Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
+      return League.Strings.Universal_String
+   is
+      use type League.Strings.Universal_String;
+      LF : constant League.Strings.Universal_String :=
+        +("" & Ada.Characters.Wide_Wide_Latin_1.LF);
+      Pkg : constant League.Strings.Universal_String := Package_Name (Self);
+      Prefix : constant League.Strings.Universal_String := Get_Prefix (Self);
+      S   : League.Strings.Universal_String;
+
+      procedure Generate_Body
+        (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
+         Prefix : League.Strings.Universal_String);
+
+      procedure Generate_Body
+        (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
+         Prefix : League.Strings.Universal_String)
+      is
+         Key : constant League.Strings.Universal_String :=
+           Compiler.Context.Join (Prefix, Msg.Name);
+         Name : constant League.Strings.Universal_String :=
+           Compiler.Context.Named_Types (Key).Ada_Type.Type_Name;
+      begin
+         if not Compiler.Context.Named_Types (Key).Is_Enumeration then
+            S.Append (+"   procedure Write" & LF);
+            S.Append
+              (+"    (Stream : in out PB_Support.JSON.JSON_Writer;" & LF);
+            S.Append
+              (+"     Value  : Standard." & Pkg & "." & Name & ") is" & LF);
+            S.Append (+"   begin" & LF);
+            S.Append (+"      Stream.Start_Object;" & LF);
+
+            for K in 1 .. Msg.Field.Length loop
+               declare
+                  use all type Google.Protobuf.Descriptor.PB_Type;
+                  use all type Google.Protobuf.Descriptor.Label;
+                  use all type Compiler.Field_Descriptors.Option_Kind;
+                  Field : constant Google.Protobuf.Descriptor
+                    .Field_Descriptor_Proto := Msg.Field (K);
+                  F_Name : constant League.Strings.Universal_String :=
+                    Field.Name.Value;
+                  Ada_Name : constant League.Strings.Universal_String :=
+                    Compiler.Context.To_Ada_Name (Field.Name.Value);
+                  Json_Key : constant League.Strings.Universal_String :=
+                    (if Field.Json_Name.Is_Set
+                     then Field.Json_Name.Value else F_Name);
+                  Is_Vector : constant Boolean :=
+                    Field.Label.Is_Set
+                    and then Field.Label.Value = LABEL_REPEATED;
+                  Is_Option : constant Compiler.Field_Descriptors.Option_Kind :=
+                    Compiler.Field_Descriptors.Is_Optional (Field);
+                  Is_Enum   : constant Boolean :=
+                    Compiler.Field_Descriptors.Is_Enum (Field);
+                  Is_Message : constant Boolean :=
+                    Compiler.Field_Descriptors.Is_Message (Field);
+               begin
+                  S.Append (+"      --  " & F_Name & LF);
+                  if Is_Vector then
+                     S.Append
+                       (+"      if Value." & Ada_Name & ".Length > 0 then" & LF);
+                     S.Append
+                       (+"         Stream.Write_Key (""" & Json_Key & """);" & LF);
+                     S.Append (+"         Stream.Start_Array;" & LF);
+                     S.Append
+                       (+"         for J in 1 .. Value." & Ada_Name &
+                        ".Length loop" & LF);
+
+                     declare
+                        Acc : constant League.Strings.Universal_String :=
+                          +"Value." & Ada_Name & " (J)";
+                     begin
+                        if Is_Message then
+                           declare
+                              Target : constant Compiler.Context.Named_Type :=
+                                Compiler.Context.Named_Types (Field.Type_Name.Value);
+                           begin
+                              if Target.Ada_Type.Package_Name = Pkg then
+                                 S.Append
+                                   (+"            Write (Stream, " & Acc & ");" & LF);
+                              else
+                                 S.Append
+                                   (+"            " & Target.Ada_Type.Package_Name & ".JSON.Write (Stream, " & Acc & ");" & LF);
+                              end if;
+                           end;
+                        elsif Is_Enum then
+                           S.Append
+                             (+"            Stream.Write_String (" & Acc &
+                              "'Image);" & LF);
+                        elsif Field.PB_Type.Is_Set then
+                           case Field.PB_Type.Value is
+                              when TYPE_BOOL =>
+                                 S.Append
+                                   (+"            Stream.Write_Boolean (" &
+                                    Acc & ");" & LF);
+                              when TYPE_STRING =>
+                                 if Compiler.Context.Runtime_Dep =
+                                   Compiler.Runtime_League
+                                 then
+                                    S.Append
+                                      (+"            Stream.Write_String (" &
+                                       Acc & ".To_UTF_8_String);" & LF);
+                                 else
+                                    S.Append
+                                      (+"            Stream.Write_String " &
+                                       "(To_String (" & Acc & "));" & LF);
+                                 end if;
+                              when TYPE_DOUBLE | TYPE_FLOAT =>
+                                 S.Append
+                                   (+"            Stream.Write_Float " &
+                                    "(Long_Float (" & Acc & "));" & LF);
+                              when TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 |
+                                   TYPE_UINT32 | TYPE_SINT32 | TYPE_SINT64 |
+                                   TYPE_FIXED32 | TYPE_FIXED64 | TYPE_SFIXED32 |
+                                   TYPE_SFIXED64 =>
+                                 S.Append
+                                   (+"            Stream.Write_Integer " &
+                                    "(Long_Long_Integer (" & Acc & "));" & LF);
+                              when others =>
+                                 S.Append
+                                   (+"            Stream.Write_Null;" & LF);
+                           end case;
+                        end if;
+                     end;
+
+                     S.Append (+"         end loop;" & LF);
+                     S.Append (+"         Stream.End_Array;" & LF);
+                     S.Append (+"      end if;" & LF);
+                  else
+                     declare
+                        Acc : League.Strings.Universal_String :=
+                          +"Value." & Ada_Name;
+                     begin
+                        if Is_Option = Optional then
+                           S.Append (+"      if " & Acc & ".Is_Set then" & LF);
+                           Acc.Append (+".Value");
+                        end if;
+
+                        S.Append
+                          (+"         Stream.Write_Key (""" & Json_Key & """);" &
+                           LF);
+
+                        if Is_Message then
+                           declare
+                              Target : constant Compiler.Context.Named_Type :=
+                                Compiler.Context.Named_Types (Field.Type_Name.Value);
+                           begin
+                              if Target.Ada_Type.Package_Name = Pkg then
+                                 S.Append
+                                   (+"         Write (Stream, " & Acc & ");" & LF);
+                              else
+                                 S.Append
+                                   (+"         " & Target.Ada_Type.Package_Name & ".JSON.Write (Stream, " & Acc & ");" & LF);
+                              end if;
+                           end;
+                        elsif Is_Enum then
+                           S.Append
+                             (+"         Stream.Write_String (" & Acc &
+                              "'Image);" & LF);
+                        elsif Field.PB_Type.Is_Set then
+                           case Field.PB_Type.Value is
+                              when TYPE_BOOL =>
+                                 S.Append
+                                   (+"         Stream.Write_Boolean (" &
+                                    Acc & ");" & LF);
+                              when TYPE_STRING =>
+                                 if Compiler.Context.Runtime_Dep =
+                                   Compiler.Runtime_League
+                                 then
+                                    S.Append
+                                      (+"         Stream.Write_String (" & Acc &
+                                       ".To_UTF_8_String);" & LF);
+                                 else
+                                    S.Append
+                                      (+"         Stream.Write_String " &
+                                       "(To_String (" & Acc & "));" & LF);
+                                 end if;
+                              when TYPE_DOUBLE | TYPE_FLOAT =>
+                                 S.Append
+                                   (+"         Stream.Write_Float " &
+                                    "(Long_Float (" & Acc & "));" & LF);
+                              when TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 |
+                                   TYPE_UINT32 | TYPE_SINT32 | TYPE_SINT64 |
+                                   TYPE_FIXED32 | TYPE_FIXED64 | TYPE_SFIXED32 |
+                                   TYPE_SFIXED64 =>
+                                 S.Append
+                                   (+"         Stream.Write_Integer " &
+                                    "(Long_Long_Integer (" & Acc & "));" & LF);
+                              when others =>
+                                 S.Append
+                                   (+"         Stream.Write_Null;" & LF);
+                           end case;
+                        end if;
+
+                        if Is_Option = Optional then
+                           S.Append (+"      end if;" & LF);
+                        end if;
+                     end;
+                  end if;
+               end;
+            end loop;
+
+            S.Append (+"      Stream.End_Object;" & LF);
+            S.Append (+"   end Write;" & LF);
+            S.Append (LF);
+         end if;
+
+         for J in 1 .. Msg.Nested_Type.Length loop
+            Generate_Body (Msg.Nested_Type (J), Key);
+         end loop;
+      end Generate_Body;
+
+   begin
+      S.Append (Header_Comment (Self, Request));
+      S.Append (LF);
+      if Compiler.Context.Runtime_Dep /= Compiler.Runtime_League then
+         S.Append (+"with Ada.Strings.Unbounded;" & LF);
+      end if;
+      
+      for J in 1 .. Self.Dependency.Length loop
+         declare
+            Item : constant Google.Protobuf.Descriptor.File_Descriptor_Proto :=
+              Compiler.Context.Get_File (Request, Self.Dependency.Element (J));
+         begin
+            S.Append (+"with " & Package_Name (Item) & ".JSON;" & LF);
+         end;
+      end loop;
+      
+      S.Append (LF);
+      S.Append (+"package body " & Pkg & ".JSON is" & LF);
+      S.Append (LF);
+      if Compiler.Context.Runtime_Dep /= Compiler.Runtime_League then
+         S.Append (+"   use Ada.Strings.Unbounded;" & LF);
+         S.Append (LF);
+      end if;
+
+      for J in 1 .. Self.Message_Type.Length loop
+         Generate_Body (Self.Message_Type (J), Prefix);
+      end loop;
+
+      S.Append (+"end " & Pkg & ".JSON;" & LF);
+      return S;
+   end JSON_Body_Text;
 
 end Compiler.File_Descriptors;

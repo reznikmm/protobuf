@@ -73,6 +73,27 @@ package Compiler.Field_Descriptors is
      (Self   : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Result : in out Compiler.Context.String_Sets.Set);
 
+   type Option_Kind is (Optional, Required, Primitive);
+
+   function Is_Enum
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+       return Boolean;
+
+   function Is_Repeated
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+      Pkg  : League.Strings.Universal_String;
+      Tipe : League.Strings.Universal_String;
+      Fake : Compiler.Context.String_Sets.Set)
+      return Boolean;
+
+   function Is_Optional
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+       return Option_Kind;
+
+   function Is_Message
+     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+       return Boolean;
+
    function Unique_Id
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Pkg  : League.Strings.Universal_String;
