@@ -21,6 +21,7 @@
 --  DEALINGS IN THE SOFTWARE.
 
 with League.Strings;
+with League.String_Vectors;
 
 with Google.Protobuf.Compiler.Plugin;
 with Google.Protobuf.Descriptor;
@@ -33,6 +34,21 @@ procedure Compiler.Run is
    Stream  : aliased PB_Support.Stdio_Streams.Stdio_Stream;
    Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request;
    Result  : Google.Protobuf.Compiler.Plugin.Code_Generator_Response;
+
+   function "+" (Text : Wide_Wide_String)
+      return League.Strings.Universal_String
+        renames League.Strings.To_Universal_String;
+
+   --  Plugin options are passed as a comma-separated list in --ada_opt.
+   League_Option : constant League.Strings.Universal_String :=
+     +"runtime=league";
+   Plain_Ada_Option : constant League.Strings.Universal_String :=
+     +"runtime=plain_ada";
+   Generate_JSON_True : constant League.Strings.Universal_String :=
+     +"generate_json=true";
+   Generate_JSON_False : constant League.Strings.Universal_String :=
+     +"generate_json=false";
+
 begin
    Stream.Initialize;
 
@@ -41,26 +57,28 @@ begin
 
    if Request.Parameter.Is_Set then
       declare
-         Param : constant Wide_Wide_String :=
-           Request.Parameter.Value.To_Wide_Wide_String;
-         League_Option : constant Wide_Wide_String := "runtime=league";
-         Plain_Ada_Option : constant Wide_Wide_String := "runtime=plain_ada";
-      begin
-         --  Poor-man parameter parsing
-         for I in Param'Range loop
-            if I + League_Option'Length - 1 <= Param'Last
-              and then Param (I .. I + League_Option'Length - 1) =
-              League_Option
-            then
-               Compiler.Context.Runtime_Dep := Compiler.Runtime_League;
-            end if;
+         use type League.Strings.Universal_String;
 
-            if I + Plain_Ada_Option'Length - 1 <= Param'Last
-              and then Param (I .. I + Plain_Ada_Option'Length - 1) =
-              Plain_Ada_Option
-            then
-               Compiler.Context.Runtime_Dep := Compiler.Runtime_Plain_Ada;
-            end if;
+         Param : constant League.Strings.Universal_String :=
+           Request.Parameter.Value;
+         Options : constant League.String_Vectors.Universal_String_Vector :=
+           Param.Split (',', League.Strings.Skip_Empty);
+      begin
+         for J in 1 .. Options.Length loop
+            declare
+               Option : League.Strings.Universal_String renames
+                 Options.Element (J);
+            begin
+               if Option = League_Option then
+                  Compiler.Context.Runtime_Dep := Compiler.Runtime_League;
+               elsif Option = Plain_Ada_Option then
+                  Compiler.Context.Runtime_Dep := Compiler.Runtime_Plain_Ada;
+               elsif Option = Generate_JSON_True then
+                  Compiler.Context.Generate_JSON := True;
+               elsif Option = Generate_JSON_False then
+                  Compiler.Context.Generate_JSON := False;
+               end if;
+            end;
          end loop;
       end;
    end if;
@@ -104,32 +122,37 @@ begin
             end;
 
             --  Generate JSON support
-            declare
-               Item : Google.Protobuf.Compiler.Plugin.File;
-            begin
-               Item.Name := (True, Base & "-json.ads");
-               Item.Content :=
-                 (Is_Set => True,
-                  Value  => Compiler.File_Descriptors.JSON_Specification_Text
-                    (File, Request));
-               Result.File.Append (Item);
-            end;
+            if Compiler.Context.Generate_JSON then
+               declare
+                  Item : Google.Protobuf.Compiler.Plugin.File;
+                  Content : constant League.Strings.Universal_String :=
+                    Compiler.File_Descriptors.JSON_Specification_Text
+                      (File, Request);
+               begin
+                  Item.Name := (True, Base & "-json.ads");
+                  Item.Content :=
+                    (Is_Set => True,
+                               Value  => Content);
+                  Result.File.Append (Item);
+               end;
 
-            declare
-               Item : Google.Protobuf.Compiler.Plugin.File;
-            begin
-               Item.Name := (True, Base & "-json.adb");
-               Item.Content :=
-                 (Is_Set => True,
-                  Value  => Compiler.File_Descriptors.JSON_Body_Text
-                    (File, Request));
-               Result.File.Append (Item);
-            end;
+               declare
+                  Item : Google.Protobuf.Compiler.Plugin.File;
+               begin
+                  Item.Name := (True, Base & "-json.adb");
+                  Item.Content :=
+                    (Is_Set => True,
+                     Value  => Compiler.File_Descriptors.JSON_Body_Text
+                       (File, Request));
+                  Result.File.Append (Item);
+               end;
+            end if;
          end if;
       end;
    end loop;
 
-   Result.Supported_Features := (True, 1);  --  FEATURE_PROTO3_OPTIONAL
+   Result.Supported_Features := (True,
+    Google.Protobuf.Compiler.Plugin.FEATURE_PROTO3_OPTIONAL'Enum_Rep);
 
    Google.Protobuf.Compiler.Plugin.Code_Generator_Response'Write
      (Stream'Unchecked_Access, Result);

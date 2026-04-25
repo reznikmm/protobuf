@@ -35,20 +35,34 @@ The compiler depends on
 
 ## Usage
 Launch `protoc` with `--ada_out=<dir>` option having `protoc-gen-ada` in
-the `PATH`. The default is to generate code for the League runtime. Pass
-`--ada_opt=runtime=plain_ada` to generate code for the plain Ada runtime.
+the `PATH`. The default is to generate code for the League runtime.
 
-Example:
+### Plugin Options
+They can be passed as values of the `--ada_opt=` argument for `protoc`.
+The available options are:
+- `runtime=league` (default): Use League runtime
+- `runtime=plain_ada`: Use plain Ada runtime (no League dependency)
+- `generate_json=true` (default): Generate JSON support package
+- `generate_json=false`: Skip JSON support package generation
 
+### Examples
+
+Generate with defaults:
 ```
 PATH=.objs/compiler/:$PATH protoc --ada_out=/tmp/ /usr/include/google/protobuf/descriptor.proto
+```
+
+Generate with plain Ada runtime and without JSON support:
+
+```
+PATH=.objs/compiler/:$PATH protoc --ada_out=/tmp/ --ada_opt=runtime=plain_ada --ada_opt=generate_json=false basics.proto
 ```
 
 See more details in [Ada Generated Code](docs/generated_code.md) document.
 
 ## Usage through Alire
 
-In your project, add the dependency to your preferred runtime implementation:
+In your project, add the dependency to your chosen runtime implementation:
 ```sh
 alr with protobuf_runtime_plain
 # or
