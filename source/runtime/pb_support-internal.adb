@@ -357,15 +357,15 @@ package body PB_Support.Internal is
      (Self  : in out Stream;
       Value : League.Strings.Universal_String) is
    begin
-      if Codec.Is_Empty then
-         Codec.Replace_Element
+      if Self.Codec.Is_Empty then
+         Self.Codec.Replace_Element
            (League.Text_Codecs.Codec
               (League.Strings.To_Universal_String ("utf-8")));
       end if;
 
       declare
          Data : constant League.Stream_Element_Vectors.Stream_Element_Vector :=
-           Codec.Constant_Reference.Encode (Value);
+           Self.Codec.Constant_Reference.Encode (Value);
       begin
          Self.Write (Data);
       end;
