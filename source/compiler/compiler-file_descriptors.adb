@@ -705,10 +705,12 @@ package body Compiler.File_Descriptors is
                     (if Field.Json_Name.Is_Set
                      then Field.Json_Name.Value else F_Name);
                   Is_Vector : constant Boolean :=
-                    Field.Label.Is_Set
-                    and then Field.Label.Value = LABEL_REPEATED;
+                    Compiler.Field_Descriptors.Is_Repeated
+                      (Field, Pkg, Name, Compiler.Context.Fake);
                   Is_Option : constant Compiler.Field_Descriptors.Option_Kind :=
                     Compiler.Field_Descriptors.Is_Optional (Field);
+                  Is_Oneof  : constant Boolean :=
+                    Compiler.Field_Descriptors.Is_One_Of (Field);
                   Is_Enum   : constant Boolean :=
                     Compiler.Field_Descriptors.Is_Enum (Field);
                   Is_Message : constant Boolean :=
@@ -727,7 +729,14 @@ package body Compiler.File_Descriptors is
 
                      declare
                         Acc : constant League.Strings.Universal_String :=
-                          +"Value." & Ada_Name & " (J)";
+                          (if Field.PB_Type.Is_Set
+                             and then not Is_Message
+                             and then not
+                                (Compiler.Context.Runtime_Dep =
+                                      Compiler.Runtime_League
+                                   and then Field.PB_Type.Value = TYPE_STRING)
+                           then +"Value." & Ada_Name & ".Get (J)"
+                           else +"Value." & Ada_Name & " (J)");
                      begin
                         if Is_Message then
                            declare
@@ -788,9 +797,23 @@ package body Compiler.File_Descriptors is
                   else
                      declare
                         Acc : League.Strings.Universal_String :=
-                          +"Value." & Ada_Name;
+                          (if Is_Oneof
+                           then +"Value.Variant." & Ada_Name
+                           else +"Value." & Ada_Name);
                      begin
-                        if Is_Option = Optional then
+                        if Is_Oneof then
+                           declare
+                              Selector : constant League.Strings.Universal_String :=
+                                 Compiler.Context.To_Ada_Name
+                                    (Msg.Oneof_Decl
+                                       (Natural (Field.Oneof_Index.Value) + 1)
+                                          .Name.Value);
+                           begin
+            S.Append
+                              (+"      if Value.Variant." & Selector & " = " & Ada_Name &
+               "_Kind then" & LF);
+                           end;
+                        elsif Is_Option = Optional then
                            S.Append (+"      if " & Acc & ".Is_Set then" & LF);
                            Acc.Append (+".Value");
                         end if;
@@ -851,7 +874,7 @@ package body Compiler.File_Descriptors is
                            end case;
                         end if;
 
-                        if Is_Option = Optional then
+                        if Is_Option = Optional or else Is_Oneof then
                            S.Append (+"      end if;" & LF);
                         end if;
                      end;

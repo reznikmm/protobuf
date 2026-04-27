@@ -57,7 +57,7 @@ package body PB_Support.JSON is
       if Self.Needs_Comma then
          Append (Self.Text, ",");
       end if;
-      Append (Self.Text, """");
+      Append (Self.Text, '"');
       Append (Self.Text, Name);
       Append (Self.Text, """:");
       Self.Needs_Comma := False;
@@ -72,10 +72,10 @@ package body PB_Support.JSON is
       if Self.Needs_Comma then
          Append (Self.Text, ",");
       end if;
-      Append (Self.Text, """");
+      Append (Self.Text, '"');
       --  TODO: Handle escaping of specific characters
       Append (Self.Text, Value);
-      Append (Self.Text, """");
+      Append (Self.Text, '"');
       Self.Needs_Comma := True;
    end Write_String;
 
@@ -110,7 +110,7 @@ package body PB_Support.JSON is
       if Self.Needs_Comma then
          Append (Self.Text, ",");
       end if;
-      --  TODO: Ensure valid float parsing/printing mapping in JSON 
+      --  TODO: Ensure valid float parsing/printing mapping in JSON
       --  (No trailing zeros required, no exponential if possible)
       if S (S'First) = ' ' then
          Append (Self.Text, S (S'First + 1 .. S'Last));

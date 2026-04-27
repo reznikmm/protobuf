@@ -27,12 +27,15 @@ with Interfaces;
 
 with League.Strings;
 
+with PB_Support.JSON;
 with PB_Support.Memory_Streams;
 with PB_Support.Stdio_Streams;
 
 with Conformance.Conformance;
 with Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2;
+with Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON;
 with Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3;
+with Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON;
 
 procedure Conformance.Run is
 
@@ -55,14 +58,16 @@ procedure Conformance.Run is
       Output : aliased PB_Support.Memory_Streams.Memory_Stream;
       Input  : aliased PB_Support.Memory_Streams.Memory_Stream;
    begin
-      if Request.Variant.Payload /= Conformance.Protobuf_Payload_Kind then
-         Response.Variant :=
-           (Conformance.Skipped_Kind,
-            +"Unsupported payload:" &
-              Conformance.Conformance_Request_Variant_Kind'Wide_Wide_Image
-                (Request.Variant.Payload));
-         return;
-      elsif Request.Requested_Output_Format /= Conformance.PROTOBUF then
+         if Request.Variant.Payload /= Conformance.Protobuf_Payload_Kind then
+             Response.Variant :=
+                (Conformance.Skipped_Kind,
+                  +"Unsupported payload:" &
+                     Conformance.Conformance_Request_Variant_Kind'Wide_Wide_Image
+                        (Request.Variant.Payload));
+             return;
+         elsif Request.Requested_Output_Format /= Conformance.PROTOBUF
+            and then Request.Requested_Output_Format /= Conformance.JSON
+         then
          Response.Variant :=
            (Conformance.Skipped_Kind,
             +"Unsupported output format:" &
@@ -80,7 +85,16 @@ procedure Conformance.Run is
             Message : Conformance.Failure_Set;
          begin
             Conformance.Failure_Set'Read (Input'Access, Message);
-            Conformance.Failure_Set'Write (Output'Access, Message);
+
+            if Request.Requested_Output_Format = Conformance.PROTOBUF then
+               Conformance.Failure_Set'Write (Output'Access, Message);
+            else
+               Response.Variant :=
+                 (Conformance.Skipped_Kind,
+                  +"Unsupported message_type for JSON output:" &
+                    Request.Message_Type);
+               return;
+            end if;
          exception
             when E : others =>
                Response.Variant :=
@@ -95,10 +109,22 @@ procedure Conformance.Run is
       then
          declare
             use Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2;
+            use Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON;
+
             Message : Test_All_Types_Proto_2;
+            Writer  : PB_Support.JSON.JSON_Writer;
          begin
             Test_All_Types_Proto_2'Read (Input'Unchecked_Access, Message);
-            Test_All_Types_Proto_2'Write (Output'Access, Message);
+
+            if Request.Requested_Output_Format = Conformance.PROTOBUF then
+               Test_All_Types_Proto_2'Write (Output'Access, Message);
+            else
+               Write (Writer, Message);
+               Response.Variant :=
+                 (Conformance.Json_Payload_Kind,
+                  Writer.To_Universal_String);
+               return;
+            end if;
          exception
             when E : others =>
                Response.Variant :=
@@ -113,10 +139,22 @@ procedure Conformance.Run is
       then
          declare
             use Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3;
+            use Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON;
+
             Message : Test_All_Types_Proto_3;
+            Writer  : PB_Support.JSON.JSON_Writer;
          begin
             Test_All_Types_Proto_3'Read (Input'Unchecked_Access, Message);
-            Test_All_Types_Proto_3'Write (Output'Access, Message);
+
+            if Request.Requested_Output_Format = Conformance.PROTOBUF then
+               Test_All_Types_Proto_3'Write (Output'Access, Message);
+            else
+               Write (Writer, Message);
+               Response.Variant :=
+                 (Conformance.Json_Payload_Kind,
+                  Writer.To_Universal_String);
+               return;
+            end if;
          exception
             when E : others =>
                Response.Variant :=

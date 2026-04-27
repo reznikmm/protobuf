@@ -1,6 +1,10 @@
 --  Runtime package for Protobuf JSON serialization and deserialization
 
-with Ada.Strings.Unbounded;
+with Ada.Containers.Vectors;
+with League.JSON.Arrays;
+with League.JSON.Objects;
+with League.JSON.Values;
+with League.Strings;
 
 package PB_Support.JSON is
 
@@ -36,22 +40,45 @@ package PB_Support.JSON is
 
    procedure Write_Key (Self : in out JSON_Writer; Name : String);
    procedure Write_String (Self : in out JSON_Writer; Value : String);
-   
+
    procedure Write_Integer
       (Self  : in out JSON_Writer;
        Value : Long_Long_Integer);
    procedure Write_Float (Self : in out JSON_Writer; Value : Long_Float);
    procedure Write_Boolean (Self : in out JSON_Writer; Value : Boolean);
    procedure Write_Null (Self : in out JSON_Writer);
-   
-   -- Extract written JSON
+
+    function To_Universal_String
+       (Self : JSON_Writer) return League.Strings.Universal_String;
+   --  Extract written JSON as a Universal_String
+
    function To_String (Self : JSON_Writer) return String;
-   
+   --  Extract written JSON as a String encoded in UTF-8
+
 private
 
+   type Container_Kind is (Object_Container, Array_Container);
+
+   type Container (Kind : Container_Kind := Object_Container) is record
+      case Kind is
+         when Object_Container =>
+            Object_Value    : League.JSON.Objects.JSON_Object;
+            Pending_Key     : League.Strings.Universal_String;
+            Has_Pending_Key : Boolean := False;
+         when Array_Container =>
+            Array_Value : League.JSON.Arrays.JSON_Array;
+      end case;
+   end record;
+
+   package Container_Vectors is new Ada.Containers.Vectors
+     (Positive, Container);
+
    type JSON_Writer is tagged record
-      Text        : Ada.Strings.Unbounded.Unbounded_String;
-      Needs_Comma : Boolean := False;
+      Root_Value      : League.JSON.Values.JSON_Value;
+      Has_Root        : Boolean := False;
+      Stack           : Container_Vectors.Vector;
+      Pending_Key     : League.Strings.Universal_String;
+      Has_Pending_Key : Boolean := False;
    end record;
 
 end PB_Support.JSON;
