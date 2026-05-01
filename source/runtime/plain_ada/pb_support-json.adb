@@ -1,3 +1,6 @@
+with Ada.Text_IO;
+with Ada.Strings.Fixed;
+
 package body PB_Support.JSON is
 
    use Ada.Strings.Unbounded;
@@ -104,22 +107,45 @@ package body PB_Support.JSON is
    -- Write_Float --
    -----------------
 
+
    procedure Write_Float (Self : in out JSON_Writer; Value : Long_Float) is
-      S : constant String := Long_Float'Image (Value);
    begin
       if Self.Needs_Comma then
          Append (Self.Text, ",");
       end if;
-      --  TODO: Ensure valid float parsing/printing mapping in JSON
-      --  (No trailing zeros required, no exponential if possible)
-      if S (S'First) = ' ' then
-         Append (Self.Text, S (S'First + 1 .. S'Last));
+
+      --  Protobuf JSON requires NaN and +/-Infinity to be serialized as strings.
+      --  NaN is detected portably via IEEE‑754 semantics: (X /= X).
+      --  We cannot rely on 'Image or Text_IO output, which is
+      --  implementation-defined.
+      --  See: protobuf JSON mapping [1], Ada RM G.2.2, IEEE‑754.
+      --  [1] https://protobuf.dev/programming-guides/json/
+
+      if Value /= Value then
+         Append (Self.Text,"NaN");
+      elsif Value > Long_Float'Last then
+         Append (Self.Text, """Infinity""");
+      elsif Value < Long_Float'First then
+         Append (Self.Text, """-Infinity""");
       else
-         Append (Self.Text, S);
+         declare
+            Float_Image : String (1 .. 40);
+         begin
+
+            Ada.Long_Float_Text_IO.Put
+              (To => Float_Image, Item => Value, Aft => 16, Exp => 3);
+
+                    Long_Float_IO.Put (S, Value, Aft => 16, Exp => 3);
+
+            Append (Self.Text,
+                    Ada.Strings.Fixed.Trim
+                      (Float_Image,
+                       Side => Ada.Strings.Left));
+         end;
       end if;
       Self.Needs_Comma := True;
    end Write_Float;
-
+      
    -------------------
    -- Write_Boolean --
    -------------------

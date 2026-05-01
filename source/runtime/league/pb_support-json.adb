@@ -1,3 +1,8 @@
+with Ada.Long_Float_Text_IO;
+with Ada.Strings.Fixed;
+with Ada.Text_IO;
+
+with League.Base_Codecs;
 with League.Holders;
 with League.JSON.Documents;
 
@@ -41,6 +46,7 @@ package body PB_Support.JSON is
 
                Parent.Object_Value.Insert (Self.Pending_Key, Value);
                Self.Has_Pending_Key := False;
+               Self.Pending_Key := League.Strings.Empty_Universal_String;
 
             when Array_Container =>
                Parent.Array_Value.Append (Value);
@@ -55,13 +61,20 @@ package body PB_Support.JSON is
    ------------------
 
    procedure Start_Object (Self : in out JSON_Writer) is
+      Child : Container :=
+        (Kind            => Object_Container,
+         Object_Value    => League.JSON.Objects.Empty_JSON_Object,
+         Pending_Key     => League.Strings.Empty_Universal_String,
+         Has_Pending_Key => False);
    begin
-      Self.Stack.Append
-        (New_Item =>
-           (Kind            => Object_Container,
-            Object_Value    => League.JSON.Objects.Empty_JSON_Object,
-            Pending_Key     => League.Strings.Empty_Universal_String,
-            Has_Pending_Key => False));
+      if Self.Has_Pending_Key then
+         Child.Pending_Key := Self.Pending_Key;
+         Child.Has_Pending_Key := True;
+         Self.Pending_Key := League.Strings.Empty_Universal_String;
+         Self.Has_Pending_Key := False;
+      end if;
+
+      Self.Stack.Append (New_Item => Child);
    end Start_Object;
 
    ----------------
@@ -77,10 +90,19 @@ package body PB_Support.JSON is
       end if;
 
       declare
+         Child : constant Container := Self.Stack.Last_Element;
          Value : constant League.JSON.Values.JSON_Value :=
-           Self.Stack.Last_Element.Object_Value.To_JSON_Value;
+           Child.Object_Value.To_JSON_Value;
       begin
          Self.Stack.Delete_Last;
+         if Child.Has_Pending_Key then
+            Self.Pending_Key := Child.Pending_Key;
+            Self.Has_Pending_Key := True;
+         else
+            Self.Pending_Key := League.Strings.Empty_Universal_String;
+            Self.Has_Pending_Key := False;
+         end if;
+
          Push_Value (Self, Value);
       end;
    end End_Object;
@@ -90,10 +112,18 @@ package body PB_Support.JSON is
    -----------------
 
    procedure Start_Array (Self : in out JSON_Writer) is
+      Child : Container :=
+        (Kind => Array_Container,
+         Array_Value => League.JSON.Arrays.Empty_JSON_Array,
+         Has_Pending_Key => Self.Has_Pending_Key,
+         Pending_Key => Self.Pending_Key);
    begin
-      Self.Stack.Append
-        ((Kind => Array_Container,
-          Array_Value => League.JSON.Arrays.Empty_JSON_Array));
+      if Self.Has_Pending_Key then
+         Self.Pending_Key := League.Strings.Empty_Universal_String;
+         Self.Has_Pending_Key := False;
+      end if;
+
+      Self.Stack.Append (New_Item => Child);
    end Start_Array;
 
    ---------------
@@ -109,10 +139,19 @@ package body PB_Support.JSON is
       end if;
 
       declare
+         Child : constant Container := Self.Stack.Last_Element;
          Value : constant League.JSON.Values.JSON_Value :=
-           Self.Stack.Last_Element.Array_Value.To_JSON_Value;
+           Child.Array_Value.To_JSON_Value;
       begin
          Self.Stack.Delete_Last;
+         if Child.Has_Pending_Key then
+            Self.Pending_Key := Child.Pending_Key;
+            Self.Has_Pending_Key := True;
+         else
+            Self.Pending_Key := League.Strings.Empty_Universal_String;
+            Self.Has_Pending_Key := False;
+         end if;
+
          Push_Value (Self, Value);
       end;
    end End_Array;
@@ -163,8 +202,27 @@ package body PB_Support.JSON is
 
    procedure Write_String (Self : in out JSON_Writer; Value : String) is
    begin
-      Push_Value (Self, League.JSON.Values.To_JSON_Value (+Value));
+      --  TODO: do it in a proper typed way.
+      if Value = "PB_NULL_VALUE" then
+         Push_Value (Self, League.JSON.Values.Null_JSON_Value);
+      else
+         Push_Value (Self, League.JSON.Values.To_JSON_Value (+Value));
+      end if;
    end Write_String;
+
+   -----------------
+   -- Write_Bytes --
+   -----------------
+
+   procedure Write_Bytes
+     (Self  : in out JSON_Writer;
+      Value : League.Stream_Element_Vectors.Stream_Element_Vector)
+   is
+      Encoded : constant League.Strings.Universal_String :=
+        League.Base_Codecs.To_Base_64 (Value);
+   begin
+      Push_Value (Self, League.JSON.Values.To_JSON_Value (Encoded));
+   end Write_Bytes;
 
    -------------------
    -- Write_Integer --
@@ -180,16 +238,72 @@ package body PB_Support.JSON is
            (League.Holders.Universal_Integer (Value)));
    end Write_Integer;
 
+   -------------------
+   -- Write_Integer --
+   -------------------
+
+   procedure Write_Integer
+      (Self  : in out JSON_Writer;
+       Value : Interfaces.Integer_64)
+   is
+   begin
+      --  64 bit types are quoted by default
+      Write_String
+        (Self, Ada.Strings.Fixed.Trim (Value'Image, Ada.Strings.Left));
+   end Write_Integer;
+
+   -------------------
+   -- Write_Integer --
+   -------------------
+
+   procedure Write_Integer
+      (Self  : in out JSON_Writer;
+       Value : Interfaces.Unsigned_64)
+   is
+   begin
+      --  64 bit types are quoted by default
+      Write_String
+        (Self, Ada.Strings.Fixed.Trim (Value'Image, Ada.Strings.Left));
+   end Write_Integer;
+
    -----------------
    -- Write_Float --
    -----------------
 
    procedure Write_Float (Self : in out JSON_Writer; Value : Long_Float) is
    begin
-      Push_Value
-        (Self,
-         League.JSON.Values.To_JSON_Value
-           (League.Holders.Universal_Float (Value)));
+      --  Protobuf JSON requires NaN and +/-Infinity to be serialized as strings.
+      --  NaN is detected portably via IEEE‑754 semantics: (X /= X).
+      --  We cannot rely on 'Image or Text_IO output, which is
+      --  implementation-defined.
+      --  See: protobuf JSON mapping
+      --       https://protobuf.dev/programming-guides/json/
+
+      if Value /= Value then
+         Push_Value (Self, League.JSON.Values.To_JSON_Value
+                      (League.Strings.To_Universal_String("NaN")));
+      elsif Value > Long_Float'Last then
+         Push_Value (Self, League.JSON.Values.To_JSON_Value
+                      (League.Strings.To_Universal_String("Infinity")));
+      elsif Value < Long_Float'First then
+         Push_Value (Self, League.JSON.Values.To_JSON_Value
+                      (League.Strings.To_Universal_String("-Infinity")));
+      else
+         declare
+            Float_Image : String (1 .. 40);
+         begin
+
+            Ada.Long_Float_Text_IO.Put
+              (To => Float_Image, Item => Value, Aft => 16, Exp => 3);
+
+            Push_Value
+              (Self,
+               League.JSON.Values.To_JSON_Value
+                 (League.Strings.From_UTF_8_String
+                    (Ada.Strings.Fixed.Trim (Float_Image,
+                                             Side => Ada.Strings.Left))));
+         end;
+      end if;
    end Write_Float;
 
    -------------------

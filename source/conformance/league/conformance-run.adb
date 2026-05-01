@@ -23,6 +23,7 @@
 with Ada.Exceptions;
 with Ada.IO_Exceptions;
 with Ada.Streams;
+with Ada.Text_IO;
 with Interfaces;
 
 with League.Strings;
@@ -97,11 +98,19 @@ procedure Conformance.Run is
             end if;
          exception
             when E : others =>
-               Response.Variant :=
-                 (Conformance.Parse_Error_Kind,
-                  "Parse_Error:"
-                  & League.Strings.From_UTF_8_String
-                    (Ada.Exceptions.Exception_Information (E)));
+               if Request.Requested_Output_Format = Conformance.JSON then
+                  Response.Variant :=
+                     (Conformance.Serialize_Error_Kind,
+                        +"Serialize_Error:"
+                        & League.Strings.From_UTF_8_String
+                           (Ada.Exceptions.Exception_Information (E)));
+               else
+                  Response.Variant :=
+                     (Conformance.Parse_Error_Kind,
+                        +"Parse_Error:"
+                        & League.Strings.From_UTF_8_String
+                           (Ada.Exceptions.Exception_Information (E)));
+               end if;
                return;
          end;
       elsif Request.Message_Type =
@@ -120,6 +129,7 @@ procedure Conformance.Run is
                Test_All_Types_Proto_2'Write (Output'Access, Message);
             else
                Write (Writer, Message);
+               Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Writer.To_String);
                Response.Variant :=
                  (Conformance.Json_Payload_Kind,
                   Writer.To_Universal_String);
@@ -127,11 +137,19 @@ procedure Conformance.Run is
             end if;
          exception
             when E : others =>
-               Response.Variant :=
-                 (Conformance.Parse_Error_Kind,
-                  "Parse_Error:"
-                  & League.Strings.From_UTF_8_String
-                    (Ada.Exceptions.Exception_Information (E)));
+               if Request.Requested_Output_Format = Conformance.JSON then
+                  Response.Variant :=
+                     (Conformance.Serialize_Error_Kind,
+                        +"Serialize_Error:"
+                        & League.Strings.From_UTF_8_String
+                           (Ada.Exceptions.Exception_Information (E)));
+               else
+                  Response.Variant :=
+                     (Conformance.Parse_Error_Kind,
+                        +"Parse_Error:"
+                        & League.Strings.From_UTF_8_String
+                           (Ada.Exceptions.Exception_Information (E)));
+               end if;
                return;
          end;
       elsif Request.Message_Type =
@@ -150,6 +168,7 @@ procedure Conformance.Run is
                Test_All_Types_Proto_3'Write (Output'Access, Message);
             else
                Write (Writer, Message);
+               Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Writer.To_String);
                Response.Variant :=
                  (Conformance.Json_Payload_Kind,
                   Writer.To_Universal_String);
@@ -157,11 +176,19 @@ procedure Conformance.Run is
             end if;
          exception
             when E : others =>
-               Response.Variant :=
-                 (Conformance.Parse_Error_Kind,
-                  "Parse_Error:"
-                  & League.Strings.From_UTF_8_String
-                    (Ada.Exceptions.Exception_Information (E)));
+               if Request.Requested_Output_Format = Conformance.JSON then
+                  Response.Variant :=
+                     (Conformance.Serialize_Error_Kind,
+                        +"Serialize_Error:"
+                        & League.Strings.From_UTF_8_String
+                           (Ada.Exceptions.Exception_Information (E)));
+               else
+                  Response.Variant :=
+                     (Conformance.Parse_Error_Kind,
+                        +"Parse_Error:"
+                        & League.Strings.From_UTF_8_String
+                           (Ada.Exceptions.Exception_Information (E)));
+               end if;
                return;
          end;
       else

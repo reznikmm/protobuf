@@ -777,13 +777,21 @@ package body Compiler.File_Descriptors is
                                  S.Append
                                    (+"            Stream.Write_Float " &
                                     "(Long_Float (" & Acc & "));" & LF);
-                              when TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 |
-                                   TYPE_UINT32 | TYPE_SINT32 | TYPE_SINT64 |
-                                   TYPE_FIXED32 | TYPE_FIXED64 | TYPE_SFIXED32 |
-                                   TYPE_SFIXED64 =>
+                             when TYPE_INT32 | TYPE_UINT32 | TYPE_SINT32 |
+                                   TYPE_FIXED32 | TYPE_SFIXED32 =>
                                  S.Append
                                    (+"            Stream.Write_Integer " &
                                     "(Long_Long_Integer (" & Acc & "));" & LF);
+                              when TYPE_FIXED64 | TYPE_SFIXED64 | TYPE_SINT64 |
+                                   TYPE_INT64 | TYPE_UINT64 =>
+                                 --  64 bit types are quoted by default
+                                 S.Append
+                                  (+"             Stream.Write_Integer" &
+                                    " (" & Acc & ");" & LF);
+                              when TYPE_BYTES =>
+                                 S.Append
+                                   (+"            Stream.Write_Bytes " &
+                                    "(" & Acc & ");" & LF);
                               when others =>
                                  S.Append
                                    (+"            Stream.Write_Null;" & LF);
@@ -861,13 +869,21 @@ package body Compiler.File_Descriptors is
                                  S.Append
                                    (+"         Stream.Write_Float " &
                                     "(Long_Float (" & Acc & "));" & LF);
-                              when TYPE_INT64 | TYPE_UINT64 | TYPE_INT32 |
-                                   TYPE_UINT32 | TYPE_SINT32 | TYPE_SINT64 |
-                                   TYPE_FIXED32 | TYPE_FIXED64 | TYPE_SFIXED32 |
-                                   TYPE_SFIXED64 =>
+                              when TYPE_INT32 | TYPE_UINT32 | TYPE_SINT32 |
+                                   TYPE_FIXED32 | TYPE_SFIXED32 =>
                                  S.Append
                                    (+"         Stream.Write_Integer " &
                                     "(Long_Long_Integer (" & Acc & "));" & LF);
+                              when TYPE_FIXED64 | TYPE_SFIXED64 | TYPE_SINT64 |
+                                   TYPE_INT64 | TYPE_UINT64 =>
+                                 --  64 bit types are quoted by default
+                                 S.Append
+                                  (+"          Stream.Write_Integer" &
+                                    " (" & Acc & ");" & LF);
+                              when TYPE_BYTES =>
+                                 S.Append
+                                   (+"         Stream.Write_Bytes " &
+                                    "(" & Acc & ");" & LF);
                               when others =>
                                  S.Append
                                    (+"         Stream.Write_Null;" & LF);

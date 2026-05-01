@@ -1,9 +1,13 @@
 --  Runtime package for Protobuf JSON serialization and deserialization
 
 with Ada.Containers.Vectors;
+
+with Interfaces;
+
 with League.JSON.Arrays;
 with League.JSON.Objects;
 with League.JSON.Values;
+with League.Stream_Element_Vectors;
 with League.Strings;
 
 package PB_Support.JSON is
@@ -40,10 +44,22 @@ package PB_Support.JSON is
 
    procedure Write_Key (Self : in out JSON_Writer; Name : String);
    procedure Write_String (Self : in out JSON_Writer; Value : String);
+   procedure Write_Bytes
+      (Self : in out JSON_Writer;
+       Value : League.Stream_Element_Vectors.Stream_Element_Vector);
 
    procedure Write_Integer
       (Self  : in out JSON_Writer;
        Value : Long_Long_Integer);
+
+   procedure Write_Integer
+      (Self  : in out JSON_Writer;
+       Value : Interfaces.Integer_64);
+
+   procedure Write_Integer
+      (Self  : in out JSON_Writer;
+       Value : Interfaces.Unsigned_64);
+
    procedure Write_Float (Self : in out JSON_Writer; Value : Long_Float);
    procedure Write_Boolean (Self : in out JSON_Writer; Value : Boolean);
    procedure Write_Null (Self : in out JSON_Writer);
@@ -60,11 +76,11 @@ private
    type Container_Kind is (Object_Container, Array_Container);
 
    type Container (Kind : Container_Kind := Object_Container) is record
+      Pending_Key     : League.Strings.Universal_String;
+      Has_Pending_Key : Boolean := False;
       case Kind is
          when Object_Container =>
             Object_Value    : League.JSON.Objects.JSON_Object;
-            Pending_Key     : League.Strings.Universal_String;
-            Has_Pending_Key : Boolean := False;
          when Array_Container =>
             Array_Value : League.JSON.Arrays.JSON_Array;
       end case;
