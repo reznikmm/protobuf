@@ -1017,7 +1017,7 @@ package body PB_Support.IO is
       Value := Interfaces.Integer_32 (Temp / 2);
 
       if (Temp and 1) > 0 then
-         Value := -Value;
+         Value := -Value - 1;
       end if;
    end Read_Zigzag;
 
@@ -1035,11 +1035,11 @@ package body PB_Support.IO is
 
       Temp : Interfaces.Unsigned_64;
    begin
-      Read_Varint (Stream, Encoding, Temp);
+      Read_Varint (Stream, Encoding, Temp);     
       Value := Interfaces.Integer_64 (Temp / 2);
 
       if (Temp and 1) > 0 then
-         Value := -Value;
+         Value := -Value - 1;
       end if;
    end Read_Zigzag;
 
@@ -1085,7 +1085,7 @@ package body PB_Support.IO is
                   if (Item and 1) = 0 then
                      Value.Append (Interfaces.Integer_32 (Item / 2));
                   else
-                     Value.Append (-Interfaces.Integer_32 (Item / 2));
+                     Value.Append (-Interfaces.Integer_32 (Item / 2) - 1);
                   end if;
 
                   Item := 0;
@@ -1139,7 +1139,7 @@ package body PB_Support.IO is
                   if (Item and 1) = 0 then
                      Value.Append (Interfaces.Integer_64 (Item / 2));
                   else
-                     Value.Append (-Interfaces.Integer_64 (Item / 2));
+                     Value.Append (-Interfaces.Integer_64 (Item / 2) - 1);
                   end if;
 
                   Item := 0;
