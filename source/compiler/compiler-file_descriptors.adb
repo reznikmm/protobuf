@@ -822,6 +822,7 @@ package body Compiler.File_Descriptors is
         (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
          Prefix : League.Strings.Universal_String)
       is
+         use type Google.Protobuf.Descriptor.Label;
          Key : constant League.Strings.Universal_String :=
            Compiler.Context.Join (Prefix, Msg.Name);
          Name : constant League.Strings.Universal_String :=
@@ -871,6 +872,10 @@ package body Compiler.File_Descriptors is
                      Is_Vector : constant Boolean :=
                      Compiler.Field_Descriptors.Is_Repeated
                         (Field, Pkg, Name, Compiler.Context.Fake);
+                     Is_JSON_Array : constant Boolean :=
+                       Field.Label.Is_Set
+                       and then Field.Label.Value =
+                       Google.Protobuf.Descriptor.LABEL_REPEATED;
                      Is_Option :
                        constant Compiler.Field_Descriptors.Option_Kind :=
                          Compiler.Field_Descriptors.Is_Optional (Field);
@@ -891,7 +896,9 @@ package body Compiler.File_Descriptors is
                            & Json_Key
                            & """);"
                            & LF);
-                        S.Append (+"         Stream.Start_Array;" & LF);
+                        if Is_JSON_Array then
+                           S.Append (+"         Stream.Start_Array;" & LF);
+                        end if;
                         S.Append
                           (+"         for J in 1 .. Value."
                            & Ada_Name
@@ -913,7 +920,9 @@ package body Compiler.File_Descriptors is
                         end;
 
                         S.Append (+"         end loop;" & LF);
-                        S.Append (+"         Stream.End_Array;" & LF);
+                        if Is_JSON_Array then
+                           S.Append (+"         Stream.End_Array;" & LF);
+                        end if;
                         S.Append (+"      end if;" & LF);
                      else
                         declare
