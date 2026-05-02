@@ -682,23 +682,13 @@ package body Compiler.File_Descriptors is
       procedure Generate_Field
         (Indentation : League.Strings.Universal_String;
          Field       : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-         Name        : League.Strings.Universal_String;
          Acc         : League.Strings.Universal_String)
       is
          use all type Google.Protobuf.Descriptor.PB_Type;
-         Is_Vector  : constant Boolean :=
-           Compiler.Field_Descriptors.Is_Repeated
-             (Field, Pkg, Name, Compiler.Context.Fake);
-         Is_Option  : constant Compiler.Field_Descriptors.Option_Kind :=
-           Compiler.Field_Descriptors.Is_Optional (Field);
-         Is_Oneof   : constant Boolean :=
-           Compiler.Field_Descriptors.Is_One_Of (Field);
          Is_Enum    : constant Boolean :=
            Compiler.Field_Descriptors.Is_Enum (Field);
          Is_Message : constant Boolean :=
            Compiler.Field_Descriptors.Is_Message (Field);
-         Ada_Name   : constant League.Strings.Universal_String :=
-           Compiler.Context.To_Ada_Name (Field.Name.Value);
       begin
 
          if Is_Message then
@@ -711,12 +701,23 @@ package body Compiler.File_Descriptors is
                      (Indentation & "Write (Stream, " & Acc & ");" & LF);
                else
                   S.Append
-                     (Indentation & Target.Ada_Type.Package_Name & ".JSON.Write (Stream, " & Acc & ");" & LF);
+                     (Indentation & Target.Ada_Type.Package_Name &
+                      ".JSON.Write (Stream, " & Acc & ");" & LF);
                end if;
             end;
          elsif Is_Enum then
-            S.Append
-              (Indentation & "Stream.Write_String (" & Acc & "'Image);" & LF);
+            if Field.Type_Name.Is_Set
+              and then Field.Type_Name.Value = +".google.protobuf.NullValue"
+            then
+               S.Append (Indentation & "Stream.Write_Null;" & LF);
+            else
+               S.Append
+                 (Indentation
+                  & "Stream.Write_String ("
+                  & Acc
+                  & "'Image);"
+                  & LF);
+            end if;
          elsif Field.PB_Type.Is_Set then
             case Field.PB_Type.Value is
                when TYPE_BOOL                =>
@@ -835,8 +836,8 @@ package body Compiler.File_Descriptors is
             S.Append (+"   begin" & LF);
 
 
-            --  Special handling for google.protobuf.Timestamp to reject invalid
-            --  values and output in human-readable format.
+            --  Special handling for google.protobuf.Timestamp to reject
+            --  invalid values and output in human-readable format.
             if Pkg & "." & Name = +"Google.Protobuf.Timestamp.Timestamp" then
                S.Append
                  (+"      PB_Support.JSON.Write_Timestamp"
@@ -857,7 +858,6 @@ package body Compiler.File_Descriptors is
                for K in 1 .. Msg.Field.Length loop
                   declare
                      use all type Google.Protobuf.Descriptor.PB_Type;
-                     use all type Google.Protobuf.Descriptor.Label;
                      use all type Compiler.Field_Descriptors.Option_Kind;
                      Field : constant Google.Protobuf.Descriptor
                      .Field_Descriptor_Proto := Msg.Field (K);
@@ -871,25 +871,32 @@ package body Compiler.File_Descriptors is
                      Is_Vector : constant Boolean :=
                      Compiler.Field_Descriptors.Is_Repeated
                         (Field, Pkg, Name, Compiler.Context.Fake);
-                     Is_Option : constant Compiler.Field_Descriptors.Option_Kind :=
-                     Compiler.Field_Descriptors.Is_Optional (Field);
+                     Is_Option :
+                       constant Compiler.Field_Descriptors.Option_Kind :=
+                         Compiler.Field_Descriptors.Is_Optional (Field);
                      Is_Oneof  : constant Boolean :=
                      Compiler.Field_Descriptors.Is_One_Of (Field);
-                     Is_Enum   : constant Boolean :=
-                     Compiler.Field_Descriptors.Is_Enum (Field);
                      Is_Message : constant Boolean :=
                      Compiler.Field_Descriptors.Is_Message (Field);
                   begin
                      S.Append (+"      --  " & F_Name & LF);
                      if Is_Vector then
                         S.Append
-                        (+"      if Value." & Ada_Name & ".Length > 0 then" & LF);
+                          (+"      if Value."
+                           & Ada_Name
+                           & ".Length > 0 then"
+                           & LF);
                         S.Append
-                        (+"         Stream.Write_Key (""" & Json_Key & """);" & LF);
+                          (+"         Stream.Write_Key ("""
+                           & Json_Key
+                           & """);"
+                           & LF);
                         S.Append (+"         Stream.Start_Array;" & LF);
                         S.Append
-                        (+"         for J in 1 .. Value." & Ada_Name &
-                           ".Length loop" & LF);
+                          (+"         for J in 1 .. Value."
+                           & Ada_Name
+                           & ".Length loop"
+                           & LF);
 
                         declare
                            Acc : constant League.Strings.Universal_String :=
@@ -902,7 +909,7 @@ package body Compiler.File_Descriptors is
                               then +"Value." & Ada_Name & ".Get (J)"
                               else +"Value." & Ada_Name & " (J)");
                         begin
-                           Generate_Field (+"            ", Field, Name, Acc);
+                           Generate_Field (+"            ", Field, Acc);
                         end;
 
                         S.Append (+"         end loop;" & LF);
@@ -917,11 +924,12 @@ package body Compiler.File_Descriptors is
                         begin
                            if Is_Oneof then
                               declare
-                                 Selector : constant League.Strings.Universal_String :=
-                                    Compiler.Context.To_Ada_Name
+                                 Selector :
+                                   constant League.Strings.Universal_String :=
+                                     Compiler.Context.To_Ada_Name
                                        (Msg.Oneof_Decl
-                                          (Natural (Field.Oneof_Index.Value) + 1)
-                                             .Name.Value);
+                                          (Natural (Field.Oneof_Index.Value)
+                                           + 1).Name.Value);
                               begin
                                  S.Append
                                  (+"      if Value.Variant."
@@ -932,7 +940,8 @@ package body Compiler.File_Descriptors is
                                     & LF);
                               end;
                            elsif Is_Option = Optional then
-                              S.Append (+"      if " & Acc & ".Is_Set then" & LF);
+                              S.Append
+                                (+"      if " & Acc & ".Is_Set then" & LF);
                               Acc.Append (+".Value");
                            end if;
 
@@ -941,7 +950,7 @@ package body Compiler.File_Descriptors is
                               & Json_Key
                               & """);"
                               & LF);
-                           Generate_Field (+"         ", Field, Name, Acc);
+                           Generate_Field (+"         ", Field, Acc);
 
                            if Is_Option = Optional or else Is_Oneof then
                               S.Append (+"      end if;" & LF);

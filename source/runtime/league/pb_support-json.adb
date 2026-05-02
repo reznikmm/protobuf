@@ -116,12 +116,14 @@ package body PB_Support.JSON is
 
    procedure Start_Array (Self : in out JSON_Writer) is
       Child : Container :=
-        (Kind => Array_Container,
-         Array_Value => League.JSON.Arrays.Empty_JSON_Array,
-         Has_Pending_Key => Self.Has_Pending_Key,
-         Pending_Key => Self.Pending_Key);
+        (Kind            => Array_Container,
+         Array_Value     => League.JSON.Arrays.Empty_JSON_Array,
+         Pending_Key     => League.Strings.Empty_Universal_String,
+         Has_Pending_Key => False);
    begin
       if Self.Has_Pending_Key then
+         Child.Pending_Key := Self.Pending_Key;
+         Child.Has_Pending_Key := True;
          Self.Pending_Key := League.Strings.Empty_Universal_String;
          Self.Has_Pending_Key := False;
       end if;
@@ -209,12 +211,7 @@ package body PB_Support.JSON is
 
    procedure Write_String (Self : in out JSON_Writer; Value : String) is
    begin
-      --  TODO: do it in a proper typed way.
-      if Value = "PB_NULL_VALUE" then
-         Push_Value (Self, League.JSON.Values.Null_JSON_Value);
-      else
-         Push_Value (Self, League.JSON.Values.To_JSON_Value (+Value));
-      end if;
+      Push_Value (Self, League.JSON.Values.To_JSON_Value (+Value));
    end Write_String;
 
    -----------------
