@@ -74,16 +74,20 @@ package PB_Support.JSON is
    function To_String (Self : JSON_Writer) return String;
    --  Extract written JSON as a String encoded in UTF-8
 
-
-   procedure Validate_Timestamp
-     (Seconds : Interfaces.Integer_64; Nanos : Interfaces.Integer_32);
+   procedure Write_Timestamp
+     (Self    : in out JSON_Writer;
+      Seconds : Interfaces.Integer_64;
+      Nanos   : Interfaces.Integer_32);
+   --  Write the Timestamp in the format required by Protobuf JSON output.
    --  Validate that the given seconds and nanos values are within the valid
    --  range for a Timestamp in Protobuf JSON format.
    --  Raises Constraint_Error if the values are out of range.
 
-
-   procedure Validate_Duration
-     (Seconds : Interfaces.Integer_64; Nanos : Interfaces.Integer_32);
+   procedure Write_Duration
+     (Self    : in out JSON_Writer;
+      Seconds : Interfaces.Integer_64;
+      Nanos   : Interfaces.Integer_32);
+   --  Write the duration in the format required by Protobuf JSON output.
    --  Validate that the given seconds and nanos values are within the valid
    --  range for a Duration in Protobuf JSON format.
    --  Raises Constraint_Error if the values are out of range.

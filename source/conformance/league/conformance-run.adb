@@ -69,13 +69,13 @@ procedure Conformance.Run is
          elsif Request.Requested_Output_Format /= Conformance.PROTOBUF
             and then Request.Requested_Output_Format /= Conformance.JSON
          then
-         Response.Variant :=
-           (Conformance.Skipped_Kind,
-            +"Unsupported output format:" &
-              Conformance.Wire_Format'Wide_Wide_Image
-                (Request.Requested_Output_Format));
-         return;
-      end if;
+            Response.Variant :=
+            (Conformance.Skipped_Kind,
+               +"Unsupported output format:" &
+               Conformance.Wire_Format'Wide_Wide_Image
+                  (Request.Requested_Output_Format));
+            return;
+         end if;
 
       Ada.Streams.Stream_Element_Array'Write
         (Input'Access,
