@@ -60,7 +60,10 @@ package PB_Support.JSON is
       (Self  : in out JSON_Writer;
        Value : Interfaces.Unsigned_64);
 
-   procedure Write_Float (Self : in out JSON_Writer; Value : Long_Float);
+   procedure Write_Float
+     (Self  : in out JSON_Writer;
+      Value : Interfaces.IEEE_Float_64);
+
    procedure Write_Boolean (Self : in out JSON_Writer; Value : Boolean);
    procedure Write_Null (Self : in out JSON_Writer);
 
@@ -70,6 +73,20 @@ package PB_Support.JSON is
 
    function To_String (Self : JSON_Writer) return String;
    --  Extract written JSON as a String encoded in UTF-8
+
+
+   procedure Validate_Timestamp
+     (Seconds : Interfaces.Integer_64; Nanos : Interfaces.Integer_32);
+   --  Validate that the given seconds and nanos values are within the valid
+   --  range for a Timestamp in Protobuf JSON format.
+   --  Raises Constraint_Error if the values are out of range.
+
+
+   procedure Validate_Duration
+     (Seconds : Interfaces.Integer_64; Nanos : Interfaces.Integer_32);
+   --  Validate that the given seconds and nanos values are within the valid
+   --  range for a Duration in Protobuf JSON format.
+   --  Raises Constraint_Error if the values are out of range.
 
 private
 

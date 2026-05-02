@@ -1,4 +1,3 @@
-with Ada.Long_Float_Text_IO;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
 
@@ -11,6 +10,9 @@ package body PB_Support.JSON is
    function "+" (Text : String)
       return League.Strings.Universal_String
             renames League.Strings.From_UTF_8_String;
+
+   package IEEE_Float_64_Text_IO is new Ada.Text_IO.Float_IO
+      (Interfaces.IEEE_Float_64);
 
    procedure Push_Value
      (Self  : in out JSON_Writer;
@@ -270,7 +272,11 @@ package body PB_Support.JSON is
    -- Write_Float --
    -----------------
 
-   procedure Write_Float (Self : in out JSON_Writer; Value : Long_Float) is
+   procedure Write_Float
+     (Self : in out JSON_Writer;
+      Value : Interfaces.IEEE_Float_64)
+   is
+      use type Interfaces.IEEE_Float_64;
    begin
       --  Protobuf JSON requires NaN and +/-Infinity to be serialized as strings.
       --  NaN is detected portably via IEEE‑754 semantics: (X /= X).
@@ -282,10 +288,10 @@ package body PB_Support.JSON is
       if Value /= Value then
          Push_Value (Self, League.JSON.Values.To_JSON_Value
                       (League.Strings.To_Universal_String("NaN")));
-      elsif Value > Long_Float'Last then
+      elsif Value > Interfaces.IEEE_Float_64'Last then
          Push_Value (Self, League.JSON.Values.To_JSON_Value
                       (League.Strings.To_Universal_String("Infinity")));
-      elsif Value < Long_Float'First then
+      elsif Value < Interfaces.IEEE_Float_64'First then
          Push_Value (Self, League.JSON.Values.To_JSON_Value
                       (League.Strings.To_Universal_String("-Infinity")));
       else
@@ -293,7 +299,7 @@ package body PB_Support.JSON is
             Float_Image : String (1 .. 40);
          begin
 
-            Ada.Long_Float_Text_IO.Put
+            IEEE_Float_64_Text_IO.Put
               (To => Float_Image, Item => Value, Aft => 16, Exp => 3);
 
             Push_Value
@@ -332,5 +338,51 @@ package body PB_Support.JSON is
    begin
       return To_Universal_String (Self).To_UTF_8_String;
    end To_String;
+
+   procedure Validate_Timestamp
+     (Seconds : Interfaces.Integer_64; Nanos : Interfaces.Integer_32)
+   is
+      use type Interfaces.Integer_64;
+      use type Interfaces.Integer_32;
+   begin
+      -- seconds range: 0001-01-01T00:00:00Z .. 9999-12-31T23:59:59Z
+      if Seconds not in -62135596800 .. 253402300799 then
+         raise Constraint_Error
+           with "google.protobuf.Timestamp.seconds out of range";
+      end if;
+
+      -- nanos range: [0 .. 999_999_999]
+      if Nanos not in 0 .. 999_999_999 then
+         raise Constraint_Error
+           with "google.protobuf.Timestamp.nanos out of range";
+      end if;
+   end Validate_Timestamp;
+
+   procedure Validate_Duration
+     (Seconds : Interfaces.Integer_64; Nanos : Interfaces.Integer_32)
+   is
+      use type Interfaces.Integer_64;
+      use type Interfaces.Integer_32;
+   begin
+      -- Seconds must be within +/-315,576,000,000 (about +/-10,000 years)
+      if Seconds not in -315_576_000_000 .. 315_576_000_000 then
+         raise Constraint_Error
+           with "google.protobuf.Duration.seconds out of range";
+      end if;
+
+      -- Nanos must be within +/-999,999,999
+      if Nanos not in -999_999_999 .. 999_999_999 then
+         raise Constraint_Error
+           with "google.protobuf.Duration.nanos out of range";
+      end if;
+
+      -- Sign coherence between seconds and nanos
+      if (Seconds > 0 and then Nanos < 0)
+        or else (Seconds < 0 and then Nanos > 0)
+      then
+         raise Constraint_Error
+           with "google.protobuf.Duration inconsistent seconds/nanos signs";
+      end if;
+   end Validate_Duration;
 
 end PB_Support.JSON;

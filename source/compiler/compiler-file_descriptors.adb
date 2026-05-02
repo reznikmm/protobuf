@@ -672,6 +672,110 @@ package body Compiler.File_Descriptors is
         (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
          Prefix : League.Strings.Universal_String);
 
+      procedure Generate_Field
+        (Indentation : League.Strings.Universal_String;
+         Field       : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+         Name        : League.Strings.Universal_String;
+         Acc         : League.Strings.Universal_String)
+      is
+         use all type Google.Protobuf.Descriptor.PB_Type;
+         Is_Vector : constant Boolean :=
+            Compiler.Field_Descriptors.Is_Repeated
+               (Field, Pkg, Name, Compiler.Context.Fake);
+         Is_Option : constant Compiler.Field_Descriptors.Option_Kind :=
+            Compiler.Field_Descriptors.Is_Optional (Field);
+         Is_Oneof  : constant Boolean :=
+            Compiler.Field_Descriptors.Is_One_Of (Field);
+         Is_Enum   : constant Boolean :=
+            Compiler.Field_Descriptors.Is_Enum (Field);
+         Is_Message : constant Boolean :=
+            Compiler.Field_Descriptors.Is_Message (Field);
+         Ada_Name : constant League.Strings.Universal_String :=
+            Compiler.Context.To_Ada_Name (Field.Name.Value);
+      begin
+         if Is_Message then
+            declare
+               Target : constant Compiler.Context.Named_Type :=
+                  Compiler.Context.Named_Types (Field.Type_Name.Value);
+            begin
+               if Target.Ada_Type.Package_Name = Pkg then
+                  S.Append
+                     (Indentation & "Write (Stream, " & Acc & ");" & LF);
+               else
+                  S.Append
+                     (Indentation & Target.Ada_Type.Package_Name & ".JSON.Write (Stream, " & Acc & ");" & LF);
+               end if;
+            end;
+         elsif Is_Enum then
+            S.Append
+               (Indentation & "Stream.Write_String (" & Acc &
+               "'Image);" & LF);
+         elsif Field.PB_Type.Is_Set then
+            case Field.PB_Type.Value is
+               when TYPE_BOOL =>
+                  S.Append
+                     (Indentation & "Stream.Write_Boolean (" &
+                     Acc & ");" & LF);
+               when TYPE_STRING =>
+                  if Compiler.Context.Runtime_Dep =
+                     Compiler.Runtime_League
+                  then
+                     S.Append
+                        (Indentation & "Stream.Write_String (" & Acc &
+                        ".To_UTF_8_String);" & LF);
+                  else
+                     S.Append
+                        (Indentation & "Stream.Write_String " &
+                        "(To_String (" & Acc & "));" & LF);
+                  end if;
+               when TYPE_FLOAT | TYPE_DOUBLE=>
+                  S.Append
+                     (Indentation &
+                      "--  Range check is suppressed so NaN and +/-Inf" & LF &
+                      Indentation &
+                      "--  are allowed and printed as required by Protobuf"
+                      & LF);
+                  S.Append
+                     (Indentation & "declare" & LF);
+                  S.Append
+                     (Indentation & "   pragma Suppress (Range_Check);" & LF);
+                  S.Append
+                     (Indentation & "begin" & LF);
+
+                  if Field.PB_Type.Value = TYPE_FLOAT then
+                     S.Append
+                        (Indentation & "   Stream.Write_Float " &
+                        "(Interfaces.IEEE_Float_64 (" & Acc & "));" & LF);
+                  else
+                     S.Append
+                        (Indentation & "   Stream.Write_Float " &
+                        "(" & Acc & ");" & LF);
+                  end if;
+                  S.Append
+                     (Indentation & "end;" & LF);
+               when TYPE_INT32 | TYPE_UINT32 | TYPE_SINT32 |
+                     TYPE_FIXED32 | TYPE_SFIXED32 =>
+                  S.Append
+                     (Indentation & "Stream.Write_Integer " &
+                     "(Long_Long_Integer (" & Acc & "));" & LF);
+               when TYPE_FIXED64 | TYPE_SFIXED64 | TYPE_SINT64 |
+                     TYPE_INT64 | TYPE_UINT64 =>
+                  --  64 bit types are quoted by default
+                  S.Append
+                     (Indentation & " Stream.Write_Integer" &
+                     " (" & Acc & ");" & LF);
+               when TYPE_BYTES =>
+                  S.Append
+                     (Indentation & "Stream.Write_Bytes " &
+                     "(" & Acc & ");" & LF);
+               when others =>
+                  S.Append
+                     (Indentation & "Stream.Write_Null;" & LF);
+            end case;
+         end if;
+
+      end Generate_Field;
+
       procedure Generate_Body
         (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
          Prefix : League.Strings.Universal_String)
@@ -689,6 +793,20 @@ package body Compiler.File_Descriptors is
               (+"     Value  : Standard." & Pkg & "." & Name & ") is" & LF);
             S.Append (+"   begin" & LF);
             S.Append (+"      Stream.Start_Object;" & LF);
+
+            --  Special handling for google.protobuf.Timestamp to reject invalid
+            --  values.
+            if Pkg & "." & Name = +"Google.Protobuf.Timestamp.Timestamp" then
+               S.Append
+                  (+"      PB_Support.JSON.Validate_Timestamp (Value.Seconds, Value.Nanos);" & LF);
+            end if;
+
+            --  Special handling for google.protobuf.Duration to reject invalid
+            --  values.
+            if Pkg & "." & Name = +"Google.Protobuf.Duration.Duration" then
+               S.Append
+                  (+"      PB_Support.JSON.Validate_Duration (Value.Seconds, Value.Nanos);" & LF);
+            end if;
 
             for K in 1 .. Msg.Field.Length loop
                declare
@@ -738,65 +856,7 @@ package body Compiler.File_Descriptors is
                            then +"Value." & Ada_Name & ".Get (J)"
                            else +"Value." & Ada_Name & " (J)");
                      begin
-                        if Is_Message then
-                           declare
-                              Target : constant Compiler.Context.Named_Type :=
-                                Compiler.Context.Named_Types (Field.Type_Name.Value);
-                           begin
-                              if Target.Ada_Type.Package_Name = Pkg then
-                                 S.Append
-                                   (+"            Write (Stream, " & Acc & ");" & LF);
-                              else
-                                 S.Append
-                                   (+"            " & Target.Ada_Type.Package_Name & ".JSON.Write (Stream, " & Acc & ");" & LF);
-                              end if;
-                           end;
-                        elsif Is_Enum then
-                           S.Append
-                             (+"            Stream.Write_String (" & Acc &
-                              "'Image);" & LF);
-                        elsif Field.PB_Type.Is_Set then
-                           case Field.PB_Type.Value is
-                              when TYPE_BOOL =>
-                                 S.Append
-                                   (+"            Stream.Write_Boolean (" &
-                                    Acc & ");" & LF);
-                              when TYPE_STRING =>
-                                 if Compiler.Context.Runtime_Dep =
-                                   Compiler.Runtime_League
-                                 then
-                                    S.Append
-                                      (+"            Stream.Write_String (" &
-                                       Acc & ".To_UTF_8_String);" & LF);
-                                 else
-                                    S.Append
-                                      (+"            Stream.Write_String " &
-                                       "(To_String (" & Acc & "));" & LF);
-                                 end if;
-                              when TYPE_DOUBLE | TYPE_FLOAT =>
-                                 S.Append
-                                   (+"            Stream.Write_Float " &
-                                    "(Long_Float (" & Acc & "));" & LF);
-                             when TYPE_INT32 | TYPE_UINT32 | TYPE_SINT32 |
-                                   TYPE_FIXED32 | TYPE_SFIXED32 =>
-                                 S.Append
-                                   (+"            Stream.Write_Integer " &
-                                    "(Long_Long_Integer (" & Acc & "));" & LF);
-                              when TYPE_FIXED64 | TYPE_SFIXED64 | TYPE_SINT64 |
-                                   TYPE_INT64 | TYPE_UINT64 =>
-                                 --  64 bit types are quoted by default
-                                 S.Append
-                                  (+"             Stream.Write_Integer" &
-                                    " (" & Acc & ");" & LF);
-                              when TYPE_BYTES =>
-                                 S.Append
-                                   (+"            Stream.Write_Bytes " &
-                                    "(" & Acc & ");" & LF);
-                              when others =>
-                                 S.Append
-                                   (+"            Stream.Write_Null;" & LF);
-                           end case;
-                        end if;
+                        Generate_Field (+"            ", Field, Name, Acc);
                      end;
 
                      S.Append (+"         end loop;" & LF);
@@ -829,66 +889,7 @@ package body Compiler.File_Descriptors is
                         S.Append
                           (+"         Stream.Write_Key (""" & Json_Key & """);" &
                            LF);
-
-                        if Is_Message then
-                           declare
-                              Target : constant Compiler.Context.Named_Type :=
-                                Compiler.Context.Named_Types (Field.Type_Name.Value);
-                           begin
-                              if Target.Ada_Type.Package_Name = Pkg then
-                                 S.Append
-                                   (+"         Write (Stream, " & Acc & ");" & LF);
-                              else
-                                 S.Append
-                                   (+"         " & Target.Ada_Type.Package_Name & ".JSON.Write (Stream, " & Acc & ");" & LF);
-                              end if;
-                           end;
-                        elsif Is_Enum then
-                           S.Append
-                             (+"         Stream.Write_String (" & Acc &
-                              "'Image);" & LF);
-                        elsif Field.PB_Type.Is_Set then
-                           case Field.PB_Type.Value is
-                              when TYPE_BOOL =>
-                                 S.Append
-                                   (+"         Stream.Write_Boolean (" &
-                                    Acc & ");" & LF);
-                              when TYPE_STRING =>
-                                 if Compiler.Context.Runtime_Dep =
-                                   Compiler.Runtime_League
-                                 then
-                                    S.Append
-                                      (+"         Stream.Write_String (" & Acc &
-                                       ".To_UTF_8_String);" & LF);
-                                 else
-                                    S.Append
-                                      (+"         Stream.Write_String " &
-                                       "(To_String (" & Acc & "));" & LF);
-                                 end if;
-                              when TYPE_DOUBLE | TYPE_FLOAT =>
-                                 S.Append
-                                   (+"         Stream.Write_Float " &
-                                    "(Long_Float (" & Acc & "));" & LF);
-                              when TYPE_INT32 | TYPE_UINT32 | TYPE_SINT32 |
-                                   TYPE_FIXED32 | TYPE_SFIXED32 =>
-                                 S.Append
-                                   (+"         Stream.Write_Integer " &
-                                    "(Long_Long_Integer (" & Acc & "));" & LF);
-                              when TYPE_FIXED64 | TYPE_SFIXED64 | TYPE_SINT64 |
-                                   TYPE_INT64 | TYPE_UINT64 =>
-                                 --  64 bit types are quoted by default
-                                 S.Append
-                                  (+"          Stream.Write_Integer" &
-                                    " (" & Acc & ");" & LF);
-                              when TYPE_BYTES =>
-                                 S.Append
-                                   (+"         Stream.Write_Bytes " &
-                                    "(" & Acc & ");" & LF);
-                              when others =>
-                                 S.Append
-                                   (+"         Stream.Write_Null;" & LF);
-                           end case;
-                        end if;
+                        Generate_Field (+"         ", Field, Name, Acc);
 
                         if Is_Option = Optional or else Is_Oneof then
                            S.Append (+"      end if;" & LF);
@@ -914,7 +915,7 @@ package body Compiler.File_Descriptors is
       if Compiler.Context.Runtime_Dep /= Compiler.Runtime_League then
          S.Append (+"with Ada.Strings.Unbounded;" & LF);
       end if;
-      
+
       for J in 1 .. Self.Dependency.Length loop
          declare
             Item : constant Google.Protobuf.Descriptor.File_Descriptor_Proto :=
@@ -923,7 +924,7 @@ package body Compiler.File_Descriptors is
             S.Append (+"with " & Package_Name (Item) & ".JSON;" & LF);
          end;
       end loop;
-      
+
       S.Append (LF);
       S.Append (+"package body " & Pkg & ".JSON is" & LF);
       S.Append (LF);
