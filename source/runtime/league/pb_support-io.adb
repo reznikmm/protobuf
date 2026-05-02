@@ -162,6 +162,10 @@ package body PB_Support.IO is
          end if;
       end Write_Option;
 
+      ------------------
+      -- Write_Packed --
+      ------------------
+
       procedure Write_Packed
         (Stream : in out Internal.Stream;
          Field  : Field_Number;
@@ -271,9 +275,9 @@ package body PB_Support.IO is
       end if;
    end Read_Array_Length;
 
-   ------------------
-   -- Read_Boolean --
-   ------------------
+   ----------
+   -- Read --
+   ----------
 
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -323,6 +327,10 @@ package body PB_Support.IO is
       end if;
    end Read_Fixed_Vector;
 
+   -----------------------
+   -- Read_Fixed_Vector --
+   -----------------------
+
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
@@ -350,6 +358,10 @@ package body PB_Support.IO is
          raise Constraint_Error with "Unexpected encoding";
       end if;
    end Read_Fixed_Vector;
+
+   -----------------------
+   -- Read_Fixed_Vector --
+   -----------------------
 
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -379,6 +391,10 @@ package body PB_Support.IO is
       end if;
    end Read_Fixed_Vector;
 
+   -----------------------
+   -- Read_Fixed_Vector --
+   -----------------------
+
    procedure Read_Fixed_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Encoding : Wire_Type;
@@ -407,9 +423,9 @@ package body PB_Support.IO is
       end if;
    end Read_Fixed_Vector;
 
-   -------------------------
+   -----------------
    -- Read_Vector --
-   -------------------------
+   -----------------
 
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -443,9 +459,9 @@ package body PB_Support.IO is
       end if;
    end Read_Vector;
 
-   ------------------------
-   -- Read_IEEE_Float_32 --
-   ------------------------
+   ----------
+   -- Read --
+   ----------
 
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -463,9 +479,9 @@ package body PB_Support.IO is
       end if;
    end Read;
 
-   ------------------------
-   -- Read_IEEE_Float_64 --
-   ------------------------
+   ----------
+   -- Read --
+   ----------
 
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -483,9 +499,9 @@ package body PB_Support.IO is
       end if;
    end Read;
 
-   -------------------------------
+   -----------------
    -- Read_Vector --
-   -------------------------------
+   -----------------
 
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -515,9 +531,9 @@ package body PB_Support.IO is
       end if;
    end Read_Vector;
 
-   -------------------------------
-   -- Read_IEEE_Float_32_Vector --
-   -------------------------------
+   -----------------
+   -- Read_Vector --
+   -----------------
 
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -566,9 +582,9 @@ package body PB_Support.IO is
       Value := Cast (Data);
    end Read_Varint;
 
-   ----------------------------
-   -- Read_Vector --
-   ----------------------------
+   ------------------------
+   -- Read_Varint_Vector --
+   ------------------------
 
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -612,6 +628,10 @@ package body PB_Support.IO is
          end;
       end if;
    end Read_Varint_Vector;
+
+   ------------------------
+   -- Read_Varint_Vector --
+   ------------------------
 
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -660,9 +680,9 @@ package body PB_Support.IO is
       end if;
    end Read_Varint_Vector;
 
-   ---------------------
-   -- Read_Integer_64 --
-   ---------------------
+   -----------------
+   -- Read_Varint --
+   -----------------
 
    procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -757,9 +777,9 @@ package body PB_Support.IO is
       return Ada.Streams.Stream_Element_Count (Result);
    end Read_Length;
 
-   --------------------------------
-   -- Read_Stream_Element_Vector --
-   --------------------------------
+   ----------
+   -- Read --
+   ----------
 
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -779,9 +799,9 @@ package body PB_Support.IO is
       end;
    end Read;
 
-   ---------------------------
-   -- Read_Universal_String --
-   ---------------------------
+   ----------
+   -- Read --
+   ----------
 
    procedure Read
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -797,9 +817,9 @@ package body PB_Support.IO is
       Value := Codec.Decode (Data);
    end Read;
 
-   ----------------------------------
+   -----------------
    -- Read_Vector --
-   ----------------------------------
+   -----------------
 
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -813,9 +833,9 @@ package body PB_Support.IO is
       Value.Append (Item);
    end Read_Vector;
 
-   ---------------------------------------
+   -----------------
    -- Read_Vector --
-   ---------------------------------------
+   -----------------
 
    procedure Read_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -829,9 +849,9 @@ package body PB_Support.IO is
       Value.Append (Item);
    end Read_Vector;
 
-   ----------------------
-   -- Read_Unsigned_32 --
-   ----------------------
+   -----------------
+   -- Read_Varint --
+   -----------------
 
    procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -870,9 +890,9 @@ package body PB_Support.IO is
       end if;
    end Read_Varint;
 
-   -----------------------------
-   -- Read_Vector --
-   -----------------------------
+   ------------------------
+   -- Read_Varint_Vector --
+   ------------------------
 
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -914,9 +934,9 @@ package body PB_Support.IO is
       end if;
    end Read_Varint_Vector;
 
-   -----------------------------
-   -- Read_Vector --
-   -----------------------------
+   ------------------------
+   -- Read_Varint_Vector --
+   ------------------------
 
    procedure Read_Varint_Vector
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -958,9 +978,9 @@ package body PB_Support.IO is
       end if;
    end Read_Varint_Vector;
 
-   ----------------------
-   -- Read_Unsigned_64 --
-   ----------------------
+   -----------------
+   -- Read_Varint --
+   -----------------
 
    procedure Read_Varint
      (Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -999,6 +1019,46 @@ package body PB_Support.IO is
       end if;
    end Read_Varint;
 
+   --------------------
+   -- Decoded_Zigzag --
+   --------------------
+
+   function Decoded_Zigzag
+     (Value : Interfaces.Unsigned_32) return Interfaces.Integer_32
+   with Inline
+   is
+      use type Interfaces.Unsigned_32;
+      Result_As_Unsigned : Interfaces.Unsigned_32 := Value;
+      Result             : Interfaces.Integer_32
+      with Address => Result_As_Unsigned'Address;
+   begin
+
+      Result_As_Unsigned :=
+        Interfaces.Shift_Right (Result_As_Unsigned, 1)
+        xor -(Result_As_Unsigned and 1);
+      return Result;
+   end Decoded_Zigzag;
+
+   --------------------
+   -- Decoded_Zigzag --
+   --------------------
+
+   function Decoded_Zigzag
+     (Value : Interfaces.Unsigned_64) return Interfaces.Integer_64
+   with Inline
+   is
+      use type Interfaces.Unsigned_64;
+      Result_As_Unsigned : Interfaces.Unsigned_64 := Value;
+      Result             : Interfaces.Integer_64
+      with Address => Result_As_Unsigned'Address;
+   begin
+
+      Result_As_Unsigned :=
+        Interfaces.Shift_Right (Result_As_Unsigned, 1)
+        xor -(Result_As_Unsigned and 1);
+      return Result;
+   end Decoded_Zigzag;
+
    -----------------
    -- Read_Zigzag --
    -----------------
@@ -1008,17 +1068,10 @@ package body PB_Support.IO is
       Encoding : Wire_Type;
       Value    : out Interfaces.Integer_32)
    is
-      use type Interfaces.Integer_32;
-      use type Interfaces.Unsigned_32;
-
       Temp : Interfaces.Unsigned_32;
    begin
       Read_Varint (Stream, Encoding, Temp);
-      Value := Interfaces.Integer_32 (Temp / 2);
-
-      if (Temp and 1) > 0 then
-         Value := -Value - 1;
-      end if;
+      Value := Decoded_Zigzag (Temp);
    end Read_Zigzag;
 
    -----------------
@@ -1030,17 +1083,10 @@ package body PB_Support.IO is
       Encoding : Wire_Type;
       Value    : out Interfaces.Integer_64)
    is
-      use type Interfaces.Integer_64;
-      use type Interfaces.Unsigned_64;
-
       Temp : Interfaces.Unsigned_64;
    begin
       Read_Varint (Stream, Encoding, Temp);     
-      Value := Interfaces.Integer_64 (Temp / 2);
-
-      if (Temp and 1) > 0 then
-         Value := -Value - 1;
-      end if;
+      Value := Decoded_Zigzag (Temp);
    end Read_Zigzag;
 
    ------------------------
@@ -1082,12 +1128,7 @@ package body PB_Support.IO is
                Shift := Shift + 7;
 
                if (J and 16#80#) = 0 then
-                  if (Item and 1) = 0 then
-                     Value.Append (Interfaces.Integer_32 (Item / 2));
-                  else
-                     Value.Append (-Interfaces.Integer_32 (Item / 2) - 1);
-                  end if;
-
+                  Value.Append (Decoded_Zigzag (Item));
                   Item := 0;
                   Shift := 0;
                end if;
@@ -1136,12 +1177,7 @@ package body PB_Support.IO is
                Shift := Shift + 7;
 
                if (J and 16#80#) = 0 then
-                  if (Item and 1) = 0 then
-                     Value.Append (Interfaces.Integer_64 (Item / 2));
-                  else
-                     Value.Append (-Interfaces.Integer_64 (Item / 2) - 1);
-                  end if;
-
+                  Value.Append (Decoded_Zigzag (Item));
                   Item := 0;
                   Shift := 0;
                end if;

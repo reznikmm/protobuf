@@ -967,28 +967,66 @@ package body PB_Support.Internal is
       end if;
    end Write_Packed;
 
+   --------------------
+   -- Encoded_Zigzag --
+   --------------------
+
+   function Encoded_Zigzag
+     (Value : Interfaces.Integer_32) return Interfaces.Unsigned_32
+   with Inline
+   is
+      use Interfaces;
+      Temp : Interfaces.Integer_32 := Value;
+      Value_As_Unsigned : Interfaces.Unsigned_32 with Address => Temp'Address;
+   begin
+      if Value < 0 then
+         return Shift_Left (Value_As_Unsigned, 1) xor Unsigned_32'Last;
+      else
+         return Shift_Left (Value_As_Unsigned, 1);
+      end if;
+   end Encoded_Zigzag;
+
+   --------------------
+   -- Encoded_Zigzag --
+   --------------------
+
+   function Encoded_Zigzag
+     (Value : Interfaces.Integer_64) return Interfaces.Unsigned_64
+   with Inline
+   is
+      use Interfaces;
+      Temp : Interfaces.Integer_64 := Value;
+      Value_As_Unsigned : Interfaces.Unsigned_64 with Address => Temp'Address;
+   begin
+      if Value < 0 then
+         return Shift_Left (Value_As_Unsigned, 1) xor Unsigned_64'Last;
+      else
+         return Shift_Left (Value_As_Unsigned, 1);
+      end if;
+   end Encoded_Zigzag;
+
+   ------------------
+   -- Write_Zigzag --
+   ------------------
+
    procedure Write_Zigzag
      (Self  : in out Stream;
       Value : Interfaces.Integer_32)
    is
-      use Interfaces;
-      Unsigned : constant Interfaces.Unsigned_32 :=
-        2 * Interfaces.Unsigned_32 (abs Value) +
-        Boolean'Pos (Value < 0);
    begin
-      Self.Write_Varint (Unsigned);
+      Self.Write_Varint (Encoded_Zigzag (Value));
    end Write_Zigzag;
+
+   ------------------
+   -- Write_Zigzag --
+   ------------------
 
    procedure Write_Zigzag
      (Self  : in out Stream;
       Value : Interfaces.Integer_64)
    is
-      use Interfaces;
-      Unsigned : constant Interfaces.Unsigned_64 :=
-        2 * Interfaces.Unsigned_64 (abs Value) +
-        Boolean'Pos (Value < 0);
    begin
-      Self.Write_Varint (Unsigned);
+      Self.Write_Varint (Encoded_Zigzag (Value));
    end Write_Zigzag;
 
    ------------------
@@ -1074,7 +1112,7 @@ package body PB_Support.Internal is
 
       for J in 1 .. Value.Length loop
          Length := Length +
-           Size (2 * Interfaces.Unsigned_32 (abs Value.Get (J)));
+           Size (Encoded_Zigzag (Value.Get (J)));
       end loop;
 
       Self.Write_Key ((Field, Length_Delimited));
@@ -1104,7 +1142,7 @@ package body PB_Support.Internal is
 
       for J in 1 .. Value.Length loop
          Length := Length +
-           Size (2 * Interfaces.Unsigned_64 (abs Value.Get (J)));
+           Size (Encoded_Zigzag (Value.Get (J)));
       end loop;
 
       Self.Write_Key ((Field, Length_Delimited));

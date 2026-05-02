@@ -437,6 +437,10 @@ package body PB_Support.JSON is
       end if;
    end Validate_Duration;
 
+   --------------------
+   -- Write_Duration --
+   --------------------
+
    procedure Write_Duration
      (Self    : in out JSON_Writer;
       Seconds : Interfaces.Integer_64;
