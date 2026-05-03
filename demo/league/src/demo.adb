@@ -17,7 +17,10 @@ procedure Demo is
       Writer : PB_Support.JSON.JSON_Writer;
    begin
       My_Format.Basics.JSON.Write (Writer, p);
-      Ada.Text_IO.Put_Line ("JSON Representation: " & PB_Support.JSON.To_String (Writer));
+      Ada.Wide_Wide_Text_IO.Put_Line
+        ("JSON Representation: "
+         &
+         PB_Support.JSON.To_Universal_String (Writer).To_Wide_Wide_String);
       Ada.Wide_Wide_Text_IO.Put_Line
          (To_Wide_Wide_String (p.Name) &
           ", " &
@@ -58,6 +61,7 @@ procedure Demo is
       use Ada.Streams.Stream_IO, League.Strings, My_Format.Basics;
       c : Crowd;
       f : File_Type;
+      Writer : PB_Support.JSON.JSON_Writer;
    begin
       Create (f, Out_File, db_name);
 
@@ -89,12 +93,19 @@ procedure Demo is
       Crowd'Write (Stream (f), c);
 
       Close (f);
+
+      My_Format.Basics.JSON.Write (Writer, c);
+      Ada.Wide_Wide_Text_IO.Put_Line
+        ("JSON Representation: "
+         & PB_Support.JSON.To_Universal_String (Writer).To_Wide_Wide_String);
+
    end Write_Crowd;
 
    procedure Read_Crowd (db_name : String) is
       use Ada.Streams.Stream_IO, My_Format.Basics;
       c : Crowd;
       f : File_Type;
+      Writer : PB_Support.JSON.JSON_Writer;
    begin
       Open (f, In_File, db_name);
       Crowd'Read (Stream (f), c);
@@ -114,6 +125,11 @@ procedure Demo is
       Ada.Text_IO.Put_Line ("Useless_Symbol 7 =" & c.Useless_Symbol_7'Image);
       Ada.Text_IO.Put_Line ("Useless_Symbol 8 =" & c.Useless_Symbol_8'Image);
 
+      My_Format.Basics.JSON.Write (Writer, c);
+      Ada.Wide_Wide_Text_IO.Put_Line
+        ("JSON Representation: "
+         & PB_Support.JSON.To_Universal_String (Writer).To_Wide_Wide_String);
+
    end Read_Crowd;
 
 begin
@@ -125,5 +141,3 @@ begin
   Write_Crowd ("crowd.pb");
   Read_Crowd  ("crowd.pb");
 end Demo;
-
-
