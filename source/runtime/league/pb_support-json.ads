@@ -31,7 +31,7 @@ package PB_Support.JSON is
      (Ignore_Unknown_Fields => False);
 
    --  Exceptions that can be raised during JSON processing
-   JSON_Parse_Error : exception;
+   JSON_Parse_Error  : exception;
    JSON_Format_Error : exception;
 
    type JSON_Writer is tagged private;
@@ -45,20 +45,20 @@ package PB_Support.JSON is
    procedure Write_Key (Self : in out JSON_Writer; Name : String);
    procedure Write_String (Self : in out JSON_Writer; Value : String);
    procedure Write_Bytes
-      (Self : in out JSON_Writer;
-       Value : League.Stream_Element_Vectors.Stream_Element_Vector);
+     (Self  : in out JSON_Writer;
+      Value : League.Stream_Element_Vectors.Stream_Element_Vector);
 
    procedure Write_Integer
-      (Self  : in out JSON_Writer;
-       Value : Long_Long_Integer);
+     (Self  : in out JSON_Writer;
+      Value : Long_Long_Integer);
 
    procedure Write_Integer
-      (Self  : in out JSON_Writer;
-       Value : Interfaces.Integer_64);
+     (Self  : in out JSON_Writer;
+      Value : Interfaces.Integer_64);
 
    procedure Write_Integer
-      (Self  : in out JSON_Writer;
-       Value : Interfaces.Unsigned_64);
+     (Self  : in out JSON_Writer;
+      Value : Interfaces.Unsigned_64);
 
    procedure Write_Float
      (Self  : in out JSON_Writer;
@@ -66,13 +66,6 @@ package PB_Support.JSON is
 
    procedure Write_Boolean (Self : in out JSON_Writer; Value : Boolean);
    procedure Write_Null (Self : in out JSON_Writer);
-
-    function To_Universal_String
-       (Self : JSON_Writer) return League.Strings.Universal_String;
-   --  Extract written JSON as a Universal_String
-
-   function To_String (Self : JSON_Writer) return String;
-   --  Extract written JSON as a String encoded in UTF-8
 
    procedure Write_Timestamp
      (Self    : in out JSON_Writer;
@@ -91,6 +84,13 @@ package PB_Support.JSON is
    --  Validate that the given seconds and nanos values are within the valid
    --  range for a Duration in Protobuf JSON format.
    --  Raises Constraint_Error if the values are out of range.
+
+   function To_Universal_String
+     (Self : JSON_Writer) return League.Strings.Universal_String;
+   --  Extract written JSON as a Universal_String
+
+   function To_String (Self : JSON_Writer) return String;
+   --  Extract written JSON as a String encoded in UTF-8
 
 private
 
