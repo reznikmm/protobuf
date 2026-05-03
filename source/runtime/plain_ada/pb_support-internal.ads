@@ -23,7 +23,6 @@
 --  This is internal unit, don't use it in an application.
 
 with Ada.Streams;
-with Ada.Containers.Indefinite_Holders;
 with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;
 with Interfaces;

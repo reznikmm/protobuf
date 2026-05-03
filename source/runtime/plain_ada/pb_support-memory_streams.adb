@@ -32,7 +32,8 @@ package body PB_Support.Memory_Streams is
         Ada.Streams.Stream_Element_Count'Min (Item'Length, Available);
    begin
       for J in 1 .. Count loop
-         Item (Item'First + J - 1) := Self.Data.Element (Positive (Self.Read + J));
+         Item (Item'First + J - 1) := Self.Data.Element
+           (Positive (Self.Read + J));
       end loop;
       Self.Read := Self.Read + Count;
       Last := Item'First + Count - 1;

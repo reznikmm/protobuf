@@ -700,9 +700,9 @@ package body PB_Support.IO is
       end if;
 
       Item := Data (1);
-      
+
       declare
-         Wire : Natural := Natural (Item and 7);
+         Wire : constant Natural := Natural (Item and 7);
       begin
          if Wire = 6 or else Wire = 7 then
             raise Constraint_Error with "Unexpected wire encoding in tag";
@@ -716,11 +716,11 @@ package body PB_Support.IO is
       while Item >= 16#80# loop
          Ada.Streams.Stream_Element'Read (Stream, Item);
          Count := Count + 1;
-         
+
          if Count > 5 then
             raise Constraint_Error with "overlong tag (more than 5 bytes)";
          end if;
-         
+
          if Count = 5 and then Item > 16#0F# then
             raise Constraint_Error with "overlong tag (more than 5 bytes)";
          end if;
@@ -854,7 +854,7 @@ package body PB_Support.IO is
             while Data >= 16#80# loop
                Ada.Streams.Stream_Element'Read (Stream, Data);
                Count := Count + 1;
-               
+
                Check_Varint_Length (Count, Data);
 
                Value := Value or Interfaces.Shift_Left
@@ -983,7 +983,7 @@ package body PB_Support.IO is
             while Data >= 16#80# loop
                Ada.Streams.Stream_Element'Read (Stream, Data);
                Count := Count + 1;
-               
+
                Check_Varint_Length (Count, Data);
 
                Value := Value or Interfaces.Shift_Left

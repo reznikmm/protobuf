@@ -368,7 +368,8 @@ package body PB_Support.Internal is
                --  This loop is probably performance-challenged because
                --  of the call to Replace_Element for each iteration...
                Data.Replace_Element
-                  (I, Character'Pos (Ada.Strings.Unbounded.Element (Value, Integer (I))));
+                  (I, Character'Pos (Ada.Strings.Unbounded.Element
+                    (Value, Integer (I))));
             end loop;
          end if;
          Self.Write (Data);
@@ -428,7 +429,8 @@ package body PB_Support.Internal is
       Self.Write (Ada.Streams.Stream_Element_Count (Value.Length));
 
       if Self.Riffling then
-         Self.Written := Self.Written + Ada.Streams.Stream_Element_Count (Value.Length);
+         Self.Written := Self.Written +
+           Ada.Streams.Stream_Element_Count (Value.Length);
       else
          declare
             A : Ada.Streams.Stream_Element_Array

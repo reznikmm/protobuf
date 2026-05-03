@@ -861,17 +861,17 @@ package body Compiler.File_Descriptors is
                      use all type Google.Protobuf.Descriptor.PB_Type;
                      use all type Compiler.Field_Descriptors.Option_Kind;
                      Field : constant Google.Protobuf.Descriptor
-                     .Field_Descriptor_Proto := Msg.Field (K);
+                        .Field_Descriptor_Proto := Msg.Field (K);
                      F_Name : constant League.Strings.Universal_String :=
-                     Field.Name.Value;
+                        Field.Name.Value;
                      Ada_Name : constant League.Strings.Universal_String :=
-                     Compiler.Context.To_Ada_Name (Field.Name.Value);
+                        Compiler.Context.To_Ada_Name (Field.Name.Value);
                      Json_Key : constant League.Strings.Universal_String :=
-                     (if Field.Json_Name.Is_Set
-                        then Field.Json_Name.Value else F_Name);
+                        (if Field.Json_Name.Is_Set
+                           then Field.Json_Name.Value else F_Name);
                      Is_Vector : constant Boolean :=
-                     Compiler.Field_Descriptors.Is_Repeated
-                        (Field, Pkg, Name, Compiler.Context.Fake);
+                       Compiler.Field_Descriptors.Is_Repeated
+                         (Field, Pkg, Name, Compiler.Context.Fake);
                      Is_JSON_Array : constant Boolean :=
                        Field.Label.Is_Set
                        and then Field.Label.Value =
@@ -880,9 +880,9 @@ package body Compiler.File_Descriptors is
                        constant Compiler.Field_Descriptors.Option_Kind :=
                          Compiler.Field_Descriptors.Is_Optional (Field);
                      Is_Oneof  : constant Boolean :=
-                     Compiler.Field_Descriptors.Is_One_Of (Field);
+                        Compiler.Field_Descriptors.Is_One_Of (Field);
                      Is_Message : constant Boolean :=
-                     Compiler.Field_Descriptors.Is_Message (Field);
+                        Compiler.Field_Descriptors.Is_Message (Field);
                   begin
                      S.Append (+"      --  " & F_Name & LF);
                      if Is_Vector then

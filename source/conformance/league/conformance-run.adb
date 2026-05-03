@@ -59,23 +59,23 @@ procedure Conformance.Run is
       Output : aliased PB_Support.Memory_Streams.Memory_Stream;
       Input  : aliased PB_Support.Memory_Streams.Memory_Stream;
    begin
-         if Request.Variant.Payload /= Conformance.Protobuf_Payload_Kind then
-             Response.Variant :=
-                (Conformance.Skipped_Kind,
-                  +"Unsupported payload:" &
-                     Conformance.Conformance_Request_Variant_Kind'Wide_Wide_Image
-                        (Request.Variant.Payload));
-             return;
-         elsif Request.Requested_Output_Format /= Conformance.PROTOBUF
-            and then Request.Requested_Output_Format /= Conformance.JSON
-         then
-            Response.Variant :=
-            (Conformance.Skipped_Kind,
-               +"Unsupported output format:" &
-               Conformance.Wire_Format'Wide_Wide_Image
-                  (Request.Requested_Output_Format));
-            return;
-         end if;
+      if Request.Variant.Payload /= Conformance.Protobuf_Payload_Kind then
+         Response.Variant :=
+           (Conformance.Skipped_Kind,
+            +"Unsupported payload:"
+            & Conformance.Conformance_Request_Variant_Kind'Wide_Wide_Image
+                (Request.Variant.Payload));
+         return;
+      elsif Request.Requested_Output_Format /= Conformance.PROTOBUF
+        and then Request.Requested_Output_Format /= Conformance.JSON
+      then
+         Response.Variant :=
+           (Conformance.Skipped_Kind,
+            +"Unsupported output format:"
+            & Conformance.Wire_Format'Wide_Wide_Image
+                (Request.Requested_Output_Format));
+         return;
+      end if;
 
       Ada.Streams.Stream_Element_Array'Write
         (Input'Access,
