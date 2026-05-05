@@ -618,49 +618,73 @@ package body Compiler.File_Descriptors is
         +("" & Ada.Characters.Wide_Wide_Latin_1.LF);
       Pkg : constant League.Strings.Universal_String := Package_Name (Self);
       Prefix : constant League.Strings.Universal_String := Get_Prefix (Self);
-      S   : League.Strings.Universal_String;
 
-      procedure Generate_Spec
-        (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
-         Prefix : League.Strings.Universal_String);
-
-      procedure Generate_Spec
+      function Generate_Spec
         (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
          Prefix : League.Strings.Universal_String)
+         return Ada_Pretty.Node_Access;
+
+      function Generate_Spec
+        (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
+         Prefix : League.Strings.Universal_String)
+         return Ada_Pretty.Node_Access
       is
          Key : constant League.Strings.Universal_String :=
            Compiler.Context.Join (Prefix, Msg.Name);
          Name : constant League.Strings.Universal_String :=
            Compiler.Context.Named_Types (Key).Ada_Type.Type_Name;
+         Result : Ada_Pretty.Node_Access := null;
+         Nested : Ada_Pretty.Node_Access := null;
       begin
          if not Compiler.Context.Named_Types (Key).Is_Enumeration then
-            S.Append (+"   procedure Write" & LF);
-            S.Append
-              (+"    (Stream : in out PB_Support.JSON.JSON_Writer;" & LF);
-            S.Append
-              (+"     Value  : Standard." & Pkg & "." & Name & ");" & LF);
-            S.Append (LF);
+            Result := F.New_Subprogram_Declaration
+              (F.New_Subprogram_Specification
+                 (Name       => F.New_Name (+"Write"),
+                  Parameters => F.New_List
+                    (F.New_Parameter
+                       (Name            => F.New_Name (+"Stream"),
+                        Type_Definition => F.New_Selected_Name
+                          (+"PB_Support.JSON.JSON_Writer"),
+                        Is_In           => True,
+                        Is_Out          => True),
+                     F.New_Parameter
+                       (Name            => F.New_Name (+"Value"),
+                        Type_Definition => F.New_Selected_Name
+                          (+"Standard." & Pkg & "." & Name)))));
          end if;
 
          for J in 1 .. Msg.Nested_Type.Length loop
-            Generate_Spec (Msg.Nested_Type (J), Key);
+            Nested := Generate_Spec (Msg.Nested_Type (J), Key);
+            if Nested /= null then
+               Result := (if Result = null then Nested
+                          else F.New_List (Result, Nested));
+            end if;
          end loop;
+         return Result;
       end Generate_Spec;
 
+      Specs : Ada_Pretty.Node_Access := null;
+      Nested : Ada_Pretty.Node_Access := null;
    begin
-      S.Append (Header_Comment (Self, Request));
-      S.Append (LF);
-      S.Append (+"with PB_Support.JSON;" & LF);
-      S.Append (LF);
-      S.Append (+"package " & Pkg & ".JSON is" & LF);
-      S.Append (LF);
-
       for J in 1 .. Self.Message_Type.Length loop
-         Generate_Spec (Self.Message_Type (J), Prefix);
+         Nested := Generate_Spec (Self.Message_Type (J), Prefix);
+         if Nested /= null then
+            Specs := (if Specs = null then Nested
+                      else F.New_List (Specs, Nested));
+         end if;
       end loop;
 
-      S.Append (+"end " & Pkg & ".JSON;" & LF);
-      return S;
+      declare
+         Unit : constant Ada_Pretty.Node_Access :=
+           F.New_Compilation_Unit
+             (Root    => F.New_Package
+                (Name    => F.New_Name (Pkg & ".JSON"),
+                 Public_Part => Specs),
+              Clauses => F.New_With (F.New_Name (+"PB_Support.JSON")));
+      begin
+         return Header_Comment (Self, Request) & LF &
+           F.To_Text (Unit).Join (LF) & LF;
+      end;
    end JSON_Specification_Text;
 
    function JSON_Body_Text
@@ -673,16 +697,18 @@ package body Compiler.File_Descriptors is
         +("" & Ada.Characters.Wide_Wide_Latin_1.LF);
       Pkg : constant League.Strings.Universal_String := Package_Name (Self);
       Prefix : constant League.Strings.Universal_String := Get_Prefix (Self);
-      S   : League.Strings.Universal_String;
 
-      procedure Generate_Body
+      function Generate_Body
         (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
-         Prefix : League.Strings.Universal_String);
+         Prefix : League.Strings.Universal_String) return Ada_Pretty.Node_Access;
 
-      procedure Generate_Field
-        (Indentation : League.Strings.Universal_String;
-         Field       : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-         Acc         : League.Strings.Universal_String)
+      function Generate_Field
+        (Field       : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+         Acc         : League.Strings.Universal_String) return Ada_Pretty.Node_Access;
+
+      function Generate_Field
+        (Field       : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+         Acc         : League.Strings.Universal_String) return Ada_Pretty.Node_Access
       is
          use all type Google.Protobuf.Descriptor.PB_Type;
          Is_Enum    : constant Boolean :=
@@ -690,171 +716,95 @@ package body Compiler.File_Descriptors is
          Is_Message : constant Boolean :=
            Compiler.Field_Descriptors.Is_Message (Field);
       begin
-
          if Is_Message then
             declare
                Target : constant Compiler.Context.Named_Type :=
                  Compiler.Context.Named_Types (Field.Type_Name.Value);
             begin
                if Target.Ada_Type.Package_Name = Pkg then
-                  S.Append
-                     (Indentation & "Write (Stream, " & Acc & ");" & LF);
+                  return F.New_Statement (F.New_Apply (F.New_Name (+"Write"), F.New_List (F.New_Name (+"Stream"), F.New_Selected_Name (Acc))));
                else
-                  S.Append
-                     (Indentation & Target.Ada_Type.Package_Name &
-                      ".JSON.Write (Stream, " & Acc & ");" & LF);
+                  return F.New_Statement (F.New_Apply (F.New_Selected_Name (Target.Ada_Type.Package_Name & ".JSON.Write"), F.New_List (F.New_Name (+"Stream"), F.New_Selected_Name (Acc))));
                end if;
             end;
          elsif Is_Enum then
             if Field.Type_Name.Is_Set
               and then Field.Type_Name.Value = +".google.protobuf.NullValue"
             then
-               S.Append (Indentation & "Stream.Write_Null;" & LF);
+               return F.New_Statement (F.New_Selected_Name (+"Stream.Write_Null"));
             else
-               S.Append
-                 (Indentation
-                  & "Stream.Write_String ("
-                  & Acc
-                  & "'Image);"
-                  & LF);
+               return F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_String"), F.New_Selected_Name (Acc & "'Image")));
             end if;
          elsif Field.PB_Type.Is_Set then
             case Field.PB_Type.Value is
                when TYPE_BOOL                =>
-                  S.Append
-                    (Indentation & "Stream.Write_Boolean (" & Acc & ");" & LF);
+                  return F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_Boolean"), F.New_Selected_Name (Acc)));
 
                when TYPE_STRING              =>
                   if Compiler.Context.Runtime_Dep = Compiler.Runtime_League
                   then
-                     S.Append
-                       (Indentation
-                        & "Stream.Write_String ("
-                        & Acc
-                        & ".To_UTF_8_String);"
-                        & LF);
+                     return F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_String"), F.New_Selected_Name (Acc & ".To_UTF_8_String")));
                   else
-                     S.Append
-                       (Indentation
-                        & "Stream.Write_String "
-                        & "(To_String ("
-                        & Acc
-                        & "));"
-                        & LF);
+                     return F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_String"), F.New_Apply (F.New_Name (+"To_String"), F.New_Selected_Name (Acc))));
                   end if;
 
                when TYPE_FLOAT | TYPE_DOUBLE =>
-                  S.Append
-                    (Indentation
-                     & "--  Range check is suppressed so NaN and +/-Inf"
-                     & LF
-                     & Indentation
-                     & "--  are allowed and printed as required by Protobuf"
-                     & LF);
-                  S.Append (Indentation & "declare" & LF);
-                  S.Append
-                    (Indentation & "   pragma Suppress (Range_Check);" & LF);
-                  S.Append (Indentation & "begin" & LF);
-
-                  if Field.PB_Type.Value = TYPE_FLOAT then
-                     S.Append
-                       (Indentation
-                        & "   Stream.Write_Float "
-                        & "(Interfaces.IEEE_Float_64 ("
-                        & Acc
-                        & "));"
-                        & LF);
-                  else
-                     S.Append
-                       (Indentation
-                        & "   Stream.Write_Float "
-                        & "("
-                        & Acc
-                        & ");"
-                        & LF);
-                  end if;
-                  S.Append (Indentation & "end;" & LF);
+                  declare
+                     Stmt : Ada_Pretty.Node_Access;
+                  begin
+                     if Field.PB_Type.Value = TYPE_FLOAT then
+                        Stmt := F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_Float"), F.New_Apply (F.New_Name (+"Interfaces.IEEE_Float_64"), F.New_Selected_Name (Acc))));
+                     else
+                        Stmt := F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_Float"), F.New_Selected_Name (Acc)));
+                     end if;
+                     return F.New_Block (
+                        Statements => Stmt,
+                        Declarations => F.New_Pragma (F.New_Name (+"Suppress"), F.New_Name (+"Range_Check")));
+                  end;
 
                when TYPE_INT32
                   | TYPE_UINT32
                   | TYPE_SINT32
                   | TYPE_FIXED32
                   | TYPE_SFIXED32            =>
-                  S.Append
-                    (Indentation
-                     & "Stream.Write_Integer "
-                     & "(Long_Long_Integer ("
-                     & Acc
-                     & "));"
-                     & LF);
+                  return F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_Integer"), F.New_Apply (F.New_Name (+"Long_Long_Integer"), F.New_Selected_Name (Acc))));
 
                when TYPE_FIXED64
                   | TYPE_SFIXED64
                   | TYPE_SINT64
                   | TYPE_INT64
                   | TYPE_UINT64              =>
-                  --  64 bit types are quoted by default
-                  S.Append
-                    (Indentation
-                     & " Stream.Write_Integer"
-                     & " ("
-                     & Acc
-                     & ");"
-                     & LF);
+                  return F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_Integer"), F.New_Selected_Name (Acc)));
 
                when TYPE_BYTES               =>
-                  S.Append
-                    (Indentation
-                     & "Stream.Write_Bytes "
-                     & "("
-                     & Acc
-                     & ");"
-                     & LF);
+                  return F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_Bytes"), F.New_Selected_Name (Acc)));
 
                when others                   =>
-                  S.Append (Indentation & "Stream.Write_Null;" & LF);
+                  return F.New_Statement (F.New_Selected_Name (+"Stream.Write_Null"));
             end case;
          end if;
-
+         return null;
       end Generate_Field;
 
-      procedure Generate_Body
+      function Generate_Body
         (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
-         Prefix : League.Strings.Universal_String)
+         Prefix : League.Strings.Universal_String) return Ada_Pretty.Node_Access
       is
          use type Google.Protobuf.Descriptor.Label;
          Key : constant League.Strings.Universal_String :=
            Compiler.Context.Join (Prefix, Msg.Name);
          Name : constant League.Strings.Universal_String :=
            Compiler.Context.Named_Types (Key).Ada_Type.Type_Name;
+         Result : Ada_Pretty.Node_Access := null;
+         Stmts  : Ada_Pretty.Node_Access := null;
       begin
          if not Compiler.Context.Named_Types (Key).Is_Enumeration then
-            S.Append (+"   procedure Write" & LF);
-            S.Append
-              (+"    (Stream : in out PB_Support.JSON.JSON_Writer;" & LF);
-            S.Append
-              (+"     Value  : Standard." & Pkg & "." & Name & ") is" & LF);
-            S.Append (+"   begin" & LF);
-
-
-            --  Special handling for google.protobuf.Timestamp to reject
-            --  invalid values and output in human-readable format.
             if Pkg & "." & Name = +"Google.Protobuf.Timestamp.Timestamp" then
-               S.Append
-                 (+"      PB_Support.JSON.Write_Timestamp"
-                  & " (Stream, Value.Seconds, Value.Nanos);"
-                  & LF);
-
-            --  Special handling for google.protobuf.Duration to reject invalid
-            --  values and output in human-readable format.
+               Stmts := F.New_Statement (F.New_Apply (F.New_Selected_Name (+"PB_Support.JSON.Write_Timestamp"), F.New_List (F.New_List (F.New_Name (+"Stream"), F.New_Selected_Name (+"Value.Seconds")), F.New_Selected_Name (+"Value.Nanos"))));
             elsif Pkg & "." & Name = +"Google.Protobuf.Duration.Duration" then
-               S.Append
-                 (+"      PB_Support.JSON.Write_Duration"
-                  & " (Stream, Value.Seconds, Value.Nanos);"
-                  & LF);
+               Stmts := F.New_Statement (F.New_Apply (F.New_Selected_Name (+"PB_Support.JSON.Write_Duration"), F.New_List (F.New_List (F.New_Name (+"Stream"), F.New_Selected_Name (+"Value.Seconds")), F.New_Selected_Name (+"Value.Nanos"))));
             else
-               S.Append (+"      Stream.Start_Object;" & LF);
-
+               Stmts := F.New_Statement (F.New_Selected_Name (+"Stream.Start_Object"));
 
                for K in 1 .. Msg.Field.Length loop
                   declare
@@ -883,27 +833,13 @@ package body Compiler.File_Descriptors is
                         Compiler.Field_Descriptors.Is_One_Of (Field);
                      Is_Message : constant Boolean :=
                         Compiler.Field_Descriptors.Is_Message (Field);
+                     Field_Stmts : Ada_Pretty.Node_Access := null;
                   begin
-                     S.Append (+"      --  " & F_Name & LF);
                      if Is_Vector then
-                        S.Append
-                          (+"      if Value."
-                           & Ada_Name
-                           & ".Length > 0 then"
-                           & LF);
-                        S.Append
-                          (+"         Stream.Write_Key ("""
-                           & Json_Key
-                           & """);"
-                           & LF);
+                        Field_Stmts := F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_Key"), F.New_String_Literal (Json_Key)));
                         if Is_JSON_Array then
-                           S.Append (+"         Stream.Start_Array;" & LF);
+                           Field_Stmts := F.New_List (Field_Stmts, F.New_Statement (F.New_Selected_Name (+"Stream.Start_Array")));
                         end if;
-                        S.Append
-                          (+"         for J in 1 .. Value."
-                           & Ada_Name
-                           & ".Length loop"
-                           & LF);
 
                         declare
                            Acc : constant League.Strings.Universal_String :=
@@ -915,15 +851,27 @@ package body Compiler.File_Descriptors is
                                     and then Field.PB_Type.Value = TYPE_STRING)
                               then +"Value." & Ada_Name & ".Get (J)"
                               else +"Value." & Ada_Name & " (J)");
+                           Loop_Body : constant Ada_Pretty.Node_Access :=
+                             Generate_Field (Field, Acc);
                         begin
-                           Generate_Field (+"            ", Field, Acc);
+                           declare
+                               Iter : constant Ada_Pretty.Node_Access :=
+                                 F.New_List (F.New_Literal (1), F.New_Infix (+"..", F.New_Selected_Name (+"Value." & Ada_Name & ".Length")));
+                           begin
+                               Field_Stmts := F.New_List (Field_Stmts, F.New_For (
+                                 F.New_Name (+"J"),
+                                 Iter,
+                                 Loop_Body));
+                           end;
                         end;
 
-                        S.Append (+"         end loop;" & LF);
                         if Is_JSON_Array then
-                           S.Append (+"         Stream.End_Array;" & LF);
+                           Field_Stmts := F.New_List (Field_Stmts, F.New_Statement (F.New_Selected_Name (+"Stream.End_Array")));
                         end if;
-                        S.Append (+"      end if;" & LF);
+                        
+                        Stmts := F.New_List (Stmts, F.New_If (
+                          F.New_List (F.New_Selected_Name (+"Value." & Ada_Name & ".Length"), F.New_Infix (+">", F.New_Literal (0))),
+                          Field_Stmts));
                      else
                         declare
                            Acc : League.Strings.Universal_String :=
@@ -931,6 +879,8 @@ package body Compiler.File_Descriptors is
                               then +"Value.Variant." & Ada_Name
                               else +"Value." & Ada_Name);
                         begin
+                           Field_Stmts := F.New_Statement (F.New_Apply (F.New_Selected_Name (+"Stream.Write_Key"), F.New_String_Literal (Json_Key)));
+                           
                            if Is_Oneof then
                               declare
                                  Selector :
@@ -940,76 +890,130 @@ package body Compiler.File_Descriptors is
                                           (Natural (Field.Oneof_Index.Value)
                                            + 1).Name.Value);
                               begin
-                                 S.Append
-                                 (+"      if Value.Variant."
-                                    & Selector
-                                    & " = "
-                                    & Ada_Name
-                                    & "_Kind then"
-                                    & LF);
+                                 Field_Stmts := F.New_List (Field_Stmts, Generate_Field (Field, Acc));
+                                 Stmts := F.New_List (Stmts, F.New_If (
+                                   F.New_List (F.New_Selected_Name (+"Value.Variant." & Selector), F.New_Infix (+"=", F.New_Name (Ada_Name & "_Kind"))),
+                                   Field_Stmts));
                               end;
                            elsif Is_Option = Optional then
-                              S.Append
-                                (+"      if " & Acc & ".Is_Set then" & LF);
-                              Acc.Append (+".Value");
-                           end if;
-
-                           S.Append
-                           (+"         Stream.Write_Key ("""
-                              & Json_Key
-                              & """);"
-                              & LF);
-                           Generate_Field (+"         ", Field, Acc);
-
-                           if Is_Option = Optional or else Is_Oneof then
-                              S.Append (+"      end if;" & LF);
+                              declare
+                                 Cond : constant Ada_Pretty.Node_Access := F.New_Selected_Name (Acc & ".Is_Set");
+                              begin
+                                 Acc.Append (+".Value");
+                                 Field_Stmts := F.New_List (Field_Stmts, Generate_Field (Field, Acc));
+                                 Stmts := F.New_List (Stmts, F.New_If (Cond, Field_Stmts));
+                              end;
+                           else
+                              Field_Stmts := F.New_List (Field_Stmts, Generate_Field (Field, Acc));
+                              Stmts := F.New_List (Stmts, Field_Stmts);
                            end if;
                         end;
                      end if;
                   end;
                end loop;
 
-               S.Append (+"      Stream.End_Object;" & LF);
+               Stmts := F.New_List (Stmts, F.New_Statement (F.New_Selected_Name (+"Stream.End_Object")));
             end if;
-            S.Append (+"   end Write;" & LF);
-            S.Append (LF);
+
+            Result := F.New_Subprogram_Body
+              (Specification =>
+                 F.New_Subprogram_Specification
+                   (Name       => F.New_Name (+"Write"),
+                    Parameters => F.New_List
+                      (F.New_Parameter
+                         (Name            => F.New_Name (+"Stream"),
+                          Type_Definition => F.New_Selected_Name (+"PB_Support.JSON.JSON_Writer"),
+                          Is_In           => True,
+                          Is_Out          => True),
+                       F.New_Parameter
+                         (Name            => F.New_Name (+"Value"),
+                          Type_Definition => F.New_Selected_Name
+                            (+"Standard." & Pkg & "." & Name)))),
+               Statements    => Stmts);
          end if;
 
          for J in 1 .. Msg.Nested_Type.Length loop
-            Generate_Body (Msg.Nested_Type (J), Key);
+            declare
+               Nested : constant Ada_Pretty.Node_Access := Generate_Body (Msg.Nested_Type (J), Key);
+            begin
+               if Nested /= null then
+                  Result := (if Result = null then Nested else F.New_List (Result, Nested));
+               end if;
+            end;
          end loop;
+         return Result;
       end Generate_Body;
 
+      Body_Stmts : Ada_Pretty.Node_Access := null;
+      Unit       : Ada_Pretty.Node_Access;
    begin
-      S.Append (Header_Comment (Self, Request));
-      S.Append (LF);
-      if Compiler.Context.Runtime_Dep /= Compiler.Runtime_League then
-         S.Append (+"with Ada.Strings.Unbounded;" & LF);
-      end if;
-
-      for J in 1 .. Self.Dependency.Length loop
+      for J in 1 .. Self.Message_Type.Length loop
          declare
-            Item : constant Google.Protobuf.Descriptor.File_Descriptor_Proto :=
-              Compiler.Context.Get_File (Request, Self.Dependency.Element (J));
+            Nested : constant Ada_Pretty.Node_Access := Generate_Body (Self.Message_Type (J), Prefix);
          begin
-            S.Append (+"with " & Package_Name (Item) & ".JSON;" & LF);
+            if Nested /= null then
+               Body_Stmts := (if Body_Stmts = null then Nested else F.New_List (Body_Stmts, Nested));
+            end if;
          end;
       end loop;
 
-      S.Append (LF);
-      S.Append (+"package body " & Pkg & ".JSON is" & LF);
-      S.Append (LF);
-      if Compiler.Context.Runtime_Dep /= Compiler.Runtime_League then
-         S.Append (+"   use Ada.Strings.Unbounded;" & LF);
-         S.Append (LF);
-      end if;
+      declare
+         Clauses : Ada_Pretty.Node_Access := null;
+      begin
+         for J in 1 .. Natural (Self.Dependency.Length) loop
+            declare
+               Item : constant Google.Protobuf.Descriptor.File_Descriptor_Proto :=
+                 Compiler.Context.Get_File (Request, Self.Dependency.Element (J));
+               Name : constant League.Strings.Universal_String :=
+                 Package_Name (Item) & ".JSON";
+               Clause : constant Ada_Pretty.Node_Access :=
+                 F.New_With (F.New_Name (Name));
+            begin
+               if Clauses = null then
+                  Clauses := Clause;
+               else
+                  Clauses := F.New_List (Clauses, Clause);
+               end if;
+            end;
+         end loop;
 
-      for J in 1 .. Self.Message_Type.Length loop
-         Generate_Body (Self.Message_Type (J), Prefix);
-      end loop;
+         null;
 
-      S.Append (+"end " & Pkg & ".JSON;" & LF);
-      return S;
+         -- Let's put the use clause as the first statement or declarative item in the package body?
+         -- No, we just need `use Ada.Strings.Unbounded;` if Runtime_Dep /= Runtime_League.
+         -- Ada_Pretty package body doesn't have a declarative part directly if `List` is just statements.
+         -- Actually wait: Ada package bodies have declarative items. In Ada_Pretty, `New_Package_Body` takes a `List` which can include `F.New_Use(F.New_Name(+"Ada.Strings.Unbounded"))`?
+         
+         declare
+             New_Body : Ada_Pretty.Node_Access := Body_Stmts;
+         begin
+             if Compiler.Context.Runtime_Dep /= Compiler.Runtime_League then
+                 New_Body := F.New_List (
+                   F.New_Use (F.New_Name (+"Ada.Strings.Unbounded")),
+                   New_Body);
+                 
+                 declare
+                    U_Clause : constant Ada_Pretty.Node_Access :=
+                      F.New_With (F.New_Name (+"Ada.Strings.Unbounded"));
+                 begin
+                    if Clauses = null then
+                       Clauses := U_Clause;
+                    else
+                       Clauses := F.New_List (Clauses, U_Clause);
+                    end if;
+                 end;
+             end if;
+             
+             Unit := F.New_Compilation_Unit
+               (Root    => F.New_Package_Body
+                  (Name => F.New_Name (Pkg & ".JSON"),
+                   List => New_Body),
+                Clauses => Clauses);
+         end;
+      end;
+
+      return Header_Comment (Self, Request) & LF & F.To_Text (Unit).Join (LF) & LF;
    end JSON_Body_Text;
+
 
 end Compiler.File_Descriptors;

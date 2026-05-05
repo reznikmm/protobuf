@@ -7,21 +7,17 @@ with Ada.Strings.Unbounded;
 package body Conformance.Conformance.JSON is
 
    use Ada.Strings.Unbounded;
-
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
      Value  : Standard.Conformance.Conformance.Test_Status) is
    begin
       Stream.Start_Object;
-      --  name
-         Stream.Write_Key ("name");
-         Stream.Write_String (To_String (Value.Name));
-      --  failure_message
-         Stream.Write_Key ("failureMessage");
-         Stream.Write_String (To_String (Value.Failure_Message));
-      --  matched_name
-         Stream.Write_Key ("matchedName");
-         Stream.Write_String (To_String (Value.Matched_Name));
+      Stream.Write_Key ("name");
+      Stream.Write_String (To_String (Value.Name));
+      Stream.Write_Key ("failureMessage");
+      Stream.Write_String (To_String (Value.Failure_Message));
+      Stream.Write_Key ("matchedName");
+      Stream.Write_String (To_String (Value.Matched_Name));
       Stream.End_Object;
    end Write;
 
@@ -30,7 +26,6 @@ package body Conformance.Conformance.JSON is
      Value  : Standard.Conformance.Conformance.Failure_Set) is
    begin
       Stream.Start_Object;
-      --  test
       if Value.Test.Length > 0 then
          Stream.Write_Key ("test");
          Stream.Start_Array;
@@ -47,43 +42,34 @@ package body Conformance.Conformance.JSON is
      Value  : Standard.Conformance.Conformance.Conformance_Request) is
    begin
       Stream.Start_Object;
-      --  protobuf_payload
       if Value.Variant.Payload = Protobuf_Payload_Kind then
          Stream.Write_Key ("protobufPayload");
          Stream.Write_Bytes (Value.Variant.Protobuf_Payload);
       end if;
-      --  json_payload
       if Value.Variant.Payload = Json_Payload_Kind then
          Stream.Write_Key ("jsonPayload");
          Stream.Write_String (To_String (Value.Variant.Json_Payload));
       end if;
-      --  jspb_payload
       if Value.Variant.Payload = Jspb_Payload_Kind then
          Stream.Write_Key ("jspbPayload");
          Stream.Write_String (To_String (Value.Variant.Jspb_Payload));
       end if;
-      --  text_payload
       if Value.Variant.Payload = Text_Payload_Kind then
          Stream.Write_Key ("textPayload");
          Stream.Write_String (To_String (Value.Variant.Text_Payload));
       end if;
-      --  requested_output_format
-         Stream.Write_Key ("requestedOutputFormat");
-         Stream.Write_String (Value.Requested_Output_Format'Image);
-      --  message_type
-         Stream.Write_Key ("messageType");
-         Stream.Write_String (To_String (Value.Message_Type));
-      --  test_category
-         Stream.Write_Key ("testCategory");
-         Stream.Write_String (Value.Test_Category'Image);
-      --  jspb_encoding_options
+      Stream.Write_Key ("requestedOutputFormat");
+      Stream.Write_String (Value.Requested_Output_Format'Image);
+      Stream.Write_Key ("messageType");
+      Stream.Write_String (To_String (Value.Message_Type));
+      Stream.Write_Key ("testCategory");
+      Stream.Write_String (Value.Test_Category'Image);
       if Value.Jspb_Encoding_Options.Is_Set then
          Stream.Write_Key ("jspbEncodingOptions");
          Write (Stream, Value.Jspb_Encoding_Options.Value);
       end if;
-      --  print_unknown_fields
-         Stream.Write_Key ("printUnknownFields");
-         Stream.Write_Boolean (Value.Print_Unknown_Fields);
+      Stream.Write_Key ("printUnknownFields");
+      Stream.Write_Boolean (Value.Print_Unknown_Fields);
       Stream.End_Object;
    end Write;
 
@@ -92,47 +78,38 @@ package body Conformance.Conformance.JSON is
      Value  : Standard.Conformance.Conformance.Conformance_Response) is
    begin
       Stream.Start_Object;
-      --  parse_error
       if Value.Variant.Result = Parse_Error_Kind then
          Stream.Write_Key ("parseError");
          Stream.Write_String (To_String (Value.Variant.Parse_Error));
       end if;
-      --  serialize_error
       if Value.Variant.Result = Serialize_Error_Kind then
          Stream.Write_Key ("serializeError");
          Stream.Write_String (To_String (Value.Variant.Serialize_Error));
       end if;
-      --  timeout_error
       if Value.Variant.Result = Timeout_Error_Kind then
          Stream.Write_Key ("timeoutError");
          Stream.Write_String (To_String (Value.Variant.Timeout_Error));
       end if;
-      --  runtime_error
       if Value.Variant.Result = Runtime_Error_Kind then
          Stream.Write_Key ("runtimeError");
          Stream.Write_String (To_String (Value.Variant.Runtime_Error));
       end if;
-      --  protobuf_payload
       if Value.Variant.Result = Protobuf_Payload_Kind then
          Stream.Write_Key ("protobufPayload");
          Stream.Write_Bytes (Value.Variant.Protobuf_Payload);
       end if;
-      --  json_payload
       if Value.Variant.Result = Json_Payload_Kind then
          Stream.Write_Key ("jsonPayload");
          Stream.Write_String (To_String (Value.Variant.Json_Payload));
       end if;
-      --  skipped
       if Value.Variant.Result = Skipped_Kind then
          Stream.Write_Key ("skipped");
          Stream.Write_String (To_String (Value.Variant.Skipped));
       end if;
-      --  jspb_payload
       if Value.Variant.Result = Jspb_Payload_Kind then
          Stream.Write_Key ("jspbPayload");
          Stream.Write_String (To_String (Value.Variant.Jspb_Payload));
       end if;
-      --  text_payload
       if Value.Variant.Result = Text_Payload_Kind then
          Stream.Write_Key ("textPayload");
          Stream.Write_String (To_String (Value.Variant.Text_Payload));
@@ -145,9 +122,8 @@ package body Conformance.Conformance.JSON is
      Value  : Standard.Conformance.Conformance.Jspb_Encoding_Config) is
    begin
       Stream.Start_Object;
-      --  use_jspb_array_any_format
-         Stream.Write_Key ("useJspbArrayAnyFormat");
-         Stream.Write_Boolean (Value.Use_Jspb_Array_Any_Format);
+      Stream.Write_Key ("useJspbArrayAnyFormat");
+      Stream.Write_Boolean (Value.Use_Jspb_Array_Any_Format);
       Stream.End_Object;
    end Write;
 

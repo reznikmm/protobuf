@@ -7,248 +7,218 @@ with Ada.Strings.Unbounded;
 package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    use Ada.Strings.Unbounded;
-
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Test_All_Types_Proto_2) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Test_All_Types_Proto_2) is
    begin
       Stream.Start_Object;
-      --  optional_int32
       if Value.Optional_Int_32.Is_Set then
          Stream.Write_Key ("optionalInt32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Optional_Int_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Optional_Int_32.Value));
       end if;
-      --  optional_int64
       if Value.Optional_Int_64.Is_Set then
          Stream.Write_Key ("optionalInt64");
-          Stream.Write_Integer (Value.Optional_Int_64.Value);
+         Stream.Write_Integer (Value.Optional_Int_64.Value);
       end if;
-      --  optional_uint32
       if Value.Optional_Uint_32.Is_Set then
          Stream.Write_Key ("optionalUint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Optional_Uint_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Optional_Uint_32.Value));
       end if;
-      --  optional_uint64
       if Value.Optional_Uint_64.Is_Set then
          Stream.Write_Key ("optionalUint64");
-          Stream.Write_Integer (Value.Optional_Uint_64.Value);
+         Stream.Write_Integer (Value.Optional_Uint_64.Value);
       end if;
-      --  optional_sint32
       if Value.Optional_Sint_32.Is_Set then
          Stream.Write_Key ("optionalSint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Optional_Sint_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Optional_Sint_32.Value));
       end if;
-      --  optional_sint64
       if Value.Optional_Sint_64.Is_Set then
          Stream.Write_Key ("optionalSint64");
-          Stream.Write_Integer (Value.Optional_Sint_64.Value);
+         Stream.Write_Integer (Value.Optional_Sint_64.Value);
       end if;
-      --  optional_fixed32
       if Value.Optional_Fixed_32.Is_Set then
          Stream.Write_Key ("optionalFixed32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Optional_Fixed_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Optional_Fixed_32.Value));
       end if;
-      --  optional_fixed64
       if Value.Optional_Fixed_64.Is_Set then
          Stream.Write_Key ("optionalFixed64");
-          Stream.Write_Integer (Value.Optional_Fixed_64.Value);
+         Stream.Write_Integer (Value.Optional_Fixed_64.Value);
       end if;
-      --  optional_sfixed32
       if Value.Optional_Sfixed_32.Is_Set then
          Stream.Write_Key ("optionalSfixed32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Optional_Sfixed_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Optional_Sfixed_32.Value));
       end if;
-      --  optional_sfixed64
       if Value.Optional_Sfixed_64.Is_Set then
          Stream.Write_Key ("optionalSfixed64");
-          Stream.Write_Integer (Value.Optional_Sfixed_64.Value);
+         Stream.Write_Integer (Value.Optional_Sfixed_64.Value);
       end if;
-      --  optional_float
       if Value.Optional_Float.Is_Set then
          Stream.Write_Key ("optionalFloat");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
          declare
             pragma Suppress (Range_Check);
          begin
-            Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Optional_Float.Value));
+            Stream.Write_Float
+              (Interfaces.IEEE_Float_64 (Value.Optional_Float.Value));
          end;
       end if;
-      --  optional_double
       if Value.Optional_Double.Is_Set then
          Stream.Write_Key ("optionalDouble");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
          declare
             pragma Suppress (Range_Check);
          begin
             Stream.Write_Float (Value.Optional_Double.Value);
          end;
       end if;
-      --  optional_bool
       if Value.Optional_Bool.Is_Set then
          Stream.Write_Key ("optionalBool");
          Stream.Write_Boolean (Value.Optional_Bool.Value);
       end if;
-      --  optional_string
       if Value.Optional_String.Is_Set then
          Stream.Write_Key ("optionalString");
          Stream.Write_String (To_String (Value.Optional_String.Value));
       end if;
-      --  optional_bytes
       if Value.Optional_Bytes.Is_Set then
          Stream.Write_Key ("optionalBytes");
          Stream.Write_Bytes (Value.Optional_Bytes.Value);
       end if;
-      --  optional_nested_message
       if Value.Optional_Nested_Message.Is_Set then
          Stream.Write_Key ("optionalNestedMessage");
          Write (Stream, Value.Optional_Nested_Message.Value);
       end if;
-      --  optional_foreign_message
       if Value.Optional_Foreign_Message.Is_Set then
          Stream.Write_Key ("optionalForeignMessage");
          Write (Stream, Value.Optional_Foreign_Message.Value);
       end if;
-      --  optional_nested_enum
       if Value.Optional_Nested_Enum.Is_Set then
          Stream.Write_Key ("optionalNestedEnum");
          Stream.Write_String (Value.Optional_Nested_Enum.Value'Image);
       end if;
-      --  optional_foreign_enum
       if Value.Optional_Foreign_Enum.Is_Set then
          Stream.Write_Key ("optionalForeignEnum");
          Stream.Write_String (Value.Optional_Foreign_Enum.Value'Image);
       end if;
-      --  optional_string_piece
       if Value.Optional_String_Piece.Is_Set then
          Stream.Write_Key ("optionalStringPiece");
          Stream.Write_String (To_String (Value.Optional_String_Piece.Value));
       end if;
-      --  optional_cord
       if Value.Optional_Cord.Is_Set then
          Stream.Write_Key ("optionalCord");
          Stream.Write_String (To_String (Value.Optional_Cord.Value));
       end if;
-      --  recursive_message
       if Value.Recursive_Message.Length > 0 then
          Stream.Write_Key ("recursiveMessage");
          for J in 1 .. Value.Recursive_Message.Length loop
             Write (Stream, Value.Recursive_Message (J));
          end loop;
       end if;
-      --  repeated_int32
       if Value.Repeated_Int_32.Length > 0 then
          Stream.Write_Key ("repeatedInt32");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Int_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Repeated_Int_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Repeated_Int_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_int64
       if Value.Repeated_Int_64.Length > 0 then
          Stream.Write_Key ("repeatedInt64");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Int_64.Length loop
-             Stream.Write_Integer (Value.Repeated_Int_64.Get (J));
+            Stream.Write_Integer (Value.Repeated_Int_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_uint32
       if Value.Repeated_Uint_32.Length > 0 then
          Stream.Write_Key ("repeatedUint32");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Uint_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Repeated_Uint_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Repeated_Uint_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_uint64
       if Value.Repeated_Uint_64.Length > 0 then
          Stream.Write_Key ("repeatedUint64");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Uint_64.Length loop
-             Stream.Write_Integer (Value.Repeated_Uint_64.Get (J));
+            Stream.Write_Integer (Value.Repeated_Uint_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_sint32
       if Value.Repeated_Sint_32.Length > 0 then
          Stream.Write_Key ("repeatedSint32");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Sint_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Repeated_Sint_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Repeated_Sint_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_sint64
       if Value.Repeated_Sint_64.Length > 0 then
          Stream.Write_Key ("repeatedSint64");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Sint_64.Length loop
-             Stream.Write_Integer (Value.Repeated_Sint_64.Get (J));
+            Stream.Write_Integer (Value.Repeated_Sint_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_fixed32
       if Value.Repeated_Fixed_32.Length > 0 then
          Stream.Write_Key ("repeatedFixed32");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Fixed_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Repeated_Fixed_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Repeated_Fixed_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_fixed64
       if Value.Repeated_Fixed_64.Length > 0 then
          Stream.Write_Key ("repeatedFixed64");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Fixed_64.Length loop
-             Stream.Write_Integer (Value.Repeated_Fixed_64.Get (J));
+            Stream.Write_Integer (Value.Repeated_Fixed_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_sfixed32
       if Value.Repeated_Sfixed_32.Length > 0 then
          Stream.Write_Key ("repeatedSfixed32");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Sfixed_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Repeated_Sfixed_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Repeated_Sfixed_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_sfixed64
       if Value.Repeated_Sfixed_64.Length > 0 then
          Stream.Write_Key ("repeatedSfixed64");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Sfixed_64.Length loop
-             Stream.Write_Integer (Value.Repeated_Sfixed_64.Get (J));
+            Stream.Write_Integer (Value.Repeated_Sfixed_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_float
       if Value.Repeated_Float.Length > 0 then
          Stream.Write_Key ("repeatedFloat");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Float.Length loop
-            --  Range check is suppressed so NaN and +/-Inf
-            --  are allowed and printed as required by Protobuf
             declare
                pragma Suppress (Range_Check);
             begin
-               Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Repeated_Float.Get (J)));
+               Stream.Write_Float
+                 (Interfaces.IEEE_Float_64 (Value.Repeated_Float.Get (J)));
             end;
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_double
       if Value.Repeated_Double.Length > 0 then
          Stream.Write_Key ("repeatedDouble");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Double.Length loop
-            --  Range check is suppressed so NaN and +/-Inf
-            --  are allowed and printed as required by Protobuf
             declare
                pragma Suppress (Range_Check);
             begin
@@ -257,7 +227,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_bool
       if Value.Repeated_Bool.Length > 0 then
          Stream.Write_Key ("repeatedBool");
          Stream.Start_Array;
@@ -266,7 +235,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_string
       if Value.Repeated_String.Length > 0 then
          Stream.Write_Key ("repeatedString");
          Stream.Start_Array;
@@ -275,7 +243,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_bytes
       if Value.Repeated_Bytes.Length > 0 then
          Stream.Write_Key ("repeatedBytes");
          Stream.Start_Array;
@@ -284,7 +251,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_nested_message
       if Value.Repeated_Nested_Message.Length > 0 then
          Stream.Write_Key ("repeatedNestedMessage");
          Stream.Start_Array;
@@ -293,7 +259,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_foreign_message
       if Value.Repeated_Foreign_Message.Length > 0 then
          Stream.Write_Key ("repeatedForeignMessage");
          Stream.Start_Array;
@@ -302,7 +267,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_nested_enum
       if Value.Repeated_Nested_Enum.Length > 0 then
          Stream.Write_Key ("repeatedNestedEnum");
          Stream.Start_Array;
@@ -311,7 +275,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_foreign_enum
       if Value.Repeated_Foreign_Enum.Length > 0 then
          Stream.Write_Key ("repeatedForeignEnum");
          Stream.Start_Array;
@@ -320,16 +283,15 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_string_piece
       if Value.Repeated_String_Piece.Length > 0 then
          Stream.Write_Key ("repeatedStringPiece");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_String_Piece.Length loop
-            Stream.Write_String (To_String (Value.Repeated_String_Piece.Get (J)));
+            Stream.Write_String
+              (To_String (Value.Repeated_String_Piece.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  repeated_cord
       if Value.Repeated_Cord.Length > 0 then
          Stream.Write_Key ("repeatedCord");
          Stream.Start_Array;
@@ -338,118 +300,108 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_int32
       if Value.Packed_Int_32.Length > 0 then
          Stream.Write_Key ("packedInt32");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Int_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Packed_Int_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Packed_Int_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_int64
       if Value.Packed_Int_64.Length > 0 then
          Stream.Write_Key ("packedInt64");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Int_64.Length loop
-             Stream.Write_Integer (Value.Packed_Int_64.Get (J));
+            Stream.Write_Integer (Value.Packed_Int_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_uint32
       if Value.Packed_Uint_32.Length > 0 then
          Stream.Write_Key ("packedUint32");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Uint_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Packed_Uint_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Packed_Uint_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_uint64
       if Value.Packed_Uint_64.Length > 0 then
          Stream.Write_Key ("packedUint64");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Uint_64.Length loop
-             Stream.Write_Integer (Value.Packed_Uint_64.Get (J));
+            Stream.Write_Integer (Value.Packed_Uint_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_sint32
       if Value.Packed_Sint_32.Length > 0 then
          Stream.Write_Key ("packedSint32");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Sint_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Packed_Sint_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Packed_Sint_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_sint64
       if Value.Packed_Sint_64.Length > 0 then
          Stream.Write_Key ("packedSint64");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Sint_64.Length loop
-             Stream.Write_Integer (Value.Packed_Sint_64.Get (J));
+            Stream.Write_Integer (Value.Packed_Sint_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_fixed32
       if Value.Packed_Fixed_32.Length > 0 then
          Stream.Write_Key ("packedFixed32");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Fixed_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Packed_Fixed_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Packed_Fixed_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_fixed64
       if Value.Packed_Fixed_64.Length > 0 then
          Stream.Write_Key ("packedFixed64");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Fixed_64.Length loop
-             Stream.Write_Integer (Value.Packed_Fixed_64.Get (J));
+            Stream.Write_Integer (Value.Packed_Fixed_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_sfixed32
       if Value.Packed_Sfixed_32.Length > 0 then
          Stream.Write_Key ("packedSfixed32");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Sfixed_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Packed_Sfixed_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Packed_Sfixed_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_sfixed64
       if Value.Packed_Sfixed_64.Length > 0 then
          Stream.Write_Key ("packedSfixed64");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Sfixed_64.Length loop
-             Stream.Write_Integer (Value.Packed_Sfixed_64.Get (J));
+            Stream.Write_Integer (Value.Packed_Sfixed_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_float
       if Value.Packed_Float.Length > 0 then
          Stream.Write_Key ("packedFloat");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Float.Length loop
-            --  Range check is suppressed so NaN and +/-Inf
-            --  are allowed and printed as required by Protobuf
             declare
                pragma Suppress (Range_Check);
             begin
-               Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Packed_Float.Get (J)));
+               Stream.Write_Float
+                 (Interfaces.IEEE_Float_64 (Value.Packed_Float.Get (J)));
             end;
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_double
       if Value.Packed_Double.Length > 0 then
          Stream.Write_Key ("packedDouble");
          Stream.Start_Array;
          for J in 1 .. Value.Packed_Double.Length loop
-            --  Range check is suppressed so NaN and +/-Inf
-            --  are allowed and printed as required by Protobuf
             declare
                pragma Suppress (Range_Check);
             begin
@@ -458,7 +410,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_bool
       if Value.Packed_Bool.Length > 0 then
          Stream.Write_Key ("packedBool");
          Stream.Start_Array;
@@ -467,7 +418,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  packed_nested_enum
       if Value.Packed_Nested_Enum.Length > 0 then
          Stream.Write_Key ("packedNestedEnum");
          Stream.Start_Array;
@@ -476,118 +426,108 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_int32
       if Value.Unpacked_Int_32.Length > 0 then
          Stream.Write_Key ("unpackedInt32");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Int_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Unpacked_Int_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Unpacked_Int_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_int64
       if Value.Unpacked_Int_64.Length > 0 then
          Stream.Write_Key ("unpackedInt64");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Int_64.Length loop
-             Stream.Write_Integer (Value.Unpacked_Int_64.Get (J));
+            Stream.Write_Integer (Value.Unpacked_Int_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_uint32
       if Value.Unpacked_Uint_32.Length > 0 then
          Stream.Write_Key ("unpackedUint32");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Uint_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Unpacked_Uint_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Unpacked_Uint_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_uint64
       if Value.Unpacked_Uint_64.Length > 0 then
          Stream.Write_Key ("unpackedUint64");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Uint_64.Length loop
-             Stream.Write_Integer (Value.Unpacked_Uint_64.Get (J));
+            Stream.Write_Integer (Value.Unpacked_Uint_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_sint32
       if Value.Unpacked_Sint_32.Length > 0 then
          Stream.Write_Key ("unpackedSint32");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Sint_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Unpacked_Sint_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Unpacked_Sint_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_sint64
       if Value.Unpacked_Sint_64.Length > 0 then
          Stream.Write_Key ("unpackedSint64");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Sint_64.Length loop
-             Stream.Write_Integer (Value.Unpacked_Sint_64.Get (J));
+            Stream.Write_Integer (Value.Unpacked_Sint_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_fixed32
       if Value.Unpacked_Fixed_32.Length > 0 then
          Stream.Write_Key ("unpackedFixed32");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Fixed_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Unpacked_Fixed_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Unpacked_Fixed_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_fixed64
       if Value.Unpacked_Fixed_64.Length > 0 then
          Stream.Write_Key ("unpackedFixed64");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Fixed_64.Length loop
-             Stream.Write_Integer (Value.Unpacked_Fixed_64.Get (J));
+            Stream.Write_Integer (Value.Unpacked_Fixed_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_sfixed32
       if Value.Unpacked_Sfixed_32.Length > 0 then
          Stream.Write_Key ("unpackedSfixed32");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Sfixed_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Unpacked_Sfixed_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Unpacked_Sfixed_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_sfixed64
       if Value.Unpacked_Sfixed_64.Length > 0 then
          Stream.Write_Key ("unpackedSfixed64");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Sfixed_64.Length loop
-             Stream.Write_Integer (Value.Unpacked_Sfixed_64.Get (J));
+            Stream.Write_Integer (Value.Unpacked_Sfixed_64.Get (J));
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_float
       if Value.Unpacked_Float.Length > 0 then
          Stream.Write_Key ("unpackedFloat");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Float.Length loop
-            --  Range check is suppressed so NaN and +/-Inf
-            --  are allowed and printed as required by Protobuf
             declare
                pragma Suppress (Range_Check);
             begin
-               Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Unpacked_Float.Get (J)));
+               Stream.Write_Float
+                 (Interfaces.IEEE_Float_64 (Value.Unpacked_Float.Get (J)));
             end;
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_double
       if Value.Unpacked_Double.Length > 0 then
          Stream.Write_Key ("unpackedDouble");
          Stream.Start_Array;
          for J in 1 .. Value.Unpacked_Double.Length loop
-            --  Range check is suppressed so NaN and +/-Inf
-            --  are allowed and printed as required by Protobuf
             declare
                pragma Suppress (Range_Check);
             begin
@@ -596,7 +536,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_bool
       if Value.Unpacked_Bool.Length > 0 then
          Stream.Write_Key ("unpackedBool");
          Stream.Start_Array;
@@ -605,7 +544,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  unpacked_nested_enum
       if Value.Unpacked_Nested_Enum.Length > 0 then
          Stream.Write_Key ("unpackedNestedEnum");
          Stream.Start_Array;
@@ -614,7 +552,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_int32_int32
       if Value.Map_Int_32_Int_32.Length > 0 then
          Stream.Write_Key ("mapInt32Int32");
          Stream.Start_Array;
@@ -623,7 +560,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_int64_int64
       if Value.Map_Int_64_Int_64.Length > 0 then
          Stream.Write_Key ("mapInt64Int64");
          Stream.Start_Array;
@@ -632,7 +568,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_uint32_uint32
       if Value.Map_Uint_32_Uint_32.Length > 0 then
          Stream.Write_Key ("mapUint32Uint32");
          Stream.Start_Array;
@@ -641,7 +576,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_uint64_uint64
       if Value.Map_Uint_64_Uint_64.Length > 0 then
          Stream.Write_Key ("mapUint64Uint64");
          Stream.Start_Array;
@@ -650,7 +584,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_sint32_sint32
       if Value.Map_Sint_32_Sint_32.Length > 0 then
          Stream.Write_Key ("mapSint32Sint32");
          Stream.Start_Array;
@@ -659,7 +592,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_sint64_sint64
       if Value.Map_Sint_64_Sint_64.Length > 0 then
          Stream.Write_Key ("mapSint64Sint64");
          Stream.Start_Array;
@@ -668,7 +600,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_fixed32_fixed32
       if Value.Map_Fixed_32_Fixed_32.Length > 0 then
          Stream.Write_Key ("mapFixed32Fixed32");
          Stream.Start_Array;
@@ -677,7 +608,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_fixed64_fixed64
       if Value.Map_Fixed_64_Fixed_64.Length > 0 then
          Stream.Write_Key ("mapFixed64Fixed64");
          Stream.Start_Array;
@@ -686,7 +616,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_sfixed32_sfixed32
       if Value.Map_Sfixed_32_Sfixed_32.Length > 0 then
          Stream.Write_Key ("mapSfixed32Sfixed32");
          Stream.Start_Array;
@@ -695,7 +624,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_sfixed64_sfixed64
       if Value.Map_Sfixed_64_Sfixed_64.Length > 0 then
          Stream.Write_Key ("mapSfixed64Sfixed64");
          Stream.Start_Array;
@@ -704,7 +632,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_int32_bool
       if Value.Map_Int_32_Bool.Length > 0 then
          Stream.Write_Key ("mapInt32Bool");
          Stream.Start_Array;
@@ -713,7 +640,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_int32_float
       if Value.Map_Int_32_Float.Length > 0 then
          Stream.Write_Key ("mapInt32Float");
          Stream.Start_Array;
@@ -722,7 +648,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_int32_double
       if Value.Map_Int_32_Double.Length > 0 then
          Stream.Write_Key ("mapInt32Double");
          Stream.Start_Array;
@@ -731,7 +656,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_int32_nested_message
       if Value.Map_Int_32_Nested_Message.Length > 0 then
          Stream.Write_Key ("mapInt32NestedMessage");
          Stream.Start_Array;
@@ -740,7 +664,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_bool_bool
       if Value.Map_Bool_Bool.Length > 0 then
          Stream.Write_Key ("mapBoolBool");
          Stream.Start_Array;
@@ -749,7 +672,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_string_string
       if Value.Map_String_String.Length > 0 then
          Stream.Write_Key ("mapStringString");
          Stream.Start_Array;
@@ -758,7 +680,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_string_bytes
       if Value.Map_String_Bytes.Length > 0 then
          Stream.Write_Key ("mapStringBytes");
          Stream.Start_Array;
@@ -767,7 +688,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_string_nested_message
       if Value.Map_String_Nested_Message.Length > 0 then
          Stream.Write_Key ("mapStringNestedMessage");
          Stream.Start_Array;
@@ -776,7 +696,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_string_foreign_message
       if Value.Map_String_Foreign_Message.Length > 0 then
          Stream.Write_Key ("mapStringForeignMessage");
          Stream.Start_Array;
@@ -785,7 +704,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_string_nested_enum
       if Value.Map_String_Nested_Enum.Length > 0 then
          Stream.Write_Key ("mapStringNestedEnum");
          Stream.Start_Array;
@@ -794,7 +712,6 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  map_string_foreign_enum
       if Value.Map_String_Foreign_Enum.Length > 0 then
          Stream.Write_Key ("mapStringForeignEnum");
          Stream.Start_Array;
@@ -803,251 +720,205 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          end loop;
          Stream.End_Array;
       end if;
-      --  oneof_uint32
       if Value.Variant.Oneof_Field = Oneof_Uint_32_Kind then
          Stream.Write_Key ("oneofUint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Variant.Oneof_Uint_32));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Variant.Oneof_Uint_32));
       end if;
-      --  oneof_nested_message
       if Value.Variant.Oneof_Field = Oneof_Nested_Message_Kind then
          Stream.Write_Key ("oneofNestedMessage");
          Write (Stream, Value.Variant.Oneof_Nested_Message);
       end if;
-      --  oneof_string
       if Value.Variant.Oneof_Field = Oneof_String_Kind then
          Stream.Write_Key ("oneofString");
          Stream.Write_String (To_String (Value.Variant.Oneof_String));
       end if;
-      --  oneof_bytes
       if Value.Variant.Oneof_Field = Oneof_Bytes_Kind then
          Stream.Write_Key ("oneofBytes");
          Stream.Write_Bytes (Value.Variant.Oneof_Bytes);
       end if;
-      --  oneof_bool
       if Value.Variant.Oneof_Field = Oneof_Bool_Kind then
          Stream.Write_Key ("oneofBool");
          Stream.Write_Boolean (Value.Variant.Oneof_Bool);
       end if;
-      --  oneof_uint64
       if Value.Variant.Oneof_Field = Oneof_Uint_64_Kind then
          Stream.Write_Key ("oneofUint64");
-          Stream.Write_Integer (Value.Variant.Oneof_Uint_64);
+         Stream.Write_Integer (Value.Variant.Oneof_Uint_64);
       end if;
-      --  oneof_float
       if Value.Variant.Oneof_Field = Oneof_Float_Kind then
          Stream.Write_Key ("oneofFloat");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
          declare
             pragma Suppress (Range_Check);
          begin
-            Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Variant.Oneof_Float));
+            Stream.Write_Float
+              (Interfaces.IEEE_Float_64 (Value.Variant.Oneof_Float));
          end;
       end if;
-      --  oneof_double
       if Value.Variant.Oneof_Field = Oneof_Double_Kind then
          Stream.Write_Key ("oneofDouble");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
          declare
             pragma Suppress (Range_Check);
          begin
             Stream.Write_Float (Value.Variant.Oneof_Double);
          end;
       end if;
-      --  oneof_enum
       if Value.Variant.Oneof_Field = Oneof_Enum_Kind then
          Stream.Write_Key ("oneofEnum");
          Stream.Write_String (Value.Variant.Oneof_Enum'Image);
       end if;
-      --  data
       if Value.Data.Is_Set then
          Stream.Write_Key ("data");
          Write (Stream, Value.Data.Value);
       end if;
-      --  multiwordgroupfield
       if Value.Multiwordgroupfield.Is_Set then
          Stream.Write_Key ("multiwordgroupfield");
          Write (Stream, Value.Multiwordgroupfield.Value);
       end if;
-      --  default_int32
       if Value.Default_Int_32.Is_Set then
          Stream.Write_Key ("defaultInt32");
          Stream.Write_Integer (Long_Long_Integer (Value.Default_Int_32.Value));
       end if;
-      --  default_int64
       if Value.Default_Int_64.Is_Set then
          Stream.Write_Key ("defaultInt64");
-          Stream.Write_Integer (Value.Default_Int_64.Value);
+         Stream.Write_Integer (Value.Default_Int_64.Value);
       end if;
-      --  default_uint32
       if Value.Default_Uint_32.Is_Set then
          Stream.Write_Key ("defaultUint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Default_Uint_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Default_Uint_32.Value));
       end if;
-      --  default_uint64
       if Value.Default_Uint_64.Is_Set then
          Stream.Write_Key ("defaultUint64");
-          Stream.Write_Integer (Value.Default_Uint_64.Value);
+         Stream.Write_Integer (Value.Default_Uint_64.Value);
       end if;
-      --  default_sint32
       if Value.Default_Sint_32.Is_Set then
          Stream.Write_Key ("defaultSint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Default_Sint_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Default_Sint_32.Value));
       end if;
-      --  default_sint64
       if Value.Default_Sint_64.Is_Set then
          Stream.Write_Key ("defaultSint64");
-          Stream.Write_Integer (Value.Default_Sint_64.Value);
+         Stream.Write_Integer (Value.Default_Sint_64.Value);
       end if;
-      --  default_fixed32
       if Value.Default_Fixed_32.Is_Set then
          Stream.Write_Key ("defaultFixed32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Default_Fixed_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Default_Fixed_32.Value));
       end if;
-      --  default_fixed64
       if Value.Default_Fixed_64.Is_Set then
          Stream.Write_Key ("defaultFixed64");
-          Stream.Write_Integer (Value.Default_Fixed_64.Value);
+         Stream.Write_Integer (Value.Default_Fixed_64.Value);
       end if;
-      --  default_sfixed32
       if Value.Default_Sfixed_32.Is_Set then
          Stream.Write_Key ("defaultSfixed32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Default_Sfixed_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Default_Sfixed_32.Value));
       end if;
-      --  default_sfixed64
       if Value.Default_Sfixed_64.Is_Set then
          Stream.Write_Key ("defaultSfixed64");
-          Stream.Write_Integer (Value.Default_Sfixed_64.Value);
+         Stream.Write_Integer (Value.Default_Sfixed_64.Value);
       end if;
-      --  default_float
       if Value.Default_Float.Is_Set then
          Stream.Write_Key ("defaultFloat");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
          declare
             pragma Suppress (Range_Check);
          begin
-            Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Default_Float.Value));
+            Stream.Write_Float
+              (Interfaces.IEEE_Float_64 (Value.Default_Float.Value));
          end;
       end if;
-      --  default_double
       if Value.Default_Double.Is_Set then
          Stream.Write_Key ("defaultDouble");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
          declare
             pragma Suppress (Range_Check);
          begin
             Stream.Write_Float (Value.Default_Double.Value);
          end;
       end if;
-      --  default_bool
       if Value.Default_Bool.Is_Set then
          Stream.Write_Key ("defaultBool");
          Stream.Write_Boolean (Value.Default_Bool.Value);
       end if;
-      --  default_string
       if Value.Default_String.Is_Set then
          Stream.Write_Key ("defaultString");
          Stream.Write_String (To_String (Value.Default_String.Value));
       end if;
-      --  default_bytes
       if Value.Default_Bytes.Is_Set then
          Stream.Write_Key ("defaultBytes");
          Stream.Write_Bytes (Value.Default_Bytes.Value);
       end if;
-      --  fieldname1
       if Value.Fieldname_1.Is_Set then
          Stream.Write_Key ("fieldname1");
          Stream.Write_Integer (Long_Long_Integer (Value.Fieldname_1.Value));
       end if;
-      --  field_name2
       if Value.Field_Name_2.Is_Set then
          Stream.Write_Key ("fieldName2");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_2.Value));
       end if;
-      --  _field_name3
       if Value.Field_Name_3.Is_Set then
          Stream.Write_Key ("FieldName3");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_3.Value));
       end if;
-      --  field__name4_
       if Value.Field_Name_4.Is_Set then
          Stream.Write_Key ("fieldName4");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_4.Value));
       end if;
-      --  field0name5
       if Value.Field_0name_5.Is_Set then
          Stream.Write_Key ("field0name5");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_0name_5.Value));
       end if;
-      --  field_0_name6
       if Value.Field_0_Name_6.Is_Set then
          Stream.Write_Key ("field0Name6");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_0_Name_6.Value));
       end if;
-      --  fieldName7
       if Value.Field_Name_7.Is_Set then
          Stream.Write_Key ("fieldName7");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_7.Value));
       end if;
-      --  FieldName8
       if Value.Field_Name_8.Is_Set then
          Stream.Write_Key ("FieldName8");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_8.Value));
       end if;
-      --  field_Name9
       if Value.Field_Name_9.Is_Set then
          Stream.Write_Key ("fieldName9");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_9.Value));
       end if;
-      --  Field_Name10
       if Value.Field_Name_10.Is_Set then
          Stream.Write_Key ("FieldName10");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_10.Value));
       end if;
-      --  FIELD_NAME11
       if Value.FIELD_NAME11.Is_Set then
          Stream.Write_Key ("FIELDNAME11");
          Stream.Write_Integer (Long_Long_Integer (Value.FIELD_NAME11.Value));
       end if;
-      --  FIELD_name12
       if Value.FIELD_Name_12.Is_Set then
          Stream.Write_Key ("FIELDName12");
          Stream.Write_Integer (Long_Long_Integer (Value.FIELD_Name_12.Value));
       end if;
-      --  __field_name13
       if Value.Field_Name_13.Is_Set then
          Stream.Write_Key ("FieldName13");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_13.Value));
       end if;
-      --  __Field_name14
       if Value.Field_Name_14.Is_Set then
          Stream.Write_Key ("FieldName14");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_14.Value));
       end if;
-      --  field__name15
       if Value.Field_Name_15.Is_Set then
          Stream.Write_Key ("fieldName15");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_15.Value));
       end if;
-      --  field__Name16
       if Value.Field_Name_16.Is_Set then
          Stream.Write_Key ("fieldName16");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_16.Value));
       end if;
-      --  field_name17__
       if Value.Field_Name_17.Is_Set then
          Stream.Write_Key ("fieldName17");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_17.Value));
       end if;
-      --  Field_name18__
       if Value.Field_Name_18.Is_Set then
          Stream.Write_Key ("FieldName18");
          Stream.Write_Integer (Long_Long_Integer (Value.Field_Name_18.Value));
       end if;
-      --  message_set_correct
       if Value.Message_Set_Correct.Is_Set then
          Stream.Write_Key ("messageSetCorrect");
          Write (Stream, Value.Message_Set_Correct.Value);
@@ -1057,15 +928,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Nested_Message) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Nested_Message) is
    begin
       Stream.Start_Object;
-      --  a
       if Value.A.Is_Set then
          Stream.Write_Key ("a");
          Stream.Write_Integer (Long_Long_Integer (Value.A.Value));
       end if;
-      --  corecursive
       if Value.Corecursive.Length > 0 then
          Stream.Write_Key ("corecursive");
          for J in 1 .. Value.Corecursive.Length loop
@@ -1077,15 +947,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Int_32Int_32Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Int_32Int_32Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Integer (Long_Long_Integer (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_Integer (Long_Long_Integer (Value.Value.Value));
@@ -1095,33 +964,31 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Int_64Int_64Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Int_64Int_64Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-          Stream.Write_Integer (Value.Key.Value);
+         Stream.Write_Integer (Value.Key.Value);
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
-          Stream.Write_Integer (Value.Value.Value);
+         Stream.Write_Integer (Value.Value.Value);
       end if;
       Stream.End_Object;
    end Write;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Uint_32Uint_32Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Uint_32Uint_32Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Integer (Long_Long_Integer (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_Integer (Long_Long_Integer (Value.Value.Value));
@@ -1131,33 +998,31 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Uint_64Uint_64Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Uint_64Uint_64Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-          Stream.Write_Integer (Value.Key.Value);
+         Stream.Write_Integer (Value.Key.Value);
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
-          Stream.Write_Integer (Value.Value.Value);
+         Stream.Write_Integer (Value.Value.Value);
       end if;
       Stream.End_Object;
    end Write;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Sint_32Sint_32Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Sint_32Sint_32Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Integer (Long_Long_Integer (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_Integer (Long_Long_Integer (Value.Value.Value));
@@ -1167,33 +1032,31 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Sint_64Sint_64Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Sint_64Sint_64Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-          Stream.Write_Integer (Value.Key.Value);
+         Stream.Write_Integer (Value.Key.Value);
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
-          Stream.Write_Integer (Value.Value.Value);
+         Stream.Write_Integer (Value.Value.Value);
       end if;
       Stream.End_Object;
    end Write;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Fixed_32Fixed_32Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Fixed_32Fixed_32Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Integer (Long_Long_Integer (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_Integer (Long_Long_Integer (Value.Value.Value));
@@ -1203,33 +1066,31 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Fixed_64Fixed_64Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Fixed_64Fixed_64Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-          Stream.Write_Integer (Value.Key.Value);
+         Stream.Write_Integer (Value.Key.Value);
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
-          Stream.Write_Integer (Value.Value.Value);
+         Stream.Write_Integer (Value.Value.Value);
       end if;
       Stream.End_Object;
    end Write;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Sfixed_32Sfixed_32Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Sfixed_32Sfixed_32Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Integer (Long_Long_Integer (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_Integer (Long_Long_Integer (Value.Value.Value));
@@ -1239,33 +1100,31 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Sfixed_64Sfixed_64Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Sfixed_64Sfixed_64Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-          Stream.Write_Integer (Value.Key.Value);
+         Stream.Write_Integer (Value.Key.Value);
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
-          Stream.Write_Integer (Value.Value.Value);
+         Stream.Write_Integer (Value.Value.Value);
       end if;
       Stream.End_Object;
    end Write;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Int_32Bool_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Int_32Bool_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Integer (Long_Long_Integer (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_Boolean (Value.Value.Value);
@@ -1275,19 +1134,16 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Int_32Float_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Int_32Float_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Integer (Long_Long_Integer (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
          declare
             pragma Suppress (Range_Check);
          begin
@@ -1299,19 +1155,16 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Int_32Double_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Int_32Double_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Integer (Long_Long_Integer (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
          declare
             pragma Suppress (Range_Check);
          begin
@@ -1323,15 +1176,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Int_32Nested_Message_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Int_32Nested_Message_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Integer (Long_Long_Integer (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Write (Stream, Value.Value.Value);
@@ -1341,15 +1193,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_Bool_Bool_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_Bool_Bool_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_Boolean (Value.Key.Value);
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_Boolean (Value.Value.Value);
@@ -1359,15 +1210,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_String_String_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_String_String_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_String (To_String (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_String (To_String (Value.Value.Value));
@@ -1377,15 +1227,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_String_Bytes_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_String_Bytes_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_String (To_String (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_Bytes (Value.Value.Value);
@@ -1395,15 +1244,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_String_Nested_Message_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_String_Nested_Message_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_String (To_String (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Write (Stream, Value.Value.Value);
@@ -1413,15 +1261,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_String_Foreign_Message_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_String_Foreign_Message_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_String (To_String (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Write (Stream, Value.Value.Value);
@@ -1431,15 +1278,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_String_Nested_Enum_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_String_Nested_Enum_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_String (To_String (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_String (Value.Value.Value'Image);
@@ -1449,15 +1295,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Map_String_Foreign_Enum_Entry) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Map_String_Foreign_Enum_Entry) is
    begin
       Stream.Start_Object;
-      --  key
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
          Stream.Write_String (To_String (Value.Key.Value));
       end if;
-      --  value
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Stream.Write_String (Value.Value.Value'Image);
@@ -1467,15 +1312,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Data) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Data) is
    begin
       Stream.Start_Object;
-      --  group_int32
       if Value.Group_Int_32.Is_Set then
          Stream.Write_Key ("groupInt32");
          Stream.Write_Integer (Long_Long_Integer (Value.Group_Int_32.Value));
       end if;
-      --  group_uint32
       if Value.Group_Uint_32.Is_Set then
          Stream.Write_Key ("groupUint32");
          Stream.Write_Integer (Long_Long_Integer (Value.Group_Uint_32.Value));
@@ -1485,15 +1329,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Multi_Word_Group_Field) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Multi_Word_Group_Field) is
    begin
       Stream.Start_Object;
-      --  group_int32
       if Value.Group_Int_32.Is_Set then
          Stream.Write_Key ("groupInt32");
          Stream.Write_Integer (Long_Long_Integer (Value.Group_Int_32.Value));
       end if;
-      --  group_uint32
       if Value.Group_Uint_32.Is_Set then
          Stream.Write_Key ("groupUint32");
          Stream.Write_Integer (Long_Long_Integer (Value.Group_Uint_32.Value));
@@ -1503,7 +1346,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Message_Set_Correct) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Message_Set_Correct) is
    begin
       Stream.Start_Object;
       Stream.End_Object;
@@ -1511,10 +1355,10 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Message_Set_Correct_Extension_1) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Message_Set_Correct_Extension_1) is
    begin
       Stream.Start_Object;
-      --  str
       if Value.Str.Is_Set then
          Stream.Write_Key ("str");
          Stream.Write_String (To_String (Value.Str.Value));
@@ -1524,15 +1368,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Message_Set_Correct_Extension_2) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Message_Set_Correct_Extension_2) is
    begin
       Stream.Start_Object;
-      --  i
       if Value.I.Is_Set then
          Stream.Write_Key ("i");
          Stream.Write_Integer (Long_Long_Integer (Value.I.Value));
       end if;
-      --  sub_msg
       if Value.Sub_Msg.Is_Set then
          Stream.Write_Key ("subMsg");
          Write (Stream, Value.Sub_Msg.Value);
@@ -1542,15 +1385,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Extension_With_Oneof) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Extension_With_Oneof) is
    begin
       Stream.Start_Object;
-      --  a
       if Value.Variant.Oneof_Field = A_Kind then
          Stream.Write_Key ("a");
          Stream.Write_Integer (Long_Long_Integer (Value.Variant.A));
       end if;
-      --  b
       if Value.Variant.Oneof_Field = B_Kind then
          Stream.Write_Key ("b");
          Stream.Write_Integer (Long_Long_Integer (Value.Variant.B));
@@ -1560,10 +1402,10 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Foreign_Message_Proto_2) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Foreign_Message_Proto_2) is
    begin
       Stream.Start_Object;
-      --  c
       if Value.C.Is_Set then
          Stream.Write_Key ("c");
          Stream.Write_Integer (Long_Long_Integer (Value.C.Value));
@@ -1573,15 +1415,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Group_Field) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Group_Field) is
    begin
       Stream.Start_Object;
-      --  group_int32
       if Value.Group_Int_32.Is_Set then
          Stream.Write_Key ("groupInt32");
          Stream.Write_Integer (Long_Long_Integer (Value.Group_Int_32.Value));
       end if;
-      --  group_uint32
       if Value.Group_Uint_32.Is_Set then
          Stream.Write_Key ("groupUint32");
          Stream.Write_Integer (Long_Long_Integer (Value.Group_Uint_32.Value));
@@ -1591,40 +1432,37 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Unknown_To_Test_All_Types) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Unknown_To_Test_All_Types) is
    begin
       Stream.Start_Object;
-      --  optional_int32
       if Value.Optional_Int_32.Is_Set then
          Stream.Write_Key ("optionalInt32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Optional_Int_32.Value));
+         Stream.Write_Integer
+           (Long_Long_Integer (Value.Optional_Int_32.Value));
       end if;
-      --  optional_string
       if Value.Optional_String.Is_Set then
          Stream.Write_Key ("optionalString");
          Stream.Write_String (To_String (Value.Optional_String.Value));
       end if;
-      --  nested_message
       if Value.Nested_Message.Is_Set then
          Stream.Write_Key ("nestedMessage");
          Write (Stream, Value.Nested_Message.Value);
       end if;
-      --  optionalgroup
       if Value.Optionalgroup.Is_Set then
          Stream.Write_Key ("optionalgroup");
          Write (Stream, Value.Optionalgroup.Value);
       end if;
-      --  optional_bool
       if Value.Optional_Bool.Is_Set then
          Stream.Write_Key ("optionalBool");
          Stream.Write_Boolean (Value.Optional_Bool.Value);
       end if;
-      --  repeated_int32
       if Value.Repeated_Int_32.Length > 0 then
          Stream.Write_Key ("repeatedInt32");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Int_32.Length loop
-            Stream.Write_Integer (Long_Long_Integer (Value.Repeated_Int_32.Get (J)));
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Repeated_Int_32.Get (J)));
          end loop;
          Stream.End_Array;
       end if;
@@ -1633,10 +1471,10 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Optional_Group) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Optional_Group) is
    begin
       Stream.Start_Object;
-      --  a
       if Value.A.Is_Set then
          Stream.Write_Key ("a");
          Stream.Write_Integer (Long_Long_Integer (Value.A.Value));
@@ -1646,7 +1484,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Null_Hypothesis_Proto_2) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Null_Hypothesis_Proto_2) is
    begin
       Stream.Start_Object;
       Stream.End_Object;
@@ -1654,7 +1493,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Enum_Only_Proto_2) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Enum_Only_Proto_2) is
    begin
       Stream.Start_Object;
       Stream.End_Object;
@@ -1662,10 +1502,10 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.One_String_Proto_2) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .One_String_Proto_2) is
    begin
       Stream.Start_Object;
-      --  data
       if Value.Data.Is_Set then
          Stream.Write_Key ("data");
          Stream.Write_String (To_String (Value.Data.Value));
@@ -1675,20 +1515,18 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Proto_With_Keywords) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Proto_With_Keywords) is
    begin
       Stream.Start_Object;
-      --  inline
       if Value.Inline.Is_Set then
          Stream.Write_Key ("inline");
          Stream.Write_Integer (Long_Long_Integer (Value.Inline.Value));
       end if;
-      --  concept
       if Value.Concept.Is_Set then
          Stream.Write_Key ("concept");
          Stream.Write_String (To_String (Value.Concept.Value));
       end if;
-      --  requires
       if Value.Requires.Length > 0 then
          Stream.Write_Key ("requires");
          Stream.Start_Array;
@@ -1702,177 +1540,129 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Test_All_Required_Types_Proto_2) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Test_All_Required_Types_Proto_2) is
    begin
       Stream.Start_Object;
-      --  required_int32
-         Stream.Write_Key ("requiredInt32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Required_Int_32));
-      --  required_int64
-         Stream.Write_Key ("requiredInt64");
-          Stream.Write_Integer (Value.Required_Int_64);
-      --  required_uint32
-         Stream.Write_Key ("requiredUint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Required_Uint_32));
-      --  required_uint64
-         Stream.Write_Key ("requiredUint64");
-          Stream.Write_Integer (Value.Required_Uint_64);
-      --  required_sint32
-         Stream.Write_Key ("requiredSint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Required_Sint_32));
-      --  required_sint64
-         Stream.Write_Key ("requiredSint64");
-          Stream.Write_Integer (Value.Required_Sint_64);
-      --  required_fixed32
-         Stream.Write_Key ("requiredFixed32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Required_Fixed_32));
-      --  required_fixed64
-         Stream.Write_Key ("requiredFixed64");
-          Stream.Write_Integer (Value.Required_Fixed_64);
-      --  required_sfixed32
-         Stream.Write_Key ("requiredSfixed32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Required_Sfixed_32));
-      --  required_sfixed64
-         Stream.Write_Key ("requiredSfixed64");
-          Stream.Write_Integer (Value.Required_Sfixed_64);
-      --  required_float
-         Stream.Write_Key ("requiredFloat");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
-         declare
-            pragma Suppress (Range_Check);
-         begin
-            Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Required_Float));
-         end;
-      --  required_double
-         Stream.Write_Key ("requiredDouble");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
-         declare
-            pragma Suppress (Range_Check);
-         begin
-            Stream.Write_Float (Value.Required_Double);
-         end;
-      --  required_bool
-         Stream.Write_Key ("requiredBool");
-         Stream.Write_Boolean (Value.Required_Bool);
-      --  required_string
-         Stream.Write_Key ("requiredString");
-         Stream.Write_String (To_String (Value.Required_String));
-      --  required_bytes
-         Stream.Write_Key ("requiredBytes");
-         Stream.Write_Bytes (Value.Required_Bytes);
-      --  required_nested_message
-         Stream.Write_Key ("requiredNestedMessage");
-         Write (Stream, Value.Required_Nested_Message);
-      --  required_foreign_message
-         Stream.Write_Key ("requiredForeignMessage");
-         Write (Stream, Value.Required_Foreign_Message);
-      --  required_nested_enum
-         Stream.Write_Key ("requiredNestedEnum");
-         Stream.Write_String (Value.Required_Nested_Enum'Image);
-      --  required_foreign_enum
-         Stream.Write_Key ("requiredForeignEnum");
-         Stream.Write_String (Value.Required_Foreign_Enum'Image);
-      --  required_string_piece
-         Stream.Write_Key ("requiredStringPiece");
-         Stream.Write_String (To_String (Value.Required_String_Piece));
-      --  required_cord
-         Stream.Write_Key ("requiredCord");
-         Stream.Write_String (To_String (Value.Required_Cord));
-      --  recursive_message
+      Stream.Write_Key ("requiredInt32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Required_Int_32));
+      Stream.Write_Key ("requiredInt64");
+      Stream.Write_Integer (Value.Required_Int_64);
+      Stream.Write_Key ("requiredUint32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Required_Uint_32));
+      Stream.Write_Key ("requiredUint64");
+      Stream.Write_Integer (Value.Required_Uint_64);
+      Stream.Write_Key ("requiredSint32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Required_Sint_32));
+      Stream.Write_Key ("requiredSint64");
+      Stream.Write_Integer (Value.Required_Sint_64);
+      Stream.Write_Key ("requiredFixed32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Required_Fixed_32));
+      Stream.Write_Key ("requiredFixed64");
+      Stream.Write_Integer (Value.Required_Fixed_64);
+      Stream.Write_Key ("requiredSfixed32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Required_Sfixed_32));
+      Stream.Write_Key ("requiredSfixed64");
+      Stream.Write_Integer (Value.Required_Sfixed_64);
+      Stream.Write_Key ("requiredFloat");
+      declare
+         pragma Suppress (Range_Check);
+      begin
+         Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Required_Float));
+      end;
+      Stream.Write_Key ("requiredDouble");
+      declare
+         pragma Suppress (Range_Check);
+      begin
+         Stream.Write_Float (Value.Required_Double);
+      end;
+      Stream.Write_Key ("requiredBool");
+      Stream.Write_Boolean (Value.Required_Bool);
+      Stream.Write_Key ("requiredString");
+      Stream.Write_String (To_String (Value.Required_String));
+      Stream.Write_Key ("requiredBytes");
+      Stream.Write_Bytes (Value.Required_Bytes);
+      Stream.Write_Key ("requiredNestedMessage");
+      Write (Stream, Value.Required_Nested_Message);
+      Stream.Write_Key ("requiredForeignMessage");
+      Write (Stream, Value.Required_Foreign_Message);
+      Stream.Write_Key ("requiredNestedEnum");
+      Stream.Write_String (Value.Required_Nested_Enum'Image);
+      Stream.Write_Key ("requiredForeignEnum");
+      Stream.Write_String (Value.Required_Foreign_Enum'Image);
+      Stream.Write_Key ("requiredStringPiece");
+      Stream.Write_String (To_String (Value.Required_String_Piece));
+      Stream.Write_Key ("requiredCord");
+      Stream.Write_String (To_String (Value.Required_Cord));
       if Value.Recursive_Message.Length > 0 then
          Stream.Write_Key ("recursiveMessage");
          for J in 1 .. Value.Recursive_Message.Length loop
             Write (Stream, Value.Recursive_Message (J));
          end loop;
       end if;
-      --  optional_recursive_message
       if Value.Optional_Recursive_Message.Length > 0 then
          Stream.Write_Key ("optionalRecursiveMessage");
          for J in 1 .. Value.Optional_Recursive_Message.Length loop
             Write (Stream, Value.Optional_Recursive_Message (J));
          end loop;
       end if;
-      --  data
-         Stream.Write_Key ("data");
-         Write (Stream, Value.Data);
-      --  default_int32
-         Stream.Write_Key ("defaultInt32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Default_Int_32));
-      --  default_int64
-         Stream.Write_Key ("defaultInt64");
-          Stream.Write_Integer (Value.Default_Int_64);
-      --  default_uint32
-         Stream.Write_Key ("defaultUint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Default_Uint_32));
-      --  default_uint64
-         Stream.Write_Key ("defaultUint64");
-          Stream.Write_Integer (Value.Default_Uint_64);
-      --  default_sint32
-         Stream.Write_Key ("defaultSint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Default_Sint_32));
-      --  default_sint64
-         Stream.Write_Key ("defaultSint64");
-          Stream.Write_Integer (Value.Default_Sint_64);
-      --  default_fixed32
-         Stream.Write_Key ("defaultFixed32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Default_Fixed_32));
-      --  default_fixed64
-         Stream.Write_Key ("defaultFixed64");
-          Stream.Write_Integer (Value.Default_Fixed_64);
-      --  default_sfixed32
-         Stream.Write_Key ("defaultSfixed32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Default_Sfixed_32));
-      --  default_sfixed64
-         Stream.Write_Key ("defaultSfixed64");
-          Stream.Write_Integer (Value.Default_Sfixed_64);
-      --  default_float
-         Stream.Write_Key ("defaultFloat");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
-         declare
-            pragma Suppress (Range_Check);
-         begin
-            Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Default_Float));
-         end;
-      --  default_double
-         Stream.Write_Key ("defaultDouble");
-         --  Range check is suppressed so NaN and +/-Inf
-         --  are allowed and printed as required by Protobuf
-         declare
-            pragma Suppress (Range_Check);
-         begin
-            Stream.Write_Float (Value.Default_Double);
-         end;
-      --  default_bool
-         Stream.Write_Key ("defaultBool");
-         Stream.Write_Boolean (Value.Default_Bool);
-      --  default_string
-         Stream.Write_Key ("defaultString");
-         Stream.Write_String (To_String (Value.Default_String));
-      --  default_bytes
-         Stream.Write_Key ("defaultBytes");
-         Stream.Write_Bytes (Value.Default_Bytes);
+      Stream.Write_Key ("data");
+      Write (Stream, Value.Data);
+      Stream.Write_Key ("defaultInt32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Default_Int_32));
+      Stream.Write_Key ("defaultInt64");
+      Stream.Write_Integer (Value.Default_Int_64);
+      Stream.Write_Key ("defaultUint32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Default_Uint_32));
+      Stream.Write_Key ("defaultUint64");
+      Stream.Write_Integer (Value.Default_Uint_64);
+      Stream.Write_Key ("defaultSint32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Default_Sint_32));
+      Stream.Write_Key ("defaultSint64");
+      Stream.Write_Integer (Value.Default_Sint_64);
+      Stream.Write_Key ("defaultFixed32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Default_Fixed_32));
+      Stream.Write_Key ("defaultFixed64");
+      Stream.Write_Integer (Value.Default_Fixed_64);
+      Stream.Write_Key ("defaultSfixed32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Default_Sfixed_32));
+      Stream.Write_Key ("defaultSfixed64");
+      Stream.Write_Integer (Value.Default_Sfixed_64);
+      Stream.Write_Key ("defaultFloat");
+      declare
+         pragma Suppress (Range_Check);
+      begin
+         Stream.Write_Float (Interfaces.IEEE_Float_64 (Value.Default_Float));
+      end;
+      Stream.Write_Key ("defaultDouble");
+      declare
+         pragma Suppress (Range_Check);
+      begin
+         Stream.Write_Float (Value.Default_Double);
+      end;
+      Stream.Write_Key ("defaultBool");
+      Stream.Write_Boolean (Value.Default_Bool);
+      Stream.Write_Key ("defaultString");
+      Stream.Write_String (To_String (Value.Default_String));
+      Stream.Write_Key ("defaultBytes");
+      Stream.Write_Bytes (Value.Default_Bytes);
       Stream.End_Object;
    end Write;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Nested_Message) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Test_All_Required_Types_Proto_2_Nested_Message) is
    begin
       Stream.Start_Object;
-      --  a
-         Stream.Write_Key ("a");
-         Stream.Write_Integer (Long_Long_Integer (Value.A));
-      --  corecursive
+      Stream.Write_Key ("a");
+      Stream.Write_Integer (Long_Long_Integer (Value.A));
       if Value.Corecursive.Length > 0 then
          Stream.Write_Key ("corecursive");
          for J in 1 .. Value.Corecursive.Length loop
             Write (Stream, Value.Corecursive (J));
          end loop;
       end if;
-      --  optional_corecursive
       if Value.Optional_Corecursive.Length > 0 then
          Stream.Write_Key ("optionalCorecursive");
          for J in 1 .. Value.Optional_Corecursive.Length loop
@@ -1884,21 +1674,21 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Data) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Test_All_Required_Types_Proto_2_Data) is
    begin
       Stream.Start_Object;
-      --  group_int32
-         Stream.Write_Key ("groupInt32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Group_Int_32));
-      --  group_uint32
-         Stream.Write_Key ("groupUint32");
-         Stream.Write_Integer (Long_Long_Integer (Value.Group_Uint_32));
+      Stream.Write_Key ("groupInt32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Group_Int_32));
+      Stream.Write_Key ("groupUint32");
+      Stream.Write_Integer (Long_Long_Integer (Value.Group_Uint_32));
       Stream.End_Object;
    end Write;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Message_Set_Correct) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Test_All_Required_Types_Proto_2_Message_Set_Correct) is
    begin
       Stream.Start_Object;
       Stream.End_Object;
@@ -1906,52 +1696,48 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_1) is
    begin
       Stream.Start_Object;
-      --  str
-         Stream.Write_Key ("str");
-         Stream.Write_String (To_String (Value.Str));
+      Stream.Write_Key ("str");
+      Stream.Write_String (To_String (Value.Str));
       Stream.End_Object;
    end Write;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Test_All_Required_Types_Proto_2_Message_Set_Correct_Extension_2) is
    begin
       Stream.Start_Object;
-      --  i
-         Stream.Write_Key ("i");
-         Stream.Write_Integer (Long_Long_Integer (Value.I));
+      Stream.Write_Key ("i");
+      Stream.Write_Integer (Long_Long_Integer (Value.I));
       Stream.End_Object;
    end Write;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.Test_Large_Oneof) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .Test_Large_Oneof) is
    begin
       Stream.Start_Object;
-      --  a1
       if Value.Variant.Large_Oneof = A1_Kind then
          Stream.Write_Key ("a1");
          Write (Stream, Value.Variant.A1);
       end if;
-      --  a2
       if Value.Variant.Large_Oneof = A2_Kind then
          Stream.Write_Key ("a2");
          Write (Stream, Value.Variant.A2);
       end if;
-      --  a3
       if Value.Variant.Large_Oneof = A3_Kind then
          Stream.Write_Key ("a3");
          Write (Stream, Value.Variant.A3);
       end if;
-      --  a4
       if Value.Variant.Large_Oneof = A4_Kind then
          Stream.Write_Key ("a4");
          Write (Stream, Value.Variant.A4);
       end if;
-      --  a5
       if Value.Variant.Large_Oneof = A5_Kind then
          Stream.Write_Key ("a5");
          Write (Stream, Value.Variant.A5);
@@ -1961,7 +1747,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A1) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .A1) is
    begin
       Stream.Start_Object;
       Stream.End_Object;
@@ -1969,7 +1756,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A2) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .A2) is
    begin
       Stream.Start_Object;
       Stream.End_Object;
@@ -1977,7 +1765,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A3) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .A3) is
    begin
       Stream.Start_Object;
       Stream.End_Object;
@@ -1985,7 +1774,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A4) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .A4) is
    begin
       Stream.Start_Object;
       Stream.End_Object;
@@ -1993,7 +1783,8 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
-     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.A5) is
+     Value  : Standard.Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2
+         .A5) is
    begin
       Stream.Start_Object;
       Stream.End_Object;
