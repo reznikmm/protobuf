@@ -6,7 +6,7 @@ with PB_Support.Common_JSON;
 
 package body PB_Support.JSON is
 
-   use Ada.Strings.Unbounded;
+   use all type Ada.Strings.Unbounded.Unbounded_String;
 
    ------------------
    -- Start_Object --
@@ -79,9 +79,11 @@ package body PB_Support.JSON is
       function Escape_JSON (S : String) return String;
 
       function Escape_JSON (S : String) return String is
-         use Ada.Characters;
 
-         Result : Unbounded_String := Null_Unbounded_String;
+         package Latin_1 renames Ada.Characters.Latin_1;
+
+         Result : Ada.Strings.Unbounded.Unbounded_String :=
+           Ada.Strings.Unbounded.Null_Unbounded_String;
          function Hex (N : Natural) return Character;
 
          function Hex (N : Natural) return Character is
