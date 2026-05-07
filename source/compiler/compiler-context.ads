@@ -35,6 +35,12 @@ with PB_Support.Universal_String_Vectors;
 
 package Compiler.Context is
 
+   Runtime_Dep : Runtime_Dep_Type := Runtime_League;
+   --  Runtime dependency (default: league)
+
+   Generate_JSON : Boolean := True;
+   --  Whether to generate JSON support package (default: true)
+
    Is_Proto_2 : Boolean := True;
    --  Proto version of current file
 

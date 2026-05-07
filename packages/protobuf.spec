@@ -80,22 +80,24 @@ make install DESTDIR=%{buildroot} LIBDIR=%{_libdir} PREFIX=%{_prefix} GPRDIR=%{_
 
 %files %{name}-runtime
 %dir %{_libdir}/%{name}
-%{_libdir}/%{name}/libadapbrt.so.%{version}-git
-%{_libdir}/libadapbrt.so.%{version}-git
+%{_libdir}/%{name}/libadapbrtl.so.%{version}-git
+%{_libdir}/libadapbrtl.so.%{version}-git
 
 %files %{name}-runtime-devel
 %doc README.md
-%{_libdir}/%{name}/libadapbrt.so
-%{_libdir}/libadapbrt.so
+%{_libdir}/%{name}/libadapbrtl.so
+%{_libdir}/libadapbrtl.so
 %{_libdir}/%{name}/*.ali
 %{_includedir}/%{name}
 %{_datadir}/gdb/python/%{name}
-%{_gprdir}/protobuf_runtime.gpr
+%{_gprdir}/protobuf_runtime_league.gpr
 %{_gprdir}/manifests/protobuf_runtime
 %{_gprdir}/manifests/protoc_gen_ada
 
 
 %changelog
+* Sat Apr 18 2026 Manuel Gomez <mgrojo@gmail.com> - 1.1.0-git
+- Adjustment for the League runtime.
 * Wed Feb 15 2023 Manuel Gomez <mgrojo@gmail.com> - 1.1.0-git
 - Align to version and library filename used by the Alire crate
 * Thu May  7 2020 Maxim Reznik <reznikmm@gmail.com> - 0.1.0-git

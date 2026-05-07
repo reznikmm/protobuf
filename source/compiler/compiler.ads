@@ -23,4 +23,9 @@
 package Compiler is
    pragma Pure;
 
+   type Runtime_Dep_Type is
+      (Runtime_League,      --  Use League library (and Matreshka).
+       Runtime_Plain_Ada);  --  Use only Ada.* or own resources;
+                            --  strings are assumed being UTF-8-encoded.
+
 end Compiler;

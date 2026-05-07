@@ -21,7 +21,7 @@
 --  DEALINGS IN THE SOFTWARE.
 
 
-with "protobuf_runtime.gpr";
+with "protobuf_runtime_league.gpr";
 
 with "protobuf_config.gpr";
 
