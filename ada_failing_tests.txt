@@ -10,7 +10,7 @@ Required.Proto2.ProtobufInput.ValidMessageSetEncoding.OutOfOrderGroupsEntries.Pr
 Required.Proto2.ProtobufInput.ValidMessageSetEncoding.ProtobufOutput
 Required.Proto3.ProtobufInput.UnknownOrdering.ProtobufOutput
 
-# Map-related conformance tests (temporarily ignored until map JSON is fixed)
+# Map-related conformance tests (ignored until map JSON is implemented)
 Required.Proto2.ProtobufInput.ValidDataMap.BOOL.BOOL.Default.JsonOutput
 Required.Proto2.ProtobufInput.ValidDataMap.BOOL.BOOL.DuplicateKeyInMapEntry.JsonOutput
 Required.Proto2.ProtobufInput.ValidDataMap.BOOL.BOOL.DuplicateKey.JsonOutput
@@ -251,3 +251,10 @@ Required.Proto3.ProtobufInput.ValidDataMap.UINT64.UINT64.DuplicateValueInMapEntr
 Required.Proto3.ProtobufInput.ValidDataMap.UINT64.UINT64.MissingDefault.JsonOutput
 Required.Proto3.ProtobufInput.ValidDataMap.UINT64.UINT64.NonDefault.JsonOutput
 Required.Proto3.ProtobufInput.ValidDataMap.UINT64.UINT64.Unordered.JsonOutput
+
+# Ignored until used matreshka_league version includes https://github.com/godunko/matreshka/pull/5
+Required.Proto2.ProtobufInput.ValidDataRepeated.STRING.JsonOutput # Output was not equivalent to reference message: modified: repeated_string[2]: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\01
+Required.Proto2.ProtobufInput.ValidDataScalar.STRING[2].JsonOutput # Output was not equivalent to reference message: modified: optional_string: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\010\0
+Required.Proto3.ProtobufInput.ValidDataRepeated.STRING.JsonOutput # Output was not equivalent to reference message: modified: repeated_string[2]: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\01
+Required.Proto3.ProtobufInput.ValidDataScalar.STRING[2].JsonOutput # Output was not equivalent to reference message: modified: optional_string: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\010\0
+
