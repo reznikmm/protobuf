@@ -9,8 +9,12 @@ with Google.Protobuf.Field_Mask.JSON;
 with Google.Protobuf.Struct.JSON;
 with Google.Protobuf.Timestamp.JSON;
 with Google.Protobuf.Wrappers.JSON;
+with League.Strings;
 
 package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
+
+   function "+" (Text : League.Strings.Universal_String'Class) return String
+     renames League.Strings.To_UTF_8_String;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
@@ -53,7 +57,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
       Stream.Write_Key ("optionalBool");
       Stream.Write_Boolean (Value.Optional_Bool);
       Stream.Write_Key ("optionalString");
-      Stream.Write_String (Value.Optional_String.To_UTF_8_String);
+      Stream.Write_String (+Value.Optional_String);
       Stream.Write_Key ("optionalBytes");
       Stream.Write_Bytes (Value.Optional_Bytes);
       if Value.Optional_Nested_Message.Is_Set then
@@ -71,9 +75,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
       Stream.Write_Key ("optionalAliasedEnum");
       Stream.Write_String (Value.Optional_Aliased_Enum'Image);
       Stream.Write_Key ("optionalStringPiece");
-      Stream.Write_String (Value.Optional_String_Piece.To_UTF_8_String);
+      Stream.Write_String (+Value.Optional_String_Piece);
       Stream.Write_Key ("optionalCord");
-      Stream.Write_String (Value.Optional_Cord.To_UTF_8_String);
+      Stream.Write_String (+Value.Optional_Cord);
       if Value.Recursive_Message.Length > 0 then
          Stream.Write_Key ("recursiveMessage");
          for J in 1 .. Value.Recursive_Message.Length loop
@@ -202,7 +206,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
          Stream.Write_Key ("repeatedString");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_String.Length loop
-            Stream.Write_String (Value.Repeated_String (J).To_UTF_8_String);
+            Stream.Write_String (+Value.Repeated_String (J));
          end loop;
          Stream.End_Array;
       end if;
@@ -250,8 +254,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
          Stream.Write_Key ("repeatedStringPiece");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_String_Piece.Length loop
-            Stream.Write_String
-              (Value.Repeated_String_Piece (J).To_UTF_8_String);
+            Stream.Write_String (+Value.Repeated_String_Piece (J));
          end loop;
          Stream.End_Array;
       end if;
@@ -259,7 +262,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
          Stream.Write_Key ("repeatedCord");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Cord.Length loop
-            Stream.Write_String (Value.Repeated_Cord (J).To_UTF_8_String);
+            Stream.Write_String (+Value.Repeated_Cord (J));
          end loop;
          Stream.End_Array;
       end if;
@@ -678,7 +681,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
       end if;
       if Value.Variant.Oneof_Field = Oneof_String_Kind then
          Stream.Write_Key ("oneofString");
-         Stream.Write_String (Value.Variant.Oneof_String.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Oneof_String);
       end if;
       if Value.Variant.Oneof_Field = Oneof_Bytes_Kind then
          Stream.Write_Key ("oneofBytes");
@@ -1189,9 +1192,9 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
    begin
       Stream.Start_Object;
       Stream.Write_Key ("key");
-      Stream.Write_String (Value.Key.To_UTF_8_String);
+      Stream.Write_String (+Value.Key);
       Stream.Write_Key ("value");
-      Stream.Write_String (Value.Value.To_UTF_8_String);
+      Stream.Write_String (+Value.Value);
       Stream.End_Object;
    end Write;
 
@@ -1202,7 +1205,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
    begin
       Stream.Start_Object;
       Stream.Write_Key ("key");
-      Stream.Write_String (Value.Key.To_UTF_8_String);
+      Stream.Write_String (+Value.Key);
       Stream.Write_Key ("value");
       Stream.Write_Bytes (Value.Value);
       Stream.End_Object;
@@ -1215,7 +1218,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
    begin
       Stream.Start_Object;
       Stream.Write_Key ("key");
-      Stream.Write_String (Value.Key.To_UTF_8_String);
+      Stream.Write_String (+Value.Key);
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Write (Stream, Value.Value.Value);
@@ -1230,7 +1233,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
    begin
       Stream.Start_Object;
       Stream.Write_Key ("key");
-      Stream.Write_String (Value.Key.To_UTF_8_String);
+      Stream.Write_String (+Value.Key);
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
          Write (Stream, Value.Value.Value);
@@ -1245,7 +1248,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
    begin
       Stream.Start_Object;
       Stream.Write_Key ("key");
-      Stream.Write_String (Value.Key.To_UTF_8_String);
+      Stream.Write_String (+Value.Key);
       Stream.Write_Key ("value");
       Stream.Write_String (Value.Value'Image);
       Stream.End_Object;
@@ -1258,7 +1261,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
    begin
       Stream.Start_Object;
       Stream.Write_Key ("key");
-      Stream.Write_String (Value.Key.To_UTF_8_String);
+      Stream.Write_String (+Value.Key);
       Stream.Write_Key ("value");
       Stream.Write_String (Value.Value'Image);
       Stream.End_Object;

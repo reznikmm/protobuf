@@ -2,7 +2,12 @@
 --  Source: conformance.proto
 --  Protobuf Compiler Version: 3.21.12
 
+with League.Strings;
+
 package body Conformance.Conformance.JSON is
+
+   function "+" (Text : League.Strings.Universal_String'Class) return String
+     renames League.Strings.To_UTF_8_String;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
@@ -10,11 +15,11 @@ package body Conformance.Conformance.JSON is
    begin
       Stream.Start_Object;
       Stream.Write_Key ("name");
-      Stream.Write_String (Value.Name.To_UTF_8_String);
+      Stream.Write_String (+Value.Name);
       Stream.Write_Key ("failureMessage");
-      Stream.Write_String (Value.Failure_Message.To_UTF_8_String);
+      Stream.Write_String (+Value.Failure_Message);
       Stream.Write_Key ("matchedName");
-      Stream.Write_String (Value.Matched_Name.To_UTF_8_String);
+      Stream.Write_String (+Value.Matched_Name);
       Stream.End_Object;
    end Write;
 
@@ -45,20 +50,20 @@ package body Conformance.Conformance.JSON is
       end if;
       if Value.Variant.Payload = Json_Payload_Kind then
          Stream.Write_Key ("jsonPayload");
-         Stream.Write_String (Value.Variant.Json_Payload.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Json_Payload);
       end if;
       if Value.Variant.Payload = Jspb_Payload_Kind then
          Stream.Write_Key ("jspbPayload");
-         Stream.Write_String (Value.Variant.Jspb_Payload.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Jspb_Payload);
       end if;
       if Value.Variant.Payload = Text_Payload_Kind then
          Stream.Write_Key ("textPayload");
-         Stream.Write_String (Value.Variant.Text_Payload.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Text_Payload);
       end if;
       Stream.Write_Key ("requestedOutputFormat");
       Stream.Write_String (Value.Requested_Output_Format'Image);
       Stream.Write_Key ("messageType");
-      Stream.Write_String (Value.Message_Type.To_UTF_8_String);
+      Stream.Write_String (+Value.Message_Type);
       Stream.Write_Key ("testCategory");
       Stream.Write_String (Value.Test_Category'Image);
       if Value.Jspb_Encoding_Options.Is_Set then
@@ -77,19 +82,19 @@ package body Conformance.Conformance.JSON is
       Stream.Start_Object;
       if Value.Variant.Result = Parse_Error_Kind then
          Stream.Write_Key ("parseError");
-         Stream.Write_String (Value.Variant.Parse_Error.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Parse_Error);
       end if;
       if Value.Variant.Result = Serialize_Error_Kind then
          Stream.Write_Key ("serializeError");
-         Stream.Write_String (Value.Variant.Serialize_Error.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Serialize_Error);
       end if;
       if Value.Variant.Result = Timeout_Error_Kind then
          Stream.Write_Key ("timeoutError");
-         Stream.Write_String (Value.Variant.Timeout_Error.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Timeout_Error);
       end if;
       if Value.Variant.Result = Runtime_Error_Kind then
          Stream.Write_Key ("runtimeError");
-         Stream.Write_String (Value.Variant.Runtime_Error.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Runtime_Error);
       end if;
       if Value.Variant.Result = Protobuf_Payload_Kind then
          Stream.Write_Key ("protobufPayload");
@@ -97,19 +102,19 @@ package body Conformance.Conformance.JSON is
       end if;
       if Value.Variant.Result = Json_Payload_Kind then
          Stream.Write_Key ("jsonPayload");
-         Stream.Write_String (Value.Variant.Json_Payload.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Json_Payload);
       end if;
       if Value.Variant.Result = Skipped_Kind then
          Stream.Write_Key ("skipped");
-         Stream.Write_String (Value.Variant.Skipped.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Skipped);
       end if;
       if Value.Variant.Result = Jspb_Payload_Kind then
          Stream.Write_Key ("jspbPayload");
-         Stream.Write_String (Value.Variant.Jspb_Payload.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Jspb_Payload);
       end if;
       if Value.Variant.Result = Text_Payload_Kind then
          Stream.Write_Key ("textPayload");
-         Stream.Write_String (Value.Variant.Text_Payload.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Text_Payload);
       end if;
       Stream.End_Object;
    end Write;

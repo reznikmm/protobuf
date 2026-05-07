@@ -343,7 +343,8 @@ package body PB_Support.JSON is
    is
    begin
       Write_String
-        (Self => Self, Value => PB_Support.Common_JSON.Duration_Image (Seconds, Nanos));
+        (Self => Self,
+         Value => PB_Support.Common_JSON.Duration_Image (Seconds, Nanos));
    end Write_Duration;
 
    ---------------

@@ -2,7 +2,12 @@
 --  Source: test_messages_proto2.proto
 --  Protobuf Compiler Version: 3.21.12
 
+with League.Strings;
+
 package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
+
+   function "+" (Text : League.Strings.Universal_String'Class) return String
+     renames League.Strings.To_UTF_8_String;
 
    procedure Write
     (Stream : in out PB_Support.JSON.JSON_Writer;
@@ -78,7 +83,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       end if;
       if Value.Optional_String.Is_Set then
          Stream.Write_Key ("optionalString");
-         Stream.Write_String (Value.Optional_String.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Optional_String.Value);
       end if;
       if Value.Optional_Bytes.Is_Set then
          Stream.Write_Key ("optionalBytes");
@@ -102,12 +107,11 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       end if;
       if Value.Optional_String_Piece.Is_Set then
          Stream.Write_Key ("optionalStringPiece");
-         Stream.Write_String
-           (Value.Optional_String_Piece.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Optional_String_Piece.Value);
       end if;
       if Value.Optional_Cord.Is_Set then
          Stream.Write_Key ("optionalCord");
-         Stream.Write_String (Value.Optional_Cord.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Optional_Cord.Value);
       end if;
       if Value.Recursive_Message.Length > 0 then
          Stream.Write_Key ("recursiveMessage");
@@ -237,7 +241,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          Stream.Write_Key ("repeatedString");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_String.Length loop
-            Stream.Write_String (Value.Repeated_String (J).To_UTF_8_String);
+            Stream.Write_String (+Value.Repeated_String (J));
          end loop;
          Stream.End_Array;
       end if;
@@ -285,8 +289,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          Stream.Write_Key ("repeatedStringPiece");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_String_Piece.Length loop
-            Stream.Write_String
-              (Value.Repeated_String_Piece (J).To_UTF_8_String);
+            Stream.Write_String (+Value.Repeated_String_Piece (J));
          end loop;
          Stream.End_Array;
       end if;
@@ -294,7 +297,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          Stream.Write_Key ("repeatedCord");
          Stream.Start_Array;
          for J in 1 .. Value.Repeated_Cord.Length loop
-            Stream.Write_String (Value.Repeated_Cord (J).To_UTF_8_String);
+            Stream.Write_String (+Value.Repeated_Cord (J));
          end loop;
          Stream.End_Array;
       end if;
@@ -729,7 +732,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       end if;
       if Value.Variant.Oneof_Field = Oneof_String_Kind then
          Stream.Write_Key ("oneofString");
-         Stream.Write_String (Value.Variant.Oneof_String.To_UTF_8_String);
+         Stream.Write_String (+Value.Variant.Oneof_String);
       end if;
       if Value.Variant.Oneof_Field = Oneof_Bytes_Kind then
          Stream.Write_Key ("oneofBytes");
@@ -839,7 +842,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       end if;
       if Value.Default_String.Is_Set then
          Stream.Write_Key ("defaultString");
-         Stream.Write_String (Value.Default_String.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Default_String.Value);
       end if;
       if Value.Default_Bytes.Is_Set then
          Stream.Write_Key ("defaultBytes");
@@ -1214,11 +1217,11 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Start_Object;
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-         Stream.Write_String (Value.Key.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Key.Value);
       end if;
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
-         Stream.Write_String (Value.Value.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Value.Value);
       end if;
       Stream.End_Object;
    end Write;
@@ -1231,7 +1234,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Start_Object;
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-         Stream.Write_String (Value.Key.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Key.Value);
       end if;
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
@@ -1248,7 +1251,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Start_Object;
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-         Stream.Write_String (Value.Key.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Key.Value);
       end if;
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
@@ -1265,7 +1268,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Start_Object;
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-         Stream.Write_String (Value.Key.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Key.Value);
       end if;
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
@@ -1282,7 +1285,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Start_Object;
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-         Stream.Write_String (Value.Key.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Key.Value);
       end if;
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
@@ -1299,7 +1302,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Start_Object;
       if Value.Key.Is_Set then
          Stream.Write_Key ("key");
-         Stream.Write_String (Value.Key.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Key.Value);
       end if;
       if Value.Value.Is_Set then
          Stream.Write_Key ("value");
@@ -1359,7 +1362,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Start_Object;
       if Value.Str.Is_Set then
          Stream.Write_Key ("str");
-         Stream.Write_String (Value.Str.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Str.Value);
       end if;
       Stream.End_Object;
    end Write;
@@ -1441,7 +1444,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       end if;
       if Value.Optional_String.Is_Set then
          Stream.Write_Key ("optionalString");
-         Stream.Write_String (Value.Optional_String.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Optional_String.Value);
       end if;
       if Value.Nested_Message.Is_Set then
          Stream.Write_Key ("nestedMessage");
@@ -1506,7 +1509,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Start_Object;
       if Value.Data.Is_Set then
          Stream.Write_Key ("data");
-         Stream.Write_String (Value.Data.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Data.Value);
       end if;
       Stream.End_Object;
    end Write;
@@ -1523,13 +1526,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       end if;
       if Value.Concept.Is_Set then
          Stream.Write_Key ("concept");
-         Stream.Write_String (Value.Concept.Value.To_UTF_8_String);
+         Stream.Write_String (+Value.Concept.Value);
       end if;
       if Value.Requires.Length > 0 then
          Stream.Write_Key ("requires");
          Stream.Start_Array;
          for J in 1 .. Value.Requires.Length loop
-            Stream.Write_String (Value.Requires (J).To_UTF_8_String);
+            Stream.Write_String (+Value.Requires (J));
          end loop;
          Stream.End_Array;
       end if;
@@ -1577,7 +1580,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Write_Key ("requiredBool");
       Stream.Write_Boolean (Value.Required_Bool);
       Stream.Write_Key ("requiredString");
-      Stream.Write_String (Value.Required_String.To_UTF_8_String);
+      Stream.Write_String (+Value.Required_String);
       Stream.Write_Key ("requiredBytes");
       Stream.Write_Bytes (Value.Required_Bytes);
       Stream.Write_Key ("requiredNestedMessage");
@@ -1589,9 +1592,9 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Write_Key ("requiredForeignEnum");
       Stream.Write_String (Value.Required_Foreign_Enum'Image);
       Stream.Write_Key ("requiredStringPiece");
-      Stream.Write_String (Value.Required_String_Piece.To_UTF_8_String);
+      Stream.Write_String (+Value.Required_String_Piece);
       Stream.Write_Key ("requiredCord");
-      Stream.Write_String (Value.Required_Cord.To_UTF_8_String);
+      Stream.Write_String (+Value.Required_Cord);
       if Value.Recursive_Message.Length > 0 then
          Stream.Write_Key ("recursiveMessage");
          for J in 1 .. Value.Recursive_Message.Length loop
@@ -1641,7 +1644,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
       Stream.Write_Key ("defaultBool");
       Stream.Write_Boolean (Value.Default_Bool);
       Stream.Write_Key ("defaultString");
-      Stream.Write_String (Value.Default_String.To_UTF_8_String);
+      Stream.Write_String (+Value.Default_String);
       Stream.Write_Key ("defaultBytes");
       Stream.Write_Bytes (Value.Default_Bytes);
       Stream.End_Object;
@@ -1699,7 +1702,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
    begin
       Stream.Start_Object;
       Stream.Write_Key ("str");
-      Stream.Write_String (Value.Str.To_UTF_8_String);
+      Stream.Write_String (+Value.Str);
       Stream.End_Object;
    end Write;
 

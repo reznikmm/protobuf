@@ -759,22 +759,11 @@ package body Compiler.File_Descriptors is
                           F.New_Selected_Name (Acc)));
 
                when TYPE_STRING              =>
-                  if Compiler.Context.Runtime_Dep = Compiler.Runtime_League
-                  then
-                     return
-                       F.New_Statement
-                         (F.New_Apply
-                            (F.New_Selected_Name (+"Stream.Write_String"),
-                             F.New_Selected_Name (Acc & ".To_UTF_8_String")));
-                  else
-                     return
-                       F.New_Statement
-                         (F.New_Apply
-                            (F.New_Selected_Name (+"Stream.Write_String"),
-                             F.New_Apply
-                               (F.New_Name (+"To_String"),
-                                F.New_Selected_Name (Acc))));
-                  end if;
+                  return
+                    F.New_Statement
+                      (F.New_Apply
+                         (F.New_Selected_Name (+"Stream.Write_String"),
+                          (F.New_Name (+"+" & Acc))));
 
                when TYPE_FLOAT | TYPE_DOUBLE =>
                   declare
@@ -1141,12 +1130,54 @@ package body Compiler.File_Descriptors is
             if Compiler.Context.Runtime_Dep /= Compiler.Runtime_League then
                New_Body :=
                  F.New_List
-                   (F.New_Use (F.New_Name (+"Ada.Strings.Unbounded")),
-                    New_Body);
+                   (F.New_Subprogram_Declaration
+                      (Specification =>
+                         F.New_Subprogram_Specification
+                           (Name       => F.New_Name (+"""+"""),
+                            Parameters =>
+                              F.New_Parameter
+                                (Name            => F.New_Name (+"Text"),
+                                 Type_Definition =>
+                                   F.New_Name
+                                     (+"Ada.Strings.Unbounded."
+                                      & "Unbounded_String")),
+                            Result     => F.New_Name (+"String")),
+                       Renamed       =>
+                         (F.New_Name (+"Ada.Strings.Unbounded.To_String"))),
+                    Body_Stmts);
 
                declare
                   U_Clause : constant Ada_Pretty.Node_Access :=
                     F.New_With (F.New_Name (+"Ada.Strings.Unbounded"));
+               begin
+                  if Clauses = null then
+                     Clauses := U_Clause;
+                  else
+                     Clauses := F.New_List (Clauses, U_Clause);
+                  end if;
+               end;
+            else
+               New_Body :=
+                 F.New_List
+                   (F.New_Subprogram_Declaration
+                      (Specification =>
+                         F.New_Subprogram_Specification
+                           (Name       => F.New_Name (+"""+"""),
+                            Parameters =>
+                              F.New_Parameter
+                                (Name            => F.New_Name (+"Text"),
+                                 Type_Definition =>
+                                   F.New_Name
+                                     (+"League.Strings.Universal_String" &
+                                      "'Class")),
+                            Result     => F.New_Name (+"String")),
+                       Renamed       =>
+                         F.New_Selected_Name
+                           (+"League.Strings.To_UTF_8_String")),
+                    Body_Stmts);
+               declare
+                  U_Clause : constant Ada_Pretty.Node_Access :=
+                    F.New_With (F.New_Name (+"League.Strings"));
                begin
                   if Clauses = null then
                      Clauses := U_Clause;
