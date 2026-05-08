@@ -772,6 +772,7 @@ package body PB_Support.IO is
       begin
          Ada.Streams.Stream_Element_Array'Read (Stream, Data);
          Value.Clear;
+         Value.Reserve_Capacity (Data'Length);
          for I in Data'Range loop
             --  This loop is probably performance-challenged because
             --  of the call to Append for each iteration...
@@ -795,10 +796,14 @@ package body PB_Support.IO is
       Read (Stream, Encoding, Data);
       --  This loop is probably performance-challenged because
       --  of the call to Append for each iteration...
-      for I in 1 .. Data.Length loop
-         Ada.Strings.Unbounded.Append
-            (Value, Character'Val (Data.Element (Positive (I))));
-      end loop;
+      declare
+         Str : String (1 .. Natural (Data.Length));
+      begin
+         for I in Str'Range loop
+            Str (I) := Character'Val (Data.Element (Positive (I)));
+         end loop;
+         Ada.Strings.Unbounded.Set_Unbounded_String (Value, Str);
+      end;
    end Read;
 
    ----------------------------------
