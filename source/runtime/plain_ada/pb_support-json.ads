@@ -40,26 +40,41 @@ package PB_Support.JSON is
    procedure End_Array (Self : in out JSON_Writer);
 
    procedure Write_Key (Self : in out JSON_Writer; Name : String);
+
+   -- Procedures Write_Map_Key write the value as a map key.
+
+   procedure Write_Map_Key (Self : in out JSON_Writer; Value : String);
+
+   procedure Write_Map_Key (Self : in out JSON_Writer; Value : Boolean);
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Integer_32);
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Unsigned_32);
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Integer_64);
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Unsigned_64);
+
    procedure Write_String (Self : in out JSON_Writer; Value : String);
    procedure Write_Bytes
-     (Self : in out JSON_Writer;
+     (Self  : in out JSON_Writer;
       Value : PB_Support.Basics.Stream_Element_Vector);
 
    procedure Write_Integer
-     (Self  : in out JSON_Writer;
-      Value : Long_Long_Integer);
+     (Self : in out JSON_Writer; Value : Long_Long_Integer);
 
    procedure Write_Integer
-     (Self  : in out JSON_Writer;
-      Value : Interfaces.Integer_64);
+     (Self : in out JSON_Writer; Value : Interfaces.Integer_64);
 
    procedure Write_Integer
-     (Self  : in out JSON_Writer;
-      Value : Interfaces.Unsigned_64);
+     (Self : in out JSON_Writer; Value : Interfaces.Unsigned_64);
 
    procedure Write_Float
-     (Self  : in out JSON_Writer;
-      Value : Interfaces.IEEE_Float_64);
+     (Self : in out JSON_Writer; Value : Interfaces.IEEE_Float_64);
 
    procedure Write_Boolean (Self : in out JSON_Writer; Value : Boolean);
    procedure Write_Null (Self : in out JSON_Writer);
@@ -81,7 +96,6 @@ package PB_Support.JSON is
    --  Validate that the given seconds and nanos values are within the valid
    --  range for a Duration in Protobuf JSON format.
    --  Raises Constraint_Error if the values are out of range.
-
 
    function To_String (Self : JSON_Writer) return String;
    --  Extract written JSON as a String encoded in UTF-8

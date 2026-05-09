@@ -1,4 +1,5 @@
 with Ada.Calendar.Formatting;
+with Ada.Characters.Handling;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
 
@@ -180,5 +181,56 @@ package body PB_Support.Common_JSON is
          end;
       end if;
    end Float_Image;
+
+   ---------------
+   -- Key_Image --
+   ---------------
+
+   function Key_Image (Key : Boolean) return String is
+   begin
+      return Ada.Characters.Handling.To_Lower (Boolean'Image (Key));
+   end Key_Image;
+
+   ---------------
+   -- Key_Image --
+   ---------------
+
+   function Key_Image (Key : Interfaces.Integer_32) return String is
+   begin
+      return
+        Ada.Strings.Fixed.Trim
+          (Interfaces.Integer_32'Image (Key), Ada.Strings.Left);
+   end Key_Image;
+
+   ---------------
+   -- Key_Image --
+   ---------------
+
+   function Key_Image (Key : Interfaces.Unsigned_32) return String is
+   begin
+      return Ada.Strings.Fixed.Trim
+          (Interfaces.Unsigned_32'Image (Key), Ada.Strings.Left);
+   end Key_Image;
+
+   ---------------
+   -- Key_Image --
+   ---------------
+
+   function Key_Image (Key : Interfaces.Integer_64) return String is
+   begin
+      return
+        Ada.Strings.Fixed.Trim
+          (Interfaces.Integer_64'Image (Key), Ada.Strings.Left);
+   end Key_Image;
+
+   ---------------
+   -- Key_Image --
+   ---------------
+
+   function Key_Image (Key : Interfaces.Unsigned_64) return String is
+   begin
+      return Ada.Strings.Fixed.Trim
+          (Interfaces.Unsigned_64'Image (Key), Ada.Strings.Left);
+   end Key_Image;
 
 end PB_Support.Common_JSON;

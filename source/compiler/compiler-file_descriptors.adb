@@ -701,12 +701,6 @@ package body Compiler.File_Descriptors is
         (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
          Acc   : League.Strings.Universal_String)
          return Ada_Pretty.Node_Access;
-
-      function Map_Key_Expression
-        (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-         Acc   : League.Strings.Universal_String)
-         return Ada_Pretty.Node_Access;
-
       function Generate_Field
         (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
          Acc   : League.Strings.Universal_String) return Ada_Pretty.Node_Access
@@ -837,53 +831,6 @@ package body Compiler.File_Descriptors is
          end if;
          return null;
       end Generate_Field;
-
-      -------------------------
-      -- Map_Key_Expression --
-      -------------------------
-
-      function Map_Key_Expression
-        (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-         Acc   : League.Strings.Universal_String) return Ada_Pretty.Node_Access
-      is
-         use all type Google.Protobuf.Descriptor.PB_Type;
-      begin
-         if not Field.PB_Type.Is_Set then
-            raise Program_Error with "Map key type is missing";
-         end if;
-
-         case Field.PB_Type.Value is
-            when TYPE_STRING =>
-               return
-                 F.New_Apply (F.New_Name (+"+"), F.New_Selected_Name (Acc));
-
-            when TYPE_BOOL   =>
-               return
-                 F.New_Apply
-                   (F.New_Selected_Name (+"Ada.Characters.Handling.To_Lower"),
-                    F.New_Selected_Name (Acc & "'Image"));
-
-            when TYPE_INT32
-               | TYPE_SINT32
-               | TYPE_SFIXED32
-               | TYPE_FIXED32
-               | TYPE_UINT32
-               | TYPE_INT64
-               | TYPE_SINT64
-               | TYPE_SFIXED64
-               | TYPE_FIXED64
-               | TYPE_UINT64 =>
-               return
-                 F.New_Apply
-                   (F.New_Selected_Name (+"Ada.Strings.Fixed.Trim"),
-                    F.New_List
-                      ((F.New_Selected_Name (Acc & "'Image"),
-                        F.New_Selected_Name (+"Ada.Strings.Left"))));
-
-            when others      =>
-               raise Program_Error with "Unsupported map key type";
-         end case;
-      end Map_Key_Expression;
 
       function Generate_Body
         (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
@@ -1071,11 +1018,11 @@ package body Compiler.File_Descriptors is
                                            (F.New_Statement
                                               (F.New_Apply
                                                  (F.New_Selected_Name
-                                                    (+"Stream.Write_Key"),
-                                                  Map_Key_Expression
-                                                    (Key_Field, Key_Acc))),
+                                                    (+"Stream.Write_Map_Key"),
+                                                  F.New_Selected_Name
+                                                    (Key_Acc))),
                                             Generate_Field
-                                              (Value_Field, Value_Acc));
+                                                 (Value_Field, Value_Acc));
 
                                        Field_Stmts :=
                                          F.New_List
@@ -1374,24 +1321,6 @@ package body Compiler.File_Descriptors is
                   end if;
                end;
             end if;
-
-               declare
-                  Extra_Clause : constant Ada_Pretty.Node_Access :=
-                         F.New_With (F.New_Name (+"Ada.Strings"));
-                  Fixed_Clause : constant Ada_Pretty.Node_Access :=
-                         F.New_With (F.New_Name (+"Ada.Strings.Fixed"));
-                  Handle_Clause : constant Ada_Pretty.Node_Access :=
-                         F.New_With (F.New_Name (+"Ada.Characters.Handling"));
-               begin
-                  if Clauses = null then
-                     Clauses := Extra_Clause;
-                  else
-                     Clauses := F.New_List (Clauses, Extra_Clause);
-                  end if;
-
-                  Clauses := F.New_List (Clauses, Fixed_Clause);
-                  Clauses := F.New_List (Clauses, Handle_Clause);
-               end;
 
             Unit :=
               F.New_Compilation_Unit

@@ -9,22 +9,18 @@ with PB_Support.Common_JSON;
 
 package body PB_Support.JSON is
 
-   function "+" (Text : String)
-      return League.Strings.Universal_String
-            renames League.Strings.From_UTF_8_String;
+   function "+" (Text : String) return League.Strings.Universal_String
+   renames League.Strings.From_UTF_8_String;
 
    procedure Push_Value
-     (Self  : in out JSON_Writer;
-      Value : League.JSON.Values.JSON_Value);
+     (Self : in out JSON_Writer; Value : League.JSON.Values.JSON_Value);
 
    ----------------
    -- Push_Value --
    ----------------
 
    procedure Push_Value
-     (Self  : in out JSON_Writer;
-      Value : League.JSON.Values.JSON_Value)
-   is
+     (Self : in out JSON_Writer; Value : League.JSON.Values.JSON_Value) is
    begin
       if Self.Stack.Is_Empty then
          if Self.Has_Root then
@@ -49,7 +45,7 @@ package body PB_Support.JSON is
                Self.Has_Pending_Key := False;
                Self.Pending_Key := League.Strings.Empty_Universal_String;
 
-            when Array_Container =>
+            when Array_Container  =>
                Parent.Array_Value.Append (Value);
          end case;
 
@@ -84,8 +80,8 @@ package body PB_Support.JSON is
 
    procedure End_Object (Self : in out JSON_Writer) is
    begin
-      if Self.Stack.Is_Empty or else
-         Self.Stack.Last_Element.Kind /= Object_Container
+      if Self.Stack.Is_Empty
+        or else Self.Stack.Last_Element.Kind /= Object_Container
       then
          raise JSON_Format_Error with "Mismatched JSON object end";
       end if;
@@ -135,8 +131,8 @@ package body PB_Support.JSON is
 
    procedure End_Array (Self : in out JSON_Writer) is
    begin
-      if Self.Stack.Is_Empty or else
-         Self.Stack.Last_Element.Kind /= Array_Container
+      if Self.Stack.Is_Empty
+        or else Self.Stack.Last_Element.Kind /= Array_Container
       then
          raise JSON_Format_Error with "Mismatched JSON array end";
       end if;
@@ -165,8 +161,8 @@ package body PB_Support.JSON is
 
    procedure Write_Key (Self : in out JSON_Writer; Name : String) is
    begin
-      if Self.Stack.Is_Empty or else
-         Self.Stack.Last_Element.Kind /= Object_Container
+      if Self.Stack.Is_Empty
+        or else Self.Stack.Last_Element.Kind /= Object_Container
       then
          raise JSON_Format_Error with "JSON key outside object";
       end if;
@@ -175,12 +171,72 @@ package body PB_Support.JSON is
       Self.Has_Pending_Key := True;
    end Write_Key;
 
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : League.Strings.Universal_String) is
+   begin
+      Write_Key (Self, Value.To_UTF_8_String);
+   end Write_Map_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key (Self : in out JSON_Writer; Value : Boolean) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Integer_32) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Unsigned_32) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Integer_64) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Unsigned_64) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
+
    -------------------------
    -- To_Universal_String --
    -------------------------
 
    function To_Universal_String
-     (Self : JSON_Writer) return League.Strings.Universal_String is
+     (Self : JSON_Writer) return League.Strings.Universal_String
+   is
       Doc : League.JSON.Documents.JSON_Document;
    begin
       if not Self.Stack.Is_Empty then
@@ -231,8 +287,7 @@ package body PB_Support.JSON is
    -------------------
 
    procedure Write_Integer
-      (Self  : in out JSON_Writer;
-       Value : Long_Long_Integer) is
+     (Self : in out JSON_Writer; Value : Long_Long_Integer) is
    begin
       Push_Value
         (Self,
@@ -245,9 +300,7 @@ package body PB_Support.JSON is
    -------------------
 
    procedure Write_Integer
-      (Self  : in out JSON_Writer;
-       Value : Interfaces.Integer_64)
-   is
+     (Self : in out JSON_Writer; Value : Interfaces.Integer_64) is
    begin
       --  64 bit types are quoted by default
       Write_String
@@ -259,9 +312,7 @@ package body PB_Support.JSON is
    -------------------
 
    procedure Write_Integer
-      (Self  : in out JSON_Writer;
-       Value : Interfaces.Unsigned_64)
-   is
+     (Self : in out JSON_Writer; Value : Interfaces.Unsigned_64) is
    begin
       --  64 bit types are quoted by default
       Write_String
@@ -273,9 +324,7 @@ package body PB_Support.JSON is
    -----------------
 
    procedure Write_Float
-     (Self : in out JSON_Writer;
-      Value : Interfaces.IEEE_Float_64)
-   is
+     (Self : in out JSON_Writer; Value : Interfaces.IEEE_Float_64) is
    begin
       Push_Value
         (Self,
@@ -311,7 +360,6 @@ package body PB_Support.JSON is
       return To_Universal_String (Self).To_UTF_8_String;
    end To_String;
 
-
    ---------------------
    -- Write_Timestamp --
    ---------------------
@@ -319,8 +367,7 @@ package body PB_Support.JSON is
    procedure Write_Timestamp
      (Self    : in out JSON_Writer;
       Seconds : Interfaces.Integer_64;
-      Nanos   : Interfaces.Integer_32)
-   is
+      Nanos   : Interfaces.Integer_32) is
    begin
       Write_String
         (Self  => Self,
@@ -334,12 +381,11 @@ package body PB_Support.JSON is
    procedure Write_Duration
      (Self    : in out JSON_Writer;
       Seconds : Interfaces.Integer_64;
-      Nanos   : Interfaces.Integer_32)
-   is
+      Nanos   : Interfaces.Integer_32) is
    begin
       Write_String
-           (Self => Self,
-            Value => PB_Support.Common_JSON.Duration_Image (Seconds, Nanos));
+        (Self  => Self,
+         Value => PB_Support.Common_JSON.Duration_Image (Seconds, Nanos));
    end Write_Duration;
 
 end PB_Support.JSON;

@@ -73,8 +73,7 @@ package body PB_Support.JSON is
    -- Write_String --
    ------------------
 
-   procedure Write_String (Self : in out JSON_Writer; Value : String)
-   is
+   procedure Write_String (Self : in out JSON_Writer; Value : String) is
 
       function Escape_JSON (S : String) return String;
 
@@ -98,29 +97,29 @@ package body PB_Support.JSON is
       begin
          for C of S loop
             case C is
-               when '"' =>
+               when '"'                                      =>
                   Append (Result, "\""");
 
-               when '\' =>
+               when '\'                                      =>
                   Append (Result, "\\");
 
-               when Latin_1.BS =>
+               when Latin_1.BS                               =>
                   Append (Result, "\b");
 
-               when Latin_1.HT =>
+               when Latin_1.HT                               =>
                   Append (Result, "\t");
 
-               when Latin_1.LF =>
+               when Latin_1.LF                               =>
                   Append (Result, "\n");
 
-               when Latin_1.FF =>
+               when Latin_1.FF                               =>
                   Append (Result, "\f");
 
-               when Latin_1.CR =>
+               when Latin_1.CR                               =>
                   Append (Result, "\r");
 
-               when Character'Val (0) .. Character'Val (7) |
-                    Character'Val (14) .. Character'Val (31) =>
+               when Character'Val (0) .. Character'Val (7)
+                  | Character'Val (14) .. Character'Val (31) =>
                   declare
                      V : constant Natural := Character'Pos (C);
                   begin
@@ -129,7 +128,7 @@ package body PB_Support.JSON is
                      Append (Result, Hex (V mod 16));
                   end;
 
-               when others =>
+               when others                                   =>
                   Append (Result, C);
             end case;
          end loop;
@@ -151,19 +150,16 @@ package body PB_Support.JSON is
    -- Write_Bytes --
    -----------------
 
-
    procedure Write_Bytes
-     (Self : in out JSON_Writer;
+     (Self  : in out JSON_Writer;
       Value : PB_Support.Basics.Stream_Element_Vector)
    is
 
       function To_Base_64
-      (Data : PB_Support.Basics.Stream_Element_Vector)
-         return String;
+        (Data : PB_Support.Basics.Stream_Element_Vector) return String;
 
       function To_Base_64
-      (Data : PB_Support.Basics.Stream_Element_Vector)
-         return String
+        (Data : PB_Support.Basics.Stream_Element_Vector) return String
       is
          Base64_Table : constant String :=
            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -191,10 +187,10 @@ package body PB_Support.JSON is
                end if;
 
                declare
-                  C1 : constant Natural :=  B1 / 4;
+                  C1 : constant Natural := B1 / 4;
                   C2 : constant Natural := (B1 mod 4) * 16 + B2 / 16;
                   C3 : constant Natural := (B2 mod 16) * 4 + B3 / 64;
-                  C4 : constant Natural :=  B3 mod 64;
+                  C4 : constant Natural := B3 mod 64;
                begin
                   Result (R) := Base64_Table (C1 + 1);
                   R := R + 1;
@@ -231,12 +227,10 @@ package body PB_Support.JSON is
    -------------------
 
    procedure Write_Integer
-     (Self  : in out JSON_Writer;
-      Value : Long_Long_Integer)
-   is
+     (Self : in out JSON_Writer; Value : Long_Long_Integer) is
    begin
       Append
-           (Self.Text, Ada.Strings.Fixed.Trim (Value'Image, Ada.Strings.Left));
+        (Self.Text, Ada.Strings.Fixed.Trim (Value'Image, Ada.Strings.Left));
       Self.Needs_Comma := True;
    end Write_Integer;
 
@@ -245,9 +239,7 @@ package body PB_Support.JSON is
    -------------------
 
    procedure Write_Integer
-      (Self  : in out JSON_Writer;
-       Value : Interfaces.Integer_64)
-   is
+     (Self : in out JSON_Writer; Value : Interfaces.Integer_64) is
    begin
       --  64 bit types are quoted by default
       Write_String
@@ -259,9 +251,7 @@ package body PB_Support.JSON is
    -------------------
 
    procedure Write_Integer
-      (Self  : in out JSON_Writer;
-       Value : Interfaces.Unsigned_64)
-   is
+     (Self : in out JSON_Writer; Value : Interfaces.Unsigned_64) is
    begin
       --  64 bit types are quoted by default
       Write_String
@@ -273,8 +263,7 @@ package body PB_Support.JSON is
    -----------------
 
    procedure Write_Float
-     (Self : in out JSON_Writer;
-      Value : Interfaces.IEEE_Float_64)
+     (Self : in out JSON_Writer; Value : Interfaces.IEEE_Float_64)
    is
       use type Interfaces.IEEE_Float_64;
    begin
@@ -282,8 +271,7 @@ package body PB_Support.JSON is
          Append (Self.Text, ",");
       end if;
 
-      Append
-         (Self.Text, PB_Support.Common_JSON.Float_Image (Value));
+      Append (Self.Text, PB_Support.Common_JSON.Float_Image (Value));
       Self.Needs_Comma := True;
    end Write_Float;
 
@@ -324,8 +312,7 @@ package body PB_Support.JSON is
    procedure Write_Timestamp
      (Self    : in out JSON_Writer;
       Seconds : Interfaces.Integer_64;
-      Nanos   : Interfaces.Integer_32)
-   is
+      Nanos   : Interfaces.Integer_32) is
    begin
       Write_String
         (Self  => Self,
@@ -339,11 +326,10 @@ package body PB_Support.JSON is
    procedure Write_Duration
      (Self    : in out JSON_Writer;
       Seconds : Interfaces.Integer_64;
-      Nanos   : Interfaces.Integer_32)
-   is
+      Nanos   : Interfaces.Integer_32) is
    begin
       Write_String
-        (Self => Self,
+        (Self  => Self,
          Value => PB_Support.Common_JSON.Duration_Image (Seconds, Nanos));
    end Write_Duration;
 
@@ -355,5 +341,61 @@ package body PB_Support.JSON is
    begin
       return To_String (Self.Text);
    end To_String;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key (Self : in out JSON_Writer; Value : String)
+   renames Write_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key (Self : in out JSON_Writer; Value : Boolean) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Integer_32) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Unsigned_32) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Integer_64) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
+
+   -------------------
+   -- Write_Map_Key --
+   -------------------
+
+   procedure Write_Map_Key
+     (Self : in out JSON_Writer; Value : Interfaces.Unsigned_64) is
+   begin
+      Write_Key (Self, Common_JSON.Key_Image (Value));
+   end Write_Map_Key;
 
 end PB_Support.JSON;
