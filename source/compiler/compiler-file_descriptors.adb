@@ -702,6 +702,11 @@ package body Compiler.File_Descriptors is
          Acc   : League.Strings.Universal_String)
          return Ada_Pretty.Node_Access;
 
+      function Map_Key_Expression
+        (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+         Acc   : League.Strings.Universal_String)
+         return Ada_Pretty.Node_Access;
+
       function Generate_Field
         (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
          Acc   : League.Strings.Universal_String) return Ada_Pretty.Node_Access
@@ -833,6 +838,53 @@ package body Compiler.File_Descriptors is
          return null;
       end Generate_Field;
 
+      -------------------------
+      -- Map_Key_Expression --
+      -------------------------
+
+      function Map_Key_Expression
+        (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+         Acc   : League.Strings.Universal_String) return Ada_Pretty.Node_Access
+      is
+         use all type Google.Protobuf.Descriptor.PB_Type;
+      begin
+         if not Field.PB_Type.Is_Set then
+            raise Program_Error with "Map key type is missing";
+         end if;
+
+         case Field.PB_Type.Value is
+            when TYPE_STRING =>
+               return
+                 F.New_Apply (F.New_Name (+"+"), F.New_Selected_Name (Acc));
+
+            when TYPE_BOOL   =>
+               return
+                 F.New_Apply
+                   (F.New_Selected_Name (+"Ada.Characters.Handling.To_Lower"),
+                    F.New_Selected_Name (Acc & "'Image"));
+
+            when TYPE_INT32
+               | TYPE_SINT32
+               | TYPE_SFIXED32
+               | TYPE_FIXED32
+               | TYPE_UINT32
+               | TYPE_INT64
+               | TYPE_SINT64
+               | TYPE_SFIXED64
+               | TYPE_FIXED64
+               | TYPE_UINT64 =>
+               return
+                 F.New_Apply
+                   (F.New_Selected_Name (+"Ada.Strings.Fixed.Trim"),
+                    F.New_List
+                      ((F.New_Selected_Name (Acc & "'Image"),
+                        F.New_Selected_Name (+"Ada.Strings.Left"))));
+
+            when others      =>
+               raise Program_Error with "Unsupported map key type";
+         end case;
+      end Map_Key_Expression;
+
       function Generate_Body
         (Msg    : Google.Protobuf.Descriptor.Descriptor_Proto;
          Prefix : League.Strings.Universal_String)
@@ -911,59 +963,195 @@ package body Compiler.File_Descriptors is
                      Field_Stmts   : Ada_Pretty.Node_Access := null;
                   begin
                      if Is_Vector then
-                        Field_Stmts :=
-                          F.New_Statement
-                            (F.New_Apply
-                               (F.New_Selected_Name (+"Stream.Write_Key"),
-                                F.New_String_Literal (Json_Key)));
-                        if Is_JSON_Array then
-                           Field_Stmts :=
-                             F.New_List
-                               (Field_Stmts,
-                                F.New_Statement
-                                  (F.New_Selected_Name
-                                     (+"Stream.Start_Array")));
-                        end if;
-
                         declare
-                           Acc       :
-                             constant League.Strings.Universal_String :=
-                               (if Field.PB_Type.Is_Set
-                                  and then not Is_Message
-                                  and then
-                                    not (Compiler.Context.Runtime_Dep
-                                         = Compiler.Runtime_League
-                                         and then
-                                           Field.PB_Type.Value = TYPE_STRING)
-                                then +"Value." & Ada_Name & ".Get (J)"
-                                else +"Value." & Ada_Name & " (J)");
-                           Loop_Body : constant Ada_Pretty.Node_Access :=
-                             Generate_Field (Field, Acc);
+                           Map_Index : Natural := 0;
                         begin
-                           declare
-                              Iter : constant Ada_Pretty.Node_Access :=
-                                F.New_List
-                                  (F.New_Literal (1),
-                                   F.New_Infix
-                                     (+"..",
-                                      F.New_Selected_Name
-                                        (+"Value." & Ada_Name & ".Length")));
-                           begin
-                              Field_Stmts :=
-                                F.New_List
-                                  (Field_Stmts,
-                                   F.New_For
-                                     (F.New_Name (+"J"), Iter, Loop_Body));
-                           end;
-                        end;
+                           for N in 1 .. Msg.Nested_Type.Length loop
+                              declare
+                                 Nested      :
+                                   constant Google
+                                              .Protobuf
+                                              .Descriptor
+                                              .Descriptor_Proto :=
+                                     Msg.Nested_Type (N);
+                                 Nested_Name :
+                                   constant League.Strings.Universal_String :=
+                                     Compiler.Context.Join (Key, Nested.Name);
+                              begin
+                                 if Field.Type_Name.Is_Set
+                                   and then Field.Type_Name.Value = Nested_Name
+                                   and then Nested.Options.Is_Set
+                                   and then
+                                     Nested.Options.Value.Map_Entry.Is_Set
+                                   and then
+                                     Nested.Options.Value.Map_Entry.Value
+                                 then
+                                    Map_Index := N;
+                                    exit;
+                                 end if;
+                              end;
+                           end loop;
 
-                        if Is_JSON_Array then
                            Field_Stmts :=
-                             F.New_List
-                               (Field_Stmts,
-                                F.New_Statement
-                                  (F.New_Selected_Name (+"Stream.End_Array")));
-                        end if;
+                             F.New_Statement
+                               (F.New_Apply
+                                  (F.New_Selected_Name (+"Stream.Write_Key"),
+                                   F.New_String_Literal (Json_Key)));
+
+                           if Map_Index > 0 then
+                              declare
+                                 Map_Entry   :
+                                   constant Google
+                                              .Protobuf
+                                              .Descriptor
+                                              .Descriptor_Proto :=
+                                     Msg.Nested_Type (Map_Index);
+                                 Key_Field   :
+                                   constant Google
+                                              .Protobuf
+                                              .Descriptor
+                                              .Field_Descriptor_Proto :=
+                                     Map_Entry.Field (1);
+                                 Value_Field :
+                                   constant Google
+                                              .Protobuf
+                                              .Descriptor
+                                              .Field_Descriptor_Proto :=
+                                     Map_Entry.Field (2);
+                              begin
+                                 Field_Stmts :=
+                                   F.New_List
+                                     (Field_Stmts,
+                                      F.New_Statement
+                                        (F.New_Selected_Name
+                                           (+"Stream.Start_Object")));
+
+                                 declare
+                                    Iter : constant Ada_Pretty.Node_Access :=
+                                      F.New_List
+                                        (F.New_Literal (1),
+                                         F.New_Infix
+                                           (+"..",
+                                            F.New_Selected_Name
+                                              (+"Value."
+                                               & Ada_Name
+                                               & ".Length")));
+                                 begin
+                                    declare
+                                       Entry_Acc :
+                                         constant League
+                                                    .Strings
+                                                    .Universal_String :=
+                                           +"Value." & Ada_Name & " (J)";
+                                       Value_Acc :
+                                         League.Strings.Universal_String :=
+                                           Entry_Acc & ".Value";
+                                       Key_Acc   :
+                                         League.Strings.Universal_String :=
+                                           Entry_Acc & ".Key";
+                                       Loop_Body : Ada_Pretty.Node_Access;
+                                    begin
+                                       if Compiler
+                                            .Field_Descriptors
+                                            .Is_Optional (Value_Field)
+                                         = Optional
+                                       then
+                                          Value_Acc.Append (+".Value");
+                                       end if;
+                                       if Compiler
+                                            .Field_Descriptors
+                                            .Is_Optional (Key_Field)
+                                         = Optional
+                                       then
+                                          Key_Acc.Append (+".Value");
+                                       end if;
+
+                                       Loop_Body :=
+                                         F.New_List
+                                           (F.New_Statement
+                                              (F.New_Apply
+                                                 (F.New_Selected_Name
+                                                    (+"Stream.Write_Key"),
+                                                  Map_Key_Expression
+                                                    (Key_Field, Key_Acc))),
+                                            Generate_Field
+                                              (Value_Field, Value_Acc));
+
+                                       Field_Stmts :=
+                                         F.New_List
+                                           (Field_Stmts,
+                                            F.New_For
+                                              (F.New_Name (+"J"),
+                                               Iter,
+                                               Loop_Body));
+                                    end;
+                                 end;
+
+                                 Field_Stmts :=
+                                   F.New_List
+                                     (Field_Stmts,
+                                      F.New_Statement
+                                        (F.New_Selected_Name
+                                           (+"Stream.End_Object")));
+                              end;
+                           else
+
+                              if Is_JSON_Array then
+                                 Field_Stmts :=
+                                   F.New_List
+                                     (Field_Stmts,
+                                      F.New_Statement
+                                        (F.New_Selected_Name
+                                           (+"Stream.Start_Array")));
+                              end if;
+
+                              declare
+                                 Acc       :
+                                   constant League.Strings.Universal_String :=
+                                     (if Field.PB_Type.Is_Set
+                                        and then not Is_Message
+                                        and then
+                                          not (Compiler.Context.Runtime_Dep
+                                               = Compiler.Runtime_League
+                                               and then
+                                                 Field.PB_Type.Value
+                                                 = TYPE_STRING)
+                                      then +"Value." & Ada_Name & ".Get (J)"
+                                      else +"Value." & Ada_Name & " (J)");
+                                 Loop_Body : constant Ada_Pretty.Node_Access :=
+                                   Generate_Field (Field, Acc);
+                              begin
+                                 declare
+                                    Iter : constant Ada_Pretty.Node_Access :=
+                                      F.New_List
+                                        (F.New_Literal (1),
+                                         F.New_Infix
+                                           (+"..",
+                                            F.New_Selected_Name
+                                              (+"Value."
+                                               & Ada_Name
+                                               & ".Length")));
+                                 begin
+                                    Field_Stmts :=
+                                      F.New_List
+                                        (Field_Stmts,
+                                         F.New_For
+                                           (F.New_Name (+"J"),
+                                            Iter,
+                                            Loop_Body));
+                                 end;
+                              end;
+
+                              if Is_JSON_Array then
+                                 Field_Stmts :=
+                                   F.New_List
+                                     (Field_Stmts,
+                                      F.New_Statement
+                                        (F.New_Selected_Name
+                                           (+"Stream.End_Array")));
+                              end if;
+                           end if;
+                        end;
 
                         Stmts :=
                           F.New_List
@@ -1186,6 +1374,24 @@ package body Compiler.File_Descriptors is
                   end if;
                end;
             end if;
+
+               declare
+                  Extra_Clause : constant Ada_Pretty.Node_Access :=
+                         F.New_With (F.New_Name (+"Ada.Strings"));
+                  Fixed_Clause : constant Ada_Pretty.Node_Access :=
+                         F.New_With (F.New_Name (+"Ada.Strings.Fixed"));
+                  Handle_Clause : constant Ada_Pretty.Node_Access :=
+                         F.New_With (F.New_Name (+"Ada.Characters.Handling"));
+               begin
+                  if Clauses = null then
+                     Clauses := Extra_Clause;
+                  else
+                     Clauses := F.New_List (Clauses, Extra_Clause);
+                  end if;
+
+                  Clauses := F.New_List (Clauses, Fixed_Clause);
+                  Clauses := F.New_List (Clauses, Handle_Clause);
+               end;
 
             Unit :=
               F.New_Compilation_Unit
