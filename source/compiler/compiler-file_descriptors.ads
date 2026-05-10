@@ -50,12 +50,19 @@ package Compiler.File_Descriptors is
       Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
       return League.Strings.Universal_String;
 
-   function JSON_Specification_Text
-     (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
-      Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
+private
+
+   function Package_Name
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
       return League.Strings.Universal_String;
 
-   function JSON_Body_Text
+   function Get_Prefix
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
+      return League.Strings.Universal_String;
+   --  Return protobuf prefix for given file: the dot appended with package.
+   --  Like ".google.protobuf"
+
+   function Header_Comment
      (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
       Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
       return League.Strings.Universal_String;

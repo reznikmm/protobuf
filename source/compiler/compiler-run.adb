@@ -28,7 +28,7 @@ with Google.Protobuf.Descriptor;
 
 with PB_Support.Stdio_Streams;
 with Compiler.Context;
-with Compiler.File_Descriptors;
+with Compiler.File_Descriptors.JSON;
 
 procedure Compiler.Run is
    Stream  : aliased PB_Support.Stdio_Streams.Stdio_Stream;
@@ -126,7 +126,7 @@ begin
                declare
                   Item : Google.Protobuf.Compiler.Plugin.File;
                   Content : constant League.Strings.Universal_String :=
-                    Compiler.File_Descriptors.JSON_Specification_Text
+                    Compiler.File_Descriptors.JSON.Specification_Text
                       (File, Request);
                begin
                   Item.Name := (True, Base & "-json.ads");
@@ -142,7 +142,7 @@ begin
                   Item.Name := (True, Base & "-json.adb");
                   Item.Content :=
                     (Is_Set => True,
-                     Value  => Compiler.File_Descriptors.JSON_Body_Text
+                     Value  => Compiler.File_Descriptors.JSON.Body_Text
                        (File, Request));
                   Result.File.Append (Item);
                end;
