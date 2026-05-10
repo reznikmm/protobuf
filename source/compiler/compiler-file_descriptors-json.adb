@@ -167,6 +167,14 @@ package body Compiler.File_Descriptors.JSON is
          if Is_Null_Value then
             return Generate_Null_Statement;
          else
+            if Compiler.Context.Always_Print_Enums_As_Ints then
+               return
+                 Generate_Stream_Write_Statement
+                   (+"Stream.Write_Integer",
+                    F.New_Apply
+                      (F.New_Name (+"Long_Long_Integer"),
+                       F.New_Selected_Name (Acc & "'Enum_Rep")));
+            end if;
             return
               Generate_Stream_Write_Statement
                 (+"Stream.Write_String", F.New_Selected_Name (Acc & "'Image"));
@@ -769,7 +777,8 @@ package body Compiler.File_Descriptors.JSON is
             Ada_Name      : constant League.Strings.Universal_String :=
               Compiler.Context.To_Ada_Name (Field.Name.Value);
             Json_Key      : constant League.Strings.Universal_String :=
-              (if Field.Json_Name.Is_Set
+              (if not Compiler.Context.Preserve_Proto_Field_Names and then
+                  Field.Json_Name.Is_Set
                then Field.Json_Name.Value
                else F_Name);
             Is_Vector     : constant Boolean :=

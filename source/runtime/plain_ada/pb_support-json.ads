@@ -9,26 +9,7 @@ with PB_Support.Basics;
 
 package PB_Support.JSON is
 
-   type Formatter_Options is record
-      Preserve_Proto_Field_Names : Boolean := False;
-      Always_Print_Enums_As_Ints : Boolean := False;
-      Emit_Default_Values        : Boolean := False;
-   end record;
-
-   Default_Formatter_Options : constant Formatter_Options :=
-     (Preserve_Proto_Field_Names => False,
-      Always_Print_Enums_As_Ints => False,
-      Emit_Default_Values        => False);
-
-   type Parser_Options is record
-      Ignore_Unknown_Fields : Boolean := False;
-   end record;
-
-   Default_Parser_Options : constant Parser_Options :=
-     (Ignore_Unknown_Fields => False);
-
    --  Exceptions that can be raised during JSON processing
-   JSON_Parse_Error  : exception;
    JSON_Format_Error : exception;
 
    type JSON_Writer is tagged private;

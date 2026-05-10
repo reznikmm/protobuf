@@ -44,10 +44,12 @@ procedure Compiler.Run is
      +"runtime=league";
    Plain_Ada_Option : constant League.Strings.Universal_String :=
      +"runtime=plain_ada";
-   Generate_JSON_True : constant League.Strings.Universal_String :=
-     +"generate_json=true";
-   Generate_JSON_False : constant League.Strings.Universal_String :=
-     +"generate_json=false";
+   Generate_JSON : constant League.Strings.Universal_String :=
+     +"generate_json";
+   Preserve_Proto_Field_Names : constant League.Strings.Universal_String :=
+     +"preserve_proto_field_names";
+   Always_Print_Enums_As_Ints : constant League.Strings.Universal_String :=
+      +"always_print_enums_as_ints";
 
 begin
    Stream.Initialize;
@@ -68,15 +70,44 @@ begin
             declare
                Option : League.Strings.Universal_String renames
                  Options.Element (J);
+               Option_Parts :
+                 constant League.String_Vectors.Universal_String_Vector :=
+                   Option.Split ('=', League.Strings.Keep_Empty);
             begin
                if Option = League_Option then
                   Compiler.Context.Runtime_Dep := Compiler.Runtime_League;
                elsif Option = Plain_Ada_Option then
                   Compiler.Context.Runtime_Dep := Compiler.Runtime_Plain_Ada;
-               elsif Option = Generate_JSON_True then
-                  Compiler.Context.Generate_JSON := True;
-               elsif Option = Generate_JSON_False then
-                  Compiler.Context.Generate_JSON := False;
+               elsif Option_Parts.Length = 1 then
+
+                  --  If the option is specified without value, True is
+                  --  assumed.
+                  if Option = Generate_JSON then
+                     Compiler.Context.Generate_JSON := True;
+                  elsif Option = Preserve_Proto_Field_Names then
+                     Compiler.Context.Preserve_Proto_Field_Names := True;
+                  elsif Option = Always_Print_Enums_As_Ints then
+                     Compiler.Context.Always_Print_Enums_As_Ints := True;
+                  end if;
+
+               elsif Option_Parts.Length = 2 then
+
+                  if Option_Parts.Element (1) = Generate_JSON then
+                     Compiler.Context.Generate_JSON :=
+                       Boolean'Wide_Wide_Value
+                         (Option_Parts.Element (2).To_Wide_Wide_String);
+                  elsif Option_Parts.Element (1) = Preserve_Proto_Field_Names
+                  then
+                     Compiler.Context.Preserve_Proto_Field_Names :=
+                       Boolean'Wide_Wide_Value
+                         (Option_Parts.Element (2).To_Wide_Wide_String);
+                  elsif Option_Parts.Element (1) = Always_Print_Enums_As_Ints
+                  then
+                     Compiler.Context.Always_Print_Enums_As_Ints :=
+                       Boolean'Wide_Wide_Value
+                         (Option_Parts.Element (2).To_Wide_Wide_String);
+                  end if;
+
                end if;
             end;
          end loop;

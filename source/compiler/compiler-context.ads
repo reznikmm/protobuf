@@ -41,6 +41,15 @@ package Compiler.Context is
    Generate_JSON : Boolean := True;
    --  Whether to generate JSON support package (default: true)
 
+   Preserve_Proto_Field_Names : Boolean := False;
+   --  Whether to preserve proto field names or use JSON field names
+   --  (default: false)
+
+   Always_Print_Enums_As_Ints : Boolean := False;
+   --  Whether to always print enums as ints (default: false)
+   --  This option requires an Ada 2022 compiler with support for the
+   --  'Enum_Rep attribute for the generated code to compile.
+
    Is_Proto_2 : Boolean := True;
    --  Proto version of current file
 

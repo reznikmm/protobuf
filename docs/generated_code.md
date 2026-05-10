@@ -18,6 +18,14 @@ The plugin also accepts comma-separated options via `--ada_opt=`:
 
 The generated type can change depending on the runtime selected.
 
+When `generate_json` is `true`, these options control the JSON output:
+- `preserve_proto_field_names=true`: keep the original field names.
+- `preserve_proto_field_names=false` (default): use camelCase field names
+- `always_print_enums_as_ints=true`: values for enums are the internal numbers.
+- `always_print_enums_as_ints=false` (default): values for enums are strings.
+
+If boolean options do not specify a value, `true` is assumed.
+
 The names of the output files are computed by taking the name of the
 `.proto` file and a name from a `package` directive, if any.
 
@@ -32,6 +40,8 @@ package foo.bar;
 ```
 
 All declarations in the file will reside in the `Foo.Bar.Xxx` package.
+
+If `generate_json` is `true`, a `Foo.Bar.Xxx.JSON` package is also generated.
 
 ## Messages
 
