@@ -101,8 +101,7 @@ package body Compiler.File_Descriptors.JSON is
              (+"Stream.Write_Bytes", F.New_Selected_Name (Acc));
       end Generate_Bytes_Statement;
 
-      function Generate_Null_Statement return Ada_Pretty.Node_Access
-      is
+      function Generate_Null_Statement return Ada_Pretty.Node_Access is
       begin
          return F.New_Statement (F.New_Selected_Name (+"Stream.Write_Null"));
       end Generate_Null_Statement;
@@ -130,8 +129,7 @@ package body Compiler.File_Descriptors.JSON is
 
       function Generate_Float_Statement
         (Acc : League.Strings.Universal_String; Needs_Conv : Boolean)
-         return Ada_Pretty.Node_Access
-      is
+         return Ada_Pretty.Node_Access is
       begin
          if Needs_Conv then
             return
@@ -369,9 +367,249 @@ package body Compiler.File_Descriptors.JSON is
          Is_JSON_Array : Boolean) return Ada_Pretty.Node_Access
       is
          use all type Compiler.Field_Descriptors.Option_Kind;
+         use all type Google.Protobuf.Descriptor.PB_Type;
 
          Map_Index   : Natural := 0;
          Field_Stmts : Ada_Pretty.Node_Access := null;
+
+         function Generate_Default_Map_Key_Statement
+           (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+            return Ada_Pretty.Node_Access;
+
+         function Generate_Default_Map_Value_Statement
+           (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+            return Ada_Pretty.Node_Access;
+
+         function Generate_Map_Key_Statement
+           (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+            Acc   : League.Strings.Universal_String)
+            return Ada_Pretty.Node_Access;
+
+         function Generate_Map_Value_Statement
+           (Pkg   : League.Strings.Universal_String;
+            Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+            Acc   : League.Strings.Universal_String)
+            return Ada_Pretty.Node_Access;
+
+         function Generate_Default_Map_Key_Statement
+           (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+            return Ada_Pretty.Node_Access is
+         begin
+            --  Map entries are emitted when the key is present, even if the
+            --  value itself is the type default.
+
+            if Field.PB_Type.Is_Set then
+               case Field.PB_Type.Value is
+                  when TYPE_BOOL                                =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Map_Key"),
+                             F.New_Name (+"False")));
+
+                  when TYPE_INT32 | TYPE_SINT32 | TYPE_SFIXED32 =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Map_Key"),
+                             F.New_Name (+"Interfaces.Integer_32'(0)")));
+
+                  when TYPE_UINT32 | TYPE_FIXED32               =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Map_Key"),
+                             F.New_Name (+"Interfaces.Unsigned_32'(0)")));
+
+                  when TYPE_INT64 | TYPE_SINT64 | TYPE_SFIXED64 =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Map_Key"),
+                             F.New_Name (+"Interfaces.Integer_64'(0)")));
+
+                  when TYPE_UINT64 | TYPE_FIXED64               =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Map_Key"),
+                             F.New_Name (+"Interfaces.Unsigned_64'(0)")));
+
+                  when others                                   =>
+                     null;
+               end case;
+            end if;
+
+            return
+              F.New_Statement
+                (F.New_Apply
+                   (F.New_Selected_Name (+"Stream.Write_Key"),
+                    F.New_String_Literal (+"")));
+         end Generate_Default_Map_Key_Statement;
+
+         function Generate_Map_Key_Statement
+           (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+            Acc   : League.Strings.Universal_String)
+            return Ada_Pretty.Node_Access
+         is
+            Is_Option : constant Compiler.Field_Descriptors.Option_Kind :=
+              Compiler.Field_Descriptors.Is_Optional (Field);
+            Cond      : constant Ada_Pretty.Node_Access :=
+              F.New_Selected_Name (Acc & ".Is_Set");
+            Not_Cond  : constant Ada_Pretty.Node_Access :=
+              F.New_Infix (+"not", Cond);
+            Present   : constant Ada_Pretty.Node_Access :=
+              F.New_Statement
+                (F.New_Apply
+                   (F.New_Selected_Name (+"Stream.Write_Map_Key"),
+                    F.New_Selected_Name (Acc & ".Value")));
+         begin
+            if Is_Option = Compiler.Field_Descriptors.Optional then
+               --  This New_If code uses another Not_Cond part because the
+               --  Else_Path parameter was not working. See:
+               --  https://github.com/reznikmm/ada-pretty/issues/1
+               --  TODO: simplify this when the issue is resolved.
+               return
+                 F.New_List
+                   (F.New_If (Cond, Present),
+                    F.New_If
+                      (Not_Cond, Generate_Default_Map_Key_Statement (Field)));
+            end if;
+
+            return
+              F.New_Statement
+                (F.New_Apply
+                   (F.New_Selected_Name (+"Stream.Write_Map_Key"),
+                    F.New_Selected_Name (Acc)));
+         end Generate_Map_Key_Statement;
+
+         function Generate_Default_Map_Value_Statement
+           (Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
+            return Ada_Pretty.Node_Access is
+         begin
+            if Compiler.Field_Descriptors.Is_Message (Field) then
+               return
+                 F.New_List
+                   (F.New_Statement
+                      (F.New_Selected_Name (+"Stream.Start_Object")),
+                    F.New_Statement
+                      (F.New_Selected_Name (+"Stream.End_Object")));
+            elsif Compiler.Field_Descriptors.Is_Enum (Field)
+              and then Field.Type_Name.Is_Set
+            then
+               if Field.Type_Name.Value = +".google.protobuf.NullValue" then
+                  return
+                    F.New_Statement
+                      (F.New_Selected_Name (+"Stream.Write_Null"));
+               else
+                  declare
+                     Target : constant Compiler.Context.Named_Type :=
+                       Compiler.Context.Named_Types (Field.Type_Name.Value);
+                  begin
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_String"),
+                             F.New_String_Literal (Target.Enum.Default)));
+                  end;
+               end if;
+            elsif Field.PB_Type.Is_Set then
+               case Field.PB_Type.Value is
+                  when TYPE_BOOL                                =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Boolean"),
+                             F.New_Name (+"False")));
+
+                  when TYPE_STRING | TYPE_BYTES                 =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_String"),
+                             F.New_String_Literal (+"")));
+
+                  when TYPE_FLOAT                               =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Float"),
+                             F.New_Apply
+                               (F.New_Name (+"Interfaces.IEEE_Float_64"),
+                                F.New_Name (+"0.0"))));
+
+                  when TYPE_DOUBLE                              =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Float"),
+                             F.New_Name (+"0.0")));
+
+                  when TYPE_INT32
+                     | TYPE_UINT32
+                     | TYPE_SINT32
+                     | TYPE_FIXED32
+                     | TYPE_SFIXED32                            =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Integer"),
+                             F.New_Apply
+                               (F.New_Name (+"Long_Long_Integer"),
+                                F.New_Literal (0))));
+
+                  when TYPE_INT64 | TYPE_SINT64 | TYPE_SFIXED64 =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Integer"),
+                             F.New_Name (+"Interfaces.Integer_64'(0)")));
+
+                  when TYPE_UINT64 | TYPE_FIXED64               =>
+                     return
+                       F.New_Statement
+                         (F.New_Apply
+                            (F.New_Selected_Name (+"Stream.Write_Integer"),
+                             F.New_Name (+"Interfaces.Unsigned_64'(0)")));
+
+                  when others                                   =>
+                     null;
+               end case;
+            end if;
+
+            return
+              F.New_Statement (F.New_Selected_Name (+"Stream.Write_Null"));
+         end Generate_Default_Map_Value_Statement;
+
+         function Generate_Map_Value_Statement
+           (Pkg   : League.Strings.Universal_String;
+            Field : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
+            Acc   : League.Strings.Universal_String)
+            return Ada_Pretty.Node_Access
+         is
+            Is_Option : constant Compiler.Field_Descriptors.Option_Kind :=
+              Compiler.Field_Descriptors.Is_Optional (Field);
+            Cond      : constant Ada_Pretty.Node_Access :=
+              F.New_Selected_Name (Acc & ".Is_Set");
+            Not_Cond  : constant Ada_Pretty.Node_Access :=
+              F.New_Infix (+"not", Cond);
+         begin
+            if Is_Option = Compiler.Field_Descriptors.Optional then
+               --  This New_If code uses another Not_Cond part because the
+               --  Else_Path parameter was not working. See:
+               --  https://github.com/reznikmm/ada-pretty/issues/1
+               --  TODO: simplify this when the issue is resolved.
+               return
+                 F.New_List
+                   (F.New_If
+                      (Cond, Generate_Field (Pkg, Field, Acc & ".Value")),
+                    F.New_If
+                      (Not_Cond,
+                       Generate_Default_Map_Value_Statement (Field)));
+            end if;
+
+            return Generate_Field (Pkg, Field, Acc);
+         end Generate_Map_Value_Statement;
       begin
          for N in 1 .. Msg.Nested_Type.Length loop
             declare
@@ -429,31 +667,17 @@ package body Compiler.File_Descriptors.JSON is
                   declare
                      Entry_Acc : constant League.Strings.Universal_String :=
                        +"Value." & Ada_Name & " (J)";
-                     Value_Acc : League.Strings.Universal_String :=
+                     Value_Acc : constant League.Strings.Universal_String :=
                        Entry_Acc & ".Value";
-                     Key_Acc   : League.Strings.Universal_String :=
+                     Key_Acc   : constant League.Strings.Universal_String :=
                        Entry_Acc & ".Key";
                      Loop_Body : Ada_Pretty.Node_Access;
                   begin
-                     if Compiler.Field_Descriptors.Is_Optional (Value_Field)
-                       = Compiler.Field_Descriptors.Optional
-                     then
-                        Value_Acc.Append (+".Value");
-                     end if;
-
-                     if Compiler.Field_Descriptors.Is_Optional (Key_Field)
-                       = Compiler.Field_Descriptors.Optional
-                     then
-                        Key_Acc.Append (+".Value");
-                     end if;
-
                      Loop_Body :=
                        F.New_List
-                         (F.New_Statement
-                            (F.New_Apply
-                               (F.New_Selected_Name (+"Stream.Write_Map_Key"),
-                                F.New_Selected_Name (Key_Acc))),
-                          Generate_Field (Pkg, Value_Field, Value_Acc));
+                         (Generate_Map_Key_Statement (Key_Field, Key_Acc),
+                          Generate_Map_Value_Statement
+                            (Pkg, Value_Field, Value_Acc));
 
                      Field_Stmts :=
                        F.New_List
@@ -478,8 +702,6 @@ package body Compiler.File_Descriptors.JSON is
             end if;
 
             declare
-               use type Google.Protobuf.Descriptor.PB_Type;
-
                Acc       : constant League.Strings.Universal_String :=
                  (if Field.PB_Type.Is_Set
                     and then not Is_Message

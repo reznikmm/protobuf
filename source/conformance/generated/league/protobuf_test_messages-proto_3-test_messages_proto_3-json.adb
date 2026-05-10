@@ -520,155 +520,202 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
       end if;
       if Value.Map_Int_32_Int_32.Length > 0 then
          Stream.Write_Key ("mapInt32Int32");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Int_32_Int_32.Length loop
-            Write (Stream, Value.Map_Int_32_Int_32 (J));
+            Stream.Write_Map_Key (Value.Map_Int_32_Int_32 (J).Key);
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Map_Int_32_Int_32 (J).Value));
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Int_64_Int_64.Length > 0 then
          Stream.Write_Key ("mapInt64Int64");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Int_64_Int_64.Length loop
-            Write (Stream, Value.Map_Int_64_Int_64 (J));
+            Stream.Write_Map_Key (Value.Map_Int_64_Int_64 (J).Key);
+            Stream.Write_Integer (Value.Map_Int_64_Int_64 (J).Value);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Uint_32_Uint_32.Length > 0 then
          Stream.Write_Key ("mapUint32Uint32");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Uint_32_Uint_32.Length loop
-            Write (Stream, Value.Map_Uint_32_Uint_32 (J));
+            Stream.Write_Map_Key (Value.Map_Uint_32_Uint_32 (J).Key);
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Map_Uint_32_Uint_32 (J).Value));
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Uint_64_Uint_64.Length > 0 then
          Stream.Write_Key ("mapUint64Uint64");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Uint_64_Uint_64.Length loop
-            Write (Stream, Value.Map_Uint_64_Uint_64 (J));
+            Stream.Write_Map_Key (Value.Map_Uint_64_Uint_64 (J).Key);
+            Stream.Write_Integer (Value.Map_Uint_64_Uint_64 (J).Value);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Sint_32_Sint_32.Length > 0 then
          Stream.Write_Key ("mapSint32Sint32");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Sint_32_Sint_32.Length loop
-            Write (Stream, Value.Map_Sint_32_Sint_32 (J));
+            Stream.Write_Map_Key (Value.Map_Sint_32_Sint_32 (J).Key);
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Map_Sint_32_Sint_32 (J).Value));
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Sint_64_Sint_64.Length > 0 then
          Stream.Write_Key ("mapSint64Sint64");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Sint_64_Sint_64.Length loop
-            Write (Stream, Value.Map_Sint_64_Sint_64 (J));
+            Stream.Write_Map_Key (Value.Map_Sint_64_Sint_64 (J).Key);
+            Stream.Write_Integer (Value.Map_Sint_64_Sint_64 (J).Value);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Fixed_32_Fixed_32.Length > 0 then
          Stream.Write_Key ("mapFixed32Fixed32");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Fixed_32_Fixed_32.Length loop
-            Write (Stream, Value.Map_Fixed_32_Fixed_32 (J));
+            Stream.Write_Map_Key (Value.Map_Fixed_32_Fixed_32 (J).Key);
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Map_Fixed_32_Fixed_32 (J).Value));
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Fixed_64_Fixed_64.Length > 0 then
          Stream.Write_Key ("mapFixed64Fixed64");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Fixed_64_Fixed_64.Length loop
-            Write (Stream, Value.Map_Fixed_64_Fixed_64 (J));
+            Stream.Write_Map_Key (Value.Map_Fixed_64_Fixed_64 (J).Key);
+            Stream.Write_Integer (Value.Map_Fixed_64_Fixed_64 (J).Value);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Sfixed_32_Sfixed_32.Length > 0 then
          Stream.Write_Key ("mapSfixed32Sfixed32");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Sfixed_32_Sfixed_32.Length loop
-            Write (Stream, Value.Map_Sfixed_32_Sfixed_32 (J));
+            Stream.Write_Map_Key (Value.Map_Sfixed_32_Sfixed_32 (J).Key);
+            Stream.Write_Integer
+              (Long_Long_Integer (Value.Map_Sfixed_32_Sfixed_32 (J).Value));
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Sfixed_64_Sfixed_64.Length > 0 then
          Stream.Write_Key ("mapSfixed64Sfixed64");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Sfixed_64_Sfixed_64.Length loop
-            Write (Stream, Value.Map_Sfixed_64_Sfixed_64 (J));
+            Stream.Write_Map_Key (Value.Map_Sfixed_64_Sfixed_64 (J).Key);
+            Stream.Write_Integer (Value.Map_Sfixed_64_Sfixed_64 (J).Value);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Int_32_Float.Length > 0 then
          Stream.Write_Key ("mapInt32Float");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Int_32_Float.Length loop
-            Write (Stream, Value.Map_Int_32_Float (J));
+            Stream.Write_Map_Key (Value.Map_Int_32_Float (J).Key);
+            declare
+               pragma Suppress (Range_Check);
+            begin
+               Stream.Write_Float
+                 (Interfaces.IEEE_Float_64 (Value.Map_Int_32_Float (J).Value));
+            end;
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Int_32_Double.Length > 0 then
          Stream.Write_Key ("mapInt32Double");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Int_32_Double.Length loop
-            Write (Stream, Value.Map_Int_32_Double (J));
+            Stream.Write_Map_Key (Value.Map_Int_32_Double (J).Key);
+            declare
+               pragma Suppress (Range_Check);
+            begin
+               Stream.Write_Float (Value.Map_Int_32_Double (J).Value);
+            end;
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_Bool_Bool.Length > 0 then
          Stream.Write_Key ("mapBoolBool");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_Bool_Bool.Length loop
-            Write (Stream, Value.Map_Bool_Bool (J));
+            Stream.Write_Map_Key (Value.Map_Bool_Bool (J).Key);
+            Stream.Write_Boolean (Value.Map_Bool_Bool (J).Value);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_String_String.Length > 0 then
          Stream.Write_Key ("mapStringString");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_String_String.Length loop
-            Write (Stream, Value.Map_String_String (J));
+            Stream.Write_Map_Key (Value.Map_String_String (J).Key);
+            Stream.Write_String (+Value.Map_String_String (J).Value);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_String_Bytes.Length > 0 then
          Stream.Write_Key ("mapStringBytes");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_String_Bytes.Length loop
-            Write (Stream, Value.Map_String_Bytes (J));
+            Stream.Write_Map_Key (Value.Map_String_Bytes (J).Key);
+            Stream.Write_Bytes (Value.Map_String_Bytes (J).Value);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_String_Nested_Message.Length > 0 then
          Stream.Write_Key ("mapStringNestedMessage");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_String_Nested_Message.Length loop
-            Write (Stream, Value.Map_String_Nested_Message (J));
+            Stream.Write_Map_Key (Value.Map_String_Nested_Message (J).Key);
+            if Value.Map_String_Nested_Message (J).Value.Is_Set then
+               Write (Stream, Value.Map_String_Nested_Message (J).Value.Value);
+            end if;
+            if  not Value.Map_String_Nested_Message (J).Value.Is_Set then
+               Stream.Start_Object;
+               Stream.End_Object;
+            end if;
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_String_Foreign_Message.Length > 0 then
          Stream.Write_Key ("mapStringForeignMessage");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_String_Foreign_Message.Length loop
-            Write (Stream, Value.Map_String_Foreign_Message (J));
+            Stream.Write_Map_Key (Value.Map_String_Foreign_Message (J).Key);
+            if Value.Map_String_Foreign_Message (J).Value.Is_Set then
+               Write
+                 (Stream, Value.Map_String_Foreign_Message (J).Value.Value);
+            end if;
+            if  not Value.Map_String_Foreign_Message (J).Value.Is_Set then
+               Stream.Start_Object;
+               Stream.End_Object;
+            end if;
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_String_Nested_Enum.Length > 0 then
          Stream.Write_Key ("mapStringNestedEnum");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_String_Nested_Enum.Length loop
-            Write (Stream, Value.Map_String_Nested_Enum (J));
+            Stream.Write_Map_Key (Value.Map_String_Nested_Enum (J).Key);
+            Stream.Write_String (Value.Map_String_Nested_Enum (J).Value'Image);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Map_String_Foreign_Enum.Length > 0 then
          Stream.Write_Key ("mapStringForeignEnum");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Map_String_Foreign_Enum.Length loop
-            Write (Stream, Value.Map_String_Foreign_Enum (J));
+            Stream.Write_Map_Key (Value.Map_String_Foreign_Enum (J).Key);
+            Stream.Write_String
+              (Value.Map_String_Foreign_Enum (J).Value'Image);
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       if Value.Variant.Oneof_Field = Oneof_Uint_32_Kind then
          Stream.Write_Key ("oneofUint32");

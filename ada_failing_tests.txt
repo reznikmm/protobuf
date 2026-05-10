@@ -10,42 +10,6 @@ Required.Proto2.ProtobufInput.ValidMessageSetEncoding.OutOfOrderGroupsEntries.Pr
 Required.Proto2.ProtobufInput.ValidMessageSetEncoding.ProtobufOutput
 Required.Proto3.ProtobufInput.UnknownOrdering.ProtobufOutput
 
-# Failing Map-related conformance tests (ignored until working)
-Required.Proto2.ProtobufInput.ValidDataMap.BOOL.BOOL.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.FIXED32.FIXED32.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.FIXED64.FIXED64.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.INT32.DOUBLE.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.INT32.FLOAT.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.INT32.INT32.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.INT64.INT64.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.SFIXED32.SFIXED32.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.SFIXED64.SFIXED64.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.SINT32.SINT32.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.SINT64.SINT64.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.STRING.BYTES.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.STRING.ENUM.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.STRING.MESSAGE.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.STRING.STRING.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.UINT32.UINT32.MissingDefault.JsonOutput
-Required.Proto2.ProtobufInput.ValidDataMap.UINT64.UINT64.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.BOOL.BOOL.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.FIXED32.FIXED32.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.FIXED64.FIXED64.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.INT32.DOUBLE.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.INT32.FLOAT.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.INT32.INT32.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.INT64.INT64.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.SFIXED32.SFIXED32.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.SFIXED64.SFIXED64.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.SINT32.SINT32.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.SINT64.SINT64.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.STRING.BYTES.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.STRING.ENUM.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.STRING.MESSAGE.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.STRING.STRING.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.UINT32.UINT32.MissingDefault.JsonOutput
-Required.Proto3.ProtobufInput.ValidDataMap.UINT64.UINT64.MissingDefault.JsonOutput
-
 # Ignored until used matreshka_league version includes https://github.com/godunko/matreshka/pull/5
 Required.Proto2.ProtobufInput.ValidDataRepeated.STRING.JsonOutput # Output was not equivalent to reference message: modified: repeated_string[2]: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\01
 Required.Proto2.ProtobufInput.ValidDataScalar.STRING[2].JsonOutput # Output was not equivalent to reference message: modified: optional_string: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\010\0

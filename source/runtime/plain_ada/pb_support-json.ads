@@ -43,7 +43,9 @@ package PB_Support.JSON is
 
    -- Procedures Write_Map_Key write the value as a map key.
 
-   procedure Write_Map_Key (Self : in out JSON_Writer; Value : String);
+   procedure Write_Map_Key
+     (Self  : in out JSON_Writer;
+      Value : Ada.Strings.Unbounded.Unbounded_String);
 
    procedure Write_Map_Key (Self : in out JSON_Writer; Value : Boolean);
 

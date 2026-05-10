@@ -16,11 +16,18 @@ package body Google.Protobuf.Struct.JSON is
       Stream.Start_Object;
       if Value.Fields.Length > 0 then
          Stream.Write_Key ("fields");
-         Stream.Start_Array;
+         Stream.Start_Object;
          for J in 1 .. Value.Fields.Length loop
-            Write (Stream, Value.Fields (J));
+            Stream.Write_Map_Key (Value.Fields (J).Key);
+            if Value.Fields (J).Value.Is_Set then
+               Write (Stream, Value.Fields (J).Value.Value);
+            end if;
+            if  not Value.Fields (J).Value.Is_Set then
+               Stream.Start_Object;
+               Stream.End_Object;
+            end if;
          end loop;
-         Stream.End_Array;
+         Stream.End_Object;
       end if;
       Stream.End_Object;
    end Write;

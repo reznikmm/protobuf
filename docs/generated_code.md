@@ -280,7 +280,9 @@ This component has a discriminant with the name `Oneof`.
 There is a single component for each discriminant value.
 
 ### Map Fields
-There is no special support for map fields for now.
+There is no special support for map fields for now in the generated Ada code.
+When JSON is output, the map fields are generated as specified by the
+[ProtoJSON Format specification](https://protobuf.dev/programming-guides/json/).
 
 ## Any
 `Any` type isn't provided yet.

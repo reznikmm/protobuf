@@ -346,8 +346,12 @@ package body PB_Support.JSON is
    -- Write_Map_Key --
    -------------------
 
-   procedure Write_Map_Key (Self : in out JSON_Writer; Value : String)
-   renames Write_Key;
+   procedure Write_Map_Key
+     (Self  : in out JSON_Writer;
+      Value : Ada.Strings.Unbounded.Unbounded_String) is
+   begin
+      Write_Key (Self, To_String (Value));
+   end Write_Map_Key;
 
    -------------------
    -- Write_Map_Key --
