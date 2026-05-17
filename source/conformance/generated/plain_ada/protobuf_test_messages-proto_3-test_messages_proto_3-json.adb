@@ -674,8 +674,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
             Stream.Write_Map_Key (Value.Map_String_Nested_Message (J).Key);
             if Value.Map_String_Nested_Message (J).Value.Is_Set then
                Write (Stream, Value.Map_String_Nested_Message (J).Value.Value);
-            end if;
-            if  not Value.Map_String_Nested_Message (J).Value.Is_Set then
+            else
                Stream.Start_Object;
                Stream.End_Object;
             end if;
@@ -690,8 +689,7 @@ package body Protobuf_Test_Messages.Proto_3.Test_Messages_Proto_3.JSON is
             if Value.Map_String_Foreign_Message (J).Value.Is_Set then
                Write
                  (Stream, Value.Map_String_Foreign_Message (J).Value.Value);
-            end if;
-            if  not Value.Map_String_Foreign_Message (J).Value.Is_Set then
+            else
                Stream.Start_Object;
                Stream.End_Object;
             end if;

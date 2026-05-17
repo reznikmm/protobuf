@@ -464,8 +464,6 @@ package body Compiler.File_Descriptors.JSON is
               Compiler.Field_Descriptors.Is_Optional (Field);
             Cond      : constant Ada_Pretty.Node_Access :=
               F.New_Selected_Name (Acc & ".Is_Set");
-            Not_Cond  : constant Ada_Pretty.Node_Access :=
-              F.New_Infix (+"not", Cond);
             Present   : constant Ada_Pretty.Node_Access :=
               F.New_Statement
                 (F.New_Apply
@@ -473,15 +471,11 @@ package body Compiler.File_Descriptors.JSON is
                     F.New_Selected_Name (Acc & ".Value")));
          begin
             if Is_Option = Compiler.Field_Descriptors.Optional then
-               --  This New_If code uses another Not_Cond part because the
-               --  Else_Path parameter was not working. See:
-               --  https://github.com/reznikmm/ada-pretty/issues/1
-               --  TODO: simplify this when the issue is resolved.
                return
-                 F.New_List
-                   (F.New_If (Cond, Present),
-                    F.New_If
-                      (Not_Cond, Generate_Default_Map_Key_Statement (Field)));
+                 F.New_If
+                   (Cond,
+                    Present,
+                    Else_Path => Generate_Default_Map_Key_Statement (Field));
             end if;
 
             return
@@ -599,21 +593,13 @@ package body Compiler.File_Descriptors.JSON is
               Compiler.Field_Descriptors.Is_Optional (Field);
             Cond      : constant Ada_Pretty.Node_Access :=
               F.New_Selected_Name (Acc & ".Is_Set");
-            Not_Cond  : constant Ada_Pretty.Node_Access :=
-              F.New_Infix (+"not", Cond);
          begin
             if Is_Option = Compiler.Field_Descriptors.Optional then
-               --  This New_If code uses another Not_Cond part because the
-               --  Else_Path parameter was not working. See:
-               --  https://github.com/reznikmm/ada-pretty/issues/1
-               --  TODO: simplify this when the issue is resolved.
                return
-                 F.New_List
-                   (F.New_If
-                      (Cond, Generate_Field (Pkg, Field, Acc & ".Value")),
-                    F.New_If
-                      (Not_Cond,
-                       Generate_Default_Map_Value_Statement (Field)));
+                 F.New_If
+                   (Cond,
+                    Generate_Field (Pkg, Field, Acc & ".Value"),
+                    Else_Path => Generate_Default_Map_Value_Statement (Field));
             end if;
 
             return Generate_Field (Pkg, Field, Acc);

@@ -5,10 +5,3 @@ Required.Proto2.ProtobufInput.UnknownOrdering.ProtobufOutput
 Required.Proto2.ProtobufInput.ValidMessageSetEncoding.OutOfOrderGroupsEntries.ProtobufOutput
 Required.Proto2.ProtobufInput.ValidMessageSetEncoding.ProtobufOutput
 Required.Proto3.ProtobufInput.UnknownOrdering.ProtobufOutput
-
-# Ignored until used matreshka_league version includes https://github.com/godunko/matreshka/pull/5
-Required.Proto2.ProtobufInput.ValidDataRepeated.STRING.JsonOutput # Output was not equivalent to reference message: modified: repeated_string[2]: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\01
-Required.Proto2.ProtobufInput.ValidDataScalar.STRING[2].JsonOutput # Output was not equivalent to reference message: modified: optional_string: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\010\0
-Required.Proto3.ProtobufInput.ValidDataRepeated.STRING.JsonOutput # Output was not equivalent to reference message: modified: repeated_string[2]: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\01
-Required.Proto3.ProtobufInput.ValidDataScalar.STRING[2].JsonOutput # Output was not equivalent to reference message: modified: optional_string: "\'\"?\\\007\010\014\n\r\t\013" -> "\'\"?\\\007\010\0
-

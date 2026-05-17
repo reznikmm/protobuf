@@ -559,15 +559,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Int_32_Int_32.Length loop
             if Value.Map_Int_32_Int_32 (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Int_32_Int_32 (J).Key.Value);
-            end if;
-            if  not Value.Map_Int_32_Int_32 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_32'(0));
             end if;
             if Value.Map_Int_32_Int_32 (J).Value.Is_Set then
                Stream.Write_Integer
                  (Long_Long_Integer (Value.Map_Int_32_Int_32 (J).Value.Value));
-            end if;
-            if  not Value.Map_Int_32_Int_32 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Long_Long_Integer (0));
             end if;
          end loop;
@@ -579,14 +577,12 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Int_64_Int_64.Length loop
             if Value.Map_Int_64_Int_64 (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Int_64_Int_64 (J).Key.Value);
-            end if;
-            if  not Value.Map_Int_64_Int_64 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_64'(0));
             end if;
             if Value.Map_Int_64_Int_64 (J).Value.Is_Set then
                Stream.Write_Integer (Value.Map_Int_64_Int_64 (J).Value.Value);
-            end if;
-            if  not Value.Map_Int_64_Int_64 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Interfaces.Integer_64'(0));
             end if;
          end loop;
@@ -598,16 +594,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Uint_32_Uint_32.Length loop
             if Value.Map_Uint_32_Uint_32 (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Uint_32_Uint_32 (J).Key.Value);
-            end if;
-            if  not Value.Map_Uint_32_Uint_32 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Unsigned_32'(0));
             end if;
             if Value.Map_Uint_32_Uint_32 (J).Value.Is_Set then
                Stream.Write_Integer
                  (Long_Long_Integer
                     (Value.Map_Uint_32_Uint_32 (J).Value.Value));
-            end if;
-            if  not Value.Map_Uint_32_Uint_32 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Long_Long_Integer (0));
             end if;
          end loop;
@@ -619,15 +613,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Uint_64_Uint_64.Length loop
             if Value.Map_Uint_64_Uint_64 (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Uint_64_Uint_64 (J).Key.Value);
-            end if;
-            if  not Value.Map_Uint_64_Uint_64 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Unsigned_64'(0));
             end if;
             if Value.Map_Uint_64_Uint_64 (J).Value.Is_Set then
                Stream.Write_Integer
                  (Value.Map_Uint_64_Uint_64 (J).Value.Value);
-            end if;
-            if  not Value.Map_Uint_64_Uint_64 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Interfaces.Unsigned_64'(0));
             end if;
          end loop;
@@ -639,16 +631,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Sint_32_Sint_32.Length loop
             if Value.Map_Sint_32_Sint_32 (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Sint_32_Sint_32 (J).Key.Value);
-            end if;
-            if  not Value.Map_Sint_32_Sint_32 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_32'(0));
             end if;
             if Value.Map_Sint_32_Sint_32 (J).Value.Is_Set then
                Stream.Write_Integer
                  (Long_Long_Integer
                     (Value.Map_Sint_32_Sint_32 (J).Value.Value));
-            end if;
-            if  not Value.Map_Sint_32_Sint_32 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Long_Long_Integer (0));
             end if;
          end loop;
@@ -660,15 +650,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Sint_64_Sint_64.Length loop
             if Value.Map_Sint_64_Sint_64 (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Sint_64_Sint_64 (J).Key.Value);
-            end if;
-            if  not Value.Map_Sint_64_Sint_64 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_64'(0));
             end if;
             if Value.Map_Sint_64_Sint_64 (J).Value.Is_Set then
                Stream.Write_Integer
                  (Value.Map_Sint_64_Sint_64 (J).Value.Value);
-            end if;
-            if  not Value.Map_Sint_64_Sint_64 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Interfaces.Integer_64'(0));
             end if;
          end loop;
@@ -681,16 +669,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
             if Value.Map_Fixed_32_Fixed_32 (J).Key.Is_Set then
                Stream.Write_Map_Key
                  (Value.Map_Fixed_32_Fixed_32 (J).Key.Value);
-            end if;
-            if  not Value.Map_Fixed_32_Fixed_32 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Unsigned_32'(0));
             end if;
             if Value.Map_Fixed_32_Fixed_32 (J).Value.Is_Set then
                Stream.Write_Integer
                  (Long_Long_Integer
                     (Value.Map_Fixed_32_Fixed_32 (J).Value.Value));
-            end if;
-            if  not Value.Map_Fixed_32_Fixed_32 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Long_Long_Integer (0));
             end if;
          end loop;
@@ -703,15 +689,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
             if Value.Map_Fixed_64_Fixed_64 (J).Key.Is_Set then
                Stream.Write_Map_Key
                  (Value.Map_Fixed_64_Fixed_64 (J).Key.Value);
-            end if;
-            if  not Value.Map_Fixed_64_Fixed_64 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Unsigned_64'(0));
             end if;
             if Value.Map_Fixed_64_Fixed_64 (J).Value.Is_Set then
                Stream.Write_Integer
                  (Value.Map_Fixed_64_Fixed_64 (J).Value.Value);
-            end if;
-            if  not Value.Map_Fixed_64_Fixed_64 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Interfaces.Unsigned_64'(0));
             end if;
          end loop;
@@ -724,16 +708,14 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
             if Value.Map_Sfixed_32_Sfixed_32 (J).Key.Is_Set then
                Stream.Write_Map_Key
                  (Value.Map_Sfixed_32_Sfixed_32 (J).Key.Value);
-            end if;
-            if  not Value.Map_Sfixed_32_Sfixed_32 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_32'(0));
             end if;
             if Value.Map_Sfixed_32_Sfixed_32 (J).Value.Is_Set then
                Stream.Write_Integer
                  (Long_Long_Integer
                     (Value.Map_Sfixed_32_Sfixed_32 (J).Value.Value));
-            end if;
-            if  not Value.Map_Sfixed_32_Sfixed_32 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Long_Long_Integer (0));
             end if;
          end loop;
@@ -746,15 +728,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
             if Value.Map_Sfixed_64_Sfixed_64 (J).Key.Is_Set then
                Stream.Write_Map_Key
                  (Value.Map_Sfixed_64_Sfixed_64 (J).Key.Value);
-            end if;
-            if  not Value.Map_Sfixed_64_Sfixed_64 (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_64'(0));
             end if;
             if Value.Map_Sfixed_64_Sfixed_64 (J).Value.Is_Set then
                Stream.Write_Integer
                  (Value.Map_Sfixed_64_Sfixed_64 (J).Value.Value);
-            end if;
-            if  not Value.Map_Sfixed_64_Sfixed_64 (J).Value.Is_Set then
+            else
                Stream.Write_Integer (Interfaces.Integer_64'(0));
             end if;
          end loop;
@@ -766,14 +746,12 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Int_32_Bool.Length loop
             if Value.Map_Int_32_Bool (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Int_32_Bool (J).Key.Value);
-            end if;
-            if  not Value.Map_Int_32_Bool (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_32'(0));
             end if;
             if Value.Map_Int_32_Bool (J).Value.Is_Set then
                Stream.Write_Boolean (Value.Map_Int_32_Bool (J).Value.Value);
-            end if;
-            if  not Value.Map_Int_32_Bool (J).Value.Is_Set then
+            else
                Stream.Write_Boolean (False);
             end if;
          end loop;
@@ -785,8 +763,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Int_32_Float.Length loop
             if Value.Map_Int_32_Float (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Int_32_Float (J).Key.Value);
-            end if;
-            if  not Value.Map_Int_32_Float (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_32'(0));
             end if;
             if Value.Map_Int_32_Float (J).Value.Is_Set then
@@ -797,8 +774,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
                     (Interfaces.IEEE_Float_64
                        (Value.Map_Int_32_Float (J).Value.Value));
                end;
-            end if;
-            if  not Value.Map_Int_32_Float (J).Value.Is_Set then
+            else
                Stream.Write_Float (Interfaces.IEEE_Float_64 (0.0));
             end if;
          end loop;
@@ -810,8 +786,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Int_32_Double.Length loop
             if Value.Map_Int_32_Double (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Int_32_Double (J).Key.Value);
-            end if;
-            if  not Value.Map_Int_32_Double (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_32'(0));
             end if;
             if Value.Map_Int_32_Double (J).Value.Is_Set then
@@ -820,8 +795,7 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
                begin
                   Stream.Write_Float (Value.Map_Int_32_Double (J).Value.Value);
                end;
-            end if;
-            if  not Value.Map_Int_32_Double (J).Value.Is_Set then
+            else
                Stream.Write_Float (0.0);
             end if;
          end loop;
@@ -834,14 +808,12 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
             if Value.Map_Int_32_Nested_Message (J).Key.Is_Set then
                Stream.Write_Map_Key
                  (Value.Map_Int_32_Nested_Message (J).Key.Value);
-            end if;
-            if  not Value.Map_Int_32_Nested_Message (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (Interfaces.Integer_32'(0));
             end if;
             if Value.Map_Int_32_Nested_Message (J).Value.Is_Set then
                Write (Stream, Value.Map_Int_32_Nested_Message (J).Value.Value);
-            end if;
-            if  not Value.Map_Int_32_Nested_Message (J).Value.Is_Set then
+            else
                Stream.Start_Object;
                Stream.End_Object;
             end if;
@@ -854,14 +826,12 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_Bool_Bool.Length loop
             if Value.Map_Bool_Bool (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_Bool_Bool (J).Key.Value);
-            end if;
-            if  not Value.Map_Bool_Bool (J).Key.Is_Set then
+            else
                Stream.Write_Map_Key (False);
             end if;
             if Value.Map_Bool_Bool (J).Value.Is_Set then
                Stream.Write_Boolean (Value.Map_Bool_Bool (J).Value.Value);
-            end if;
-            if  not Value.Map_Bool_Bool (J).Value.Is_Set then
+            else
                Stream.Write_Boolean (False);
             end if;
          end loop;
@@ -873,14 +843,12 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_String_String.Length loop
             if Value.Map_String_String (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_String_String (J).Key.Value);
-            end if;
-            if  not Value.Map_String_String (J).Key.Is_Set then
+            else
                Stream.Write_Key ("");
             end if;
             if Value.Map_String_String (J).Value.Is_Set then
                Stream.Write_String (+Value.Map_String_String (J).Value.Value);
-            end if;
-            if  not Value.Map_String_String (J).Value.Is_Set then
+            else
                Stream.Write_String ("");
             end if;
          end loop;
@@ -892,14 +860,12 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
          for J in 1 .. Value.Map_String_Bytes.Length loop
             if Value.Map_String_Bytes (J).Key.Is_Set then
                Stream.Write_Map_Key (Value.Map_String_Bytes (J).Key.Value);
-            end if;
-            if  not Value.Map_String_Bytes (J).Key.Is_Set then
+            else
                Stream.Write_Key ("");
             end if;
             if Value.Map_String_Bytes (J).Value.Is_Set then
                Stream.Write_Bytes (Value.Map_String_Bytes (J).Value.Value);
-            end if;
-            if  not Value.Map_String_Bytes (J).Value.Is_Set then
+            else
                Stream.Write_String ("");
             end if;
          end loop;
@@ -912,14 +878,12 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
             if Value.Map_String_Nested_Message (J).Key.Is_Set then
                Stream.Write_Map_Key
                  (Value.Map_String_Nested_Message (J).Key.Value);
-            end if;
-            if  not Value.Map_String_Nested_Message (J).Key.Is_Set then
+            else
                Stream.Write_Key ("");
             end if;
             if Value.Map_String_Nested_Message (J).Value.Is_Set then
                Write (Stream, Value.Map_String_Nested_Message (J).Value.Value);
-            end if;
-            if  not Value.Map_String_Nested_Message (J).Value.Is_Set then
+            else
                Stream.Start_Object;
                Stream.End_Object;
             end if;
@@ -933,15 +897,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
             if Value.Map_String_Foreign_Message (J).Key.Is_Set then
                Stream.Write_Map_Key
                  (Value.Map_String_Foreign_Message (J).Key.Value);
-            end if;
-            if  not Value.Map_String_Foreign_Message (J).Key.Is_Set then
+            else
                Stream.Write_Key ("");
             end if;
             if Value.Map_String_Foreign_Message (J).Value.Is_Set then
                Write
                  (Stream, Value.Map_String_Foreign_Message (J).Value.Value);
-            end if;
-            if  not Value.Map_String_Foreign_Message (J).Value.Is_Set then
+            else
                Stream.Start_Object;
                Stream.End_Object;
             end if;
@@ -955,15 +917,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
             if Value.Map_String_Nested_Enum (J).Key.Is_Set then
                Stream.Write_Map_Key
                  (Value.Map_String_Nested_Enum (J).Key.Value);
-            end if;
-            if  not Value.Map_String_Nested_Enum (J).Key.Is_Set then
+            else
                Stream.Write_Key ("");
             end if;
             if Value.Map_String_Nested_Enum (J).Value.Is_Set then
                Stream.Write_String
                  (Value.Map_String_Nested_Enum (J).Value.Value'Image);
-            end if;
-            if  not Value.Map_String_Nested_Enum (J).Value.Is_Set then
+            else
                Stream.Write_String ("FOO");
             end if;
          end loop;
@@ -976,15 +936,13 @@ package body Protobuf_Test_Messages.Proto_2.Test_Messages_Proto_2.JSON is
             if Value.Map_String_Foreign_Enum (J).Key.Is_Set then
                Stream.Write_Map_Key
                  (Value.Map_String_Foreign_Enum (J).Key.Value);
-            end if;
-            if  not Value.Map_String_Foreign_Enum (J).Key.Is_Set then
+            else
                Stream.Write_Key ("");
             end if;
             if Value.Map_String_Foreign_Enum (J).Value.Is_Set then
                Stream.Write_String
                  (Value.Map_String_Foreign_Enum (J).Value.Value'Image);
-            end if;
-            if  not Value.Map_String_Foreign_Enum (J).Value.Is_Set then
+            else
                Stream.Write_String ("FOREIGN_FOO");
             end if;
          end loop;

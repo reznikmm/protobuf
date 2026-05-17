@@ -21,8 +21,7 @@ package body Google.Protobuf.Struct.JSON is
             Stream.Write_Map_Key (Value.Fields (J).Key);
             if Value.Fields (J).Value.Is_Set then
                Write (Stream, Value.Fields (J).Value.Value);
-            end if;
-            if  not Value.Fields (J).Value.Is_Set then
+            else
                Stream.Start_Object;
                Stream.End_Object;
             end if;
