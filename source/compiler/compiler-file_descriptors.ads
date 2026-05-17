@@ -46,7 +46,25 @@ package Compiler.File_Descriptors is
    --  Return base name for Ada package
 
    function Body_Text
+     (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
+      Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
+      return League.Strings.Universal_String;
+
+private
+
+   function Package_Name
      (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
+      return League.Strings.Universal_String;
+
+   function Get_Prefix
+     (Self : Google.Protobuf.Descriptor.File_Descriptor_Proto)
+      return League.Strings.Universal_String;
+   --  Return protobuf prefix for given file: the dot appended with package.
+   --  Like ".google.protobuf"
+
+   function Header_Comment
+     (Self    : Google.Protobuf.Descriptor.File_Descriptor_Proto;
+      Request : Google.Protobuf.Compiler.Plugin.Code_Generator_Request)
       return League.Strings.Universal_String;
 
 end Compiler.File_Descriptors;

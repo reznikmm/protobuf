@@ -27,5 +27,7 @@ jobs:
         run: alr -C protobuf build
       - name: Run tests
         run: alr -C protobuf exec make check
-      - name: Run demo
-        run: alr -C protobuf/demo run
+      - name: Build and run League demo
+        run: alr -C protobuf/demo/league run
+      - name: Build and run Plain Ada demo
+        run: alr -C protobuf/demo/plain_ada run

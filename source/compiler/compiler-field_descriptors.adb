@@ -32,8 +32,6 @@ package body Compiler.Field_Descriptors is
      return League.Strings.Universal_String
        renames League.Strings.To_Universal_String;
 
-   type Option_Kind is (Optional, Required, Primitive);
-
    function Type_Name
      (Self        : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
       Is_Option   : Option_Kind;
@@ -55,26 +53,7 @@ package body Compiler.Field_Descriptors is
    function Map (X : Google.Protobuf.Descriptor.PB_Type)
      return Compiler.Context.Ada_Type_Name;
 
-   function Is_Enum
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-       return Boolean;
-
-   function Is_Repeated
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto;
-      Pkg  : League.Strings.Universal_String;
-      Tipe : League.Strings.Universal_String;
-      Fake : Compiler.Context.String_Sets.Set)
-      return Boolean;
-
    function Is_Packed
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-       return Boolean;
-
-   function Is_Optional
-     (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
-       return Option_Kind;
-
-   function Is_Message
      (Self : Google.Protobuf.Descriptor.Field_Descriptor_Proto)
        return Boolean;
 
@@ -409,10 +388,22 @@ package body Compiler.Field_Descriptors is
          when TYPE_FIXED64  => return (+"Interfaces", +"Unsigned_64");
          when TYPE_FIXED32  => return (+"Interfaces", +"Unsigned_32");
          when TYPE_BOOL     => return (+"", +"Boolean");
-         when TYPE_STRING   => return (+"League.Strings", +"Universal_String");
-         when TYPE_BYTES    => return
-              (+"League.Stream_Element_Vectors",
-               +"Stream_Element_Vector");
+         when TYPE_STRING   =>
+            return
+               (case Context.Runtime_Dep is
+                   when Runtime_League =>
+                      (+"League.Strings", +"Universal_String"),
+                   when Runtime_Plain_Ada =>
+                      (+"Ada.Strings.Unbounded", +"Unbounded_String"));
+         when TYPE_BYTES    =>
+            return
+               (case Context.Runtime_Dep is
+                   when Runtime_League =>
+                      (+"League.Stream_Element_Vectors",
+                       +"Stream_Element_Vector"),
+                   when Runtime_Plain_Ada =>
+                      (+"PB_Support.Basics",
+                       +"Stream_Element_Vector"));
          when TYPE_UINT32   => return (+"Interfaces", +"Unsigned_32");
          when TYPE_SFIXED32 => return (+"Interfaces", +"Integer_32");
          when TYPE_SFIXED64 => return (+"Interfaces", +"Integer_64");
@@ -608,7 +599,14 @@ package body Compiler.Field_Descriptors is
       elsif not Is_Repeated then
          Result := Map (Self.PB_Type.Value);
       elsif Self.PB_Type.Value = TYPE_STRING then
-         Result := (+"League.String_Vectors", +"Universal_String_Vector");
+         Result :=
+            (case Context.Runtime_Dep is
+                when Runtime_League =>
+                    (+"League.String_Vectors",
+                     +"Universal_String_Vector"),
+                when Runtime_Plain_Ada =>
+                    (+"PB_Support.Unbounded_String_Vectors",
+                     +"Vector"));
       else
          Result := Map (Self.PB_Type.Value);
          Result.Package_Name :=

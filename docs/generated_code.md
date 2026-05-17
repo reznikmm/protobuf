@@ -5,10 +5,29 @@ Ada Generated Code
 
 The protocol buffer compiler produces Ada output when invoked with
 the `--ada_out=` command-line flag (be sure the `protoc-gen-ada`
-plugin in the `PATH`).  The compiler creates a specification file
+plugin is in the `PATH`). The compiler creates a specification file
 (`.ads`) and an implementation file (`.adb`) for each `.proto` file
-input. The names of the output files are computed by taking the name
-of the `.proto` file and a name from a `package` directive, if any.
+input.
+
+The plugin also accepts comma-separated options via `--ada_opt=`:
+
+- `runtime=league` (default)
+- `runtime=plain_ada`
+- `generate_json=true` (default)
+- `generate_json=false`
+
+The generated type can change depending on the runtime selected.
+
+When `generate_json` is `true`, these options control the JSON output:
+- `preserve_proto_field_names=true`: keep the original field names.
+- `preserve_proto_field_names=false` (default): use camelCase field names
+- `always_print_enums_as_ints=true`: values for enums are the internal numbers.
+- `always_print_enums_as_ints=false` (default): values for enums are strings.
+
+If boolean options do not specify a value, `true` is assumed.
+
+The names of the output files are computed by taking the name of the
+`.proto` file and a name from a `package` directive, if any.
 
 ## Packages
 
@@ -21,6 +40,8 @@ package foo.bar;
 ```
 
 All declarations in the file will reside in the `Foo.Bar.Xxx` package.
+
+If `generate_json` is `true`, a `Foo.Bar.Xxx.JSON` package is also generated.
 
 ## Messages
 
@@ -139,18 +160,20 @@ this is required.
 ### Fields of Predefined Types
 The compiler uses this mapping for predefined types:
 
-| .proto type | Ada type      |
-| ----------- | ------------- |
+| .proto type | Ada type |
+| ----------- | -------- |
 | double      | Interfaces.IEEE_Float_64 |
 | float       | Interfaces.IEEE_Float_32 |
 | int32/64    | Interfaces.Integer_32/64 |
 | uint32/64   | Interfaces.Unsigned_32/64 |
 | sint32/64   | Interfaces.Integer_32/64 (unimplemented) |
-| fixed32/64  | Interfaces.Unsigned_32/64 (little endian only)|
-| sfixed32/64 | Interfaces.Integer_32/64 (little endian only)|
+| fixed32/64  | Interfaces.Unsigned_32/64 (little endian only) |
+| sfixed32/64 | Interfaces.Integer_32/64 (little endian only) |
 | bool        | Boolean |
-| string      | League.Strings.Universal_String |
-| bytes       | League.Stream_Element_Vectors.Stream_Element_Vector |
+| string (runtime=league)    | League.Strings.Universal_String |
+| string (runtime=plain_ada) | Ada.Strings.Unbounded.Unbounded_String |
+| bytes (runtime=league)     | League.Stream_Element_Vectors.Stream_Element_Vector |
+| bytes (runtime=plain_ada)  | PB_Support.Basics.Stream_Element_Vector |
 
 For singular `proto3` fields and required `proto2` fields the compiler
 generates just a component of the corresponding type. For instance:
@@ -246,8 +269,11 @@ type Location is record
 There is an exception for the string type.
 
 ### Repeated String Fields
-For repeated fields of the string type the compiler uses
-`Universal_String_Vector` type declared in `League.String_Vectors` package.
+For repeated fields of the `string` type, the generated vector type
+depends on runtime:
+
+- `runtime=league`: `League.String_Vectors.Universal_String_Vector`
+- `runtime=plain_ada`: `PB_Support.Unbounded_String_Vectors.Vector`
 
 ### Repeated Enum Fields
 For repeated fields of an `enum` type the compiler uses
@@ -264,7 +290,9 @@ This component has a discriminant with the name `Oneof`.
 There is a single component for each discriminant value.
 
 ### Map Fields
-There is no special support for map fields for now.
+There is no special support for map fields for now in the generated Ada code.
+When JSON is output, the map fields are generated as specified by the
+[ProtoJSON Format specification](https://protobuf.dev/programming-guides/json/).
 
 ## Any
 `Any` type isn't provided yet.

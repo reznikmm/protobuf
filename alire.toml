@@ -10,11 +10,6 @@ maintainers-logins = ["reznikmm"]
 project-files = ["gnat/protoc_gen_ada.gpr"]
 tags = ["serialization", "marshalling", "protocol", "buffers", "rpc", "generator"]
 
-provides = ["protobuf_runtime=1.1.0-git"]
-
-[[forbids]]
-protobuf_runtime="*"
-
 [[depends-on]]
 ada_pretty = "any"
 matreshka_league = "any"
@@ -33,3 +28,14 @@ output_dir = "gnat"
 generate_ada = false
 generate_c = false
 
+
+# Some dependencies require precise versions during the development cycle:
+[[pins]]
+[pins.ada_pretty]
+url    = "https://github.com/reznikmm/ada-pretty"
+commit = "97c9af93b9aa1d98776357115a6986f1b2a856eb"
+
+[pins.matreshka_league]
+url    = "https://github.com/godunko/matreshka"
+commit = "464d78fe7b896a24c07e0d1c91fc15ffcd7a15f6"
+subdir = "packages/alire/matreshka_league"

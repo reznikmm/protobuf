@@ -3,6 +3,7 @@
 set -e -x
 
 PB_DIR=$1
+ADA_RUNTIME=${2:-league}
 PB_CACHE=${1}_cache
 
 if [ ! -f $PB_DIR/conformance/conformance.proto ] ; then
@@ -24,12 +25,15 @@ for J in conformance/conformance.proto \
  src/google/protobuf/test_messages_proto2.proto \
  src/google/protobuf/test_messages_proto3.proto
 do
+  mkdir -p source/conformance/generated/$ADA_RUNTIME
+
   PATH=.objs/compiler/:$PATH protoc \
-    --ada_out=source/conformance/generated \
+    --ada_out=source/conformance/generated/$ADA_RUNTIME \
+    --ada_opt=runtime=$ADA_RUNTIME \
     -I`dirname $PB_DIR/$J` $PB_DIR/$J
 done
 
-gprbuild -p -P gnat/conformance.gpr
+gprbuild -p -P gnat/conformance_$ADA_RUNTIME.gpr
 
 export LD_LIBRARY_PATH=$PB_CACHE
 

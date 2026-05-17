@@ -1,0 +1,40 @@
+name = "demo"
+description = "A simple demo for Ada protobuf (League runtime)"
+version = "0.1.0-dev"
+
+authors = ["Max Reznik"]
+maintainers = ["Max Reznik <reznikmm@gmail.com>"]
+maintainers-logins = ["reznikmm"]
+licenses = "MIT"
+website = ""
+tags = []
+
+executables = ["demo"]
+
+[build-switches]
+development.optimization = ["-O2"]
+development.style_checks = ["-gnatyN"]
+development.compile_checks = "Errors"
+development.contracts = "Yes"
+
+[[actions]]
+type = "pre-build"
+# Run the compiler to generate for the League runtime.
+# This is needed to be able to build the demo without having the compiler installed globally.
+# If you install the compiler using `alr install`, the command line would be simpler:
+# `protoc --ada_out=src --ada_opt=runtime=league basics.proto`
+command = [
+    "sh",
+    "-c",
+    """env LD_LIBRARY_PATH=$(realpath ../../.libs):$LD_LIBRARY_PATH \\
+       protoc --plugin=protoc-gen-ada=../../.objs/compiler/protoc-gen-ada \\
+       --ada_out=src \\
+       --ada_opt=runtime=league \\
+       basics.proto"""
+]
+
+[[depends-on]]
+protobuf_runtime = "^1.1.0"
+
+[[pins]]
+protobuf_runtime = { path='../../packages/protobuf_runtime_league' }

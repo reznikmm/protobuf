@@ -987,20 +987,23 @@ package body Compiler.Descriptors is
                F.New_Parameter
                  (F.New_Name (+"V"), Me))),
          Declarations => F.New_List
-              (F.New_Variable
+               (F.New_Variable
                   (Name            => F.New_Name (+"Init_Length"),
                    Type_Definition => F.New_Name (+"Positive"),
                    Is_Constant     => True,
-                   Initialization  => F.New_Apply
-                     (Prefix    => F.New_Selected_Name (+"Positive'Max"),
-                      Arguments => F.New_List
-                        (F.New_Argument_Association (F.New_Literal (1)),
-                         F.New_Argument_Association
-                           (F.New_List
-                              (F.New_Literal (256),
-                               F.New_Infix
-                                 (+"/",
-                                  F.New_Selected_Name (My_Name & "'Size"))))))),
+                   Initialization  =>
+                     F.New_Apply
+                       (Prefix    => F.New_Selected_Name (+"Positive'Max"),
+                        Arguments =>
+                          F.New_List
+                            (F.New_Argument_Association (F.New_Literal (1)),
+                             F.New_Argument_Association
+                               (F.New_List
+                                  (F.New_Literal (256),
+                                   F.New_Infix
+                                     (+"/",
+                                      F.New_Selected_Name
+                                        (My_Name & "'Size"))))))),
                F.New_Variable
                   (Name            => F.New_Name (+"Aux_Data"),
                    Type_Definition => F.New_Name (My_Name & "_Array_Access"),
