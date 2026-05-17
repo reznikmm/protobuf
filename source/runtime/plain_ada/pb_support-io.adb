@@ -209,6 +209,9 @@ package body PB_Support.IO is
       begin
          pragma Assert (Encoding = Length_Delimited);
          Element'Read (Stop'Unchecked_Access, Value);
+         if Stop.Left > 0 then
+            raise Constraint_Error with "Premature EOF";
+         end if;
       end Read;
 
       -----------------
