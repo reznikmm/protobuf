@@ -47,7 +47,7 @@ package body PB_Support.Vectors is
       Init_Length : constant Positive :=
         Positive'Max (1, 256 / Natural'Max (1, Element_Type'Size));
    begin
-      if Self.Length = 0 then
+      if Self.Data = null then
          Self.Data := new Element_Array (1 .. Init_Length);
       elsif Self.Length = Self.Data'Last then
          Self.Data := new Element_Array'
