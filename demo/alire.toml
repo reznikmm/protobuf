@@ -20,7 +20,9 @@ development.contracts = "Yes"
 
 [[actions]]
 type = "pre-build"
-command = ["protoc", "--ada_out=src", "basics.proto"]
+# make will regenerate if the .proto files have changed, taking into account
+# their interdependencies.
+command = ["make"]
 
 [[depends-on]]
 protobuf = "^1.0.0"
