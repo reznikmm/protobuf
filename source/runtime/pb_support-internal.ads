@@ -447,6 +447,9 @@ private
 
    type Message_Id is new Positive;
 
+   package Text_Codec_Holders is new Ada.Containers.Indefinite_Holders
+     (League.Text_Codecs.Text_Codec, League.Text_Codecs."=");
+
    package Size_Vectors is new Ada.Containers.Vectors
      (Index_Type   => Message_Id,
       Element_Type => Ada.Streams.Stream_Element_Count,
@@ -468,6 +471,8 @@ private
       --  calculate total size of messages
       Written  : Ada.Streams.Stream_Element_Count := 0;
       --  Total amount of written data during riffling mode
+      Codec    : Text_Codec_Holders.Holder;
+      --  Text codec for encoding strings in this stream.
    end record;
 
    overriding procedure Read
@@ -478,10 +483,5 @@ private
    overriding procedure Write
      (Stream : in out Internal.Stream;
       Item   : Ada.Streams.Stream_Element_Array);
-
-   package Text_Codec_Holders is new Ada.Containers.Indefinite_Holders
-     (League.Text_Codecs.Text_Codec, League.Text_Codecs."=");
-
-   Codec : Text_Codec_Holders.Holder;
 
 end PB_Support.Internal;
